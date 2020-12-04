@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptConfigDao">
+    <sql id="script_config_columns">
+        id,
+        name,
+        type,
+        cluster_code AS clusterCode,
+        market_linux_user AS marketLinuxUser,
+        queue_code AS queueCode,
+        account_code AS accountCode,
+        used,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        owner,
+        show_order as showOrder,
+        market_id as marketId,
+        account_id as accountId,
+        queue_id as queueId,
+        engine_type as engineType,
+        run_cluster_code as runClusterCode,
+        run_market_linux_user as runMarketLinuxUser,
+        project_space_id as projectSpaceId
+    </sql>
+    <insert id="insertConfig" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_config(
+        name,
+        type,
+        cluster_code,
+        market_linux_user,
+        queue_code,
+        account_code,
+        used,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        owner,
+        show_order,
+        market_id,
+        account_id,
+        queue_id,
+        engine_type,
+        run_cluster_code,
+        run_market_linux_user,
+        project_space_id
+        )VALUES (
+        #{name},
+        #{type},
+        #{clusterCode},
+        #{marketLinuxUser},
+        #{queueCode},
+        #{accountCode},
+        #{used},
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        0,
+        #{owner},
+        #{showOrder},
+        #{marketId},
+        #{accountId},
+        #{queueId},
+        #{engineType},
+        #{runClusterCode},
+        #{runMarketLinuxUser},
+        #{projectSpaceId}
+        )
+    </insert>
+
+
+
+    <select id="getConfigsByErp" resultType="DataDevScriptConfig">
+        SELECT
+        <include refid="script_config_columns"/>
+        from script_config where owner = #{owner} AND project_space_id = #{projectSpaceId} AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="findById" resultType="DataDevScriptConfig">
+        SELECT
+        <include refid="script_config_columns"/>
+        from script_config where id = #{id} AND IFNULL(deleted,0) = 0
+    </select>
+    <update id="updateConfig">
+        UPDATE script_config
+        SET name = #{name},cluster_code =#{clusterCode},market_linux_user=#{marketLinuxUser},queue_code=#{queueCode},account_code =#{accountCode},
+        mender = #{mender},modified=now(),show_order=#{showOrder},market_id = #{marketId},account_id=#{accountId},queue_id = #{queueId},engine_type = #{engineType},
+        run_cluster_code = #{runClusterCode},run_market_linux_user = #{runMarketLinuxUser},project_space_id = #{projectSpaceId}
+        WHERE id = #{id} AND IFNULL(deleted,0) = 0
+    </update>
+    <update id="deleteConfig">
+        UPDATE script_config
+        SET deleted = 1
+        WHERE id = #{id}
+    </update>
+    <select id="getConfigsByMarketIds" resultType="DataDevScriptConfig">
+        select <include refid="script_config_columns"></include>
+        from script_config
+        where 1=1
+        <if test="marketIds !=null">
+            and market_id in
+            <foreach collection="marketIds" item="marketId" separator="," open="(" close=")">
+                #{marketId}
+            </foreach>
+        </if>
+    </select>
+    <update id="updateMergeConfig">
+        UPDATE script_config
+        <set>
+            <if test="marketId !=null">
+                market_id = #{marketId},
+            </if>
+            <if test="accountId !=null">
+                account_id=#{accountId},
+            </if>
+            <if test="queueId !=null">
+                queue_id = #{queueId},
+            </if>
+            <if test="marketLinuxUser !=null and marketLinuxUser!=''">
+                market_linux_user=#{marketLinuxUser},
+            </if>
+            <if test="clusterCode !=null and clusterCode!=''">
+                cluster_code=#{clusterCode},
+            </if>
+            <if test="runClusterCode !=null and runClusterCode !=''">
+                run_cluster_code = #{runClusterCode},
+            </if>
+            <if test="runMarketLinuxUser !=null and runMarketLinuxUser!=''">
+                run_market_linux_user=#{runMarketLinuxUser},
+            </if>
+            <if test="projectSpaceId !=null">
+                project_space_id=#{projectSpaceId}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

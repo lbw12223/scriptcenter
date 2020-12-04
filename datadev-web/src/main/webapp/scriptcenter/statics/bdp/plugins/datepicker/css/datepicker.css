@@ -1,0 +1,982 @@
+.clear{
+	clear:both;
+}
+.container-datepicker *{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.it,.so,.is{
+	border:1px solid #ccc;
+	vertical-align:middle;}
+
+table.jCalendar {
+	border-collapse:inherit;
+	width:100%;
+	font-family:Tahoma;
+	z-index: 2001;
+	color: #666666;
+	border: 1px solid #ffffff;
+}
+table.jCalendar th {
+	font-weight: normal;
+	padding: 3px 5px;
+	vertical-align:middle;
+	border-bottom: 1px solid #cccccc;
+}
+table.jCalendar th.weekend{
+	color: #c60b02;
+}
+table.jCalendar td {
+	font-size:12px;
+	padding: 4px 3px;
+	text-align: center;
+}
+table.jCalendar th.weeknum,table.jCalendar td.weeknum,div.datepicker table th.datepickerWeek{
+	font-weight: bold;
+	border-right: 1px solid #e7e7e7;
+}
+div.datepicker table th.datepickerWeek {
+	background-color: #F1F4F9
+}
+table.jCalendar td.current-month.weekend{
+	color: #c60b02;
+}
+table.jCalendar td.other-month {
+	color: #ffffff;
+	visibility: hidden;
+}
+table.jCalendar td.today {
+}
+table.jCalendar td.selected {
+	background: #fdab00;
+	color: #ffffff;
+}
+table.jCalendar td.selected.dp-hover {
+	background: #fdab00;
+	color: #ffffff;
+}
+table.jCalendar td.dp-hover,
+table.jCalendar .activeWeekHover{
+	background: #fcbd12;
+	color: #ffffff;
+	/* border:1px solid #93d1e8; */
+}
+table.jCalendar .selectedWeek{
+	background: #fdab00;
+	color: #fff;
+}
+table.jCalendar td.disabled, table.jCalendar td.disabled.dp-hover {
+	background: #ECF1F4;
+	color: #888;
+}
+table.jCalendar td.unselectable,
+table.jCalendar td.unselectable:hover,
+table.jCalendar td.unselectable.dp-hover {
+	background: #fdab00;
+	color: #ffffff;
+}
+
+/* For the popup */
+
+/* NOTE - you will probably want to style a.dp-choose-date - see how I did it in demo.css */
+
+div.dp-popup {
+	position: relative;
+	background: #fff;
+	border: 1px solid #cccccc;
+	font-size: 12px;
+	font-family: arial, sans-serif;
+	width: 188px;
+	/*width:162px\9;*/
+	line-height: 1.2em;
+	font-family:Tahoma;
+}
+div#dp-popup {
+	position: absolute;
+	z-index: 199;
+}
+div.dp-popup h2 ,
+div.dp-popup .month-year{
+	font-size: 12px;
+	text-align: center;
+	margin: 0;
+	padding: 2px 0;
+	color: #0d68c1;
+	font-weight: normal;
+}
+div.dp-popup .month-year{
+	border-bottom: 1px solid #CCCCCC;
+}
+a#dp-close {
+	font-size: 12px;
+	padding: 4px 0;
+	text-align: center;
+	display: block;
+}
+a#dp-close:hover {
+	text-decoration: underline;
+}
+div.dp-popup a {
+	color: #0D68C1;
+	text-decoration: none;
+	padding: 3px 4px 0;
+}
+div.dp-popup div.dp-nav-prev,
+div.dp-popup div.dp-month-nav-prev {
+	position: absolute;
+	top: 2px;
+	left: 4px;
+	width: 100px;
+}
+div.dp-popup div.dp-nav-prev a,
+div.dp-popup div.dp-month-nav-prev a {
+	float: left;
+	font-size: 14px;
+}
+/* Opera needs the rules to be this specific otherwise it doesn't change the cursor back to pointer after you have disabled and re-enabled a link */
+div.dp-popup div.dp-nav-prev a, div.dp-popup div.dp-nav-next a {
+	cursor: pointer;
+}
+div.dp-popup div.dp-nav-prev a.disabled, div.dp-popup div.dp-nav-next a.disabled {
+	cursor: default;
+}
+div.dp-popup div.dp-nav-next,
+div.dp-popup div.dp-month-nav-next {
+	position: absolute;
+	top: 2px;
+	right: 4px;
+	width: 100px;
+}
+div.dp-popup div.dp-nav-next a,
+div.dp-popup div.dp-month-nav-next a {
+	float: right;
+	font-size: 14px;
+}
+div.dp-popup a.disabled {
+	cursor: default;
+	color: #aaa;
+}
+div.dp-popup td {
+	cursor: pointer;
+}
+div.dp-popup td.disabled {
+	cursor: default;
+	background: #FFFFFF;
+	color: #888888;
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+div.dp-calendarNum{
+	position: absolute;
+	top: 48px;
+	left: 2px;
+	font-size:90px;
+	color:#e2e2e2;
+	z-index: 1900;
+	cursor: default;
+	height: 90px;
+	width: 186px;
+	line-height: 90px;
+	text-align: center;
+}
+div.dp-calendar{
+	z-index: 2000;
+	position: relative;
+}
+div.dp-tabs a{
+	display: block;
+	width: 93px;
+	background-color: #e1e1e1;
+	padding: 4px 0;
+	text-align: center;
+	float: left;
+	border-right: 1px solid #d4d4d4;
+	border-bottom: 1px solid  #d4d4d4;
+	cursor: pointer;
+	color: #666666;
+}
+div.dp-tabs a.set-month{
+
+}
+div.dp-tabs a.set-day{
+	border-right: 1px solid #e1e1e1;
+}
+div.dp-tabs a.set-month.selected{
+	background-color: #ffffff;
+	border-right: 1px solid #d4d4d4;
+	border-bottom: 1px solid  #ffffff;
+}
+div.dp-tabs a.set-day.selected{
+	background-color: #ffffff;
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid  #ffffff;
+}
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; zoom:1;}
+* html .clearfix { height: 1% }
+
+.dp-month{
+	z-index: 2000;
+	position: relative;
+	padding: 20px 0;
+}
+div.dp-monthNum{
+	position: absolute;
+	top: 28px;
+	left: 2px;
+	font-size:67px;
+	color:#e2e2e2;
+	z-index: 1900;
+	cursor: default;
+	height: 90px;
+	width: 186px;
+	line-height: 90px;
+	text-align: center;
+}
+table.jMonth {
+	border-collapse:inherit;
+	width:100%;
+	font-family:Tahoma;
+	z-index: 2001;
+	color: #666666;
+	border: 1px solid #ffffff;
+}
+table.jMonth th {
+	font-weight: normal;
+	padding: 3px 5px;
+	vertical-align:middle;
+	border-bottom: 1px solid #cccccc;
+}
+table.jMonth th.weekend{
+	color: #c60b02;
+}
+table.jMonth td {
+	font-size:12px;
+	padding: 4px 6px;
+	text-align: center;
+}
+table.jMonth td.current-month.weekend{
+	color: #c60b02;
+}
+table.jMonth td.other-month {
+	color: #ffffff;
+	visibility: hidden;
+}
+table.jMonth td.thisMonth {
+	background: #fdab00;
+	color: #ffffff;
+}
+table.jMonth td.selected {
+	background: #fdab00;
+	color: #ffffff;
+}
+table.jMonth td.selected.dp-hover {
+	background: #fdab00;
+	color: #ffffff;
+}
+table.jMonth td.dp-year-hover,
+table.jMonth .activeWeekHover{
+	background: #fcbd12;
+	color: #ffffff;
+	/* border:1px solid #93d1e8; */
+}
+table.jMonth .selectedWeek{
+	background: #f66;
+	color: #fff;
+}
+table.jMonth td.disabled, table.jCalendar td.disabled.dp-hover {
+	background: #FFFFFF;
+	color: #888888;
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+table.jMonth td.unselectable,
+table.jMonth td.unselectable:hover,
+table.jMonth td.unselectable.dp-hover {
+	background: #fdab00;
+	color: #ffffff;
+}
+
+.Wdate{
+	border:#CCCCCC 1px solid;
+	height:25px;
+	line-height:25px;
+	font-family: verdana;
+	width:116px;
+}
+
+.WdateFmtErr{
+	font-weight:bold;
+	color:red;
+}
+
+/*new picker*/
+div.datepicker {
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 196px;
+	height: 147px;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	display: none;
+}
+.datepickerContainer {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+.datepickerBorderT {
+	position: absolute;
+	left: 10px;
+	top: 0;
+	right: 10px;
+	height: 10px;
+}
+.datepickerBorderB {
+	position: absolute;
+	left: 10px;
+	bottom: 0;
+	right: 10px;
+	height: 10px;
+}
+.datepickerBorderL {
+	position: absolute;
+	left: 0;
+	bottom: 10px;
+	top: 10px;
+	width: 5px;
+}
+.datepickerBorderR {
+	position: absolute;
+	right: 0;
+	bottom: 10px;
+	top: 10px;
+	width: 10px;
+}
+.datepickerBorderTL {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 10px;
+	height: 10px;
+}
+.datepickerBorderTR {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 10px;
+	height: 10px;
+}
+.datepickerBorderBL {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 10px;
+	height: 10px;
+}
+.datepickerBorderBR {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 10px;
+	height: 10px;
+}
+.datepickerHidden {
+	display: none;
+}
+div.datepicker table {
+	border-collapse:collapse;
+}
+div.datepicker a {
+	color: #333;
+	text-decoration: none;
+	outline: none;
+	padding:4px;
+}
+div.datepicker thead .datepickerDoW span {
+	display: inline-block;
+	padding: 5px;
+}
+div.datepicker table td {
+	text-align: center;
+	padding:0;
+	margin: 0;
+	vertical-align: top;
+}
+div.datepicker th {
+	text-align: center;
+	color: #999;
+	font-weight: normal;
+}
+div.datepicker tbody th {
+	text-align: left;
+}
+div.datepicker tbody a {
+	display: block;
+}
+.datepickerDays a {
+	width: 28px;
+	line-height: 16px;
+	height: 24px;
+}
+.datepickerYears a,
+.datepickerMonths a{
+	width: 44px;
+	line-height: 36px;
+	height: 36px;
+	text-align: center;
+}
+td.datepickerNotInMonth a {
+	color: #666;
+}
+tbody.datepickerDays td.datepickerSelected{
+	background: #3366cc;
+}
+tbody.datepickerDays td.datepickerSelected a{
+	color:#fff;
+}
+tbody.datepickerDays td.datepickerNotInMonth.datepickerSelected {
+	background: #D8DAE2;
+}
+tbody.datepickerYears td.datepickerSelected,
+tbody.datepickerMonths td.datepickerSelected{
+	background: #17384d;
+}
+
+div.datepicker td.datepickerNotInMonth a:hover {
+	color: #999;
+}
+div.datepicker tbody th {
+	text-align: center;
+}
+/*div.datepicker thead th.datepickerMonth{*/
+/*background-color:#f3f3f3;*/
+/*border:1px solid #ccc;*/
+/*}*/
+/*div.datepicker tbody td.datepickerSunday span,*/
+/*div.datepicker tbody td.datepickerSaturday span{*/
+/*color:#C60B02;*/
+/*}*/
+div.datepicker thead th a{
+
+}
+div.datepicker .datepickerDoW{
+	background-color: #f1f4f9;
+}
+.datepickerSpace div {
+	width: 20px;
+}
+.datepickerGoNext a,
+.datepickerGoPrev a,
+.datepickerMonth a {
+	text-align: center;
+	height: 28px;
+	line-height: 20px;
+}
+.datepickerGoNext a {
+	float: right;
+	width: 20px;
+}
+.datepickerGoPrev a {
+	float: left;
+	width: 20px;
+}
+table.datepickerViewDays tbody.datepickerMonths,
+table.datepickerViewDays tbody.datepickerYears {
+	display: none;
+}
+table.datepickerViewMonths tbody.datepickerDays,
+table.datepickerViewMonths tbody.datepickerYears,
+table.datepickerViewMonths tr.datepickerDoW {
+	display: none;
+}
+table.datepickerViewYears tbody.datepickerDays,
+table.datepickerViewYears tbody.datepickerMonths,
+table.datepickerViewYears tr.datepickerDoW {
+	display: none;
+}
+td.datepickerDisabled a,
+td.datepickerDisabled.datepickerNotInMonth a{
+	color: #333;
+}
+td.datepickerDisabled a:hover {
+	color: #333;
+}
+td.datepickerSpecial a {
+	background: #700;
+}
+td.datepickerSpecial.datepickerSelected a {
+	background: #a00;
+}
+
+/*new datepicker */
+input.inputDate {
+	border: 1px solid #999;
+	padding: 4px;
+	border-bottom-color: #ccc;
+	border-right-color: #ccc;
+	width: 65px;
+}
+.datepickerDisabled{
+	filter: alpha(opacity=30);
+	-moz-opacity: .3;
+	opacity: 0.3;
+	cursor: default;
+	color: #777;
+}
+
+
+
+
+/**********************************sometimes need several datepicker in one page so change from id to class   add by baojun**********************************/
+.widget {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	z-index:22;
+	width:100%
+}
+.widgetField span	{
+	font-size: 12px;
+	color: #000;
+	position: absolute;
+	top: 0;
+	height: 26px;
+	line-height: 26px;
+	left: 5px;
+	width: 186px;
+	text-align: center;
+}
+.widgetCalendar {
+	position: absolute;
+	top: 25px;
+	left: 0;
+	height: 0px;
+	overflow: hidden;
+	width:646px;
+}
+.widgetCalendar .note{
+	padding: 10px 15px 0;
+	color: #FE6C25;
+	font-family: '微软雅黑';
+	line-height: 15px;
+}
+.widgetCalendar .c-box{
+	border:1px solid #b9b9b9;
+	background-color:#fff;
+	overflow: hidden;
+}
+.widgetCalendar .datepicker {
+	position: absolute;
+	bottom: 0;
+	top: auto;
+}
+.widgetCalendar .datepickerContainer,
+.widgetCalendar .datepickerBorderT,
+.widgetCalendar .datepickerBorderB,
+.widgetCalendar .datepickerBorderL,
+.widgetCalendar .datepickerBorderR,
+.widgetCalendar .datepickerBorderTL,
+.widgetCalendar .datepickerBorderTR,
+.widgetCalendar .datepickerBorderBL,
+.widgetCalendar .datepickerBorderBR {
+	background: transparent !important;
+}
+.widgetCalendar .datepicker td a:hover{
+	background: none repeat scroll 0 0 #FCBD12;
+	/*color: #FFF;*/
+}
+.widgetCalendar .datepicker thead th a:hover{
+	background-color: transparent;
+	color: #FFF;
+}
+/*
+ * ODP datepicker
+ * 
+ * @section qucik-chose
+ */
+.quick-chose{
+	padding:10px 10px 0;
+}
+.quick-chose a{
+	padding:2px 5px;
+	color:#3366cc;
+	text-decoration:none;
+}
+.quick-chose a:hover{
+	background-color:#3366cc;
+	color:#fff;
+}
+.quick-chose a.chosen{
+	background-color:#3366cc;
+	color:#fff;
+}
+.datepickerViewDays{
+	border:1px solid #ccc;
+}
+.datepickerYears td,
+.datepickerMonths td{
+	border:1px solid #ccc;
+}
+.datepickerYears td a,
+.datepickerMonths td a{
+	height:47px;
+	width:47px;
+}
+
+/*包装.START*/
+.container-separate .rapidSel {
+	height: 34px;
+	line-height: 34px;
+	float: left;
+}
+.rapidSel .filterLbl {
+	margin: 0 8px;
+	font-size: 14px;
+	font-family: "微软雅黑";
+	color: #808080;
+	vertical-align: middle;
+}
+.rapidSel .radiobox {
+	background: url("../img/icons.png") no-repeat scroll -180px -197px transparent;
+	cursor: pointer;
+	vertical-align: middle;
+	margin: 0 2px 0 10px;
+	padding: 0 0 0 20px;
+	font-size: 12px;
+}
+.rapidSel .radiobox.r-checked{
+	background-position: -180px -218px
+}
+/* 普通快查和超级快查样式统一（把这一段注释可恢复单选按钮） START */
+.rapidSel .radiobox {
+	background: 0 none;
+	margin: 0;
+	padding: 0 10px 0 0;
+	vertical-align: middle;
+	cursor: pointer;
+	font-family:'微软雅黑';
+	font-size: 14px;
+	color: #48a7e7;
+}
+.rapidSel .radiobox:hover,.rapidSel .radiobox.r-checked {
+	text-decoration: underline;
+}
+.rapidSel .radiobox.r-disabled{
+	color: gray;
+	cursor: default;
+}
+/* 普通快查和超级快查样式统一（把这一段注释可恢复单选按钮） END */
+.rapidSel .radiobox label{
+	cursor: pointer;
+}
+.rapidSel .radiobox.r-disabled label{
+	color: #999999
+}
+a.super-rapid:hover:not(.disabled){
+	text-decoration: underline;
+}
+.rapidSel .super-rapid{
+	vertical-align: middle;
+	cursor: pointer;
+	font-family:'微软雅黑';
+	font-size: 14px;
+	padding-right: 10px;
+	color: #48a7e7;
+}
+.rapidSel .super-rapid.disabled{
+	color: gray;
+	cursor: default;
+}
+.widgetCalendar {
+	top: 27px;
+}
+.widgetCalendar .time-picker {
+	float: left;
+	padding-left: 7px;
+	margin-top:3px;
+}
+.widgetCalendar .time-picker input {
+	text-align: center;
+	/*border-radius: 5px;*/
+	border-width: 1px;
+	height: 28px;
+	line-height: 28px;
+	width: 76px;
+}
+.widgetCalendar .time-picker input+span{
+	margin:0 5px;
+}
+.widgetCalendar .c-btn,#widgetCalendar .c-btn{
+	float: right;
+	padding: 8px 8px 0 0;
+}
+.widgetField {
+	background: none repeat-x scroll 0 -80px #FFFFFF;
+	height: 30px;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #e9e9e9;
+}
+#widgetField input,.widgetField input {
+	background-color: rgba(0, 0, 0, 0);
+	border: 0 none;
+	color: #323232;
+	font-family: '微软雅黑';
+	font-size: 17px;
+	height: 30px;
+	left:0;
+	line-height: 30px;
+	padding: 0 5px;
+	position: absolute;
+	text-align: left;
+	z-index: 1;
+	box-sizing: border-box;
+	font-size:12px;
+	width:100%;
+}
+.widgetCalendar.r0 {
+	left: auto;
+	right: 0
+}
+.widget.widgetField-on {
+	background: none #fff;
+}
+.widget.widgetField-on input{
+	background-color: #fff;
+}
+.widget{
+	z-index: 1;
+}
+.widget.widgetField-on{
+	z-index: 122;
+}
+#widgetField {
+	background: none repeat-x scroll 0 -80px #FFFFFF
+}
+#Picker,.Picker{
+	/*height: 265px;*/
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+.btn.cancel,#cancel_button{
+	background: none no-repeat scroll 0 0 #ffffff;
+	border: 1px solid #c7c7c7;
+	color: #333333
+}
+#widgetCalendar,.widgetCalendar {
+	/*line-height: 30px*/
+}
+#widgetCalendar .btn,.widgetCalendar .btn{
+	width: 64px;
+	padding: 0
+}
+div.datepicker .datepickerDoW {
+	background-color: #e9f2fb
+}
+.quick-chose {
+	padding: 10px 15px 0;
+	line-height: 15px;
+}
+.datepickerYears td a, .datepickerMonths td a {
+	line-height: 47px;
+}
+#widgetField a,.widgetField a{
+	background: url("../img/icons.png") no-repeat scroll -105px -133px #ffffff;
+	border:none;
+	right: 0;
+	z-index: 1;
+	height: 30px;
+	width: 35px;
+	position: absolute;
+	cursor: default;
+}
+
+#widgetField a.on,.widgetField a.on{
+	background-position:  -77px -133px;
+}
+.widget.widgetField-on .widgetField,.widgetCalendar .c-box {
+	border: 1px solid #2c4a93
+}
+.datepickerContainer {
+	left: 8px;
+	top: 15px;
+	right: 15px;
+	bottom: 15px;
+}
+.datepickerYears td, .datepickerMonths td {
+	border: 1px solid #a0d1f2;
+}
+div.datepicker table th.datepickerWeek {
+	background-color: #e9f2fb;
+}
+div.datepicker table td.datepickerSpace div{
+	width: 15px
+}
+/*.datepickerViewDays {*/
+/*border: 1px solid #48A7E7;*/
+/*}*/
+div.datepicker thead th.datepickerGoPrev {
+	background: #2c4a93;
+	/*border: 1px solid #2c4a93;*/
+	/*border-right: 1px solid #2c4a93;*/
+}
+div.datepicker thead th.datepickerGoNext{
+	background: none repeat scroll 0 0 #2c4a93;
+	/*border: 1px solid #2c4a93;*/
+	/*border-left: 1px solid #2c4a93;*/
+}
+div.datepicker thead tr:nth-child(1){
+	border:1px solid #2c4a93;
+	border-bottom: none;
+}
+div.datepicker thead th.datepickerMonth{
+	background-color: #2c4a93;
+	/*border: 1px solid #2c4a93;*/
+	/*border-left: 1px solid #2c4a93;*/
+	/*border-right: 1px solid #2c4a93;*/
+}
+div.datepicker thead th.datepickerMonth a span{
+	color: #ffffff
+}
+.datepickerGoPrev a span,.datepickerGoNext a span{
+	color: #ffffff
+}
+tbody.datepickerYears td.datepickerSelected, tbody.datepickerMonths td.datepickerSelected {
+	background: none repeat scroll 0 0 transparent;
+}
+tbody.datepickerMonths td span {
+	display: block;
+	height: 22px;
+	line-height: 22px;
+	margin: 12px 0 0 4px;
+	width: 40px;
+}
+tbody.datepickerMonths td span:hover{
+	background: none repeat scroll 0 0 #e6e6e6;
+}
+#widgetCalendar .datepicker .datepickerMonths td a:hover,.widgetCalendar .datepicker .datepickerMonths td a:hover{
+	background: none repeat scroll 0 0 transparent;
+}
+tbody.datepickerDays td.datepickerSelected,tbody.datepickerDays td.datepickerSelected a:hover,tbody.datepickerMonths td.datepickerSelected span,div.datepicker table th.datepickerWeek.datepickerSelected {
+	background: none repeat scroll 0 0 #2c4a93;
+}
+tbody.datepickerDays td.datepickerSelected span,tbody.datepickerMonths td.datepickerSelected span,div.datepicker table th.datepickerWeek.datepickerSelected span{
+	color: #ffffff
+}
+#widgetCalendar .datepicker td a:hover,.widgetCalendar .datepicker td a:hover{
+	background: none repeat scroll 0 0 #eee;
+}
+#widgetCalendar .datepicker th.datepickerWeek a:hover,.widgetCalendar .datepicker th.datepickerWeek a:hover{
+	background: none repeat scroll 0 0 transparent;
+	color: #2c4a93
+}
+div.embedDimension{
+	float: left;
+	/*height: 249px;*/
+	margin: 15px 0 0;
+	width: 70px;
+	border-top: 1px solid #2c4a93;
+	border-right: 1px solid #2c4a93;
+	background: none no-repeat #e2effc;
+	padding-left: 5px;
+}
+div.embedDimension ul li{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	color: #555555;
+	font-family: '微软雅黑';
+	cursor: pointer;
+	margin:10px -1px 15px 0;
+}
+div.embedDimension ul li:hover{
+	color: #2c4a93
+}
+div.embedDimension ul li.sel{
+	/*filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#D7D7D7, endColorstr=#FFFFFF);*/
+	/*-ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#D7D7D7, endColorstr=#FFFFFF);*/
+	/*background: -moz-linear-gradient(left,#D7D7D7,#FFFFFF);*/
+	/*background: -webkit-linear-gradient(left,#D7D7D7,#FFFFFF);*/
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 1px solid #2c4a93;
+}
+
+.c-btn .btn {
+	background: none repeat scroll 0 0 #2c4a93;
+	border: 0 none;
+	border-radius: 2px;
+	color: #FFFFFF;
+	display: inline-block;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	cursor: pointer;
+	margin: 0 0 0 5px;
+	font-size:12px;
+}
+/*包装 END*/
+html, body {
+	font-family: Verdana, Arial, Lucida, Helvetica, "\5B8B\4F53", "\5FAE\8F6F\96C5\9ED1", sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	color: #333;
+}
+table {
+	font-size: 12px
+}
+ul {
+	display: block;
+	list-style-type: none;
+	padding: 0;
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-padding-start: 0;
+}
+ul li {
+	list-style-type: none;
+}
+a:link,a:hover,a:visited,a:active{
+	text-decoration: none;
+}
+.f-l {
+	float: left
+}
+.f-r {
+	float: right
+}
+.m-l-5 {
+	margin-left: 5px
+}
+.m-r-5 {
+	margin-right: 5px
+}
+.picker-front{
+	float: left;
+}
+.picker-back{
+	float: left;
+}
+.picker-link{
+	float: left;
+	margin: 0 10px;
+	font-size: 15px;
+	font-family: '微软雅黑';
+	height: 34px;
+	line-height: 34px;
+}
+.widgetField{
+	width: 100%;
+}
+.time-picker p{
+	padding:0;
+	margin:0;
+	font-size:11px;
+}

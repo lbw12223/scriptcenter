@@ -1,0 +1,62 @@
+#set($page_title="用户未激活")
+#set($layout="layout_bdp_no_left.vm")###
+<style type="text/css">
+    button:hover
+    {
+        /*background-color:#228B22;*/
+        background-color:#4B0082;
+    }
+</style>
+<div   id=""  style="  position: absolute;
+        top: 160px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin: auto auto auto auto;
+        height: 100%;
+        width: 770px;
+        text-align: center;">
+    <div style="border:0px solid silver ; text-align: center;margin-top: 20px;">
+##        <div style="height: 200px;">
+##            <div style="width:200px;height: 200px;margin-left: 30px;float: left;">
+##                <img src="/cv/statics/image/noRight.png" />
+##            </div>
+##            <div style="position:absolute;height: 100px;margin-left: 270px;margin-top: 50px;">
+##                <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 15px;"><b>抱歉【${cvUser.pin}】当前用户还未激活，请进行用户激活或联系管理员</b></p>
+####                <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">抱歉【${cvUser.pin}】当前用户还未激活，请联系管理员进行用户激活</p>
+##                <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 15px;">如需咨询反馈，请加入咚咚产品交流群：<img class="bdp-algor-noright-content-dongdong" src="/cv/statics/image/dongdong.png">4245577</p>
+##            </div>
+##        </div>
+        <div>
+            <h3 style="font-weight: 700">标注平台用户须知</h3>
+            <div style="border: solid;border-color: #D8D8D8;overflow-y:scroll;height: 450px;margin-top: 25px;">
+                <div style="margin: 15px;">
+                    <p style="margin-top: 20px;line-height: 30px;color: #383838;font-size: 15px;text-align: left;font-weight: 500;">您在使用标注服务之前，已经充分阅读、理解并接受《京东用户注册协议》、《京东隐私政策》以及本服务条款的全部内容。<br/>
+                        &nbsp;&nbsp;1.保密的内容和范围<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;（1）涉及本网站上维护的所有的系统信息，包括网页上用于标注的材料以及标注完成形成的任何资料或文档。<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;（2）凡以直接、间接、口头或书面等形式提供涉及保密内容的行为均属泄密。<br/>
+                        &nbsp;&nbsp;2、禁止的行为<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;（1）禁止进行平台要求以外的下载、复制粘贴和储存标注数据。<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;（2）禁止将数据以任意途径分享、发送、上传到本系统以外的其他地方。<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;（3）以技术手段获取数据或资料或者干扰系统正常运行的。<br/>
+                        &nbsp;&nbsp;3、获得标注系统的登录权限后，您应妥善保管京东账号、密码、账户绑定的手机号以及关联账户的其他信息。如您更换、暂停或终止使用上述信息/或设备的，或遗失或泄露上述信息/或设备的，您应及时通知管理员进行解绑、变更或注销处理，以减少可能发生的损失。
+                    </p>
+                </div>
+            </div>
+            <input id="pin" type="hidden" value="${pin}"/>
+            <div style="margin-top: 35px;">
+                <button id="agree" type="button" class="bdp-btn bdp-btn-primary" style="color: #fff;background-color: #375cb4;border-color: #375cb4;width: 200px;height: 40px;">同意并激活</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Scripts -->
+#define($cssBlock)
+
+#end
+#define($javascriptBlock)
+    <script src="/cv/statics/pages/error/noActivate.js?_dc=$!{staticVersion}"></script>
+#end
+

@@ -1,0 +1,71 @@
+
+
+#codingProjectGroupArt{
+    background-color: #2F3338;
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+}
+#codingProjectGroupArt .bdp-form-group {
+    width: 100%;
+    float: left;
+    padding-left: 45px;
+}
+#codingProjectGroupArt .gitGroupPath {
+    margin-left: 10px;
+    width: 292px;
+}
+#codingProjectGroupArt .gitGroupMember {
+    width: 100%;
+}
+
+#codingProjectGroupArt .bdp-form-group .bdp-control-label {
+    float: left;
+    margin-top: 7px;
+    width: 60px;
+}
+
+#codingProjectGroupArt .bdp-form-group .project-item {
+    float: left;
+    width: 430px;
+    margin-left: 10px;
+    position: relative;
+}
+/*创建项目开始*/
+#codingProjectGroupArt .project-item span.project-url-span {
+    display: block;
+    float: left;
+    width: 128px;
+    background: #363A40;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 4px;
+}
+#codingProjectGroupArt .project-item textarea {
+    height: 100px;
+}
+
+#codingProjectGroupArt .project-desc-content .tips {
+    background: #2A2F33;
+    width: 477px;
+    color: #DC9116;
+    margin-left: 12px;
+}
+/*新建项目*/
+
+#codingProjectGroupArt .project-item .git-group-select {
+    width: 201px;
+}
+#codingProjectGroupArt .buttons-div{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+#codingGroupForm{
+    display: block;
+    float: left;
+}
+
+/*创建项目结束*/
+
+

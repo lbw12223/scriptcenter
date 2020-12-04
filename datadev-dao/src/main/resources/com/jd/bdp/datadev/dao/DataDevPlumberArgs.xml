@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevPlumberArgsDao">
+
+    <!--保存-->
+    <insert id="insertPlumberArgs" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO plumber_args (
+        script_run_detail_id,
+        script_file_id,
+        source_subprotocol,
+        source_database,
+        source_extend,
+        target_type,
+        target_host,
+        target_port,
+        target_database,
+        target_user,
+        target_password,
+        target_tableName,
+        target_charset,
+        target_extend,
+        target_extend1,
+        data_date,
+        delete_sql,
+        creator,
+        created
+        )
+        VALUES(
+        #{scriptRunDetailId},
+        #{scriptFileId},
+        #{sourceSubprotocol},
+        #{sourceDatabase},
+        #{sourceExtend},
+        #{targetType},
+        #{targetHost},
+        #{targetPort},
+        #{targetDatabase},
+        #{targetUser},
+        #{targetPassword},
+        #{targetTableName},
+        #{targetCharset},
+        #{targetExtend},
+        #{targetExtend1},
+        #{dataDate},
+        #{deleteSql},
+        #{creator},
+        now()
+        )
+    </insert>
+
+
+</mapper>

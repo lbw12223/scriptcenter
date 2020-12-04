@@ -1,0 +1,7 @@
+#set($layout="layout_blank.vm")
+<div>
+    home_left_resource_manage.vm
+</div>
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/pages/home/home_left_ifame.js?_dc=$!{staticVersion}"></script>
+#end

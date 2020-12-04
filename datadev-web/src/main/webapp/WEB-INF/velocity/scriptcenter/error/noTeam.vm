@@ -1,0 +1,29 @@
+#set($page_title="用户无团队")
+#set($layout="layout_bdp_no_left.vm")###
+
+<div   id=""  style="  position: absolute;
+        top: 160px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin: auto auto auto auto;
+        height: 100%;
+        width: 500px;
+        text-align: center;">
+    <div style="border:0px solid silver ; text-align: center;margin-top: 50px;">
+        <img src="/cv/statics/image/noRight.png" />
+        <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">抱歉用户【$!{cvUser.userName}($!{cvUser.pin})】未添加到任何团队</p>
+        <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">如需帮助，请联系管理员</p>
+    </div>
+</div>
+<!-- Scripts -->
+#define($cssBlock)
+
+<style type="text/css">
+    .bdp-algor-noright-content {}
+</style>
+#end
+#define($javascriptBlock)
+
+#end
+

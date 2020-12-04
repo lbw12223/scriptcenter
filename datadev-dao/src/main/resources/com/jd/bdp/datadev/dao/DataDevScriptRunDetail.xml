@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptRunDetailDao">
+    <sql id="run_detail_columns">
+        id,
+        script_file_id as scriptFileId,
+        version,
+        operator,
+        start_time as startTime,
+        end_time as endTime,
+        status,
+        cluster_code as clusterCode,
+        market_linux_user as marketLinuxUser,
+        queue_code as queueCode,
+        account_code as accountCode,
+        args,
+        process_id as processId,
+        creator,
+        created,
+        type,
+        log_count as logCount,
+        data_count as dataCount,
+        envs,
+        response_code as responseCode,
+        args_import_type as argsImportType,
+        start_shell_path as startShellPath,
+        ip,
+        script_config_id AS scriptConfigId,
+        stop_erp as stopErp,
+        git_project_id as gitProjectId,
+        git_project_file_path as gitProjectFilePath,
+        engine_type as engineType,
+        run_type AS runType,
+        git_project_dir_path AS gitProjectDirPath,
+        dependency_id AS dependencyId,
+        debug_flag as debugFlag,
+        run_tmp as runTmp,
+        run_cluster_code as runClusterCode,
+        run_market_linux_user as runMarketLinuxUser
+    </sql>
+
+    <select id="findById" resultType="DataDevScriptRunDetail">
+        SELECT
+        <include refid="run_detail_columns"></include>
+        FROM
+        script_run_detail
+        WHERE id = #{id}
+    </select>
+    <insert id="insertRunDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_run_detail(
+        script_file_id,
+        version,
+        operator,
+        start_time,
+        end_time,
+        status,
+        cluster_code,
+        market_linux_user,
+        queue_code,
+        account_code,
+        args,
+        creator,
+        created,
+        type,
+        log_count,
+        data_count,
+        envs,
+        start_shell_path,
+        args_import_type,
+        script_config_id,
+        git_project_id,
+        git_project_file_path,
+        engine_type,
+        run_type,
+        git_project_dir_path,
+        dependency_id,
+        ip,
+        debug_flag,
+        run_tmp,
+        run_cluster_code,
+        run_market_linux_user
+        )
+        VALUES (
+        #{scriptFileId},#{version},#{operator},#{startTime},#{endTime},#{status},#{clusterCode},
+        #{marketLinuxUser},#{queueCode},#{accountCode},#{args},#{creator},#{startTime},#{type},#{logCount},#{dataCount},
+        #{envs},#{startShellPath},#{argsImportType},#{scriptConfigId},#{gitProjectId},#{gitProjectFilePath},#{engineType},
+        #{runType},#{gitProjectDirPath},#{dependencyId},#{ip},#{debugFlag},#{runTmp},#{runClusterCode},#{runMarketLinuxUser}
+        )
+
+    </insert>
+    <update id="updateRuntailStatus">
+        UPDATE script_run_detail
+        SET
+        <if test="startTime !=null ">
+            start_time = #{startTime},
+        </if>
+        <if test="endTime !=null ">
+            end_time = #{endTime},
+        </if>
+        <if test="processId!=null and processId!=''">
+            process_id=#{processId},
+        </if>
+        <if test="ip!=null and ip!=''">
+            ip=#{ip},
+        </if>
+        <if test="logCount !=null and logCount != ''">
+            log_count=#{logCount},
+        </if>
+        <if test="dataCount !=null and dataCount != ''">
+            data_count=#{dataCount},
+        </if>
+        <if test="responseCode != null and responseCode != ''">
+            response_code = #{responseCode},
+        </if>
+        <if test="stopErp != null and stopErp != ''">
+            stop_erp = #{stopErp},
+        </if>
+        status=#{status}
+        WHERE id = #{id}
+    </update>
+    <select id="list4page" resultType="DataDevScriptRunDetail">
+        SELECT
+        <include refid="run_detail_columns"></include>
+        FROM script_run_detail
+        WHERE script_file_id = #{scriptFileId}
+        <if test="startTimeFrom !=null ">
+            AND start_time >= #{startTimeFrom}
+        </if>
+        <if test="startTimeTo !=null ">
+            AND start_time &lt;= #{startTimeTo}
+        </if>
+        <if test="endTimeFrom !=null ">
+            AND end_time >= #{endTimeFrom}
+        </if>
+        <if test="endTimeTo !=null ">
+            AND end_time &lt;= #{endTimeTo}
+        </if>
+        <if test="statusList != null ">
+            AND
+            <foreach collection="statusList" item="item" open="(" close=")" separator="or">
+                status = #{item}
+            </foreach>
+        </if>
+        ORDER BY id desc limit #{start},#{limit}
+    </select>
+    <select id="count4page" resultType="Long">
+        SELECT count(*)
+        FROM script_run_detail
+        WHERE script_file_id = #{scriptFileId}
+        <if test="startTimeFrom !=null ">
+            AND start_time >= #{startTimeFrom}
+        </if>
+        <if test="startTimeTo !=null ">
+            AND start_time &lt;= #{startTimeTo}
+        </if>
+        <if test="endTimeFrom !=null ">
+            AND end_time >= #{endTimeFrom}
+        </if>
+        <if test="endTimeTo !=null ">
+            AND end_time &lt;= #{endTimeTo}
+        </if>
+        <if test="statusList != null ">
+            AND
+            <foreach collection="statusList" item="item" open="(" close=")" separator="or">
+                status = #{item}
+            </foreach>
+        </if>
+
+    </select>
+    <select id="findLastRunDetail" resultType="DataDevScriptRunDetail">
+        SELECT
+        <include refid="run_detail_columns"></include>
+        FROM script_run_detail
+        WHERE script_file_id = #{scriptFileId}
+        <if test="operator!=null and operator!=''">
+            AND operator = #{operator}
+        </if>
+        ORDER by id DESC limit 1
+    </select>
+
+    <update id="updateRunDetailPath">
+        UPDATE script_run_detail
+        SET git_project_file_path = #{gitNewProjectFilePath}
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </update>
+
+    <!--<update id="updatePrestoQueryId">-->
+        <!--UPDATE script_run_detail-->
+        <!--SET presto_query_id = #{prestoQueryId}-->
+        <!--WHERE id=#{id}-->
+    <!--</update>-->
+    <update id="updateRunCode">
+        update script_run_detail
+        set cluster_code = 'sc',market_linux_user = 'mart_sc',run_cluster_code = #{runClusterCode},run_market_linux_user = #{runLinuxUser}
+        where cluster_code = #{clusterCode} and market_linux_user = #{linuxUser}
+    </update>
+
+
+    <select id="listFinishTask" resultType="DataDevScriptRunDetail">
+        SELECT
+        <include refid="run_detail_columns"></include>
+        FROM
+        script_run_detail
+        WHERE `status` != 2  and log_count > 0 order by id desc limit #{limit}
+
+    </select>
+
+
+
+</mapper>

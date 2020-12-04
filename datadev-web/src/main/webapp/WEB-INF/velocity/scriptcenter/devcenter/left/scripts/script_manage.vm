@@ -1,0 +1,241 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/script_manage.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_index.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/script_manager.css?_dc=$!{staticVersion}">
+
+<link rel="stylesheet" href="/scriptcenter/statics/spin/spin.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/autocompleter/jquery.autocompleter.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+<input type="hidden" id="loginErp" value="$!{loginErp}">
+<input type="hidden" id="isOwner" value="">
+<div class="script-manage-tab left_manage" id="scriptManageTab" style="position: relative;width: 100%;height: 100%;overflow: hidden;">
+
+    <div style="height: 80px;width: 100%;    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);background: white;">
+        <div class="content icon-content" id="scriptManageTool">
+            <span class="bdp-icon addFile ide-xj pop-title" data-title="新建脚本"></span>
+            <span class="bdp-icon addDir ide-xjml pop-title" data-title="创建目录"></span>
+            <span class="bdp-icon refresh ide-shuax pop-title" data-title="刷新"></span>
+            <span class="bdp-icon upLoad ide-left-sc pop-title" data-title="上传脚本"></span>
+            <span class="bdp-icon newGit ide-icon-xzgit pop-title" id="newGitProjectBtn"data-title="新建项目"></span>
+        </div>
+        <div class="content appSelect-content" style="position: absolute;top: 35px;left: 0px;text-align:left;padding-right: 37px;padding-left: 10px">
+            <input id="appSelect" class="appSelect" value="" style="height: 32px">
+            <span class="bdp-icon newGit ide-icon-cd pop-title" id="gitMenuBtn" data-title="菜单"
+                  style="z-index:100;position: absolute;top: 6px;right: 10px;"></span>
+        </div>
+    </div>
+
+    <div class="content script-content" style="position: absolute;top: 80px;bottom: 5px;overflow: auto;" >
+        <ul id="tree" class="ztree">
+        </ul>
+    </div>
+
+</div>
+<div id="gitManage" class="script-manage-tab git-manage" style="display: none">
+    <div class="git-tips-content">
+
+        <div class="git-icon-content" style="margin-top:40px">
+            <div class="button-content">
+                <div style = "width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;" class="git-btn" id="getLeftAvailGit">
+                    使用现有Git项目
+                </div>
+            </div>
+        </div>
+
+        <div class="git-icon-content" style="margin-top: 40px">
+            <div class="button-content">
+                <div style = "width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;" class="git-btn" id="createLeftCodingBtn">
+                    新建Coding项目
+                </div>
+            </div>
+        </div>
+
+        <div class="git-icon-content" style="margin-top:40px">
+            <div class="button-content">
+                <div style = "width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;" class="git-btn" id="getLeftAvailCoding">
+                    使用现有Coding项目
+                </div>
+            </div>
+        </div>
+        <div class="tips-title"><span>重要提示：</span></div>
+        <div class="tips-word"><span>平台已与集团git.jd.com打通，系统每10分钟同步一次项目信息；<br></span></div>
+        <div class="tips-word"><span>平台仅操作bdp_ide_branch分支，如无该分支，平台将从master创建分支bdp_ide_branch。<br><br></span></div>
+        <div class="tips-word">
+            <span>
+                <span style="font-weight: bold"> 操作步骤：</span><br><br>
+                ● 新建git项目：<br>
+                在开发平台新建git项目，系统将默认在组中添加bdp_ide账号（owner角色）；<br><br>
+                ● 使用现有git项目：<br>
+                登录git.jd.com，选择现有git项目，修改可见级别为private，将bdp_ide账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）。<br>
+            </span>
+        </div>
+    </div>
+</div>
+<div id="rightMenuBackground"  style="
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    border-block-start-width: 100%;
+    height: 100%;
+    opacity: 0.0;"></div>
+<div id="rightMenuDiv">
+##    右键目录的菜单
+    <div id="rightClickMenu" class="rightMenu">
+        <ul class="menuUl">
+            <li   class="new-dir-li">
+                <span class="name">新建目录</span>
+            </li>
+            <li  class="upload-script">
+                <span class="name">上传脚本</span>
+            </li>
+            <li  class="remove meun_split_border" >
+                <span class="name">删除</span>
+            </li>
+            <li id="rightClickDirGitDiv" class="git meun_split_border">
+                <span class="name">Git</span>
+                <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
+            </li>
+##            <li class="rename" style="border-top: 1px solid #454E57;">
+##                <span class="name">重命名</span>
+##            </li>
+        </ul>
+    </div>
+##    右键target目录及其子目录的菜单
+    <div id="rightClickTargetDirMenu" class="rightMenu">
+        <ul class="menuUl">
+            <li  id="newDirLi" class="new-dir-li">
+                <span class="name">新建目录</span>
+            </li>
+            <li id="deleteDirLi" class="remove meun_split_border">
+                <span class="name">删除</span>
+            </li>
+        ##            <li class="rename" style="border-top: 1px solid #454E57;">
+        ##                <span class="name">重命名</span>
+        ##            </li>
+        </ul>
+    </div>
+##    右键普通脚本的菜单
+    <div id="rightClickScriptMenu" class="rightMenu" style="display: none">
+        <ul class="menuUl">
+            <li class="script_open">
+                <span class="name">打开</span>
+            </li>
+            <li class="script_remove meun_split_border">
+                <span class="name">删除</span>
+            </li>
+
+            <li class="script_url meun_split_border">
+                <span class="name">复制脚本URL</span>
+            </li>
+            <li class="script_move">
+                <span class="name">移动脚本</span>
+            </li>
+            <li class="script_copy">
+                <span class="name">复制脚本</span>
+            </li>
+            <li class="script_rename">
+                <span class="name">重命名</span>
+                <span class="shortKeySpan" style="margin-left: 36px">F2</span>
+            </li>
+            <li class="script_download">
+                <span class="name">下载到本地</span>
+            </li>
+
+        </ul>
+    </div>
+    <div id="rightClickGitMenu" class="rightMenu" style="display: none;width: 130px">
+        <ul class="menuUl" style="">
+            <li class="pull" style="padding-left: 10px">
+                <span class="bdp-icon ide-pull" style="color: #42A5F5"></span>
+                <span class="" style="margin-left: 5px">Pull</span>
+            </li>
+            <li class="push" style="padding-left: 10px">
+                <span class="bdp-icon ide-push" style="color: #4CD1B3"></span>
+                <span class="" style="margin-left: 5px">Push</span>
+            </li>
+            #*脚本管理右键*#
+            <li class="showGitHistory" style="padding-left: 10px">
+                <span class="bdp-icon ide-commit" style="color: #4CD1B3"></span>
+                <span class="name" style="margin-left: 5px">提交历史</span>
+            </li>
+        </ul>
+    </div>
+    <div id="gitMenuDiv" class="rightMenu">
+        <ul>
+            <li class="gitProjectDetail"><span class="name">项目详情</span></li>
+            <li class="toGit"><span class="name" id="gitOrCoding">跳转至git</span></li>
+            <li class="uploadFileHistory"><span class="name">文件上传历史</span></li>
+        </ul>
+    </div>
+
+
+    <div id="newScriptDiv" class="scriptDiv" style="display: none">
+        <div class="triangle_border_up">
+            <span></span>
+        </div>
+        <ul>
+            <li class="scriptLi newScriptTypeSign" data-index="1">
+                <div class="scriptType">
+                    <span>SQL</span>
+                </div>
+                <span class="blankScript" data-templete-type="0">空白</span>
+                <span class="scriptSplit">|</span>
+                <span class="templateScript" data-templete-type="1">模板</span>
+
+            </li>
+            <li class="scriptLi newScriptTypeSign" data-index="2">
+                <div class="scriptType">
+                    <span>Shell</span>
+                </div>
+                <span class="blankScript" data-templete-type="0">空白</span>
+                <span class="scriptSplit">|</span>
+                <span class="templateScript" data-templete-type="1">模板</span>
+            </li>
+            <li class="scriptLi newScriptTypeSign" data-index="3" data-python="1">
+                <div class="scriptType">
+                    <span>Python 2.x</span>
+                </div>
+                <span class="blankScript" data-templete-type="0">空白</span>
+                <span class="scriptSplit">|</span>
+                <span class="templateScript" data-templete-type="1">模板</span>
+            </li>
+            <li class="scriptLi newScriptTypeSign" data-index="3" data-python="2">
+                <div class="scriptType">
+                    <span>Python 3.x</span>
+                </div>
+                <span class="blankScript" data-templete-type="0">空白</span>
+                <span class="scriptSplit">|</span>
+                <span class="templateScript" data-templete-type="1">模板</span>
+            </li>
+            <li class="scriptLi newScriptTypeSign" data-index="7">
+                <div class="scriptType">
+                    <span>纯文本文件</span>
+                </div>
+                <span class="blankScript" data-templete-type="0">空白</span>
+                <span class="scriptSplit">|</span>
+                <span class="templateScript" data-templete-type="1">类型</span>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+
+
+<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/script_index.js?_dc=$!{staticVersion}"></script>
+

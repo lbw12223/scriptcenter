@@ -1,0 +1,96 @@
+
+#set($layout="layout_blank.vm")
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/saveFile.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/transferScript.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/process.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+<style type="text/css">
+    .bdp-modal-footer{
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
+    }
+</style>
+
+<div id="saveModal">
+
+    <form id="file-form">
+            <div class="bdp-form-group dialog-group" id="fileNameDiv" style="height: 32px;line-height: 32px">
+                <label class="bdp-control-label file-label"><i class="bdp-note">*</i>文件名称：</label>
+                <div class=" file-item">
+                    <input class="bdp-form-control file-input" value="" id="fileName" name="name"
+                           placeholder="请输入名称,支持字母,数字,下划线,中划线" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="bdp-form-group dialog-group" id="startShellDiv" style="height: 32px;line-height: 32px">
+                <label class="bdp-control-label file-label">启动项：</label>
+                <div class=" file-item">
+                    <input class="bdp-form-control file-input" value="" id="startShellPath" name="startShellPath"
+                           placeholder="请输入启动项路径,支持字母,数字,下划线,中划线,正斜杠,点" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="bdp-form-group dialog-group" id="saveFileSelectDiv">
+                <label class="bdp-control-label file-label"> <i class="bdp-note">*</i>文件类型：</label>
+                <div class=" file-item">
+                    <select class="bdp-form-control file-select" id="save-file-select" disabled="disabled" name="type"
+                            placeholder="请选择文件类型！">
+                    ##                                <option value=""></option>
+##                                <option value="1">SQL(.sql)</option>
+##                                <option value="2">Shell(.sh)</option>
+##                                <option value="3">Python(.py)</option>
+##                                <option value="4">Zip(.zip)</option>
+##                                <option value="6">Java(.java)</option>
+##                                <option value="7">Txt(.txt)</option>
+##                                <option value="8">Xml(.xml)</option>
+##                                <option value="9">Html(.html)</option>
+##                                <option value="10">Csv(.csv)</option>
+##                                <option value="11">Jar(.jar)</option>
+##                                <option value="12">Groovy(.groovy)</option>
+##                                <option value="13">Javscript(.js)</option>
+##                                <option value="14">Css(.css)</option>
+##                                <option value="15">Prop(.properties)</option>
+##                                <option id="unRecognizeType" value="5">不可识别类型(.)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bdp-form-group dialog-group" id="fileDesDiv" style="height: 80px">
+                <label class="bdp-control-label file-label"><i class="bdp-note">*</i>文件描述：</label>
+                <div class=" file-item">
+                    <textarea class="bdp-form-control file-text" name="description"></textarea>
+                </div>
+            </div>
+            <div class="bdp-form-group dialog-group" id="savePathDiv" style="height: 186px;">
+                <label class="bdp-control-label file-label"> <i class="bdp-note">*</i>选择目录：</label>
+                <div class=" file-item">
+                    <input class="bdp-form-control file-dir" id="savePath" value="" readonly unselectable="on"
+                           name="dirPath" autocomplete="off">
+                    <input type="hidden" class="dirId" name="dirId" autocomplete="off">
+                    <input type="hidden" class="fileId" autocomplete="off">
+                </div>
+                <div class=" file-item dir-root">
+                    <ul id="fileTree" class="ztree" style="">
+                    </ul>
+                </div>
+            </div>
+        </form>
+
+
+    <div id="buttomBtns" class="bdp-modal-footer" style="height: 52px">
+        <a class="bdp-btn bdp-btn-primary" id="save-ok">确定</a>
+        <a class="bdp-btn bdp-btn-default" id="save-cancel">取消</a>
+    </div>
+
+</div>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/zTree/js/dataDev.config.js?_dc=$!{staticVersion}"></script>
+
+
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_content_right.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>

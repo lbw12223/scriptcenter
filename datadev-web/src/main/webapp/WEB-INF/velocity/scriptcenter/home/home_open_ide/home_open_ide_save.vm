@@ -1,0 +1,71 @@
+#set($layout="layout_blank.vm")
+<link rel="stylesheet" type="text/css"
+      href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+<style>
+    .bdp-help-block{left: 114px;}
+</style>
+<div>
+
+
+    <input id="gitProjectId" type="hidden" value="$!{gitProjectId}"/>
+    <input id="scriptType" type="hidden" value="$!{scriptType}"/>
+
+    <form id="file-form">
+        <div>
+
+            <div class="bdp-form-group dialog-group" style="height: 100px;position: relative;">
+                <label class="bdp-control-label bdp-col-xs-2"><i class="bdp-note">*</i>：</label>
+                <div class="file-item">
+                    <input class="bdp-form-control  bdp-col-xs-9" id="filename"
+                              name="filename"></input>
+                </div>
+            </div>
+
+            <div class="bdp-form-group dialog-group" style="line-height: 32px;height: 32px;">
+                <label class="bdp-control-label bdp-col-xs-2"><i class="bdp-note">*</i>文件类型：</label>
+                <div class="file-item">
+                    <select class=" bdp-col-xs-9 file-select" id="save-file-select" disabled="disabled" name="type" placeholder="请选择文件类型！">
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="bdp-form-group dialog-group" style="height: 100px;position: relative;">
+                <label class="bdp-control-label  bdp-col-xs-2"><i class="bdp-note">*</i>文件描述：</label>
+                <div class="file-item">
+                    <textarea class="bdp-form-control  bdp-col-xs-9" id="description" style="height: 100px;"
+                              name="description"></textarea>
+                </div>
+            </div>
+
+            <div class="bdp-form-group dialog-group" style="height: 192px;position: relative;">
+                <label class="bdp-control-label bdp-col-xs-2"> <i class="bdp-note">*</i>选择目录：</label>
+                <div class="file-item">
+                    <input class="bdp-form-control   bdp-col-xs-9" id="savePath" value="" readonly unselectable="on"
+                           name="dirPath" autocomplete="off">
+                    <input type="hidden" class="dirId" name="dirId" autocomplete="off">
+                    <input type="hidden" class="fileId" autocomplete="off">
+                </div>
+                <div id="fileTreeWrapper" class="col-xs-offset-2 bdp-col-xs-9"
+                     style="">
+                    <ul id="fileTree" class="ztree" style="">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div style="text-align: center;position: absolute;width: 100%;bottom: 0px;">
+        <a class="bdp-btn bdp-btn-primary" id="save">确定</a>
+        <a class="bdp-btn bdp-btn-default" id="cancel">取消</a>
+    </div>
+</div>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_save.js?_dc=$!{staticVersion}"></script>
+
+

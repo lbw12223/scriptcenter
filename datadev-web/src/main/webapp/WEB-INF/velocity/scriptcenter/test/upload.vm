@@ -1,0 +1,59 @@
+#set($layout="layout_bdp_no_left.vm")
+<script src="/scriptcenter/statics/bdp/js/jquery-1.9.1.min.js?_dc=$!{staticVersion}"></script>
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/mutiFile/mutiFile.css?_dc=$!{staticVersion}"/>
+
+<input type="hidden" id="domain" value="${domain}">
+
+
+<input id="fileFolder" name="fileFolder" type="file" webkitdirectory multiple="multiple">
+<input type="button" id="upFile" value="upFile"/>
+<input type="button" id="run" value="run"/>
+
+<div id="oneTemp" class="mutilFile" style="width: 700px;height:600px;margin-left: 100px;overflow: auto;">
+    <table class="mutilFileTable">
+        <thead>
+        <tr>
+            <td style="width: 20%;">文件名</td>
+            <td style="width: 12%;">大小</td>
+            <td style="width: 28%;">状态</td>
+            <td style="width: 21%;">操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="processUi_______________" style="display: none;">
+            <td>
+                <div class="itemHeader">
+                    <div class="itemHeaderIcon"><span class="bdp-icon mutil-icon mutil-icon-default"></span></div>
+                    <div class="itemHeaderFileName" title="">xxxxvcxvx.zip</div>
+                </div>
+            </td>
+            <td class="itemSize">124M</td>
+            <td>
+                <div class="item">
+                    <div class="itemInProcess">
+                        <div class="itemProcessContainer"><div class="inner process"></div></div>
+                        <div class="itemSpeed">10% (128Kb/s)</div>
+                    </div>
+                    <div class="itemInFinishOrBeforUp">待上传</div>
+                </div>
+            </td>
+            <td>
+                <div class="itemOpt">
+                    <span class="restart">重传</span>
+                    <span class="recover">替换</span>
+                    <span class="newFile">保留</span>
+                    <span class="cancel">取消</span>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="/scriptcenter/statics/mutiFile/mutiFile.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/test/test.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/sql/dataDevSqlTip.js?_dc=$!{staticVersion}"></script>
+
+
+

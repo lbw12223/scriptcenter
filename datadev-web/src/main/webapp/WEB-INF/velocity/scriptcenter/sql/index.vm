@@ -1,0 +1,60 @@
+#set($page_title="通用查询功能")
+#set($selected_menu_id='menu_urm_sql')
+
+
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                请输入SQL语句：
+            </h1>
+        </div>
+        <div class="page-wrap">
+            <div class="train-bg margin-top-20">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="hidden" id="token" value="${token}"/>
+                        <textarea id="sql" style="width:500px;height:200px;"></textarea>
+
+                        <hr/>
+                        <h1>
+                            <input type="button" id="btQuery" class="btn" value="执行查询SQL"/>
+                            <input type="button" id="btUpdate" class="btn" value="执行修改SQL"/>
+                        </h1>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+        </div>
+    </div>
+    <!-- /.page-content -->
+</div><!-- /.main-content -->
+
+
+
+#define($javascriptBlock)
+<script>
+    $(document).ready(function () {
+        $('#btQuery').click(function () {
+            var sql = $('#sql').val();
+            window.open('/scriptcenter/sql/query.ajax?sql=' + sql+"&token="+$("#token").val());
+        });
+
+        $('#btUpdate').click(function () {
+
+            var sql = $('#sql').val();
+
+            commonAjaxEvents.commonPostAjax("/scriptcenter/sql/update.ajax", {
+                sql: sql,
+                token:$("#token").val()
+            }, null, function (_node, data) {
+                alert(data._msg);
+                console.log(data);
+            })
+
+        });
+    });
+</script>
+#end

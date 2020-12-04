@@ -1,0 +1,28 @@
+#set($layout="layout_blank.vm")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/zTree/css/zTreeStyle/debugZTreeStyle.css?_dc=$!{staticVersion}">
+
+<div>
+
+#*右键区域*#
+    #parse("/scriptcenter/devcenter/script_edit_meuns.vm")
+
+    #*代码区域*#
+    #parse("/scriptcenter/devcenter/script_edit_code.vm")
+
+    #*右侧*#
+    #parse("/scriptcenter/devcenter/script_edit_right.vm")
+
+
+
+    <script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/jQuery.md5.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/ace/ext-language_tools.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+
+</div>

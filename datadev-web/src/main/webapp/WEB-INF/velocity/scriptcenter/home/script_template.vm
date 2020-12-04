@@ -1,0 +1,29 @@
+#set($layout="layout_blank.vm")
+#set($page_title="template")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/template.css?_dc=$!{staticVersion}" type="text/css">
+<input type="hidden" id="scriptType" value="${scriptType}">
+<input type="hidden" id="pythonType" value="${pythonType}">
+
+<!--这是弹出框的主要内容-->
+<div id="template-body" class="bdp-modal-body file-body" style="width: 100%;height:100%;position: relative;top: 0px;bottom: 80px;">
+    <div class="search-div">
+        <div class="template-search">
+            <input id="templateSearchKey" placeholder="请输入模板名称、描述" autocomplete="off" style="text-indent: 10px"/>
+            <span id="templateSearch" class="bdp-icon ide-search "></span>
+        </div>
+    </div>
+    <div class="template-div" id="templateWrapper" style="position: relative;">
+    </div>
+</div>
+<div class="templateBottom"
+     style="">
+    <a class="bdp-btn bdp-btn-primary" id="template-ok">确定</a>
+    <a class="bdp-btn bdp-btn-default" data-dismiss="modal" id="closeDia">取消</a>
+</div>
+##<script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/template.js?_dc=$!{staticVersion}"></script>
+
+

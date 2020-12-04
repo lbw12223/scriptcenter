@@ -1,0 +1,36 @@
+#set($layout="layout_blank.vm")
+#set($page_title="newCodingTips")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newCodingTips.css?_dc=$!{staticVersion}" type="text/css">
+<div id="codingTipsArt" style="overflow: hidden">
+    <div class="git-tips-content" style="margin-bottom: 50px">
+        <div class="tips-title"><span style="font-weight: bold">重要提示：</span></div>
+        <div class="tips-word"><span>平台已与集团coding.jd.com打通，系统每10分钟同步一次项目信息<br></span></div>
+        <div class="tips-word"><span>平台仅操作bdp_ide_branch分支，如无该分支，平台将从master创建分支bdp_ide_branch<br></span></div>
+
+        <div class="tips-title"><span style="font-weight: bold">操作步骤：</span></div>
+        <div class="tips-step-content">
+            <div class="step-map-wrap">
+                    ● 新建coding项目：在开发平台新建coding项目，系统将默认在组中添加bdp_ide账号（owner角色）<br><br>
+                    ● 使用现有coding项目：登录coding.jd.com，选择现有coding项目，修改可见级别为private，将bdp_ide账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）<br><br>
+                    ● 使用现有Coding项目时候，确保Master分支至少有一个文件<br>
+            </div>
+        </div>
+    </div>
+    <div style = "line-height: 75px; user-select: none" >
+        <div style = "line-height: 75px; user-select: none;" class="button-content">
+            <div style = "float:left; margin-left: 80px; width:180px; font-size: 20px" class="git-btn" id="createTopCodingBtn">
+                新建Coding项目
+            </div>
+            <div style = "float:right;margin-right: 90px; width:200px;font-size: 20px" class="git-btn" id="getAvailCoding">
+                使用现有Coding项目
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/scriptcenter/statics/pages/home/project/newCodingTips.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+

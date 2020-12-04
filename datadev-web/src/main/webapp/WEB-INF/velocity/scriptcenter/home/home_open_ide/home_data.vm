@@ -1,0 +1,41 @@
+#set($layout="layout_bdp_no_left.vm")
+#set($page_title="数据")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/data.css?_dc=$!{staticVersion}">
+<input type="hidden" value="$!{runDetailId}" id="runDetailId">
+<div class="dataDiv">
+    <div class="data-head">
+        <h4 class="bdp-control-title">代码运行结果</h4>
+        <div class="label-content">
+            <div class="bdp-form-group script-data">
+                <label class=" bdp-control-label script-data-label">ID：</label>
+                <div class="script-data-content script-data-item">
+                    <input class="bdp-form-control" value="$!{id}" readonly="readonly" autocomplete="off"/>
+                </div>
+            </div>
+            <div class="bdp-form-group script-data">
+                <label class=" bdp-control-label script-data-label">运行状态：</label>
+                <div class="script-data-content script-data-item">
+                    <input class="bdp-form-control" value="$!{status}"  readonly="readonly" autocomplete="off"/>
+                </div>
+            </div>
+        </div>
+        <a id="downLoadData" class="bdp-btn bdp-btn-primary data-download">下载结果</a>
+    </div>
+
+    <div class="data-content">
+        <div class="jd-table-parent"  id="home-data-jd-table-parent" style="height:100%;overflow: hidden;">
+            <table class="jd-table table table-hover " id="grid-table">
+            </table>
+            <div id="grid-pager">
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/data.js?_dc=$!{staticVersion}"></script>

@@ -1,0 +1,147 @@
+#set($layout="layout_blank.vm")
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/funtion_manage.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+
+<input type="hidden" id="gitProjectId" value="${gitProjectId}"/>
+<input type="hidden" id="hasAuthority" value="${hasAuthority}"/>
+<span style="display: none" id="projectDetail">${projectDetail}</span>
+<span style="display: none" id="members">${members}</span>
+
+<div id="scriptDetailDiv" style="height: 100%;overflow-y: hidden;background: #252A2F;" class="datadev-tab-horizontal">
+    <div class="create-content" style="width: 100%;overflow: hidden;margin-bottom: 20px;">
+        <ul style="" class="datadev-ul tab-header ">
+            <li target="project-detail-content"><a href="javascript:;" class="first">项目详情</a></li>
+            <li target="user-detail-content"><a href="javascript:;">成员信息</a></li>
+#*
+            <li target="operate-detail-content"><a href="javascript:;">操作记录</a></li>
+*#
+        </ul>
+    </div>
+#*项目详情*#
+    <div id="project-detail-content" class="tab-content" style="margin-left: 20px; margin-right: 20px">
+        <div id="functionShowModal">
+            <table>
+                <thead>
+                <tr>
+                    <td> 属性名</td>
+                    <td>属性信息</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="commonTr">
+                    <td>项目名称：</td>
+                    <td id="projectName"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>项目Id：</td>
+                    <td id="projectId"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>HTTP：</td>
+                    <td><a href="" id="HTTP" target="_blank"></a></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>SSH：</td>
+                    <td id="SSH"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>创建时间：</td>
+                    <td id="creatTime"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>项目描述：</td>
+                    <td id="description"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+#*成员信息*#
+    <div id="user-detail-content" class="tab-content" style="margin-left: 20px; margin-right: 20px">
+        <div style="margin-bottom: 10px">
+            <label style="margin-left: 20px; margin-top: 10px; margin-bottom: -15px; font-size: 12px;height:30px;">可访问当前项目的组信息</label>
+            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:216px;" id="add-group">添加</a>
+            <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-group">删除</a>
+        </div>
+
+        <div class="jd-table-parent" id="group-jd-table-parent"
+             style="margin-left:20px; margin-bottom:10px;height:30%; overflow: hidden;">
+            <table class="jd-table table table-hover " id="group-grid-table">
+            </table>
+            <div id="group-grid-pager">
+
+            </div>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label style="margin-left: 20px; margin-bottom: -15px; font-size: 12px">当前项目的成员信息</label>
+
+
+            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:370px;" id="add-user">添加</a>
+            <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-user">删除</a>
+        </div>
+
+        <div class="jd-table-parent" id="member-jd-table-parent"
+             style="margin-left:20px; height:70%;overflow: hidden;">
+            <table class="jd-table table table-hover " id="member-grid-table">
+            </table>
+            <div id="member-grid-pager">
+
+            </div>
+        </div>
+
+    </div>
+#*操作记录*#
+    <div id="operate-detail-content" class="tab-content">
+        <div class="bdp-form-group" style="height: 33px">
+
+            <label style="margin-left: -20px" class="bdp-control-label script-operate-history-label">查询时间：</label>
+
+            <div class="script-operate-history-time-content">
+
+                <input id="queryStartTime" class="script-query-history-Time date-picker">
+                <span class="icon-calendar"></span>
+            </div>
+            <label class="bdp-control-label script-run-history-period">--</label>
+
+            <div class="script-operate-history-time-content">
+                <input id="queryEndTime" class="script-query-history-Time date-picker">
+                <span class="icon-calendar"></span>
+            </div>
+
+            <a style="margin-right: 10px; margin-left: 25px; margin-top: -5px;" class="bdp-btn query-btn-primary"
+               id="queryButton">查询</a>
+        </div>
+
+        <div class="jd-table-parent" id="detail-jd-table-parent"
+             style="height:100%;overflow: hidden;">
+            <table class="jd-table table table-hover " id="detail-grid-table" >
+            </table>
+            <div id="detail-grid-pager">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/project/projectDetail.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/userAndGroupDetail.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+#end

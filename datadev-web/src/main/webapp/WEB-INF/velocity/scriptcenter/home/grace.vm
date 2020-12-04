@@ -1,0 +1,11 @@
+<div class="row" id="GridCommonCtrlDiv" style="width: 600px;">
+    <div class="bdp-col-xs-12" id="GridCommonCtrl">
+        <div ng-controller="GridCommonCtrl">
+            <div class="grace-grid-container" grace-grid grid-options="gridOptions">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/scriptcenter/statics/pages/graceTableSimpleDataConfig.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_script_detail.js?_dc=$!{staticVersion}"></script>

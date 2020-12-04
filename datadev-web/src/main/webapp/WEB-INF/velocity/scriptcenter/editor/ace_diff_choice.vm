@@ -1,0 +1,69 @@
+#set($layout="layout_blank.vm")
+#set($page_title="diff")
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/choice-styles.css?_dc=$!{staticVersion}">
+<input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
+<input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
+<input type="hidden" id="currentVersion" value="$!{currentVersion}">
+<input type="hidden" id="lastVersion" value="$!{lastVersion}">
+<input type="hidden" id="scriptType" value="$!{scriptType}">
+<input type="hidden" id="canEdit" value="$!{canEdit}">
+<input type="hidden" id="choice" value="$!{choice}">
+<input type="hidden" id="modifiedStatus" value="$!{modifiedStatus}">
+<input type="hidden" id="currentRelationDependencyId" value="$!{currentRelationDependencyId}">
+<input type="hidden" id="lastRelationDependencyId" value="$!{lastRelationDependencyId}">
+<div id="topTips" class="show-tips" style=""><span></span></div>
+<div id="flex-container">
+    <div>
+        <div class="diff-title" id="leftTips"><span class="tips"></span><button data-choice="left" class="bdp-btn bdp-btn-primary choose-btn" style="border-width: 0px">编辑此版本</button></div>
+        <div id="acediff-left-editor" class="acediff-editor">
+            <div id="leftPackZipDetail"  class="pack-zip-detail" style="display: none">
+                <div class="ztreeWrap">
+                    <div class="treeTable" >
+                        <div class="tree-table-title"><div class="script-file">目录及文件名</div><div class="version" style="text-decoration: none;">ZIP内版本</div><div class="version" style="text-decoration: none;">最新版本</div><div class="mender">最近修改人</div><div class="modified">最近修改时间</div></div>
+                        <div style="position: absolute;top: 45px;bottom: 0px;overflow-y: auto;width: 690px;: 0px;left: 0px;">
+                            <ul class="pack-tree-ul">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="leftZipTips" class="zip-tips" style="width: 100%;height: 100%;display: none">
+
+            </div>
+        </div>
+    </div>
+    <div id="acediff-gutter" onmousewheel="return false;"></div>
+    <div>
+        <div class="diff-title" id="rightTips"><span class="tips"></span><button data-choice="right" class="bdp-btn bdp-btn-primary choose-btn" style="border-width: 0px">编辑此版本</button></div>
+        <div id="acediff-right-editor" class="acediff-editor">
+            <div id="rightPackZipDetail"  class="pack-zip-detail" style="display: none">
+                <div class="ztreeWrap">
+                    <div class="treeTable" >
+                        <div class="tree-table-title"><div class="script-file">目录及文件名</div><div class="version" style="text-decoration: none;">ZIP内版本</div><div class="version" style="text-decoration: none;">最新版本</div><div class="mender">最近修改人</div><div class="modified">最近修改时间</div></div>
+                        <div style="position: absolute;top: 45px;bottom: 0px; overflow-y: auto;width: 690px;left: 0px;">
+                            <ul class="pack-tree-ul">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="rightZipTips" class="zip-tips" style="width: 100%;height: 100%;display: none">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace118.js?_dc=$!{staticVersion}" type="text/javascript" charset="utf-8"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/ace-diff.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/ace_diff_choice.js?_dc=$!{staticVersion}"></script>

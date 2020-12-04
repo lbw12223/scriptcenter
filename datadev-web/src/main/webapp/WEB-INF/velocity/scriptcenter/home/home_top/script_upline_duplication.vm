@@ -1,0 +1,31 @@
+<div class="bdp-modal " id="upLineDuplicationModal" role="dialog" aria-hidden="true"
+     style="overflow:hidden;z-index: 9990 !important;">
+    <div class="bdp-modal-dialog " style="width: 410px;">
+        <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">同名提示</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 410px;height: 218px;position: relative;">
+                <div class="after-upline" style="">
+                    <div style="margin-top: 20px;">当前应用中存在同名文件，请确认是否为同一脚本。</div>
+                    <div class="tips" style="background: #2A2F33;margin-top: 50px;color: #DC9116;padding-top: 10px;padding-left: 15px;">
+                        <div>提示：</div>
+                        <div style="margin-top: 10px;">1.如果为同一脚本，请选择“确定”，系统将自动关联两个脚本；</div>
+                        <div style="margin-top: 10px;">2.如果为不同脚本，请选择“取消”后修改应用或修改脚本名称。</div>
+                    </div>
+                </div>
+
+
+            </div> <!--这是弹出框的底部内容-->
+            <div class="bdp-modal-footer" style="height: 52px">
+                <div id="">
+                    <a class="bdp-btn bdp-btn-primary" id="relateScript">确定</a>
+                    <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

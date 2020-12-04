@@ -1,0 +1,149 @@
+#*顶部菜单*#
+<script>
+    var selected_menu_id = '$!{selected_menu_id}';
+    var _bdpDomain = '$!{bdpDomain}';
+    var _staticVersion = '$!{staticVersion}';
+
+</script>
+
+<style type="text/css">
+    .aa{
+        line-height: 45px;
+        height: 45px;
+        float:left;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    .aa:hover{
+        background:#363A40;
+    }
+    .bdp-experience .return {
+        line-height: 60px;
+        font-size: 14px !important;
+        padding: 0 0 !important;
+        color: #4ec54e !important;
+    }
+</style>
+
+<div class="bdp-product">
+    <div class="head" style="border-bottom: 1px solid #14191F" id="headTopDiv">
+        <a href="javascript:void(0)" class=""
+           style="font-size: 20px;line-height: 45px;height: 45px;color:white;display:block;width:275px;float:left;">
+            <div style="margin-left:7px;margin-top: 10px; ">
+                <span style="font-size: 28px;color: white;" class="bdp-icon ide-logo"><span class="iconFont" style="font-size: 16px;color: white;position: relative;top:-6px;font-family:FZZHengHeiS-DB-GB sans-serif">数据开发平台</span></span>
+            </div>
+        </a>
+        <a href="http://bdp.jd.com/scriptcenter/index.html" class="aa" target="_blank" style="background-color: #363A40;">
+            <div style="">
+                <span class="iconFont" style="font-size: 16px;vertical-align:middle;color: #FFFFFF;position: relative;font-family:FZZHengHeiS-DB-GB sans-serif">开发平台 IDE</span>
+            </div>
+        </a>
+        <a href="http://mlp.jd.com" class="aa" target="_blank">
+            <div style="">
+                <span class="iconFont" style="font-size: 16px;vertical-align:middle;color: #FFFFFF;position: relative;font-family:FZZHengHeiS-DB-GB sans-serif">机器学习 MLP</span>
+            </div>
+        </a>
+##        <div href="javascript:;" class="aa" id="testTopDiv">
+##
+##        </div>
+
+
+        <!--修改后的右侧菜单-->
+        <div class="right">
+            <ul class="nav ace-nav bdp-float-right">
+
+                <li class="light-blue " style="min-width: 80px;">
+                    <a target="_blank" href="$!{bdpDomain}/urm/feedback/my-feedback.html">
+                        <span class="user-info">反馈</span>
+                    </a>
+                </li>
+                <li class="light-blue " style="min-width: 80px;">
+                    <a href="javascript:;" onclick="showHelpInfo();">
+                        <span class="user-info">帮助</span>
+                    </a>
+                </li>
+                <li class="light-blue " style="min-width: 80px;">
+                    <a href="$!{bdpDomain}/contactUs.html" target="_blank">
+                        <span class="user-info">联系我们</span>
+                    </a>
+                </li>
+
+                <li class="light-blue " style="min-width: 160px;">
+                    <a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown">
+                        <img class="nav-user-photo" src="/scriptcenter/statics/bdp/css/images/avatar2.png" width="32"
+                             height="32">
+                        <span class="user-info">${userHolder.name}</span>
+                        <i class="icon-angle-down"></i>
+                    </a>
+                    <!--ul继承li的-->
+                    <ul class="user-menu pull-right dropdown-menu dropdown-caret dropdown-close"
+                        style="border-radius:0px 0px 0px 0px !important;display: none;width:100% !important;">
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a target="_blank" class="my-feedback"
+                                   href="$!{bdpDomain}/urm/feedback/my-feedback.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon ide-icon-cd"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;我的反馈</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a target="_blank" class="my-message"
+                                   href="$!{bdpDomain}/personal/personalCenter/personalCenter.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon bdp-icon-wdxx"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;我的消息</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a class="my-approve" target="_blank"
+                                   href="$!{bdpDomain}/atom/workflow/v2/request/approve.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon bzzx-cpjj"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;我的待办</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a class="my-apply" target="_blank"
+                                   href="$!{bdpDomain}/atom/workflow/v2/request/apply.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon bdp-icon-cdsq"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;我的申请</span>
+                                </a>
+                            </div>
+                        </li>
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a class="my-personalCenter" target="_blank"
+                                   href="$!{bdpDomain}/personal/personalCenter/personalCenter.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon bdp-jdbk-tx"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;个人中心</span>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li style="width: 100% !important;">
+                            <div style="position: relative;">
+                                <a class="quitSystem" href="http://${domain}/urm/commons/quit.html"
+                                   style="display: block; width: 100% !important;text-indent: 10px;height: 100%;margin: 0 20px">
+                                    <i class="bdp-icon bdp-icon-tc"></i>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;退出系统</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="ja_erpInfo" value="$!{userHolder.erp}"/>
+

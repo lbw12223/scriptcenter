@@ -1,0 +1,113 @@
+<link href="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_welcome.css?_dc=$!{staticVersion}" rel="stylesheet">
+
+<div class="welcome" style="">
+
+    <div style="margin: 0px auto;width: 985px;">
+        <div class="wellcome-title">
+            <h4 style="">开发平台 IDE</h4>
+            <p style="">旨在实现一站式，在线化的数据开发平台，为大数据用户提供高效率数据产品，提升用户体验。</p>
+        </div>
+
+        <div style="margin-top: 20px;height: 450px;">
+            <div class="well-come-container">
+                <p class="well-come-icon"><span class="bdp-icon ide-cjwj"></span></p>
+                <p class="well-come-title">创建文件</p>
+                <p class="well-come-desc">可以通过以下分类快速创建文件</p>
+                <ul class="well-come-create-file-ul">
+                    <li id="welcomeSqlLi" class="newScriptTypeSign" data-index="1">
+                        <div class="scriptType">
+                            <span>SQL</span>
+                        </div>
+                        <span class="blankScript" data-templete-type="0">空白</span>
+                        <span class="scriptSplit">|</span>
+                        <span class="templateScript" data-templete-type="1">模板</span>
+                    </li>
+                    <li id="welcomeShellLi" class="newScriptTypeSign" data-index="2">
+                        <div class="scriptType">
+                            <span>Shell</span>
+                        </div>
+                        <span class="blankScript" data-templete-type="0">空白</span>
+                        <span class="scriptSplit">|</span>
+                        <span class="templateScript" data-templete-type="1">模板</span>
+
+
+                    </li>
+                    <li id="welcomePython2Li" class="newScriptTypeSign" data-index="3" data-python="1">
+
+                        <div class="scriptType">
+                            <span>Python 2.x</span>
+                        </div>
+                        <span class="blankScript" data-templete-type="0">空白</span>
+                        <span class="scriptSplit">|</span>
+                        <span class="templateScript" data-templete-type="1">模板</span>
+
+                    </li>
+                    <li id="welcomePython3Li" class="newScriptTypeSign" data-index="3" data-python="2">
+                        <div class="scriptType">
+                            <span>Python 3.x</span>
+                        </div>
+                        <span class="blankScript" data-templete-type="0">空白</span>
+                        <span class="scriptSplit">|</span>
+                        <span class="templateScript" data-templete-type="1">模板</span>
+                    </li>
+                    <li id="welcomePython3Li" class="newScriptTypeSign" data-index="7" >
+
+                        <div class="scriptType">
+                            <span>纯文本文件</span>
+                        </div>
+                        <span class="blankScript" data-templete-type="0">空白</span>
+                        <span class="scriptSplit">|</span>
+                        <span class="templateScript" data-templete-type="1">类型</span>
+                    </li>
+
+                ##                        <li><a href="javascript:void(0)">从模板创建</a></li>
+                </ul>
+            </div>
+
+            <div class="well-come-container" style="margin-left: 20px;">
+                <p class="well-come-icon"><span class="bdp-icon ide-jszc"></span></p>
+                <p class="well-come-title">技术支持</p>
+                <p class="well-come-desc">解决开发者痛点，提供完整解决方案</p>
+                <ul class="well-come-help-ul">
+                    <li><a target="_blank" href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=223"  class="bdp-new-help-button-a-new-start"><span class="user-info" style="font-size: 12px;">快速入门</span></a></li>
+                    <li><a id="welQuickStart" href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=223"
+                           target="_blank">基于python、shell创建任务调度脚本</a></li>
+                    <li><a id="proManual" href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=224"
+                           target="_blank">基于SQL进行数据查询</a></li>
+                    <li><a id="" href="javascript:void(0)">咚咚群：6293232</a></li>
+                </ul>
+                <div style="clear: both;"></div>
+                <a id="techMoreInfo" class="well-come-button" style="margin-top: 28px;"
+                   href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=205" target="_blank">更多</a>
+            </div>
+
+            <div class="well-come-container" style="margin-left: 20px;">
+                <p class="well-come-icon"><span class="bdp-icon ide-kfzy"></span></p>
+                <p class="well-come-title">开发资源</p>
+                <p class="well-come-desc">让脚本开发更高效</p>
+                <ul class="well-come-help-ul" id="resourceHelp">
+                    <li><a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=218"
+                           target="_blank">FAQ</a></li>
+                    <li><a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=219" target="_blank">Hive
+                        SQL常见优化方法</a></li>
+                    <li><a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=220" target="_blank">HIVE函数</a>
+                    </li>
+                    <li><a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=222" target="_blank">参数说明</a>
+                    </li>
+                </ul>
+                <div style="clear: both;"></div>
+                <a id="resourceMoreInfo" class="well-come-button" style="margin-top: 28px;"
+                   href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=219" target="_blank">更多</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+
+</style>
+
+
+##<script src="/scriptcenter/statics/pages/home/home_right_ifame.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/welcome.js?_dc=$!{staticVersion}"></script>

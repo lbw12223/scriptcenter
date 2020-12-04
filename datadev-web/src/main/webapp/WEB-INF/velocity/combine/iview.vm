@@ -1,0 +1,110 @@
+#set($layout="layout_blank_combine.vm")
+
+#define($cssBlock)
+<link rel="stylesheet" type="text/css" href="http://unpkg.com/view-design/dist/styles/iview.css">
+
+#end
+#*    <div class="inherit_slide" style="width: 5px;height: 100%;background: #00ffd7;"></div>
+*#
+
+<div class="main_container_wraper" style="width: 100% ;height: 100%;display: flex;">
+    <div class="top_container_left" style="width: 50px ; height: 100%;float: left;background: #0F3A56; ">left</div>
+    <div class="top_container_right" style="height: 100%;float: left;background: red;flex: 1;">
+
+
+        <div class="top_container_right_wraper"
+             style="width: 100% ;height: 100%; background: white;display:flex;flex-direction: column;">
+
+            <div class="top_container_right_top" style="background: #0BBCFE;height: 50px;width: 100%;">top</div>
+            <div class="top_container_right_bottom"
+                 style="background: red;width: 100%;flex: 1; display: flex;flex-direction: row;">
+                <div class="inherit_slide" style="width: 5px;height: 100%;background: #00ffd7;"></div>
+                <div class="functions_warpper" style="width: 100px;height:100% ;background: black;flex: 0 1 308px;">
+                    black0
+                </div>
+                <div class="inherit_slide" style="width: 5px;height: 100%;background: #00ffd7;"></div>
+                <div class="editor_wrapper" style="width: 100px;background: white;height: 100%; display: flex;flex: 1;">
+
+                    <div id="app">
+
+                        <i-button @click="show">Click me!</i-button>
+                        <Modal v-model="visible" title="Welcome">Welcome to ViewUI</Modal>
+
+                            <i-button>Default</i-button>
+                            <i-button type="primary">Primary</i-button>
+                            <i-button type="dashed">Dashed</i-button>
+                            <i-button type="text">Text</i-button>
+                            <br><br>
+                            <i-button type="info">Info</i-button>
+                            <i-button type="success">Success</i-button>
+                            <i-button type="warning">Warning</i-button>
+                            <i-button type="error">Error</i-button>
+
+                    </div>
+
+                    <div id="components-demo">
+                        <button-counter></button-counter>
+                    </div>
+
+                    <div id="myApp">
+
+                        {{message}}
+
+                        <input type="text" id="mycount" />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+#define($javascriptBlock)
+
+<script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/view-design/dist/iview.min.js"></script>
+<script>
+
+    var test = new Vue({
+        el: '#app',
+        data: {
+            visible: false
+        },
+        methods: {
+            show: function () {
+                alert($(".top_container_right_top").length);
+                this.visible = true;
+            }
+        }
+    })
+
+    var myApp = new Vue({
+        el : '#myApp',
+        data:{
+            message : "test",
+            mycount:"100"
+        }
+    })
+    Vue.component('button-counter', {
+        data: function () {
+            return {
+                count: 0,
+                countMy: 0
+            }
+        },
+        methods: {
+            move: function () {
+                this.countMy++
+            }
+        },
+        template: '<button v-on:click="count++" v-on:mousemove="move" >You clicked me {{ count }}  {{countMy}} times.</button>'
+    })
+    new Vue({el: '#components-demo'})
+
+
+
+</script>
+#end

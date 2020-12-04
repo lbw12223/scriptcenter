@@ -1,0 +1,28 @@
+@charset "utf-8";
+.bdp-popup-window{width:240px;height:197px; overflow: hidden;box-shadow:0 0px 8px rgba(0, 0, 0, .5);border:1px solid rgba(0, 0, 0, .2);border-radius:6px;z-index:9998;background-color: #ffffff;display: none}
+.bdp-popup-window > .popup-header {background-color:#4884E2;height:40px;margin-top:0px;padding-top:0px;position:relative;width:100%;}
+.bdp-popup-window > .popup-header > .horn{position:absolute;width:40px;height:40px;margin-left: 20px;background:url(/statics/bdp/css/images/horn.png)no-repeat left center;z-index:11;float: left}
+.bdp-popup-window > .popup-header > .horn> .announce{width:90px;float:inherit;margin-left:60px;line-height:40px;margin-top:0px;font-size: 14px !important;font-weight: bold;text-align: center;color: #ffffff;letter-spacing:2px;}
+.bdp-popup-window > .popup-header > .popup-closed{position:relative;float:right;width:22px;height:40px;margin-right:11px;z-index:11;}
+.bdp-popup-window > .popup-header > .popup-closed:hover {position:relative;float:right;width:22px;height:40px;margin-right:11px;z-index:11;cursor: hand}
+
+.bdp-popup-window > .popup-window-title {position:relative;margin-top: 10px}
+.bdp-popup-window > .popup-window-title > .span{;margin-left: 11px;color: black;font-size: 12px!important;font-weight: bold;}
+.bdp-popup-window > .popup-window-content {position:relative;margin: 8px 11px 0px 11px;height: 75px;width: 218px;overflow:hidden;}
+.bdp-popup-window > .popup-window-content > .span {color: #666666;font-size: 12px!important;line-height: 18px;word-break: break-all;  word-wrap: break-word;}
+/*add created time by gaolch start*/
+.bdp-popup-window > .popup-window-created {position:relative;margin: 5px 11px 0px 11px;height: 13px;width: 218px;overflow:hidden;}
+.bdp-popup-window > .popup-window-created > .span {color: #666666;font-size: 12px!important;line-height: 13px;word-break: break-all;  word-wrap: break-word;}
+/*add created time by gaolch end*/
+.bdp-popup-window > .popup-window-footer {position:relative;margin: 2px 11px 0 11px;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check {position: relative;margin-left: 11px;margin-bottom: 14px;padding-left: 0px;float: left;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .previous-unclickable {position:absolute;margin-left:-10px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/previous-unclickable.png)no-repeat left center;z-index:11;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .previous-clickable {position:absolute;margin-left:-10px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/previous-clickable.png)no-repeat left center;z-index:11;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .previous-clickable:hover {position:absolute;margin-left:-10px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/previous-clickable.png)no-repeat left center;z-index:11;cursor: hand}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .next-unclickable {position:absolute;margin-left:0px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/next-unclickable.png)no-repeat left center;z-index:11;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .next-clickable {position:absolute;margin-left:0px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/next-clickable.png)no-repeat left center;z-index:11;}
+.bdp-popup-window > .popup-window-footer > .popup-page-check > .next-clickable:hover {position:absolute;margin-left:0px;width: 12px;height: 12px;margin-top:4px;vertical-align:middle;background:url(/statics/bdp/css/images/next-clickable.png)no-repeat left center;z-index:11;cursor: hand}
+.bdp-popup-window > .popup-window-footer > .popup-more {position:relative;color:#3C6FBF;font-size: 12px;float: right;z-index:11;}
+.bdp-popup-window > .popup-window-footer > .popup-more:hover {position:relative;margin-top:3px;color:#3C6FBF;font-size: 12px;float: right;z-index:11;font-family:'微软雅黑';}
+.bdp-popup-window > .popup-window-footer > .popup-more > .img {position:relative;float: right;z-index: 11;}
+

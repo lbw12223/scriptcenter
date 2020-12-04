@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitProjectMemberDao">
+    <sql id="datadev_git_project_member_column">
+        id,
+        git_project_id as gitProjectId,
+        git_member_id as gitMemberId,
+        git_member_name as gitMemberName,
+        git_member_username as gitMemberUserName,
+        state,
+        access_level as accessLevel
+    </sql>
+
+
+    <!--保存-->
+    <insert id="batchInsert">
+        INSERT INTO git_project_member (
+        git_project_id,
+        git_member_id,
+        git_member_name,
+        git_member_username,
+        state,
+        access_level
+        )
+        VALUES
+        <foreach collection="dataDevGitProjectMemberList" item="dataDevGitProjectMember" open="" separator="," close="">
+            (
+            #{dataDevGitProjectMember.gitProjectId},
+            #{dataDevGitProjectMember.gitMemberId},
+            #{dataDevGitProjectMember.gitMemberName},
+            #{dataDevGitProjectMember.gitMemberUserName},
+            #{dataDevGitProjectMember.state},
+            #{dataDevGitProjectMember.accessLevel}
+            )
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteByProjectId" parameterType="Long">
+        DELETE FROM git_project_member where git_project_id = #{gitProjectId}
+    </delete>
+
+    <delete id="deleteByProjectIdAndUserId">
+        delete from git_project_member where git_project_id = #{gitProjectId} and git_member_id = #{gitUserId}
+    </delete>
+
+    <select id="findAll" resultType="DataDevGitProjectMember">
+        SELECT
+        <include refid="datadev_git_project_member_column"></include>
+        FROM git_project_member where git_project_id = #{gitProjectId}
+    </select>
+
+    <select id="findAllByPage" resultType="DataDevGitProjectMember">
+        SELECT
+        <include refid="datadev_git_project_member_column"></include>
+        FROM git_project_member where git_project_id = #{gitProjectId} limit #{offset}, #{pageSize}
+    </select>
+
+    <select id = "findAllCount" resultType="java.lang.Long">
+        select count(*) from git_project_member where git_project_id = #{gitProjectId}
+    </select>
+
+    <select id = "findByErp" resultType="DataDevGitProjectMember">
+        select
+        <include refid="datadev_git_project_member_column"></include>
+         from git_project_member where git_project_id = #{gitProjectId} and git_member_username = #{erp};
+    </select>
+</mapper>

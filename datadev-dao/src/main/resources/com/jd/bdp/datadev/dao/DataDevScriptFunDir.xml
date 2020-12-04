@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptFunDirDao">
+    <sql id="datadev_fun_dir_column">
+        id,
+        dir_name as dirName,
+        p_id as pId,
+        creator,
+        created,
+        mender,
+        modified
+    </sql>
+    <select id="getDirsByDirId" resultType="DataDevFunDir">
+        SELECT
+        <include refid="datadev_fun_dir_column"></include>
+        FROM fun_dir
+        WHERE
+        <choose>
+            <when test="pId != null and pId != ''">
+                p_id = #{pId}
+            </when>
+            <otherwise>
+                ifnull(p_id,0) = 0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getFunDirById" resultType="DataDevFunDir">
+        SELECT
+        <include refid="datadev_fun_dir_column"></include>
+        FROM fun_dir WHERE id=#{id}
+    </select>
+
+
+    <select id="getMinFunDirIds" resultType="DataDevFunDir">
+        SELECT
+        <include refid="datadev_fun_dir_column"></include>
+        FROM fun_dir where id = (SELECT MIN(id) FROM fun_dir)
+    </select>
+
+
+</mapper>

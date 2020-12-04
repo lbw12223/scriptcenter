@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptDirDao">
+
+    <sql id="dir_column">
+        id,
+        name,
+        git_project_id as gitProjectId,
+        git_project_dir_path as gitProjectDirPath,
+        git_parent_project_dir_path as gitParentProjectDirPath,
+        p_id as pId,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted
+    </sql>
+
+    <insert id="insertDir" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_dir
+        (
+        git_project_id,
+        git_project_dir_path,
+        git_parent_project_dir_path,
+        name,
+        p_id ,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted
+        ) VALUES (
+        #{gitProjectId},
+        #{gitProjectDirPath},
+        #{gitParentProjectDirPath},
+        #{name},
+        #{pId},
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        0
+        )
+
+    </insert>
+    <select id="findById" resultType="DataDevScriptDir" parameterType="Long">
+        SELECT
+        id,
+        name,
+        p_id as pId,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted
+        FROM script_dir
+        WHERE id = #{id} AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="getDirsByProjectId" resultType="DataDevScriptDir" parameterType="Long">
+        SELECT
+        <include refid="dir_column"></include>
+        FROM script_dir
+        WHERE git_project_id = #{gitProjectId} AND IFNULL(deleted,0) = 0
+    </select>
+
+
+    <update id="delete">
+        UPDATE script_dir
+        SET deleted = 1,modified=now()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateName">
+        UPDATE script_dir
+        SET name =  #{name},modified=now()
+        WHERE id = #{id}
+    </update>
+
+    <select id="getDataDevScriptDirBy" resultType="DataDevScriptDir">
+        SELECT
+        <include refid="dir_column"></include>
+        FROM script_dir
+        WHERE git_project_dir_path = #{path}
+        AND git_project_id = #{gitProjectId} AND IFNULL(deleted,0) = 0 limit 1
+    </select>
+
+    <select id="DirsByGitProjectId" resultType="DataDevScriptDir">
+        SELECT
+        <include refid="dir_column"></include>
+        FROM script_dir
+        WHERE p_id = #{pId}
+        AND git_project_id = #{gitProjectId} AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="getAllDataDevScriptDirsByRoot" resultType="DataDevScriptDir">
+        SELECT
+        <include refid="dir_column"></include>
+        FROM script_dir
+        WHERE git_project_id = #{gitProjectId}
+        <if test="gitProjectDirPath != null and gitProjectDirPath != ''">
+            AND git_project_dir_path like concat(#{gitProjectDirPath},"%")
+        </if>
+        AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="findSubDirsByGitProjectId" resultType="DataDevScriptDir">
+        SELECT
+        <include refid="dir_column"></include>
+        FROM script_dir
+        WHERE git_parent_project_dir_path = #{gitParentProjectDirPath}
+        AND git_project_id = #{gitProjectId} AND  IFNULL(deleted,0) = 0 ORDER BY git_project_dir_path
+    </select>
+
+    <delete id="deleteSubScriptDir">
+        DELETE FROM script_dir  WHERE git_project_id = #{gitProjectId} AND git_parent_project_dir_path = #{gitParentProjectDirPath}
+    </delete>
+
+    <update id="deleteScriptDirRecursion">
+        UPDATE  script_dir SET deleted = 1,modified=now()  WHERE git_project_id = #{gitProjectId}
+        AND (git_project_dir_path LIKE concat(#{gitProjectDirPathWithSep},'%') OR git_project_dir_path = #{gitProjectDirPath})
+    </update>
+
+    <select id="selectOneSubDirRunAsDir" resultType="DataDevScriptDir">
+       SELECT  <include refid="dir_column"></include>
+       FROM  script_dir WHERE  git_project_id = #{gitProjectId} AND run_type = 1
+       AND (git_parent_project_dir_path LIKE concat(#{gitProjectDirPath},'%')) limit 1
+    </select>
+</mapper>

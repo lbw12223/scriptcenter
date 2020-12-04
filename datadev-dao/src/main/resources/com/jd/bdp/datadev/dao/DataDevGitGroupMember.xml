@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitGroupMemberDao">
+    <sql id="datadev_git_project_group_member_column">
+        id,
+        git_group_id as gitGroupId,
+        git_member_id as gitMemberId,
+        git_member_name as gitMemberName,
+        git_member_username as gitMemberUserName,
+        state,
+        access_level as accessLevel
+    </sql>
+
+
+    <!--保存-->
+    <insert id="batchInsert" >
+        INSERT INTO git_group_member (
+        git_group_id,
+        git_member_id,
+        git_member_name,
+        git_member_username,
+        state,
+        access_level
+        )
+        VALUES
+        <foreach collection="dataDevGitGroupMemberList" item="dataDevGitGroupMember" open="" separator="," close="">
+            (
+            #{dataDevGitGroupMember.gitGroupId},
+            #{dataDevGitGroupMember.gitMemberId},
+            #{dataDevGitGroupMember.gitMemberName},
+            #{dataDevGitGroupMember.gitMemberUserName},
+            #{dataDevGitGroupMember.state},
+            #{dataDevGitGroupMember.accessLevel}
+            )
+        </foreach>
+    </insert>
+
+
+
+
+
+    <delete id="deleteByGroupId" parameterType="Long">
+        DELETE FROM git_group_member where git_group_id = #{gitGroupId}
+    </delete>
+
+    <select id="queryByGroupId" resultType="DataDevGitGroupMember">
+        select git_member_username as gitMemberUserName, access_level as accessLevel
+        from git_group_member where git_group_id = #{groupId}
+    </select>
+
+    <select id="findGroupId" resultType="DataDevGitGroupMember">
+        select <include refid="datadev_git_project_group_member_column"></include>
+        from git_group_member where git_member_username = #{erp}
+    </select>
+
+    <select id="getMerberIdByErp" resultType="DataDevGitGroupMember">
+        select
+        <include refid="datadev_git_project_group_member_column"></include>
+        from git_group_member
+        where git_member_username=#{erp}
+        limit 1
+    </select>
+
+
+</mapper>

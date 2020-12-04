@@ -1,0 +1,63 @@
+#set($layout="layout_blank.vm")
+#set($page_title="scriptContent")
+
+<link href="/scriptcenter/statics/pages/home/home_open_ide/script_content.css?_dc=$!{staticVersion}" rel="stylesheet">
+
+
+<input type="hidden" id="scriptType" value="$!{scriptType}">
+<input type="hidden" id="canEdit" value="$!{canEdit}">
+<input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
+<input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
+<input type="hidden" id="version" value="$!{version}">
+<input type="hidden" id="relationDependencyId" value="$!{relationDependencyId}">
+
+<div class="scriptContentMain" style="">
+    <div style="height: 35px;width: 100%;line-height: 35px;">
+        <span class="scriptContentMain_version" style=""> 脚本版本：${version} </span>
+        <a class="bdp-btn bdp-btn-primary " id="downLoadData" style="float: right;margin-left: 10px">下载脚本</a>
+        #if($!{canEdit} == 1)
+            <a class="bdp-btn bdp-btn-primary " style="float: right;" id="copyContentent">一键复制</a>
+        #end
+    </div>
+    <div style="height: 100%;padding-bottom: 35px;">
+        #if($!{canEdit} == 1)
+            <div id="code" class="scriptContentMain_code" style="">$!{hbaseContent}</div>
+        #elseif($!{relationDependencyId}>0)
+            <div id="packZipDetail" style="">
+                <div class="ztreeWrap">
+                    <div class="treeTable" id="treeTable">
+                        <div class="tree-table-title">
+                            <div class="script-file">目录及文件名
+                            </div>
+                            <div class="version" style="text-decoration: none;">ZIP内版本</div>
+                            <div class="version" style="text-decoration: none;">最新版本</div>
+                            <div class="mender">最近修改人</div>
+                            <div class="modified">最近修改时间</div>
+                        </div>
+                        <div style="position: absolute;top: 45px;bottom: 0px;overflow: auto;right: 0px;left: 0px;">
+                            <ul id="packTreeUl">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        #else
+            <div class="scriptContentMain_nocode" style="">
+                <div style="margin: 0px auto;padding: 20px;padding-top: 11%">
+                    <span style="font-size: 14px;color: #A3A9B2;font-size: 16px">（当前脚本不支持预览）</span>
+                #*   <a href="javascript:;" id="downLoadData" class="icon ide-icon-xz" style="font-size: 20px;"> </a><br><br>
+                   <span class="downLoadData"
+                         style="font-size: 14px;">下载&nbsp;【${gitProjectFilePath}】&nbsp;($!{size})</span>*#
+                </div>
+            </div>
+        #end
+    </div>
+</div>
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ext-language_tools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/script_content.js?_dc=$!{staticVersion}"></script>

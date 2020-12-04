@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!-- web程序用到的数据库-->
+    <bean id="datadev_dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${datadev.jdbc.url}"/>
+        <property name="username" value="${datadev.jdbc.username}"/>
+        <property name="password" value="${datadev.jdbc.password}"/>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="100"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+
+        <property name="removeAbandoned" value="true"/> <!-- 打开removeAbandoned功能 -->
+        <property name="removeAbandonedTimeout" value="1800"/> <!-- 1800秒，也就是30分钟 -->
+        <property name="logAbandoned" value="true"/> <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="filters" value="stat"/>
+
+    </bean>
+
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionFactory_datadev" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datadev_dataSource"/>
+        <property name="typeAliasesPackage" value="com.jd.bdp.datadev.domain"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:com/jd/bdp/datadev/dao/**/*.xml</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="sqlSessionTemplate_datadev" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory_datadev"/>
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.jd.bdp.datadev.dao"/>
+        <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate_datadev"/>
+    </bean>
+
+    <!--
+         transaction manager, use JtaTransactionManager for global tx
+    -->
+    <bean id="transactionManager_datadev"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="datadev_dataSource"/>
+        <qualifier value="datadev"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager_datadev"/>
+
+
+</beans>
+

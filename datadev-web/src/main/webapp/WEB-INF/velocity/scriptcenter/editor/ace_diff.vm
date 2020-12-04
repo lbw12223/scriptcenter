@@ -1,0 +1,31 @@
+#set($layout="layout_blank.vm")
+#set($page_title="diff")
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
+<input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
+<div id="flex-container">
+    <div>
+        <p class="diff-title" id="leftTips"></p>
+        <div id="acediff-left-editor" class="acediff-editor">
+        </div>
+    </div>
+    <div id="acediff-gutter" onmousewheel="return false;"></div>
+    <div>
+        <p  class="diff-title" id="rightTips"></p>
+        <div id="acediff-right-editor" class="acediff-editor">
+        </div>
+    </div>
+</div>
+<div class="acediff-bottom">
+    <a class="bdp-btn bdp-btn-primary" id="leftButton">提交左侧</a>
+    <a class="bdp-btn bdp-btn-default" id="rightButton">提交右侧</a>
+</div>
+
+<script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace118.js?_dc=$!{staticVersion}" type="text/javascript" charset="utf-8"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/ace-diff.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/merge.js?_dc=$!{staticVersion}"></script>

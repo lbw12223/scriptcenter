@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    <task:annotation-driven/>
+    <!-- 定时器开关-->
+
+
+    <bean id="loadGitProject" class="com.jd.bdp.datadev.web.worker.InitGitProject"></bean>
+    <bean id="initSingleGitProject" class="com.jd.bdp.datadev.web.worker.InitSingleGitProject"></bean>
+
+    <bean id="initGitGroup" class="com.jd.bdp.datadev.web.worker.InitGitGroup"></bean>
+    <bean id="initSingleGitGroup" class="com.jd.bdp.datadev.web.worker.InitSingleGitGroup"></bean>
+    <bean id="tmpWorkerService" class="com.jd.bdp.datadev.service.TmpWorkerService"></bean>
+    <bean id="allMarketComponent" class="com.jd.bdp.datadev.component.AllMarketComponent"></bean>
+
+
+    <bean id="runningSqlOperationLogCheck" class="com.jd.bdp.datadev.web.worker.RunningSqlOperationLogCheckWorker"></bean>
+
+    <bean id="projectSpaceRightComponent" class="com.jd.bdp.datadev.component.ProjectSpaceRightComponent"></bean>
+
+    <task:scheduled-tasks>
+        <!--<task:scheduled ref="loadGitProject" method="refresh"  cron="0 0/20 * * * ?"/>-->
+        <!--<task:scheduled ref="initSingleGitProject" method="initGitProjects"  cron="0 0/20 * * * ?"/>-->
+
+        <!--<task:scheduled ref="initGitGroup" method="initGroup"  cron="0 0/20 * * * ?"/>-->
+        <!--<task:scheduled ref="initSingleGitGroup" method="initGitGroups"  cron="0 0/20 * * * ?"/>-->
+
+        <task:scheduled ref="tmpWorkerService" method="execute"  cron="0 0 0 * * ?"/>
+        <task:scheduled ref="allMarketComponent" method="execute"  cron="0 0/5 * * * ?"/>
+        <task:scheduled ref="runningSqlOperationLogCheck" method="execute"  cron="0 0/10 * * * ?"/>
+        <task:scheduled ref="projectSpaceRightComponent" method="refreshProjectMember"  cron="0 0/10 * * * ?"/>
+
+
+    </task:scheduled-tasks>
+
+
+
+</beans>
+

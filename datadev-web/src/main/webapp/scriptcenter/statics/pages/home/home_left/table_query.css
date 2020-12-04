@@ -1,0 +1,455 @@
+.table-query-tab {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #939DAD;
+    letter-spacing: 0;
+}
+
+.table-query-tab .content {
+    width: 100%;
+    float: left;
+    background: inherit;
+}
+
+#table-query .left_manage {
+    overflow: auto;
+    height: 100%;
+    padding: 10px 0px;
+}
+
+.table-query-tab .icon-content {
+    height: 35px;
+    text-align: right;
+    line-height: 35px;
+    padding-top: 4px;
+}
+
+.table-query-tab .icon-content span {
+    margin-right: 8px;
+}
+
+.table-query-tab .maq-content {
+
+    height: 140px;
+    line-height: 35px;
+}
+
+.table-query-tab .maq-content .select {
+    width: 100%;
+}
+
+.table-query-tab .half-select-content {
+    width: 50%;
+    float: left;
+}
+
+.table-query-tab .half-select-content:first-child {
+    padding-right: 5px;
+}
+
+.table-query-tab .half-select-content:last-child {
+    padding-left: 5px;
+}
+
+.table-query-tab .full-select-content {
+    width: 100%;
+    height: 35px;
+}
+
+.table-query-tab .market-account-content {
+    height: 35px;
+}
+
+.table-query-tab .seasql-content {
+    height: 40px;
+    position: relative;
+    padding-top: 6px;
+    background: #191B1F;
+    border: 1px solid #373B40;
+    padding-left: 10px;
+}
+
+.table-query-tab .search-col-content {
+    width: 100%;
+    padding-right: 60px;
+    position: relative;
+}
+
+.table-query-tab .search-col-content input {
+    height: 26px;
+    width: 100%;
+    padding-left: 5px;
+}
+
+.table-query-tab .search-col-content span.ide-search {
+    position: absolute;
+    right: 64px;
+    top: 5px;
+}
+
+.table-query-tab .quick-tool-content {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+}
+
+.table-query-tab .quick-tool-content span.icon {
+    margin-right: 8px;
+}
+
+.table-query-tab .apply-content {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background: #2A2F33;
+    border: 1px solid #14191F;
+    height: 33px;
+    line-height: 33px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    left: 0px;
+}
+
+.table-query-tab .apply-content a {
+    color: #FFFFFF;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.table-query-tab .column-content {
+    position: absolute;
+    top: 180px;
+    bottom: 33px;
+    left: 10px !important;
+    right: 10px;
+    width: auto !important;
+}
+
+.tableQueryUl {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.tableQueryUl li {
+    float: left;
+    width: 50%;
+    padding: 0px 5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tableQueryUl li span {
+    display: block;
+    width: 100%;
+    line-height: 30px;
+    text-align: center;
+    background-color: #31353F;
+    cursor: pointer;
+}
+
+.tableQueryUl li.active span {
+    border-bottom: 1px solid #3286E9;
+}
+
+.table-query-content {
+    display: block;
+    position: absolute;
+    top: 50px;
+    /*top: 10px;*/
+    bottom: 0px;
+    padding: 0 10px;
+    width: 100%;
+}
+
+.all-table-search-content {
+    height: 35px;
+    width: 100%;
+    /*padding: 0px 10px;*/
+}
+
+.all-table-search-content input {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 5px;
+    padding-right: 30px;
+}
+
+.all-table-select {
+    width: 100%;
+    height: 35px;
+}
+
+.all-table-content {
+    position: absolute;
+    top: 110px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.all-table-num-content {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    color: #5B6572;
+    padding: 0px 10px;
+}
+
+.all-table-detail-content {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    width: 100%;
+}
+
+.all-table-container {
+    position: absolute;
+    top: 0px;
+    bottom: 40px;
+    width: 100%;
+    overflow: auto;
+}
+
+.all-table-pager {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 30px;
+}
+
+.all-table-query-icon {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.table-detail-group {
+    color: #A3A9B2;
+    letter-spacing: 0;
+    line-height: 20px;
+    padding: 5px 10px;
+    border-top: 1px solid #EEEEEE;
+}
+.table-detail-group:last-child {
+    border-bottom: 1px solid #EEEEEE;
+}
+.table-detail-group:hover {
+    background-color: #EBF0F8;
+}
+
+.table-item-category {
+    height: 20px;
+}
+
+.table-item-category > div {
+    float: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table-item-category > .market-name {
+    width: 60%;
+}
+
+.table-item-category > .db-name {
+    padding-left: 5px;
+    width: 40%;
+}
+
+.table-item-operate {
+    height: 20px;
+    user-select: none;
+    color: white;
+}
+
+.table-item-operate > div {
+    float: right;
+    width: 50px;
+    text-align: center;
+    background-color: #2E71BF;
+    border-radius: 1px;
+    cursor: pointer;
+    display: none;
+}
+.table-item-operate > div:hover {
+    background-color: #1A6CCD;
+}
+
+.table-item-operate > .table-structure {
+    width: 50px;
+}
+
+.table-item-operate > .table-preview {
+    width: 60px;
+    margin-left: 10px;
+}
+
+.table-detail-group:hover .table-item-operate > div {
+    display: block;
+}
+
+.draggable-columns-content {
+    width: 100%;
+    height: 75%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: 10000;
+    display: none;
+    /*border: 1px solid #454E57;*/
+
+    background: #2F3338;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.30);
+    border-radius: 3px;
+    padding: 5px;
+    box-sizing: content-box;
+}
+
+.draggable-header {
+    height: 40px;
+    border-bottom: 1px solid #44494F;
+    cursor: move;
+}
+
+.draggable-content {
+    overflow: auto;
+    position: absolute;
+    top: 85px;
+    bottom: 5px;
+    right: 5px;
+    left: 5px;
+}
+
+.header-table-name {
+    font-size: 14px;
+    padding-left: 10px;
+    padding-top: 10px;
+    display: block;
+    padding-right: 25px;
+}
+
+.header-table-name span{
+     max-width: 100%;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     display: inline-block;
+ }
+.header-table-name span.datadevSelectedText{
+    background-color: #556e93;
+}
+
+.header-close {
+    position: absolute;
+    font-size: 20px;
+    top: 5px;
+    right: 18px;
+    cursor: pointer;
+}
+
+.header-close:hover {
+    color: white;
+}
+
+#dataPreviewContent {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 300px;
+    /*background-color: red;*/
+    display: none;
+    background-color: #252A2F;
+    border: 0px solid #454E57;
+}
+#dataPreviewContent .show-info-tips{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 20px;
+    position: relative;
+}
+#dataPreviewContent .show-info-tips .close-preview{
+    position: absolute;
+    right: 9px;
+    line-height: 30px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.columns_search_input{
+    height: 40px;
+    line-height: 32px;
+    padding: 3px 0px;
+    position: relative;
+}
+.columns_search_input input{
+    width: 100%;
+    background: #272A2F;
+    border: 1px solid #454E57;
+    color: #A3A9B2;
+    padding-left: 5px;
+}
+.columns_search_input .bdp-icon{
+    position: absolute;
+    right: 13px;
+    top: 10px;
+}
+
+.columns_search_input input::-webkit-input-placeholder { /* WebKit browsers */
+    color: #5D626A;
+}
+
+.columns_search_input input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #5D626A;
+}
+
+.columns_search_input input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #5D626A;
+}
+
+.resize-e-div{
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    /*background: rebeccapurple;*/
+    right: 0px;
+    cursor: e-resize;
+}
+.resize-s-div{
+    width: 100%;
+    height: 5px;
+    position: absolute;
+    bottom: 0px;
+    /*background: rebeccapurple;*/
+    left: 0px;
+    cursor: s-resize;
+}
+.resize-content{
+    display: none;
+}
+.no-select{
+    user-select: none;
+}
+.table-item-name{
+    word-break: break-all;
+    font-weight: bold;
+}
+.table-item-comment{
+    word-break: break-all;
+}
+
+.paginationjs .paginationjs-pages li {
+    border: 1px solid #CCCCCC !important;
+}
+.paginationjs .paginationjs-pages li > a {
+    background: #FFFFFF !important;
+
+}
+.paginationjs .paginationjs-pages li:last-child {
+    border-right: 1px solid #CCCCCC !important;
+}

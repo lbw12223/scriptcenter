@@ -1,0 +1,43 @@
+<div class="script-operate-history">
+    <h4 class="bdp-control-title">操作记录</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-control-label script-operate-history-label">修改人：</label>
+        <div class="script-operate-history-content" >
+            <select id="scriptOperateMo" class="appSelect" style="width: 30%;">
+                <option value=""></option>
+            </select>
+            <a class="bdp-btn bdp-btn-primary" id="operate-history-query">查询</a>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 33px">
+        <label class="bdp-control-label script-operate-history-label">保存时间：</label>
+
+        <div class="script-operate-history-time-content">
+
+            <input autocomplete="false" id="operateStartTime" class="script-operate-history-Time date-picker">
+            <span class="icon-calendar"></span>
+        </div>
+        <label class="bdp-control-label script-run-history-period">--</label>
+
+        <div class="script-operate-history-time-content">
+            <input autocomplete="false" id="operateEndTime" class="script-operate-history-Time date-picker">
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="jd-table-parent" id="operate-jd-table-parent" style="margin-left:20px;width: 740px;height:430px;overflow: hidden;">
+        <table class="jd-table table table-hover " id="operate-grid-table">
+        </table>
+        <div id="operate-grid-pager">
+
+        </div>
+    </div>
+
+
+</div>
+
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_operate_history.js?_dc=111$!{staticVersion}"></script>
+
+
+

@@ -1,0 +1,102 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/script_manage.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_index.css?_dc=$!{staticVersion}">
+
+<link rel="stylesheet" href="/scriptcenter/statics/spin/spin.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/autocompleter/jquery.autocompleter.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+<div class='txtScriptDiv' id='txtNewScriptDiv'>
+    <div class='txtChooseContainer'>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='7'>
+                <span class='bdp-icon ide-txt'></span>
+            </div>
+            <div class='txtName'>
+                <span>TXT</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='8'>
+                <span class='bdp-icon ide-xml'></span>
+            </div>
+            <div class='txtName'>
+                <span>XML</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='18'>
+                <span class='bdp-icon ide-yml'></span>
+            </div>
+            <div class='txtName'>
+                <span>YAML</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='20'>
+                <span class='bdp-icon ide-json'></span>
+            </div>
+            <div class='txtName'>
+                <span>JSON</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='17'>
+                <span class='bdp-icon ide-ini'></span>
+            </div>
+            <div class='txtName'>
+                <span>INI</span>
+            </div>
+        </div>
+    </div>
+    <div class='txtChooseContainer'>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='10'>
+                <span class='bdp-icon ide-csv'></span>
+            </div>
+            <div class='txtName'>
+                <span>CSV</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='15'>
+                <span class='bdp-icon ide-prop'></span>
+            </div>
+            <div class='txtName'>
+                <span>PROPERTIES</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='19'>
+                <span class='bdp-icon ide-cfg'></span>
+            </div>
+            <div class='txtName'>
+                <span>CFG</span>
+            </div>
+        </div>
+        <div class='txtChooseContent'>
+            <div class='round-wrap' data-type='16'>
+                <span class='bdp-icon ide-conf'></span>
+            </div>
+            <div class='txtName'>
+                <span>CONF</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+
+
+<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/pages/devcenter/left/script/script_index.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage_new_file.js?_dc=$!{staticVersion}"></script>

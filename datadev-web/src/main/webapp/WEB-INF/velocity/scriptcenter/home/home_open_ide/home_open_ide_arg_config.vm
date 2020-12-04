@@ -1,0 +1,81 @@
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_arg_config.css?_dc=1112121$!{staticVersion}">
+
+<div class="script-args" style="font-size:12px;position: relative;height: 100%;width: 100%;overflow:hidden;">
+    <div style="position: absolute; top: 0px;left: 0px;height: 110px;border: 0px solid green;z-index: 100;width: 100%;">
+        <h4 class="bdp-control-title">参数配置</h4>
+        <div class="script-args-button-group">
+            #if(${scriptType} != 1)
+                <a class="bdp-btn bdp-btn-primary" id="addArgs">添加参数</a>
+            #end
+            <a class="bdp-btn bdp-btn-primary" id="updateScriptArgs">保存</a>
+            <a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=222" target="_blank">参数说明</a>
+        </div>
+        <div id="addOpt" class="argTools" style="display: none;">
+            <span class="bdp-icon ide-close iconRemoveArg"></span>
+        </div>
+    </div>
+    <div style="border: 0px solid red ;overflow: auto;position: absolute;bottom: 0px;top: 0px;left: 0px;z-index: 1;margin-top: 110px;height: 100%;width: 100%;padding-bottom: 110px;">
+        <div class="script-args-button-group">
+            <table id="argTable" class="userCustomer">
+                <thead>
+                <tr>
+                    #if(${scriptType} == 1)
+                        <td style="width:65px;">序号</td>
+                        <td style="width:80px;">参数名称</td>
+                        <td style="width:280px;class=" alignCenter
+                        "">参数值</td>
+                    #else
+                        <td style="width:50px;">序号</td>
+                        <td style="width:330px;">参数值</td>
+                        <td style="width:50px;" class="alignCenter">操作</td>
+                    #end
+                </tr>
+                </thead>
+                <tbody id="argTbody">
+                <tr class="mergeTr">
+                    <td colspan="3" class="merge">
+                        无参数
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+        #if(${scriptType} == 4)
+            <h4 class="bdp-control-title">脚本启动路径</h4>
+            <div class="bdp-form-group dialog-group" id="startShellDiv"
+                 style="height: 32px;line-height: 32px;padding-left: 25px;">
+                <label class="bdp-control-label file-label bdp-col-xs-3">启动项：</label>
+                <input class="bdp-form-control bdp-col-xs-9 file-input" value="$!{startShellPath}" id="startShellPath"
+                       placeholder="请输入文件名称,支持字母,数字,下划线,中划线" autocomplete="off" style="width: 300px !important;">
+            </div>
+            <h4 class="bdp-control-title"></h4>
+
+        #end
+
+        <div id="cgroupConfigDiv" style="display: none;">
+            <h4 class="bdp-control-title">资源配置</h4>
+            <div class="bdp-form-group dialog-group" id="startShellDiv"
+                 style="height: 32px;line-height: 32px;padding-left: 25px;">
+                <label class="bdp-control-label file-label bdp-col-xs-3">内存(G)：</label>
+                <input class="bdp-form-control bdp-col-xs-9 file-input" value="$!{cgroupMemoryLimit}"
+                       id="cgroupMemoryLimit"
+                       placeholder="正整数" autocomplete="off" style="width: 300px !important;">
+            </div>
+            <div class="bdp-form-group dialog-group" id="startShellDiv"
+                 style="height: 32px;line-height: 32px;padding-left: 25px;">
+                <label class="bdp-control-label file-label bdp-col-xs-3">CPU(核)：</label>
+                <input class="bdp-form-control bdp-col-xs-9 file-input" value="$!{cgroupCpuLimit}" id="cgroupCpuLimit"
+                       placeholder="正整数" autocomplete="off" style="width: 300px !important;">
+            </div>
+            <h4 class="bdp-control-title"></h4>
+        </div>
+
+    </div>
+
+</div>
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_arg_config.js?_dc=$!{staticVersion}"></script>

@@ -1,0 +1,50 @@
+#set($layout="layout_bdp_no_left.vm")
+<script src="/scriptcenter/statics/bdp/js/jquery-1.9.1.min.js?_dc=$!{staticVersion}"></script>
+
+<input type="hidden" id="domain" value="${domain}">
+
+<div>
+
+    <form action="/scriptcenter/test/test" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="appId" value="test">
+        <span>脚本</span>
+        <textarea name="content"></textarea><br>
+        <span>脚本名字</span>
+        <input type="text" name="name" value=""><br>
+        <span>脚本类型</span>
+        <select name="type">
+            <option value="1">sql</option>
+            <option value="2">shell</option>
+            <option value="3">python</option>
+            <option value="4">zip</option>
+            <option value="5">Plumber</option>
+        </select><br>
+        <span>ClusterCode</span><input type="text" name="clusterCode"></input><br>
+        <span>AccountCode</span><input type="text" name="accountCode"></input><br>
+        <span>QueueCode</span><input type="text" name="queueCode"></input><br>
+        <span>MarketLinuxUser</span><input type="text" name="marketLinuxUser"></input><br>
+        <input type="submit" value="提交">
+    </form>
+    <br>
+    <br>
+    <br>
+    <form action="/scriptcenter/test/uploadtest" method="post" enctype="multipart/form-data" >
+        文件<input type="file" name="file"><br>
+        id<input type="number" name="id"><br>
+        名称<input type="text" name="name"><br>
+        类型<select name="type"><br>
+            <option value="1">sql</option>
+            <option value="2">shell</option>
+            <option value="3">python</option>
+            <option value="4">zip</option>
+        </select>
+        启动脚本路径<input type="text" name="startShellPath"><br>
+        负责人<input type="text" name="owner"><br>
+        描述<input type="text" name="description"><br>
+        应用id<input type="number" name="applicationId"><br>
+        <input type="submit" value="上传"><br>
+    </form>
+</div>
+
+
+

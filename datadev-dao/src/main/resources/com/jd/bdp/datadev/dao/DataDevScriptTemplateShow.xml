@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptTemplateShowDao">
+    <select id="getMaxShowOrder" resultType="Long">
+        select max(show_order) from script_template_show  where erp = #{erp} and IFNULL(deleted,0) = 0
+    </select>
+    <update id="updateTemplateShow">
+        INSERT INTO
+        script_template_show
+        (
+        erp,template_id,show_order,deleted
+        )
+        VALUES
+        (
+        #{erp},#{templateId},#{showOrder},0
+        ) ON DUPLICATE KEY UPDATE show_order=#{showOrder};
+    </update>
+    <delete id="deletedBytemplateId">
+        delete from script_template_show
+        where template_id = #{templateId}
+    </delete>
+
+
+</mapper>

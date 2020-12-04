@@ -1,0 +1,303 @@
+#set($layout="layout_blank.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide.css?_dc=1112121$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/zTree/css/zTreeStyle/debugZTreeStyle.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/treeGrid/css/jquery.treegrid.css">
+<div class="codeContainer" style="width: 100%;height: 100%;overflow: hidden;position: relative;left:0px;top:0px;">
+
+    <div class="clearLog" style="display: none;">
+        <ul>
+            <li id="clearLogEventLi"><span class="bdp-icon ide-delete"
+                                           style="margin-left: 10px;position: relative;top: -1px;"></span><span
+                    style="margin-left: 5px">清除日志</span></li>
+        </ul>
+    </div>
+    <div class="moreFunction" style="display: none;">
+        <ul>
+            #if($!{canRun} == "true")
+                <li envent-type="run"><span class="keyWord">运行</span><span class="keyMap" style="">Ctrl+Enter</span></li>
+            #end
+            #if($!{scriptType} == "3")
+                <li envent-type="debug"><span class="keyWord">调试</span><span class="keyMap" style="">Ctrl+Shift+Enter</span></li>
+            #end
+            #if($!{canRun} == "true")
+                <li envent-type="stop" style="display: none"><span class="keyWord">停止</span><span class="keyMap" style=""></span></li>
+            #end
+            #if($!{canEdit} == "true")
+                <li envent-type="save"  class="meun_split_border" style="">
+                    <span class="keyWord">保存</span>
+                    <span class="keyMap" style="">Ctrl+S</span>
+                </li>
+                <li id="scriptGit" envent-type="git" class="meun_split_border">
+                    <span class="keyWord">Git</span>
+                    <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
+                </li>
+            #end
+            <li envent-type="scriptUrl" class="meun_split_border"><span class="keyWord">复制脚本URL</span><span class="keyMap" style=""></span></li>
+            <li envent-type="position"><span class="keyWord">定位</span><span class="keyMap" style=""></span></li>
+            <li envent-type="copyfilename"><span class="keyWord">复制文件名</span><span class="keyMap" style=""></span></li>
+            <li envent-type="copyfilepath"><span class="keyWord">复制路径</span><span class="keyMap" style=""></span></li>
+            <li envent-type="rename"><span class="keyWord">重命名</span><span class="keyMap" style="">F2</span></li>
+            <li envent-type="down"><span class="keyWord">下载到本地</span><span class="keyMap" style=""></span></li>
+            <li envent-type="addtemplate"><span class="keyWord">保存为模板</span><span class="keyMap" style=""></span></li>
+        </ul>
+    </div>
+    <div id="rightClickGitMenu" class="rightMenu" style="display: none;width: 120px">
+        <ul class="menuUl">
+            <li class="pull" style="padding-left: 10px">
+                <span class="bdp-icon ide-pull" style="color: #42A5F5"></span>
+                <span class="" style="margin-left: 5px">Pull</span>
+            </li>
+            <li class="push" style="padding-left: 10px">
+                <span class="bdp-icon ide-push" style="color: #4CD1B3"></span>
+                <span class="" style="margin-left: 5px">Push</span>
+            </li>
+            <li class="showGitHistory" style="padding-left: 10px">
+                <span class="bdp-icon ide-commit" style="color: #4CD1B3"></span>
+                <span class="name" style="margin-left: 5px">提交历史</span>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+    <div id="contentWrap">
+        <div id="content" style="margin-left: 33px; height:100%;overflow: hidden;position:relative;">
+
+            <input type="hidden" id="openScript" value="1">
+            <input type="hidden" id="scriptFileId" value="$!{scriptFileId}">
+            <input type="hidden" id="gitStatus" value="$!{gitStatus}">
+            <input type="hidden" id="filePosition" value="$!{filePosition}">
+            <input type="hidden" id="templateId" value="$!{templateId}">
+            <input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
+            <input type="hidden" id="scriptType" value="$!{scriptType}">
+            <input type="hidden" id="pythonType" value="$!{pythonType}">
+            <input type="hidden" id="scriptRunDetailId" value="">
+            <input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
+            <input type="hidden" id="gitProjectDirPath" value="$!{gitProjectDirPath}">
+            <input type="hidden" id="canEdit" value="$!{canEdit}">
+            <input type="hidden" id="canRun" value="$!{canRun}">
+            <input type="hidden" id="version" value="$!{version}">
+            <input type="hidden" id="lastVersion" value="$!{lastVersion}">
+            <input type="hidden" id="origin" value="$!{origin}">
+            <input type="hidden" id="configId" value="$!{configId}">
+            <input type="hidden" id="configMarketId" value="$!{configMarketId}">
+
+            <input type="hidden" id="isShow" value="$!{isShow}">
+            <input type="hidden" id="fileMd5" value="$!{fileMd5}">
+            <input type="hidden" id="fileName" value="$!{fileName}">
+            <input type="hidden" id="isForceEdit" value="0"/>
+            <input type="hidden" id="runType" value="$!{runType}"/>
+            <input type="hidden" id="relationDependencyId" value="$!{relationDependencyId}"/>
+            <input type="hidden" id="currentRelationDependencyId" value="$!{currentRelationDependencyId}"/>
+            <div id="mergeVersionContent" style="display:none;position: absolute;top: 0px;height: 30px;padding-left: 30%;width: 100%;"><span class="merge-version-tips">当前脚本为调度版本，保存后将覆盖最新版本，返回</span><a id="chooseVersionBtn" class="bdp-btn bdp-btn-primary">脚本选择</a></div>
+
+            <div class="code_parent">
+                <div style="height: 45px;width: 100% ;background: red;">
+                    <input type="button" id="innerSave" value="保存" />
+                    <input type="button" id="innerSaveas" value="保存As" />
+
+                </div>
+                <div id="code" class="code_wrapper">
+                    <div class="table-left-tab" style="width: 35px"></div>
+                    <div id="packZipDetail" style="display: none">
+                        <div class="buttonWrap" style="">
+                            <a class="bdp-btn bdp-btn-primary" id="update2NewVersion">更新压缩包</a>
+                        </div>
+                        <div class="ztreeWrap" id="ztreeWrapDiv">
+                            <div class="treeTable" id="treeTable">
+                                <div class="tree-table-title"><div class="script-file"><input type="checkbox" style="margin-left: 0px !important;margin-right: 10px" id="checkAll">目录及文件名</div><div class="version" style="text-decoration: none;">ZIP内版本</div><div class="version" style="text-decoration: none;">最新版本</div><div class="mender">最近修改人</div><div class="modified">最近修改时间</div></div>
+                                <div style="position: absolute;top: 45px;bottom: 0px;overflow: auto;right: 0px;left: 0px;">
+                                    <ul id="packTreeUl">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="logOrDataSplit">
+                <div style="float: left;margin-left: 50px;width: 60px;">行：<span id="rownumber">1</span>&nbsp;</div>
+                <div style="float: left;width: 60px;">列：<span id="colnumber">1</span>&nbsp;</div>
+                <div style="float: left;">最后修改信息：&nbsp; <span id="lastmender">$!{lastmender}</span>/<span id="lastmodified"> $!{lastmodified}</span></div>
+                <div style="float: left;margin-left: 30px">当前版本：&nbsp;<span><a href="javascript:;" class="changeVersion" id="currentVersionInfo">$!{version}</a></span>
+                </div>
+                <div style="float: left;margin-left: 30px">最新版本：&nbsp;<span><a href="javascript:;" class="changeVersion" id="lastVersionInfo">$!{lastVersion}</a></span>
+                </div>
+                <div style="float: left;margin-left: 30px" id="gitVersionStatusTip"><span></span></div>
+                <div style="float: left;margin-left: 30px;display: none;" id="cheDepDiv"><a href="javascript:;" class="" id="cheDep">查看依赖</a></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="logOrDataParent"
+                 style="position:absolute;left:0px;bottom:0px;height:300px;width:100%;z-index: 4">
+                <div class="debug-sideBar" id="debugSideBar">
+                    <ul class="sideBar-ul ">
+                        <li class="sideBar-li color_run unRun-mode ico-disabled" data-command="run" ><span class="sideBar-icon bdp-icon ide-rzyx pop-title"  data-title="运行" ></span></li>
+                        <li class="sideBar-li color_run run-mode debug-mode " style="" data-command="restart"><span class="sideBar-icon restart sideBar-command pop-title" id="restartCommand" data-title="重新运行" ></span></li>
+                        <li class="sideBar-li color_run debug-mode" style="display: none" data-command="continue"><span class="sideBar-icon bdp-icon ide-hfyx pop-title" id="debugContinue" data-title="继续执行"></span></li>
+                        <li class="sideBar-li color_run unRun-mode ico-disabled" style="display: none" id="debugCommand" data-command="debug" data-type="3"><span class="sideBar-icon bdp-icon ide-debug pop-title"  data-title="调试"></span></li>
+                        <li class="sideBar-li color_stop unRun-mode run-mode debug-mode ico-disabled"  style="border-bottom: 1px solid #14191E;" data-command="stop" id="stopCommand"><span class="sideBar-icon bdp-icon ide-rztz pop-title"  data-title="停止"></span></li>
+##                        <li class="sideBar-li color_stop debug-mode" style="display: none" data-command="check-breakpoint"><span class="sideBar-icon bdp-icon bdp-icon-yhmx pop-title"  data-title="查看断点"></span></li>
+                        <li class="sideBar-li color_stop debug-mode unRun-mode run-mode" style="display: none"  id="disableBreakPointLi" data-type="3" data-command="disable-breakpoint"><span class="sideBar-icon sideBar-command disable-breakpoints pop-title "  data-title="静音断点，临时禁用所有断点，快速让脚本执行结束"></span></li>
+                    </ul>
+                </div>
+                <div id="logOrData" class="datadev-tab-horizontal" style="padding-left: 40px">
+                    <div class="tabPullDown rightMeun" style="display: none;">
+                        <div class="triangle_border">
+                            <span></span>
+                        </div>
+                        <ul>
+                            <li envent-type="closeCurrent"><span>关闭当前</span></li>
+                            <li envent-type="closeOther"><span>关闭其他</span></li>
+                            <li envent-type="closeLeft"><span>关闭左侧</span></li>
+                            <li envent-type="closeRight"><span>关闭右侧</span></li>
+                            <li envent-type="closeAll"><span>关闭所有</span></li>
+                        </ul>
+                    </div>
+                    <div style="width:100%;overflow:hidden;position: relative" id="logAndRunResult">
+                        <div style="float: left;overflow: hidden;position: absolute;z-index: 100">
+                            <ul class="tab-header datadev-ul fixed-ul" id="fixedUl">
+                                <li target="run-log" data-title="日志" data-label="日志" class="active">
+                                    <div id="run-log-circle" class=""></div>
+                                    <a style="float: left;width: 24px" href="javascript:;">日志</a></li>
+                            </ul>
+                        </div>
+                        <div class="step-command" id="stepCommandUl">
+                            <ul class="command-ul">
+                                <li class="command-li"><span class="command-operate step-over pop-title" data-title="Step Over，单步调试，不进入子函数（F8）" id="stepOver" ></span></li>
+                                <li class="command-li"><span class="command-operate step-into pop-title" data-title="Step Into，单步调试，进入子函数（F7）" id="stepInto"></span></li>
+                                <li class="command-li"><span class="command-operate step-out pop-title" data-title="Step Out，跳出子函数（Shift+F8）" id="stepOut"></span></li>
+                                <li class="command-li" style="display: none"><span class="command-operate step-util pop-title" data-title="（Alt+F9），运行到光标处" id="stepUntil"></span></li>
+                            </ul>
+                        </div>
+                        <div id="dynamicDiv" style="float: left;overflow: hidden;padding-left: 45px;width: 100%">
+                            <ul class="tab-header datadev-ul dynamic-ul" style="width:500%;margin-left:0px;">
+                            </ul>
+                        </div>
+
+
+                        <div class="moreTitle">
+                            <span class="bdp-icon ide-more"></span>
+                        </div>
+                        <ul class="moreTagUL">
+                        </ul>
+                    </div>
+
+                    <div id="run-log" class="tab-content" style="overflow: auto;overflow-y: hidden;position: relative">
+                        <div class="run-content">
+                            <div id="run-log-content"
+                                 style="position: absolute;width: 100%;height: 100%;overflow-y: auto;">
+
+                            </div>
+                        </div>
+
+                        <div class="run_log_bottom">
+                        </div>
+                    </div>
+                    <div id="run-debug" class="tab-content" style="overflow: auto;overflow-y: hidden;display: none;position: relative">
+                        <div class="run-content">
+                            <div class="debug-content">
+                                <div class="debug-main">
+                                    <div class="debug-variables">
+                                        <div class="varaables-titles"><span style="margin-left: 10px;margin-right: 10px;color: #C59558" class="bdp-icon ide-bl"></span><span>Variables</span></div>
+                                        <div class="variables-content">
+                                            <ul class="ztree" id="variablesTree"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="run_log_bottom">
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    #*右侧*#
+    <div id="sidebar" style="width: 33px;float: right;height: 100%;">
+        <div id="rightDiv" class="datadev-tab-right"
+             style="width:33px;position:absolute;top:0px;right:0px;height:100%;z-index:100;">
+            <ul class="datadev-ul tab-header" style="overflow: hidden">
+                <li target="args-config"><a href="javascript:;" class="first">参数配置</a></li>
+                <li target="script-detail"><a href="javascript:;">脚本详情</a></li>
+                <li target="buffalo-task-list"><a href="javascript:;">任务列表</a></li>
+                <li target="online-history"><a href="javascript:;">上线历史</a></li>
+                <li target="operate-history"><a href="javascript:;">操作记录</a></li>
+                <li target="run-history"><a href="javascript:;">运行记录</a></li>
+            </ul>
+            <div id="args-config" class="tab-content undisplay " data-width="550" style="overflow: auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_arg_config.vm")
+            </div>
+            <div id="script-detail" class="tab-content undisplay" data-width="550" style="overflow:auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_script_detail.vm")
+            </div>
+            <div id="buffalo-task-list" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_buffalo_task_list.vm")
+            </div>
+            <div id="online-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_online_history.vm")
+            </div>
+            <div id="operate-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_operate_history.vm")
+            </div>
+            <div id="run-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_run_history.vm")
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+#*zhangrui156*#
+
+
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/treeGrid/js/jquery.treegrid.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/jquery.cookie.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/jQuery.md5.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/clipboard.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ext-language_tools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_right_ifame.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide.js?_dc=sssssss1111$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/locales/moment-with-locales.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/sql/dataDevSqlTip.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/script.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_top.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/bdp/js/bdpUtil.js?dc=$!{staticVersion}"></script>
+#end
+
+

@@ -1,0 +1,43 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/table_query.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pagination/pagination.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+
+<div>
+##    <div class="draggable-header">
+##        <div class="header-table-name pop-title" id="draggableNameHeader" data-title=""><span></span></div>
+##        <div class="header-close"><span>×</span></div>
+##    </div>
+    <div class="columns_search_input">
+        <input id="columnsSearchInput" placeholder="请输入列名、描述" autocomplete="off">
+        <span id="columnsSearchButton" class="bdp-icon bzzx-ss"></span>
+    </div>
+    <div id="xxx">
+        <div class="jd-table-parent all-grid-table-parent" id="allGridColumnParent"
+             style="height:380px;width: 600px;float: left !important;">
+
+##            <table class="jd-table table table-hover all-grid-table" id="allGridColumn"
+##                   style="overflow: scroll;">
+
+            <table id="allGridColumn">
+            </table>
+            <div class="jd-grid-pager" id="jdGridPager"">
+
+            </div>
+        </div>
+    </div>
+##    <div class="resize-s-div resize-content"></div>
+##    <div class="resize-e-div resize-content"></div>
+</div>
+
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/home/resize.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_left/table_query_detail.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pagination/pagination.min.js?_dc=$!{staticVersion}"></script>

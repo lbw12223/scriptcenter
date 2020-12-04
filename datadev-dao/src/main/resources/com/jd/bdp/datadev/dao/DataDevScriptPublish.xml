@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptPublishDao">
+    <sql id="publish_columns">
+        id,
+        version,
+        comment,
+        publisher,
+        publish_sys as publishSys,
+        status,
+        creator,
+        created,
+        mender,
+        modified,
+        check_md5 as checkMd5,
+        deleted,
+        request_id as requestId,
+        git_project_id as gitProjectId,
+        git_project_file_path as gitProjectFilePath,
+        application_id as applicationId,
+        buffalo_script_id as buffaloScriptId,
+        buffalo_script_version as buffaloScriptVersion,
+        run_type AS runType
+    </sql>
+
+    <!--保存-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_file_publish (
+            version,comment,publisher,publish_sys,status,creator,created,mender,modified,
+            check_md5,deleted,request_id,git_project_id,git_project_file_path,application_id,buffalo_script_id,buffalo_script_version,run_type
+        )VALUES (
+            #{version},#{comment},#{publisher},#{publishSys},#{status},#{creator},now(),#{mender},now(),
+            #{checkMd5},0,#{requestId},#{gitProjectId},#{gitProjectFilePath},#{applicationId},#{buffaloScriptId},#{buffaloScriptVersion},#{runType}
+        )
+    </insert>
+
+    <select id="findLastNotFail" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+        <if test="applicationId != null and applicationId != ''">
+            AND application_id = #{applicationId}
+        </if>
+        AND status is NOT NULL AND status !=#{status} AND IFNULL(deleted,0) = 0 ORDER by id desc limit 1
+    </select>
+
+    <update id="updateStatus">
+        UPDATE script_file_publish
+        SET
+        <if test="requestId !=null and requestId!=''">
+            request_id =#{requestId},
+        </if>
+        <if test="buffaloScriptId != null and buffaloScriptId!=''">
+            buffalo_script_id = #{buffaloScriptId},
+        </if>
+        <if test="mender != null and mender!=''">
+            mender = #{mender},
+        </if>
+        status = #{status},modified = now()
+        WHERE id = #{id}
+    </update>
+    <select id="findByRequestId" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE request_id =#{requestId} AND IFNULL(deleted,0) = 0
+
+    </select>
+    <select id="findByBuffaloScriptId" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE buffalo_script_id =#{buffaloScriptId} AND IFNULL(deleted,0) = 0 limit 1
+    </select>
+    <select id="findByGitProjectAndPath" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0 limit 1
+    </select>
+
+    <select id="count4page" resultType="Long">
+        SELECT count(1) FROM script_file_publish
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="list4page" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0
+        ORDER BY id desc limit #{start},#{limit}
+    </select>
+
+    <select id="getPublishList" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0
+        ORDER BY id desc
+    </select>
+
+    <select id="getLastPublish" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND application_id = #{applicationId} AND IFNULL(deleted,0) = 0
+        ORDER BY id desc limit 1
+    </select>
+
+
+
+    <select id="getDistinctPublishList" resultType="DataDevScriptFilePublish">
+        SELECT DISTINCT
+        git_project_id as gitProjectId,
+        git_project_file_path as gitProjectFilePath,
+        application_id as applicationId,
+        buffalo_script_id as buffaloScriptId
+        FROM script_file_publish
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0
+        ORDER BY id desc
+    </select>
+
+    <delete id="deletePublish">
+        DELETE FROM script_file_publish WHERE git_project_id=#{gitProjectId} AND git_project_file_path=#{gitProjectFilePath}
+    </delete>
+    <update id="updateDataDevPublish">
+        UPDATE script_file_publish
+        SET
+        <if test="dataDevScriptFilePublish.gitProjectFilePath !=null and dataDevScriptFilePublish.gitProjectFilePath != ''">
+            git_project_file_path=#{dataDevScriptFilePublish.gitProjectFilePath},
+        </if>
+        git_project_id = #{gitProjectId}
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </update>
+    <select id="getMaxVersion" resultType="DataDevScriptFilePublish">
+        select application_id as applicationId,max(version) as version
+        from  script_file_publish
+        where git_project_id =#{gitProjectId} and git_project_file_path = #{gitProjectFilePath} group by application_id
+    </select>
+
+    <select id="findLastByStatus" resultType="DataDevScriptFilePublish">
+        SELECT
+        <include refid="publish_columns"></include>
+        FROM script_file_publish
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+        AND application_id = #{applicationId}
+        AND status =#{status} AND IFNULL(deleted,0) = 0 ORDER by id desc limit 1
+    </select>
+
+</mapper>

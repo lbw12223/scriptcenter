@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jsf="http://jsf.jd.com/schema/jsf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://jsf.jd.com/schema/jsf http://jsf.jd.com/schema/jsf/jsf.xsd">
+
+
+     <!-- 用户组JSF接口Consumer -->
+    <jsf:consumer id="jobServiceInterface" interface="com.jd.bdp.ide.api.JobServiceInterface"
+                  protocol="jsf" alias="${ide.jsf.alias}" timeout="10000" lazy="true">
+    </jsf:consumer>
+
+    <jsf:consumer id="clusterJSFInterface" interface="com.jd.bdp.api.think.cluster.ClusterJSFInterface"
+                  alias="${bdp.jsf.alias}" retries="3" timeout="5000"/>
+
+
+
+    <jsf:consumer id="authorityCenterMarketInfoInterface" interface="com.jd.bdp.api.authorityCenter.AuthorityCenterMarketInfoInterface" alias="${bdp.jsf.alias}" retries="3" timeout="5000"/>
+
+    <jsf:consumer id="urmUserInterface" interface="com.jd.bdp.urm2.api.user.UrmUserInterface"
+                  protocol="jsf" alias="${urm.alias}" timeout="20000" >
+    </jsf:consumer>
+
+    <jsf:consumer id="v2UrmRightInterface" interface="com.jd.bdp.urm2.api.right.V2UrmRightInterface"
+                  protocol="jsf" alias="${right.alias}" timeout="20000" >
+    </jsf:consumer>
+
+    <jsf:consumer id="metaInfoInterface" interface="com.jd.bdp.api.think.meta.MetaInfoInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+    <jsf:consumer id="agentCodeFormatInterface" interface="com.jd.bdp.datadev.agent.api.AgentCodeFormatInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+    <jsf:consumer id="metaDataJSFInterface" interface="com.jd.bdp.api.bdptable.MetaDataJSFInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+
+    <!-- 用户接口 -->
+    <jsf:consumer id="userInterfaceImpl" interface="com.jd.bdp.api.urm.UserJsfInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+
+    <!-- 资源接口 -->
+    <jsf:consumer id="resourceInterfaceImpl" interface="com.jd.bdp.api.urm.ResourceJsfInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+
+    <!-- ERP用户验证接口 -->
+    <jsf:consumer id="erpSSOInterfaceImpl" interface="com.jd.bdp.api.urm.ErpSSOInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+    </jsf:consumer>
+
+
+    <jsf:consumer id="projectInterface" interface="com.jd.bdp.planing.api.ProjectInterface"
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000" lazy="true">
+    </jsf:consumer>
+
+
+    <jsf:consumer id="releaseInterface" interface="com.jd.bdp.rc.api.ReleaseInterface"
+                  protocol="jsf" alias="${jsf.alias.devcenter}"  timeout="100000" lazy="true">
+    </jsf:consumer>
+
+
+
+</beans>

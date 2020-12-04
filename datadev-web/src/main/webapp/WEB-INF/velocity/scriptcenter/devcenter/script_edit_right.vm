@@ -1,0 +1,32 @@
+<div id="sidebar" style="width: 33px;float: right;height: 100%;">
+    <div id="rightDiv" class="datadev-tab-right"
+         style="width:33px;position:absolute;top:0px;right:0px;height:100%;z-index:100;">
+        <ul class="datadev-ul tab-header" style="overflow: hidden">
+            <li target="args-config"><a href="javascript:;" class="first">参数配置</a></li>
+            <li target="script-detail"><a href="javascript:;">脚本详情</a></li>
+            <li target="buffalo-task-list"><a href="javascript:;">任务列表</a></li>
+            <li target="online-history"><a href="javascript:;">上线历史</a></li>
+            <li target="operate-history"><a href="javascript:;">操作记录</a></li>
+            <li target="run-history"><a href="javascript:;">运行记录</a></li>
+        </ul>
+        <div id="args-config" class="tab-content undisplay " data-width="550" style="overflow: auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_arg_config.vm")
+        </div>
+        <div id="script-detail" class="tab-content undisplay" data-width="550" style="overflow:auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_detail.vm")
+        </div>
+        <div id="buffalo-task-list" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_buffalo_task_list.vm")
+        </div>
+        <div id="online-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_online_histroy.vm")
+        </div>
+        <div id="operate-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_operate_history.vm")
+        </div>
+        <div id="run-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
+            #parse("/scriptcenter/devcenter/script_edit_right_run_history.vm")
+        </div>
+
+    </div>
+</div>

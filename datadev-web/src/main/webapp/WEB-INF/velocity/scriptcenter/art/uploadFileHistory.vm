@@ -1,0 +1,62 @@
+#set($layout="layout_blank.vm")
+
+
+
+<input type="hidden" id="gitProjectId" value="${gitProjectId}"/>
+
+
+<div id="uploadFileHisDiv" style="height: 100%;overflow-y: hidden;background: #252A2F;" class="datadev-tab-horizontal">
+
+    <div style="margin-top: 20px" class="bdp-form-group">
+        <label class="bdp-control-label script-operate-history-label">上传人：</label>
+        <div class="script-operate-history-content" >
+            #*<input id="selectUploadErp" class="project-item" style="width: 30%;">*#
+            <select id="selectUploadErp" class="appSelect" style="width: 30%;">
+                <option value=""></option>
+            </select>
+            <a class="bdp-btn bdp-btn-primary" id="uploadFileSelect">查询</a>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 33px">
+        <label class="bdp-control-label script-operate-history-label">上传时间：</label>
+
+        <div class="script-operate-history-time-content">
+
+            <input id="uploadFileStartTime" class="script-query-history-Time date-picker">
+            <span class="icon-calendar"></span>
+        </div>
+        <label class="bdp-control-label script-run-history-period">--</label>
+
+        <div class="script-operate-history-time-content">
+            <input id="uploadFileEndTime" class="script-query-history-Time date-picker">
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="jd-table-parent" id="uploadFile-jd-table-parent" style="width:100%;height:100%;overflow: hidden;">
+        <table class="jd-table table table-hover " id="uploadFile-grid-table">
+        </table>
+        <div id="uploadFile-grid-pager">
+
+        </div>
+    </div>
+
+
+</div>
+
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/uploadFileHistory.js?_dc=$!{staticVersion}"></script>
+
+#end
+
+
+

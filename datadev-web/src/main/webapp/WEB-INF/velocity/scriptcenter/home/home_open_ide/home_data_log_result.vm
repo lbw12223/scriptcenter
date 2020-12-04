@@ -1,0 +1,105 @@
+<div id="data-content" class="data-content">
+    <div style="width: 32px;height: 100%;background: white;position: absolute;left: 0px;top: 0px;">
+        <ul class="chart-result-ul">
+            <li id="table_chart" target="home-data-jd-table-parent" class="selected"><a href="javascript:void(0)"><span
+                    class="bdp-icon ide-icon-dtbg"></span></a></li>
+            <li id="zt_chart" target="chartTable"><a href="javascript:void(0)"><span
+                    class="bdp-icon ide-icon-zt"></span></a></li>
+            <li id="xt_chart" target="chartTable"><a href="javascript:void(0)"><span
+                    class="bdp-icon ide-icon-xt"></span></a></li>
+            <li id="bt_chart" target="chartTable"><a href="javascript:void(0)"><span
+                    class="bdp-icon ide-icon-bt"></span></a></li>
+            <li id="mjdjt_chart" target="chartTable"><a href="javascript:void(0)"><span
+                    class="bdp-icon ide-icon-mjdjt"></span></a></li>
+            <li id="qpt_chart" target="chartTable"><a href="javascript:void(0)"><span class="bdp-icon ide-icon-qpt"></span></a>
+            </li>
+        </ul>
+    </div>
+    <div style="height:100%;overflow: hidden;position: absolute;left: 32px;top: 0px;right: 0px;">
+        <div id="home-data-jd-table-parent" class="dataContent"
+             style="display: none;width: 100%;height: 100%;position: relative;">
+            <div style="position: absolute;bottom: 6px;left: 8px;width: 20px;height: 20px;z-index: 1000;">
+                <a href="javascript:;" id="downLoadData" class="bdp-icon ide-icon-xz"></a>
+            </div>
+            <table class="jd-table table table-hover" id="grid-table">
+            </table>
+            <div id="grid-pager">
+            </div>
+        </div>
+        <div id="chartTable" class="dataContent"
+             style="display: none;width: 100%;height: 100%;position: relative;">
+            <div id="columnDiv">
+                <div style="width: 100%;height: 40px;padding: 6px;position: absolute;top: 0px;left: 0px;">
+                    <input class="bdp-form-control" id="searchColumnName" placeholder="字段名" autocomplete="off"
+                           style="width: 100%">
+                #* <div class="chart-column-title">
+                     维度
+                 </div>*#
+                </div>
+                <ul id="chart-result-column-ul" style="" class="chart-result-column-ul">
+                </ul>
+            </div>
+            <div id="columnConfigDiv">
+                <div id="xMoreColumnMoreDiv" class="moreColumnSelectDiv" style="display: none;">
+                    <ul class="moreColumnSelect">
+                        <li></li>
+                    </ul>
+                </div>
+
+                <div class="chart-config-item" style="display: none;" id="clone-chart-config-item">
+                    <span class="chart-config-item-flag"></span>
+                    <span class="chart-config-item-content">
+                          <a href="javascript:;" title="">sdddddddddddd</a>
+                    </span>
+                    <span class="chart-config-item-close">X</span>
+                </div>
+
+                <div id="categoryLabel" class="chart-config bubble">
+                    <p class="chart-config-header">分类轴</p>
+                    <div id="categoryLabelContainer" class="chart-config-item-container">
+                    </div>
+                </div>
+
+                <div id="xLabel" class="chart-config">
+                    <p class="chart-config-header unBubble">分类X轴</p>
+                    <p class="chart-config-header bubble">数值X轴</p>
+                    <div id="xLabelContainer" class="chart-config-item-container">
+                    </div>
+                </div>
+                <div id="yLabel" class="chart-config">
+                    <p class="chart-config-header">数值Y轴</p>
+                    <div id="yLabelContainer" class="chart-config-item-container">
+                    </div>
+                </div>
+                <div id="zLabel" class="chart-config bubble">
+                    <p class="chart-config-header">数值气泡大小</p>
+                    <div id="zLabelContainer" class="chart-config-item-container">
+                    </div>
+                </div>
+                <div style="text-align: left;margin-left: 10px;">
+                    <a class="bdp-btn bdp-btn-primary" id="showButton">预览</a>
+                </div>
+
+            </div>
+            <div id="chartDiv">
+                <div id="chartShowDiv"
+                     style=""></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
+
+##<script src="https://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+##<script src="https://cdn.hcharts.cn/highcharts/highcharts-more.js"></script>
+## hightcharts js文件
+<script src="/scriptcenter/statics/bdp/plugins/highcharts/highcharts.js"></script>
+<script src="/scriptcenter/statics/bdp/plugins/highcharts/highcharts-more.js"></script>
+<script src="/scriptcenter/statics/bdp/plugins/highcharts/modules/exporting.js"></script>
+<script src="/scriptcenter/statics/bdp/plugins/highcharts/modules/offline-exporting.js"></script>
+
+#*
+<script src="https://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+*#
+<script src="/scriptcenter/statics/pages/home/hightChart-config.js?_dc=11212121$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/dataChartLog.js?_dc=sss$!{staticVersion}"></script>

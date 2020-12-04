@@ -1,0 +1,98 @@
+#set($layout="layout_blank.vm")
+<link rel="stylesheet" type="text/css"
+      href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/mutiFile/mutiFile.css?_dc=$!{staticVersion}"/>
+<style>
+    .bdp-help-block{left: 114px;}
+</style>
+<div>
+    <input id="fileFolder" name="fileFolder" type="file" webkitdirectory multiple="multiple" style="display: none;">
+    <input id="fileFiles" name="fileFolder" type="file" multiple="multiple" style="display: none;">
+
+
+    <input id="gitProjectId" type="hidden" value="$!{gitProjectId}"/>
+    <input id="gitProjectDirPath" type="hidden" value="$!{gitProjectDirPath}"/>
+    <input id="gitProjectName" type="hidden" value="$!{dataDevGitProject.gitProjectName}"/>
+
+    <form id="file-form">
+        <div id="upFileSelect">
+            <div class="bdp-form-group dialog-group" style="height: 100px;position: relative;">
+                <label class="bdp-control-label  bdp-col-xs-2"><i class="bdp-note">*</i>上传描述：</label>
+                <div class=" file-item">
+                    <textarea class="bdp-form-control  bdp-col-xs-9" id="description" style="height: 100px;"
+                              name="description"></textarea>
+                </div>
+            </div>
+            <div class="bdp-form-group dialog-group" style="height: 192px;position: relative;">
+                <label class="bdp-control-label bdp-col-xs-2"> <i class="bdp-note">*</i>选择目录：</label>
+                <div class=" file-item">
+                    <input class="bdp-form-control   bdp-col-xs-9" id="savePath" value="" readonly unselectable="on"
+                           name="dirPath" autocomplete="off">
+                    <input type="hidden" class="dirId" name="dirId" autocomplete="off">
+                    <input type="hidden" class="fileId" autocomplete="off">
+                </div>
+                <div id="fileTreeWrapper" class="col-xs-offset-2 bdp-col-xs-9"
+                     style="">
+                    <ul id="fileTree" class="ztree" style="">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div id="fileUpProcess" style="height: 100%;width: 100%;margin: 0px auto;border: 0px solid red;display: none;">
+        <div style="margin-bottom: 20px;">目标目录：<span id="selectDirPath">$!{dataDevGitProject.gitProjectName}</span></div>
+        <div id="process" style="height: 300px;overflow: auto;">
+            <table class="mutilFileTable">
+                <thead>
+                <tr>
+                    <td style="width: 40%;">文件名</td>
+                    <td style="width: 12%;">大小</td>
+                    <td style="width: 20%;">状态</td>
+                    <td style="width: 29%;">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="processUi_______________" style="display: none;">
+                    <td>
+                        <div class="itemHeader">
+                            <div class="itemHeaderIcon"><span class="mutil-icon"></span></div>
+                            <div class="itemHeaderFileName" title="">xxxxvcxvx.zip</div>
+                        </div>
+                    </td>
+                    <td class="itemSize">124M</td>
+                    <td>
+                        <div class="item">
+                            <div class="itemInProcess">
+                                <div class="itemProcessContainer"><div class="inner process"></div></div>
+                                <div class="itemSpeed">10% (128Kb/s)</div>
+                            </div>
+                            <div class="itemInFinishOrBeforUp">待上传</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="itemOpt">
+                            <span class="restart" title="重新上传文件">重传</span>
+                            <span class="recover" title="文件内容不一致，版本+1">替换</span>
+                            <span class="newFile" title="新生成文件比如：import_1.py">保留</span>
+                            <span class="cancel" title="取消文件上传">取消</span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="text-align: center;position: absolute;width: 100%;bottom: 0px;">
+        <a class="bdp-btn bdp-btn-primary" id="selectFiles">上传文件</a>
+        <a class="bdp-btn bdp-btn-primary" id="selectDir">上传文件夹</a>
+        <a class="bdp-btn bdp-btn-default" id="cancel">关闭</a>
+    </div>
+</div>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/mutiFile/mutiFile.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/mutil_file_upload.js?_dc=$!{staticVersion}"></script>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevClientInfoDao">
+
+    <!--保存-->
+    <insert id="insertClientInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_info (
+        ip,
+        job_limit,
+        active_script_run_detail,
+        last_active_time,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        cpu,
+        disk
+        )
+        VALUES(
+        #{ip},
+        #{jobLimit},
+        #{activeScriptRunDetail},
+        #{lastActiveTime},
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        0,
+        #{cpu},
+        #{disk}
+        )
+    </insert>
+
+
+</mapper>

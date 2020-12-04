@@ -1,0 +1,78 @@
+@charset "utf-8";
+/* CSS Document */
+/*footer*/
+
+
+/*footer*/
+.bdp-index-about {
+    background-color: #171f2a;
+    height:270px;
+}
+.bdp-index-about-logo{
+    float: left;
+}
+.bdp-index-about-logo span{
+    display: block;
+    width: 238px;
+    height: 58px;
+    float: left;
+    background: url(images/logo.png) no-repeat;
+}
+
+.bdp-index-case-div{
+    text-align: center;
+    padding-top: 30px;
+}
+.bdp-index-case-div p{
+    font-size: 16px;
+    color:#707070;
+    line-height: 24px;
+}
+.bdp-login-footer {
+    /*padding: 40px 0 60px;*/
+    height: 150px;
+    padding-top:30px;
+}
+.bdp-login-footer .bdp-weixin {
+    background: url(images/icon-weixin.png) no-repeat;
+    width: 100px;
+    height: 119px;
+    float: right;
+    position:relative;
+}
+.bdp-login-footer .bdp-weixin2 {
+    background: url(images/icon-weixin-2.png) no-repeat;
+    width: 100px;
+    height: 119px;
+    position:absolute;
+    left:-120px;
+    top:0;
+}
+.bdp-login-footer p {
+    margin-top: 28px;
+    text-align: center;
+    color: #70747f;
+}
+.bdp-login-footer .bdp-footer {
+    border-bottom: 1px solid #27303f;
+    padding: 0 0 30px;
+    min-width: 1200px;
+    max-width: 1200px;
+    width: 1200px;
+    margin: 0 auto;
+}
+.bdp-footer-info{
+    text-align: center;
+    font-size: 14px;
+    color:#878e9b;
+}
+.bdp-footer-link a{
+    font-size: 14px;
+    color:#878e9b;
+    text-decoration: none;
+}
+.bdp-footer-link span{
+    font-size: 14px;
+    color:#878e9b;
+    margin: 0 10px;
+}

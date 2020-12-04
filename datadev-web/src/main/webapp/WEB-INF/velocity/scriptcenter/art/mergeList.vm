@@ -1,0 +1,32 @@
+#set($layout="layout_blank.vm")
+#set($page_title="mergeList")
+<link href="/scriptcenter/statics/pages/art/mergeList.css?_dc=$!{staticVersion}" rel="stylesheet">
+
+<input id="" type="hidden" value="${gitProjectId}">
+<input id="" type="hidden" value="${gitProjectDirPath}">
+<div id="mergeListContent" class="merge-content">
+    <div class="jd-table-parent" id="merge-jd-table-parent">
+        <table class="jd-table table table-hover " id="merge-grid-table">
+        </table>
+        <div id="online-grid-pager">
+
+        </div>
+    </div>
+    <div class="merge-btn-content">
+        <div class="btn-wrap">
+            <a id="acceptYours" class="bdp-btn bdp-btn-default">Accept Yours</a>
+        </div>
+        <div class="btn-wrap">
+            <a id="acceptTheirs" class="bdp-btn bdp-btn-default">Accept Theirs</a>
+        </div>
+        <div class="btn-wrap">
+            <a id="merge" class="bdp-btn bdp-btn-default">Merge</a>
+        </div>
+    </div>
+</div>
+
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/art/mergeList.js?_dc=$!{staticVersion}"></script>

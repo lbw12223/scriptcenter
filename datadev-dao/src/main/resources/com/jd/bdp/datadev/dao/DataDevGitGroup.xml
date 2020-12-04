@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitGroupDao">
+    <sql id="datadev_git_group_column">
+        git_group_id as gitGroupId,
+        name,
+        path,
+        full_name as fullName,
+        full_path as fullPath,
+        finish_project_member_flag as finishProjectMemberFlag
+    </sql>
+
+
+    <!--保存-->
+    <insert id="batchInsert">
+        INSERT INTO git_group (
+        git_group_id,
+        name,
+        path,
+        full_name,
+        full_path,
+        finish_project_member_flag
+        )
+        VALUES
+        <foreach collection="dataDevGroupList" item="dataDevGroup" open="" separator="," close="">
+            (
+            #{dataDevGroup.gitGroupId},
+            #{dataDevGroup.name},
+            #{dataDevGroup.path},
+            #{dataDevGroup.fullName},
+            #{dataDevGroup.fullPath},
+            #{dataDevGroup.finishProjectMemberFlag}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <delete id="deleteAll">
+        DELETE FROM git_group
+    </delete>
+
+    <select id="getNeedInitDataDevGitGroup" resultType="DataDevGitGroup">
+        SELECT
+        <include refid="datadev_git_group_column"></include>
+        FROM git_group where finish_project_member_flag = 1 limit 1
+    </select>
+    <update id="updateDataDevGitGroup">
+        UPDATE git_group
+        SET
+        <if test="finishProjectMemberFlag !=null ">
+            finish_project_member_flag = #{finishProjectMemberFlag}
+        </if>
+        WHERE git_group_id = #{gitGroupId}
+    </update>
+
+    <select id="erpGroups" resultType="DataDevGitGroup">
+        SELECT
+        git_group.git_group_id as gitGroupId,
+        git_group.name,
+        git_group.path,
+        git_group.full_name as fullName,
+        git_group.full_path as fullPath,
+        git_group.finish_project_member_flag as finishProjectMemberFlag
+        FROM git_group_member INNER JOIN git_group ON git_group.git_group_id = git_group_member.git_group_id
+        WHERE git_member_username=#{erp}
+        and git_group.git_group_id &lt; 900000000
+    </select>
+
+    <select id="erpCodingGroups" resultType="DataDevGitGroup">
+        SELECT
+        git_group.git_group_id as gitGroupId,
+        git_group.name,
+        git_group.path,
+        git_group.full_name as fullName,
+        git_group.full_path as fullPath,
+        git_group.finish_project_member_flag as finishProjectMemberFlag
+        FROM git_group_member INNER JOIN git_group ON git_group.git_group_id = git_group_member.git_group_id
+        WHERE git_member_username=#{erp}
+        and git_group.git_group_id &gt;= 900000000
+    </select>
+
+    <select id="listAllGroupsAndShares" resultType="DataDevGitGroup">
+       (SELECT
+        git_group_id as gitGroupId
+        FROM git_group)
+        UNION ALL
+        (SELECT
+        distinct git_group_id as gitGroupId
+        from git_project_shared_group)
+    </select>
+
+    <select id="getDataDevGitGroupByGroupId" resultType="DataDevGitGroup">
+        SELECT
+        <include refid="datadev_git_group_column"></include>
+          from git_group WHERE git_group_id=#{gitGroupId}
+    </select>
+
+    <insert id="insertOneDevGroup" parameterType="DataDevGitGroup">
+        INSERT INTO git_group (
+        git_group_id,
+        name,
+        path,
+        full_name,
+        full_path,
+        finish_project_member_flag
+        )
+        VALUES(
+        #{gitGroupId},
+        #{name},
+        #{path},
+        #{fullName},
+        #{fullPath},
+        #{finishProjectMemberFlag}
+         )
+    </insert>
+
+    <select id="findExists" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select exists (select * from git_group where git_group_id = #{gitProjectId})
+    </select>
+
+    <select id="getAllGitGroupByKeyWord" resultType="DataDevGitGroup">
+        select
+        git_group.git_group_id as gitGroupId,
+        git_group.name,
+        git_group.path,
+        git_group.full_name as fullName,
+        git_group.full_path as fullPath,
+        git_group.finish_project_member_flag as finishProjectMemberFlag
+        from git_group inner join git_group_member on git_group.git_group_id = git_group_member.git_group_id
+        and git_group_member.git_member_username = #{erp}
+        where 1=1
+        <if test="keyWord !=null and keyWord !=''">
+            AND (git_group.full_name LIKE concat("%",#{keyWord},"%") OR git_group.full_path LIKE
+            concat("%",#{keyWord},"%") escape'\\')
+        </if>
+        limit #{limit}
+    </select>
+</mapper>

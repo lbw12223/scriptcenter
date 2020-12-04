@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevClientBaseDao">
+
+    <!--保存-->
+    <insert id="insertClientBase" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_base (
+        ip,
+        job_limit,
+        <if test="status !=null and status !=''">
+            status,
+        </if>
+        active_script_run_detail,
+        last_active_time,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        cpu,
+        disk
+        )
+        VALUES(
+        #{ip},
+        #{jobLimit},
+        <if test="status !=null and status !=''">
+            #{status},
+        </if>
+        #{activeScriptRunDetail},
+        #{lastActiveTime},
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        0,
+        #{cpu},
+        #{disk}
+        )
+    </insert>
+
+    <select id="findByIp" resultType="DataDevClientBase">
+        SELECT
+        id,ip,job_limit as jobLimit, status,creator,created,mender,modified,deleted,cpu, disk
+        from client_base where ip = #{ip}   ORDER by id  desc limit 1
+    </select>
+
+    <select id="findByPreTime" resultType="DataDevClientBase">
+        SELECT  ip,job_limit,active_script_run_detail AS activeScriptRunDetail,cpu, disk
+        from client_base
+        where last_active_time >= #{preTime}
+        AND IFNULL(status,1) !=0
+        AND (job_limit>active_script_run_detail OR job_limit <![CDATA[<]]> 0)
+        order by active_script_run_detail asc
+    </select>
+
+    <update id="updateRundetailAndLastTime">
+        UPDATE client_base
+        SET active_script_run_detail=#{activeScriptRunDetail},last_active_time=#{lastActiveTime},cpu=#{cpu},disk=#{disk}
+        WHERE ip =#{ip}
+    </update>
+
+    <select id="findClientBase" resultType="DataDevClientBase">
+        select id, ip, job_limit as jobLimit, status, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk
+        from client_base
+    </select>
+
+    <select id="findClientInfo" resultType="DataDevClientBase">
+        select id, ip, job_limit as jobLimit, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk from client_info where ip = #{ip}
+    </select>
+    <update id="modifyStatus">
+        UPDATE client_base
+        SET status = #{status}
+        WHERE id = #{id}
+
+    </update>
+    <select id="count" resultType="Long">
+        SELECT count(*) from
+        client_base
+    </select>
+    <select id="list" resultType="DataDevClientBase">
+        SELECT id, ip, job_limit as jobLimit, status, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk
+        from client_base
+        limit #{start},#{limit}
+    </select>
+
+</mapper>

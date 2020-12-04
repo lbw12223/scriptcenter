@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/scriptcenter/statics/image/favicon.ico"/>
+   <link href="/scriptcenter/statics/message/jquery-message.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/css/bdp-core.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/grace/assets/grace-bootstrap.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/grace/assets/grace-bootstrap-bdp.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/plugins/select2/select2.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/css/bdp-popup-window.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/css/layout-core.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/icon-font/style.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/bdp/icon-font/datadevStyle.css?_dc=" type="text/css" rel="stylesheet">
+
+   <link href="/scriptcenter/statics/bdp/plugins/jqGrid/ui.jqgrid.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/dataTime/bootstrap-datetimepicker.min.css?_dc=" type="text/css" rel="stylesheet">
+   <link href="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.css?_dc=" type="text/css" rel="stylesheet">
+    <link href="/scriptcenter/statics/bdp/css/global_white.css?_dc=" type="text/css" rel="stylesheet">
+
+
+
+    <script>
+        var selected_menu_id = '$!{selected_menu_id}';
+        var _bdpDomain = '$!{bdpDomain}';
+        var _staticVersion = '$!{staticVersion}';
+    </script>
+    #if($cssBlock) $cssBlock #end
+    <!-- 下面是公用的JS文件 -->
+    <script type="text/javascript" src= "/scriptcenter/statics/bdp/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/bdpUtil.js"></script>
+
+
+    <script type="text/javascript" src="/scriptcenter/statics/pages/jquery.cookie.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/pages/devcenter/home_open_ide/home_index_cookie.js?_dc="></script>
+
+    <script type="text/javascript" src="/scriptcenter/statics/hotKey/hotkeys.min.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/datadevInitLayout.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/plugins/select2/select2.js"></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/plugins/jquery/jquery.validate.min.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/grace/angular.min.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/grace/grace-bootstrap-tpls.min.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/plugins/jquery/jquery.form.min.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/pages/util.js?_dc="></script>
+    <script type="text/javascript" src="/scriptcenter/statics/message/jquery-message.js?_dc="></script>
+</head>
+
+<body style="overflow: auto">
+
+   $screen_content
+    #if($javascriptBlock) $javascriptBlock
+    #end
+
+</body>
+</html>

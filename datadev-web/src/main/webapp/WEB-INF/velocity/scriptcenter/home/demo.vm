@@ -1,0 +1,356 @@
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/saveFile.css?_dc=$!{staticVersion}" type="text/css">
+
+<form class="bdp-form-horizontal bdp-form-inline" id="submitForm">
+
+    <h4 class="bdp-control-title">基本信息</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务名称：</label>
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.name}" name="name" id="name"
+                   placeholder="可输入汉字，字母，数字，下划线，最大长度为255，不可重复" autocomplete="off"/>
+        </div>
+        <label class="bdp-col-xs-4 bdp-control-label"><input type="checkbox" value="1" checked="checked"
+                                                             style="background: #3286E9;border-radius: 2px;">一直无心111跳</label>
+    </div>
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务类型：</label>
+
+        <div class="bdp-col-xs-8">
+
+            <select class="bdp-col-xs-11 bdp-form-control" name="type" id="type"
+                    placeholder="请输入文字">
+                <option value>请选择</option>
+                #foreach($item in $!{taskTypeMap.keySet()})
+                    <option value="$!{item}" #if($!{task.type} == $!{item})
+                            selected #end>$!{taskTypeMap.get($!{item})}</option>
+                #end
+
+            </select>
+        </div>
+    </div>
+
+
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务审核方式：</label>
+        <div class="bdp-col-xs-8">
+            <label>
+                <input name="auditType_radio" id="jiqishenhe" #if($!{task.auditType}==2) checked  #end
+                       value="1" type="radio">机器审核
+            </label>
+            <label>
+                <input name="auditType_radio" id="renggongshenhe" #if($!{task.auditType}==1) checked  #end
+                       value="2" type="radio">人工审核
+            </label>
+        </div>
+    </div>
+    <div class="bdp-form-group" id="pointNumBlock">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>人脸标注点数：</label>
+
+        <div class="bdp-col-xs-8">
+
+            <select class="bdp-col-xs-11 bdp-form-control" name="pointNum" id="pointNum"
+                    placeholder="请输入文字">
+                <option value>请选择</option>
+                <option value="68">68个点</option>
+                <option value="95">95个点</option>
+                <option value="100">100个点</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="bdp-form-group" id="categoryInfoDiv">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务类目：</label>
+        <div class="bdp-col-xs-8">
+                         <textarea class="bdp-form-control bdp-col-xs-11" name="extend" id="categoryInfo" row="5"
+                                   placeholder="每个类目占一行，例：1=上衣">$!{task.extend}</textarea>
+        </div>
+    </div>
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label">备注：</label>
+        <div class="bdp-col-xs-8">
+                         <textarea class="bdp-form-control bdp-col-xs-11" name="remarks" id="remarks" row="5"
+                                   placeholder="请输入文字">$!{task.remarks}</textarea>
+        </div>
+    </div>
+
+    <h4 class="bdp-control-title">数据信息</h4>
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>标注数据来源：</label>
+
+        <div class="bdp-col-xs-8">
+
+        </div>
+    </div>
+
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>子任务标注量：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.amountPerTask}"
+                   name="amountPerTask"
+                   id="amountPerTask" placeholder="请输入数字"/>
+            <i id="hint_id" class="icon-question-sign  bdp-hint-sign" data-hint="
+                                设定每个子任务包含的标注数据量
+                                " data-original-title="" data-placement="bottom"></i>
+        </div>
+    </div>
+
+
+    <div class="bdp-form-group jiqishenhe">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务容错率(%)：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.faultRate}" name="faultRate"
+                   id="faultRate" placeholder="请输入, 例如:5" autocomplete="off"/>
+        </div>
+    </div>
+    <h4 class="bdp-control-title">人员信息</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务负责人：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.owner}" name="owner"
+                   id="owner" placeholder="请选择"/>
+            <i id="hint_id" class="icon-question-sign  bdp-hint-sign" data-hint="
+                                任务负责人负责任务的修改、指派、验收等
+                                " data-original-title="" data-placement="bottom"></i>
+        </div>
+    </div>
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务审核人：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.auditPins}" name="auditPins"
+                   id="auditPins" placeholder="请选择"/>
+            <i id="hint_id" class="icon-question-sign  bdp-hint-sign" data-hint="
+                                任务审核人对任务进行审核
+                                " data-original-title="" data-placement="bottom"></i>
+        </div>
+    </div>
+    <div class="bdp-form-group jiqishenhe" id="sampleMarkUserDiv">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>样本标注人：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.sampleMarkUserPins}"
+                   name="sampleMarkUserPins"
+                   id="sampleMarkUserPins" placeholder="请选择"/>
+        </div>
+    </div>
+    <div class="bdp-form-group jiqishenhe" id="sampleMarkUserDiv">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>时间：</label>
+
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control date-picker" id="startTime" type="text" placeholder="任务创建开始时间">
+        </div>
+    </div>
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务标注人：</label>
+        <div class="bdp-col-xs-8">
+            <input type="text" class="bdp-col-xs-11 bdp-form-control" id="markUserNames"
+                   name="markUserNames"
+                   value="$!{task.markUserNames}"/>
+        </div>
+    </div>
+    <div class="bdp-form-group dialog-group" id="fileNameDiv" style="height: 32px;line-height: 32px">
+        <label class="bdp-control-label file-label"><i class="bdp-note">*</i>文件名称：</label>
+        <div class=" file-item">
+            <input class="bdp-form-control file-input" value="" id="fileName" name="name"
+                   placeholder="请输入文件名称,支持中文,字母,数字,下划线,中划线" autocomplete="off">
+        </div>
+    </div>
+
+
+    <div class="bdp-text-center bdp-tborder">
+        <a class="bdp-btn bdp-btn-primary" id="submitBtn">
+            提交
+        </a>
+        <a class="bdp-btn bdp-btn-default" id="closeBtn">
+            关闭
+        </a>
+
+    </div>
+    <div class="bdp-modal " id="ossModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="bdp-modal-dialog " id="modalExtend" style="width: 800px">
+            <div class="bdp-modal-content " id="modalA"> <!--这是弹出框的头部-->
+                <div class="bdp-modal-header">
+                    <button type="button" class="bdp-close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="bdp-modal-title">Oss目录选择</h4>
+                </div> <!--这是弹出框的主要内容-->
+                <div class="bdp-modal-body" style="width: 800px;position: relative;">
+                    <div style="margin-top: -10px;position: relative;height:30px">
+                                    <span class="icon-search "
+                                          style="position: absolute;left: 735px;font-size: 15px;margin-top: 7px"></span>
+                        <input class=" bdp-form-control" style="float: right;width: 405px"
+                               name="searchOssDirs"
+                               id="searchOssDirs" placeholder="请输入查找内容" autocomplete="off"/>
+                    </div>
+                    <div style="border:1px solid silver;position: relative;margin-top:3px;z-index: 10;height: 352px;">
+                        <div class="oss_app_div"
+                             style="width: 200px;height: 350px;position: absolute;z-index: 10;left: 0px;top: 0px;">
+                            <input id="ossRightsHidden" type="hidden" value="${ossRights}"/>
+                            <ul class="oss_app" style="position: absolute;width: 100%;">
+                                #foreach($item in $!{ossRights})
+                                    <li value="${item.value}">$!{item.name}</li>
+                                #end
+                            </ul>
+                        </div>
+                        <div class="catalogs " id="catalogs"
+                             style="position: absolute;z-index:999;overflow: auto;overflow-x: hidden;height:350px;width: 610px;overflow-y: auto;left: 150px;top: 0px;background: white;">
+                        </div>
+
+                    </div>
+                </div> <!--这是弹出框的底部内容-->
+                <div class="bdp-modal-footer">
+                    <button type="button" class="bdp-btn bdp-btn-search" id="add-btn">选择</button>
+                    <button type="button" class="bdp-btn bdp-btn-default" data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bdp-modal " id="fileModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="bdp-modal-dialog " id="fileExtend" style="width: 800px">
+            <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+                <div class="bdp-modal-header">
+                    <button type="button" class="bdp-close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="bdp-modal-title">目录选择</h4>
+                </div> <!--这是弹出框的主要内容-->
+                <div class="bdp-modal-body" style="width: 800px;position: relative;">
+                    <div style="position: relative;height: 50px">
+                        <div class="btn-group" id="btnGroup" role="group" aria-label="..."
+                             style="float: left">
+                            <button type="button" class="dirBtn bdp-btn bdp-btn-default active"
+                                    button-index="1">未使用
+                            </button>
+                            <button type="button" class="dirBtn bdp-btn bdp-btn-default" button-index="2"
+                                    style="margin-left: -5px">已使用
+                            </button>
+                        </div>
+                        <div style="float: right">
+                                    <span class="icon-search "
+                                          style="position: absolute;left: 735px;font-size: 15px;margin-top: 7px"></span>
+                            <input class=" bdp-form-control" style="float: right;width: 405px"
+                                   name="searchFileDirs"
+                                   id="searchFileDirs" placeholder="请输入查找内容" autocomplete="off"/>
+                        </div>
+                    </div>
+                    <h4 id="fileNum" class="bdp-control-title" style="margin: 0px 0px 0px 0px">已选择文件</h4>
+                    <div id="useDiv" style="position: relative;height: 350px;overflow: auto">
+                        <ul id="dirUl_1" class="dirs" style="display: block">
+                        </ul>
+                        <ul id="dirUl_2" class="dirs" style="display: none">
+                        </ul>
+                    </div>
+
+                </div> <!--这是弹出框的底部内容-->
+                <div class="bdp-modal-footer">
+                    <button type="button" class="bdp-btn bdp-btn-search" id="addFilebtn">选择</button>
+                    <button type="button" class="bdp-btn bdp-btn-default" data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bdp-modal " id="markUserModal" role="dialog" aria-hidden="true" style="overflow:hidden;">
+        <div class="bdp-modal-dialog " style="width: 800px">
+            <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+                <div class="bdp-modal-header">
+                    <button type="button" class="bdp-close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="bdp-modal-title">任务标注人选择</h4>
+                </div> <!--这是弹出框的主要内容-->
+                <div class="bdp-modal-body" style="width: 800px;position: relative;">
+                    <div style="position: relative;height: 50px">
+                        <div class="btn-group" id="userBtnGroup" role="group" aria-label="..."
+                             style="float: left">
+                            <button type="button" class=" bdp-btn bdp-btn-default active"
+                                    style="width: 75px" button-index="1">用户
+                            </button>
+                            <button type="button" class=" bdp-btn bdp-btn-default" button-index="2"
+                                    style="margin-left: -5px;width: 75px">标注组
+                            </button>
+                        </div>
+                        <div style="float: left;margin-left: 200px">
+                            <input class="bdp-form-control" name="searchUser" id="searchUser"
+                                   style="width: 400px" placeholder="请输入用户pin、用户名及拼音"/>
+                        </div>
+                    </div>
+                    <h4 class="bdp-control-title " style="margin:-5px 0px 0px 0px">已选择</h4>
+                    <div style="height: 300px;overflow: auto;width: 760px;position: relative">
+                        <ul id="markUsersUl" class="markUsersUl">
+                        </ul>
+
+                    </div>
+
+                </div> <!--这是弹出框的底部内容-->
+                <div class="bdp-modal-footer">
+                    <button type="button" class="bdp-btn bdp-btn-search" id="addUser">确定</button>
+                    <button type="button" class="bdp-btn bdp-btn-default" data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form class="bdp-form-horizontal bdp-form-inline" id="submitForm">
+
+    <h4 class="bdp-control-title">基本信息</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-col-xs-4 bdp-control-label"><i class="bdp-note">*</i>任务名称：</label>
+        <div class="bdp-col-xs-8">
+            <input class="bdp-col-xs-11 bdp-form-control" value="$!{task.name}" name="name" id="name"
+                   placeholder="可输入汉字，字母，数字，下划线，最大长度为255，不可重复" autocomplete="off"/>
+        </div>
+        <label class="bdp-col-xs-4 bdp-control-label"><input type="checkbox" value="1" checked="checked"
+                                                             style="background: #3286E9;border-radius: 2px;">一直无心111跳</label>
+    </div>
+</form>
+
+
+<div id="spins" style="position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px"></div>
+<link rel="stylesheet" href="/scriptcenter/statics/spin/spin.css?_dc=$!{staticVersion}" type="text/css">
+
+<script src="/scriptcenter/statics/spin/spin.js?_dc=$!{staticVersion}"></script>
+
+##<script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/dataTime/locales/moment-with-locales.min.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
+##<link rel="stylesheet" href="/scriptcenter/statics/dataTime/bootstrap-datetimepicker.min.css">
+<script>
+    //    $('.date-picker').datetimepicker({
+    //        autoclose: true,
+    //        language: "zh-CN",
+    //        minView: 0,
+    //        minuteStep:5,
+    //        format: 'yyyy-mm-dd HH:ii:ss',
+    //        todayBtn:true,
+    //        clearBtn: true
+    //    });
+    //    var opts = {
+    //        lines: 13, // 花瓣数目
+    //        length: 20, // 花瓣长度
+    //        width: 10, // 花瓣宽度
+    //        radius: 30, // 花瓣距中心半径
+    //        corners: 1, // 花瓣圆滑度 (0-1)
+    //        rotate: 0, // 花瓣旋转角度
+    //        direction: 1, // 花瓣旋转方向 1: 顺时针, -1: 逆时针
+    //        color: '#5882FA', // 花瓣颜色
+    //        speed: 1, // 花瓣旋转速度
+    //        trail: 60, // 花瓣旋转时的拖影(百分比)
+    //        shadow: false, // 花瓣是否显示阴影
+    //        hwaccel: false, //spinner 是否启用硬件加速及高速旋转
+    //        className: 'spinner', // spinner css 样式名称
+    //        zIndex: 2e9, // spinner的z轴 (默认是2000000000)
+    //        top: "auto", // spinner 相对父容器Top定位 单位 px
+    //        left: "auto"// spinner 相对父容器Left定位 单位 px
+    //    };
+    //    var spinner = new Spinner(opts);
+    //    spinner.spin($("#spins")[0]);
+</script>

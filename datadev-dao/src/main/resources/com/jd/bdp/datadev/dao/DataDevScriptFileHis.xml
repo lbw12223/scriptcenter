@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptFileHisDao">
+    <sql id="script_file_columns">
+        id,
+        git_project_id as gitProjectId,
+        git_project_file_path as gitProjectFilePath,
+        file_id as fileId,
+        dir_id as dirId,
+        name,
+        type,
+        script_operator_type as scriptOperatorType,
+        size,
+        version,
+        git_version as gitVersion,
+        description,
+        creator,
+        created,
+        file_md5 as fileMd5,
+        commit_message as commitMessage,
+        relation_dependency_id as relationDependencyId
+
+     </sql>
+
+
+    <!--保存-->
+    <insert id="insertHis" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_file_his (
+        git_project_id  ,
+        git_project_file_path  ,
+        file_id  ,
+        dir_id  ,
+        name,
+        type,
+        script_operator_type  ,
+        size,
+        version,
+        git_version,
+        commit_message,
+        creator,
+        created,
+        file_md5,
+        relation_dependency_id)
+        VALUES(
+        #{gitProjectId},
+        #{gitProjectFilePath},
+        #{fileId},
+        #{dirId},
+        #{name},
+        #{type},
+        #{scriptOperatorType},
+        #{size},
+        #{version},
+        #{gitVersion},
+        #{commitMessage},
+        #{creator},
+        now(),
+        #{fileMd5},
+        #{relationDependencyId})
+    </insert>
+
+    <select id="findByVersion" resultType="DataDevScriptFileHis">
+        SELECT
+        <include refid="script_file_columns"/>
+        FROM script_file_his
+        WHERE file_id = #{fileId} AND IFNULL(deleted,0) = 0 and version =#{version} ORDER by id DESC limit 1
+    </select>
+    <select id="count4page" resultType="Long">
+        SELECT count(*)
+        FROM script_file_his
+        WHERE file_id = #{fileId} AND IFNULL(deleted,0) = 0
+        <if test="startTime!=null">
+            AND created >= #{startTime}
+        </if>
+        <if test="endTime!=null">
+            AND created &lt;=#{endTime}
+        </if>
+        <if test="creator!=null and creator!=''">
+            AND creator= #{creator}
+        </if>
+    </select>
+    <select id="list4page" resultType="DataDevScriptFileHis">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file_his
+        WHERE file_id = #{fileId} AND IFNULL(deleted,0) = 0
+        <if test="startTime!=null ">
+            AND created >= #{startTime}
+        </if>
+        <if test="endTime!=null ">
+            AND created &lt;=#{endTime}
+        </if>
+        <if test="creator!=null and creator!=''">
+            AND creator= #{creator}
+        </if>
+        ORDER BY id desc limit #{start},#{limit}
+    </select>
+    <select id="findByPathAndVersion" resultType="DataDevScriptFileHis">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file_his
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+        <if test="version !=null and version !=''">
+            AND version =#{version}
+        </if>
+        AND IFNULL(deleted,0) = 0
+        ORDER BY id desc limit 1
+    </select>
+
+    <update id="updateDataDevScriptFileHisPath">
+        UPDATE script_file_his
+        SET git_project_file_path = #{gitNewProjectFilePath}
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </update>
+
+
+    <update id="updateScriptFileHis">
+        UPDATE script_file_his
+        SET git_project_file_path = #{gitProjectFilePath} , `name` = #{fileName}
+        WHERE file_id = #{fileId}
+    </update>
+
+</mapper>

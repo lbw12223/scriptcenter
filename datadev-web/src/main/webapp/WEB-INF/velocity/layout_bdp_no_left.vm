@@ -1,0 +1,273 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>开发平台IDE</title>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="/scriptcenter/statics/image/favicon.ico"/>
+    <script>
+        var selected_menu_id = '$!{selected_menu_id}';
+        var _bdpDomain = '$!{bdpDomain}';
+        var _staticVersion = '$!{staticVersion}';
+    </script>
+    #if($cssBlock) $cssBlock #end
+    <!-- 下面是公用的JS文件 -->
+
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/bdp-core.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/top.js?_dc=$!{staticVersion}"></script>
+    <style>
+
+        .select-down-container {
+            position: absolute;
+            z-index: 1001;
+            background: #ffffff;
+            width: 300px;
+            background: #FFFFFF;
+            border: 1px solid #DADFE7;
+            box-shadow: 0 5px 15px 0 rgba(4, 43, 92, 0.15);
+            top: 45px;
+            display: none;
+            box-shadow:0 6px 12px rgba(0,0,0,.175);
+        }
+
+        div.select-down-linkflag {
+            width: 10px;
+            height: 10px;
+            left: 10px;
+            top: -16px;
+            position: relative;
+        }
+
+        div.select-down-linkflag b:before {
+            content: '';
+            display: block;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid #DADFE7;
+        }
+
+        div.select-down-linkflag b:after {
+            content: '';
+            display: block;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid #ffffff;
+            position: absolute;
+            top: 1px;
+        }
+
+        ul.select-down-ul {
+            list-style-type: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        ul.select-down-ul li {
+            line-height: 35px;
+            height: 35px;
+            overflow: hidden;
+            color: #666;
+            cursor: pointer;
+            text-indent: 15px;
+        }
+
+        ul.select-down-ul li:hover {
+           color: #2083FE;background: rgba(32, 131, 254, 0.08);
+        }
+        div.selectBack{
+            display: none;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            opacity: 0;
+
+        }
+        div.projectSpace{
+            width: 100px;
+            height: 45px;
+            background: #171F2A;
+            position: relative;
+            cursor: pointer;
+        }
+        div.projectSpaceTitle{
+            line-height: 45px;height: 45px;
+        }
+
+    </style>
+</head>
+<body style="overflow: hidden">
+<div id="selectBack" class="selectBack"></div>
+<div style="width: 100%;height: 100%;position: relative;top:0px;background: #171F2A;">
+
+    <template id="parentProjectSpace" >
+        <div id="projectSpace" class="projectSpace" style="">
+            <div class="projectSpaceTitle">
+                <div style="float: left;width: 15px; height: 15px;">
+                <span style="color: #666666" class="bdp-icon bdp-icon-globe ">
+                 <span class="iconFont"></span>
+             </span>
+                </div>
+                <div style="float: left;margin-left: 4px;width: 80px;overflow: hidden;">
+                    <span id="projectSpacenName" style="color: #fff ;font-size:14px; display: block;overflow: hidden;height: 40px;">$!{defaultProjectSpaceName}</span>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div id="select-down-container" class="select-down-container">
+                <div class="select-down-linkflag">
+                    <b></b>
+                </div>
+                <ul class="select-down-ul">
+                    #foreach($project in $projectBos)
+                        <li data-id="$!{project.id}" data-value="$!{project.name}">$!{project.name}</li>
+                    #end
+                </ul>
+            </div>
+        </div>
+    </template>
+
+
+
+#*  <div style=" position: relative; top:0px;width: 100%;">
+      #parse("layout_bdp_top.vm")
+  </div>*#
+    <!-- 工作区内容区域 -->
+
+    <div id="common" style="position: absolute; top : 45px;width: 100%;bottom: 0px;">
+        <div class="main-container-inner">
+            $screen_content
+        </div>
+    </div>
+</div>
+
+<script>
+    var _bdpDomain = '$!{bdpDomain}';
+    var _staticVersion = '$!{staticVersion}';
+    var projectSpaceId = '$!{defaultProjectSpaceId}';
+    var projectSpaceName = '$!{defaultProjectSpaceName}';
+</script>
+
+<script type="text/javascript">
+    var CD = '$!{bdpCommonData}';
+    var commonData = {};
+    if (CD != null && CD != "") {
+        try {
+            commonData = eval("(" + CD + ")")
+        } catch (e) {
+
+        }
+    }
+    var bdpInfo = {
+        common: commonData,
+        bdpDomain: "$!{bdpDomain}",
+        aceStaticVersion: "$!{aceStaticVersion}",
+        topMenuList: [],
+        leftMenuList: [],
+        selectMenu: {
+            value: '$!{selectMenu.value}',
+            ext2: '$!{selectMenu.ext2}',
+            name: '$!{selectMenu.name}'
+        },
+        userHolder: {
+            name: '$!{userHolder.name}',
+            erp: '$!{userHolder.erp}',
+            userSysInfo: {
+                imgUrl: '$!{userHolder.userSysInfo.imgUrl}' ? '$!{userHolder.userSysInfo.imgUrl}' : '$!{bdpDomain}' + '/statics/ace/avatars/avatar2.png'
+            }
+        },
+        tt_hostIp: '$!{tt_hostIp}',
+        tt_now: '$!{tt_now}'
+    };
+
+    /*顶部菜单*/
+    (function () {
+        var list = bdpInfo.topMenuList, item, iItem;
+        #foreach($item in $productList)
+            item = {};
+            item.name = '$!{item.name}';
+            item.list = [];
+            #foreach($s in $item.list)
+                iItem = {};
+                iItem.right = $!{s.right};
+                iItem.value = '$!{s.value}';
+                iItem.name = '$!{s.name}';
+                iItem.ext2 = '$!{s.ext2}';
+                item.list.push(iItem);
+            #end
+            list.push(item);
+        #end
+    })();
+
+    /*左侧菜单*/
+    (function () {
+        var list = bdpInfo.leftMenuList, item, iItem;
+        #foreach($item in $leftMenuList)
+            item = {};
+            item.name = '$!{item.name}';
+            item.value = '$!{item.value}';
+            item.ext1 = '$!{item.ext1}';
+            item.right = $!{item.right};
+            item.list = [];
+            #foreach($s in $item.list)
+                iItem = {};
+                iItem.right = $!{s.right};
+                iItem.value = '$!{s.value}';
+                iItem.name = '$!{s.name}';
+                iItem.ext1 = '$!{s.ext1}';
+                iItem.ext5 = '$!{s.ext5}';
+                item.list.push(iItem);
+            #end
+            list.push(item);
+        #end
+    })();
+
+</script>
+
+<!-- 下面是每个页面单独需要使用的JS文件 -->
+    #if($javascriptBlock) $javascriptBlock
+    #end
+<script type="text/javascript">
+    var _erp = '$!{userHolder.erp}';
+    var jaq = jaq || [];
+    jaq.push(['account', 'JA2018_1321215']);
+    jaq.push(['domain', 'ide.bdp.jd.com']);
+    jaq.push(['erp_account', _erp]);  //ERP帐号，erp_account为字段名固定不变，test填入用户erp帐号(调用方自己传,若不传,会记录用户的京东pin)
+    (function () {
+        var ja = document.createElement('script');
+        ja.type = 'text/javascript';
+        ja.async = true;
+        ja.src = '//wl.jd.com/joya.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ja, s);
+    })()
+
+</script>
+
+<script type="text/javascript"
+        src="$!{bdpDomain}/statics/i18n/jquery.i18n.properties-1.0.9.js?_dc=$!{staticVersion}"></script>
+<script type="text/javascript" src="$!{bdpDomain}/statics/i18n/load_i18n_config.js?_dc=$!{staticVersion}"></script>
+
+<script type="text/javascript" src="$!{bdpDomain}/statics/bdp/js/layout.js?_dc=$!{staticVersion}"></script>
+<script type="text/javascript"
+        src="$!{bdpDomain}/statics/bdp/plugins/layer/layer.min.js?_dc=$!{staticVersion}"></script>
+
+<link href="$!{bdpDomain}/statics/bdp/css/head.css?_dc=$!{staticVersion}" type="text/css" rel="stylesheet">
+#*
+<link rel="stylesheet" type="text/css" href="$!{bdpDomain}/helpCenter/statics/pages/common/css/bdp_help_center.css?_dc=$!{staticVersion}" />
+*#
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/pages/home/datadev_newstart.css?_dc=$!{staticVersion}"/>
+#*
+<script src="$!{bdpDomain}/helpCenter/statics/pages/common/js/bdp_help_center.js?_dc=$!{staticVersion}"></script>
+*#
+<link rel="stylesheet" type="text/css" href="$!{bdpDomain}/statics/bdp/css/bdp-new-start.css?_dc=$!{staticVersion}">
+<script src="$!{bdpDomain}/statics/bdp/js/bdp-new-start.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/js/datadevInitLayout.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/js/projectSpace.js?_dc=$!{staticVersion}"></script>
+
+
+</body>
+</html>

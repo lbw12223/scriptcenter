@@ -1,0 +1,1 @@
+window.jdpts={};jdpts._st=new Date().getTime();

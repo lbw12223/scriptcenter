@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitProjectDao">
+    <sql id="datadev_git_project_column">
+        git_project.git_project_id as gitProjectId,
+        git_project.git_project_path as gitProjectPath,
+        git_project.git_project_name as gitProjectName,
+        git_project.last_commit_sha as lastCommitSha,
+        git_project.branch,
+        git_project.deleted,
+        git_project.finish_project_tree_flag as finishProjectTreeFlag,
+        git_project.finish_project_member_flag as finishProjectMemberFlag,
+        git_project.refresh_time as refreshTime,
+        git_project.group_id as groupId
+    </sql>
+
+
+    <!--保存-->
+    <insert id="insertDataDevGitProject">
+        INSERT INTO git_project (
+        git_project_id,
+        git_project_path,
+        git_project_name,
+        last_commit_sha,
+        branch,
+        deleted,
+        finish_project_tree_flag,
+        finish_project_member_flag,
+        group_id
+        )
+        VALUES(
+        #{gitProjectId},
+        #{gitProjectPath},
+        #{gitProjectName},
+        #{lastCommitSha},
+        #{branch},
+        0,
+        #{finishProjectTreeFlag},
+        #{finishProjectMemberFlag},
+        #{groupId}
+        )
+    </insert>
+
+    <update id="updateDataDevGitProject">
+        UPDATE git_project
+        SET
+        <if test="gitProjectPath !=null and gitProjectPath!= ''">
+            git_project_path=#{gitProjectPath},
+        </if>
+        <if test="gitProjectName !=null and gitProjectName != '' ">
+            git_project_name=#{gitProjectName},
+        </if>
+        <if test="lastCommitSha !=null ">
+            last_commit_sha = #{lastCommitSha},
+        </if>
+        <if test="branch !=null ">
+            branch = #{branch},
+        </if>
+        <if test="finishProjectTreeFlag !=null ">
+            finish_project_tree_flag = #{finishProjectTreeFlag},
+        </if>
+        <if test="finishProjectMemberFlag !=null ">
+            finish_project_member_flag = #{finishProjectMemberFlag},
+        </if>
+        <if test="refreshTime !=null ">
+            refresh_time = #{refreshTime},
+        </if>
+        <if test="deleted !=null ">
+            deleted = #{deleted},
+        </if>
+        <if test="groupId !=null ">
+            group_id = #{groupId},
+        </if>
+        refresh_time = now()
+        WHERE git_project_id = #{gitProjectId}
+    </update>
+
+
+    <update id="batchDelete">
+        UPDATE git_project
+        SET deleted = 1
+        WHERE git_project_id in (#{gitProjectIds})
+    </update>
+
+
+    <update id="updateAllProjectInitMember">
+        UPDATE git_project
+        SET finish_project_member_flag = 1
+    </update>
+
+
+    <select id="getDataDevScriptProjectById" resultType="DataDevGitProject">
+        SELECT
+        <include refid="datadev_git_project_column"></include>
+        FROM git_project
+        WHERE git_project_id=#{gitProjectId}
+    </select>
+
+
+    <select id="listAll" resultType="DataDevGitProject">
+        SELECT
+        <include refid="datadev_git_project_column"></include>
+        FROM git_project
+    </select>
+
+    <select id="getGitProjectByPath" resultType="DataDevGitProject">
+        SELECT
+        <include refid="datadev_git_project_column"></include>
+        FROM git_project WHERE git_project_path = #{gitProjectPath} AND deleted = 0 limit 1
+    </select>
+
+
+    <select id="getNeedInitMember" resultType="DataDevGitProject">
+        SELECT
+        <include refid="datadev_git_project_column"></include>
+        FROM git_project WHERE finish_project_member_flag = 1 AND deleted = 0 limit 1
+    </select>
+
+    <select id="getErpDataDevGitProject" resultType="DataDevGitProject">
+        SELECT DISTINCT
+        git_project.git_project_id AS gitProjectId,
+        git_project.git_project_name AS gitProjectName,
+        git_project.branch,
+        git_project.git_project_path AS gitProjectPath,
+        git_project_member.state AS memberState ,
+        git_project_member.access_level AS memberAccessLevel
+        FROM git_project_member
+        LEFT JOIN git_project ON git_project.git_project_id = git_project_member.git_project_id
+        WHERE git_member_username = #{erp} AND git_project.deleted = 0
+        <if test="keyword !=null and keyword !=''">
+            AND (git_project.git_project_name LIKE concat("%",#{keyword},"%") OR git_project.git_project_path LIKE
+            concat("%",#{keyword},"%") escape "\\")
+        </if>
+    </select>
+    <select id="getErpDataDevGitProjectBySharedGroup" resultType="DataDevGitProject">
+        SELECT DISTINCT
+        gitProject.git_project_id AS gitProjectId,
+        gitProject.git_project_name AS gitProjectName,
+        gitProject.branch,
+        gitProject.git_project_path AS gitProjectPath,
+        groupMember.state AS memberState ,
+        groupMember.access_level AS memberAccessLevel
+        FROM git_group_member AS groupMember
+        LEFT JOIN git_project_shared_group AS sharedGroup ON sharedGroup.git_group_id = groupMember.git_group_id
+        LEFT JOIN git_project AS gitProject ON gitProject.git_project_id = sharedGroup.git_project_id
+        where groupMember.git_member_username = #{erp} AND sharedGroup.git_project_id > 0 AND gitProject.deleted = 0
+        <if test="keyword !=null and keyword !=''">
+            AND (gitProject.git_project_name LIKE concat("%",#{keyword},"%") OR gitProject.git_project_path LIKE
+            concat("%",#{keyword},"%") escape "\\")
+        </if>
+    </select>
+
+    <select id="getAllGitProjectByKeyWord" resultType="DataDevGitProject">
+        select
+        <include refid="datadev_git_project_column"></include>
+        from git_project
+        inner join git_project_member
+        on git_project.git_project_id = git_project_member.git_project_id and git_project_member.git_member_username = #{erp}
+        where
+        IFNULL(deleted,0) = 0
+        <if test="keyWord !=null and keyWord !=''">
+            AND (git_project.git_project_name LIKE concat("%",#{keyWord},"%") OR git_project.git_project_path LIKE
+            concat("%",#{keyWord},"%") escape'\\')
+        </if>
+        limit #{limit}
+        union all
+        select
+        <include refid="datadev_git_project_column"></include>
+        from git_project
+        inner join git_project_shared_group
+        inner join git_group_member
+        on git_project.git_project_id = git_project_shared_group.git_project_id
+        and git_group_member.git_group_id = git_project_shared_group.git_group_id
+        and git_group_member.git_member_username = #{erp}
+        where
+        IFNULL(git_project.deleted,0) = 0
+        <if test="keyWord !=null and keyWord !=''">
+            AND (git_project.git_project_name LIKE concat("%",#{keyWord},"%") OR git_project.git_project_path LIKE
+            concat("%",#{keyWord},"%") escape'\\')
+        </if>
+        limit #{limit}
+    </select>
+
+    <select id="getAllUserHaveSameProject" resultType="String">
+        select git_member_username  from git_project_member where git_project_member.git_project_id in
+        <foreach collection="projects" open="(" close=")" item="project" separator=",">
+            #{project.gitProjectId}
+        </foreach>
+
+		union all
+
+	    SELECT
+        groupMember.git_member_username
+        from git_group_member AS groupMember
+        inner JOIN git_project_shared_group AS sharedGroup ON sharedGroup.git_group_id = groupMember.git_group_id
+        inner JOIN git_project AS gitProject ON gitProject.git_project_id = sharedGroup.git_project_id
+        where sharedGroup.git_project_id in
+        <foreach collection="projects" open="(" close=")" item="project" separator=",">
+            #{project.gitProjectId}
+        </foreach>
+
+    </select>
+
+
+</mapper>

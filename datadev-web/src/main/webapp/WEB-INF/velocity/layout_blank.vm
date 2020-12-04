@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/scriptcenter/statics/image/favicon.ico"/>
+    <script>
+        var selected_menu_id = '$!{selected_menu_id}';
+        var _bdpDomain = '$!{bdpDomain}';
+        var _staticVersion = '$!{staticVersion}';
+    </script>
+    #if($cssBlock) $cssBlock #end
+    <!-- 下面是公用的JS文件 -->
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/bdp-core.js?_dc=$!{staticVersion}"></script>
+</head>
+
+<body style="overflow: hidden">
+
+   $screen_content
+    #if($javascriptBlock) $javascriptBlock
+    #end
+<script type="text/javascript">
+    var _erp = '$!{userHolder.erp}';
+    var jaq = jaq || [];
+    jaq.push(['account', 'JA2018_1321215']);
+    jaq.push(['domain', 'ide.bdp.jd.com']);
+    jaq.push(['erp_account', _erp]);  //ERP帐号，erp_account为字段名固定不变，test填入用户erp帐号(调用方自己传,若不传,会记录用户的京东pin)
+    (function () {
+        var ja = document.createElement('script');
+        ja.type = 'text/javascript';
+        ja.async = true;
+        ja.src = '//wl.jd.com/joya.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ja, s);
+    })()
+</script>
+</body>
+</html>

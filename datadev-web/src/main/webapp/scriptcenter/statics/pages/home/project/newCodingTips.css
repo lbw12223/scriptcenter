@@ -1,0 +1,146 @@
+/*新建提示开始*/
+#codingTipsArt{
+    background-color: #2F3338;
+    height: 100%;
+    width: 100%;
+}
+#codingTipsArt .git-icon-content {
+    float: left;
+    width: 100%;
+    line-height: 75px;
+    vertical-align: middle;
+    user-select: none;
+}
+
+#codingTipsArt .button-content {
+    margin-top: 30px;
+}
+
+#codingTipsArt .git-btn {
+    width: 200px;
+    height: 50px;
+    background: #2975CD;
+    margin: auto;
+    border-radius: 5px;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+#codingTipsArt .git-tips-content {
+    float: left;
+    width: 100%;
+    margin-top: 40px;
+    background: #2A2F33;
+    border: 1px solid #3B3F45;
+    padding-bottom: 15px;
+}
+
+#codingTipsArt .git-tips-content .tips-title {
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#codingTipsArt .git-tips-content .tips-word {
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#codingTipsArt .git-tips-content .tips-step-content {
+    margin-top: 15px;
+    margin-left: 19px;
+}
+
+#codingTipsArt div.step-map-wrap div.step-tips {
+    float: left;
+    background: #2A2F33;
+    border: 1px solid #196D5A;
+    width: 108px;
+    height: 41px;
+    line-height: 40px;
+    text-align: center;
+}
+
+#codingTipsArt div.step-map-wrap div.step-map-ico {
+    float: left;
+    width: 100px;
+    height: 32px;
+    padding-top: 18px;
+    padding-left: 3px;
+}
+
+#codingTipsArt div.step-map-wrap div.step-map-ico div.step-line {
+    width: 85px;
+    border-top: 1px solid #1C8B72;
+    float: left;
+    background: #1C8B72;
+    height: 0px;
+}
+
+#codingTipsArt div.step-map-wrap div.step-map-ico div.step-triangle {
+    float: left;
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 8px solid #1C8B72;
+    margin-top: -3px;
+}
+
+/*新建提示结束*/
+/*共有*/
+#codingModalContent .bdp-form-group {
+    width: 100%;
+    float: left;
+    padding-left: 45px;
+}
+
+#codingModalContent .bdp-form-group .bdp-control-label {
+    float: left;
+    margin-top: 7px;
+}
+
+#codingModalContent .bdp-form-group .project-item {
+    float: left;
+    width: 400px;
+    margin-left: 10px;
+    position: relative;
+}
+/*创建项目开始*/
+#codingModalContent .project-item span.project-url-span {
+    display: block;
+    float: left;
+    width: 108px;
+    background: #363A40;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 4px;
+}
+#codingModalContent .project-item textarea {
+    height: 100px;
+}
+
+#codingModalContent .project-desc-content .tips {
+    background: #2A2F33;
+    width: 477px;
+    color: #DC9116;
+}
+/*新建项目*/
+#createCodingGroupBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+#codingModalContent .project-item .git-group-select {
+    width: 201px;
+}
+/*新建组*/
+#createCodingGroupModal .project-item .gitGroupPath{
+    width: 291px;
+}
+
+/*创建项目结束*/
+
+

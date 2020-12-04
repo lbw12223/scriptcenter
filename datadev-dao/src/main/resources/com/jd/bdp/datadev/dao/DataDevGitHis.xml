@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitHisDao">
+    <sql id="gitHisColumns">
+        id,
+        git_project_id as gitProjectId,
+        commit_path as commitPath,
+        created,
+        creator,
+        submit_time as submitTime,
+        submit_erp as submitErp,
+        comment,
+        commit_id as commitId
+    </sql>
+
+
+
+    <insert id="insertGitHis">
+        INSERT INTO git_his (
+        git_project_id ,
+        commit_path,
+        created,
+        creator,
+        submit_time,
+        submit_erp,
+        `comment`,
+        commit_id
+        )
+        VALUES(
+        #{gitProjectId},
+        #{commitPath},
+        now(),
+        #{creator},
+        now(),
+        #{submitErp},
+        #{comment},
+        #{commitId}
+        )
+    </insert>
+</mapper>

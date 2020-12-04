@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/scriptcenter/statics/image/favicon.ico"/>
+    <script>
+        var selected_menu_id = '$!{selected_menu_id}';
+        var _bdpDomain = '$!{bdpDomain}';
+        var _staticVersion = '$!{staticVersion}';
+    </script>
+    #if($cssBlock) $cssBlock #end
+    <!-- 下面是公用的JS文件 -->
+    <!-- 下面是公用的JS文件 -->
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/combine/js/core.js?_dc=$!{staticVersion}"></script>
+</head>
+
+<body style="overflow: hidden">
+    $screen_content
+</body>
+    #if($javascriptBlock) $javascriptBlock
+    #end
+</html>

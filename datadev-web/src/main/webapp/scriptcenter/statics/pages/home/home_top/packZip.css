@@ -1,0 +1,48 @@
+body {
+    background-color: #2F3338
+}
+
+.bdp-form-group label {
+    margin-left: 30px;
+    width: 100px;
+}
+
+.bdp-form-group .file-item {
+    width: 500px;
+    /* margin-left: 20px; */
+    display: block;
+    float: left;
+}
+
+.bdp-form-group .file-item input {
+    width: 100%;
+}
+.bdp-form-group .file-item textarea {
+    width: 100%;
+}
+.dir-root {
+    height: 220px;
+    position: absolute;
+    left: 130px;
+    top: 34px;
+    background: #1C2024;
+    overflow: auto;
+}
+
+.dialog-group {
+    position: relative;
+}
+
+.bdp-help-block {
+    margin-left: 130px !important;
+    width: 100% !important;
+}
+
+.pack-tips {
+    height: 26px;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #DC9116;
+    letter-spacing: 0;
+    margin-left: 14px;
+}

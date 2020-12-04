@@ -1,0 +1,37 @@
+<div class="bdp-modal fade in" id="invoiceItem" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" data-index="0">
+    <div class="bdp-modal-dialog" style="width: 650px !important;">
+        <div class="bdp-modal-content">
+            <div class="bdp-modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="bdp-modal-body" style="width: 650px;" id="voiceDiv">
+                <audio style="margin: 2px 5px 0px 5px; width: 650px " src="" id="myAudio" autoplay></audio>
+##                <form class="bdp-form-horizontal bdp-form-search">
+##                    <div class="row">
+##                        <div class="bdp-col-xs-12 bdp-text-center">
+##                            <div class="bdp-form-group">
+##                                <label class="bdp-col-xs-3 bdp-control-label">标注数据：</label>
+##                                <div class="bdp-col-xs-9 bdp-control-content">
+##                                    <a class="bdp-col-xs-11" href="javascript:void(0)" style="text-align: left;" id="invoice-original"></a>
+##                                    <input type="hidden" id="invoice-dataUrl"/>
+##
+##                                </div>
+##                            </div>
+##                        </div>
+##                    </div>
+##                </form>
+##                <audio src="" id="myAudio" autoplay></audio>
+            <div class="bdp-modal-footer">
+                <button type="button" class="bdp-btn bdp-btn-default preSourceBtn" >上一页</button>
+                <button type="button" class="bdp-btn bdp-btn-default nextSourceBtn"  >下一页</button>
+                <button type="button" class="bdp-btn bdp-btn-default" data-dismiss="modal" id="cancelBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+##<link rel="stylesheet" href="/cv/statics/voicePlayer/css/main.css">
+##<link rel="stylesheet" href="/cv/statics/voicePlayer/css/css.css">
+##<link rel="stylesheet" href="/cv/statics/voicePlayer/css/_reset.css">

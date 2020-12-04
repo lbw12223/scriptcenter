@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+
+    <!--
+        <context:property-placeholder location="classpath:*.properties"/>
+    -->
+
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!-- 为集成安全部配置文件加解密组件, 需在项目中所有的PropertyPlaceholderConfigurer配置上ignoreUnresolveablePlaceholders为true -->
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:datadev.properties</value>
+                <value>classpath:hbase.properties</value>
+                <value>classpath:jdq.properties</value>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:jimdb.properties</value>
+                <value>classpath:sso.properties</value>
+                <value>classpath:urm.properties</value>
+            </list>
+        </property>
+        <!-- 为集成安全部配置文件加解密组件, 将所有引用了important.properties文件的PropertyPlaceholder改造成PropertyFactoryBean + PropertyPlaceholderConfigurer的形式 -->
+        <property name="properties" ref="secApplicationProperties"/>
+    </bean>
+    <!-- 为集成安全部配置文件加解密组件, 将所有引用了important.properties文件的PropertyFactoryBean改为com.jd.security.configsec.spring.config.JDSecurityPropertyFactoryBean-->
+    <bean id="secApplicationProperties" class="com.jd.security.configsec.spring.config.JDSecurityPropertyFactoryBean">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <!-- 为集成安全部配置文件加解密组件, 需将important.properties文件配置在secLocation中, 并去除locations中的important.properties-->
+        <property name="secLocation" value="classpath:important.properties"/><!-- 不能使用classpath*: -->
+    </bean>
+
+
+    <!-- 自动扫描且只扫描@Controller -->
+    <context:component-scan base-package="com.jd.bdp.datadev.web" use-default-filters="false"
+                            name-generator="com.jd.bdp.common.spring.BdpAnnotationBeanNameGenerator">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <context:component-scan base-package="com.jd.bdp.amp.sdk"></context:component-scan>
+
+
+    <!-- 参数转换器 -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <!--日期转换器-->
+                <bean class="com.jd.bdp.datadev.web.converter.StringToDateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager"
+                           conversion-service="conversionService">
+        <mvc:message-converters register-defaults="true">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="prettyPrint" value="true"/>
+            </bean>
+        </mvc:message-converters>
+
+        <mvc:argument-resolvers>
+            <bean class="com.jd.bdp.urm.sso.UrmUserHolderArgumentResolver"/>
+            <bean class="com.jd.bdp.datadev.web.interceptor.ProjectSpaceArgumentResolver"/>
+
+        </mvc:argument-resolvers>
+
+    </mvc:annotation-driven>
+    <!--<mvc:annotation-driven/>-->
+
+    <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes">
+            <value>
+                json=application/json
+                xml=application/xml
+            </value>
+        </property>
+    </bean>
+
+    <bean class="com.jd.bdp.common.spring.ApplicationContextHolder"></bean>
+
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/velocity/"/>
+        <property name="configLocation" value="classpath:/velocity/velocity.properties"/>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="layoutUrl" value="layout_bdp_left.vm"/>
+        <property name="suffix" value=".vm"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="toolboxConfigLocation" value="/WEB-INF/toolbox.xml"/>
+        <property name="dateToolAttribute" value="dateTools"/>
+        <property name="numberToolAttribute" value="numberTools"/>
+
+    </bean>
+
+    <!-- file upload related -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="maxUploadSize" value="204857600"/>
+    </bean>
+
+    <!-- 静态资源路径 -->
+    <mvc:resources location="/scriptcenter/statics/" mapping="/scriptcenter/statics/**" cache-period="10000000"/>
+    <mvc:default-servlet-handler/>
+
+    <mvc:interceptors>
+
+        <!--=================================================================================-->
+
+            <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/**"/>
+            <bean class="com.jd.bdp.datadev.web.interceptor.CreateNewUserHolderInterceptor">
+
+            </bean>
+            </mvc:interceptor>
+            <mvc:interceptor>
+                <mvc:mapping path="/scriptcenter/**"/>
+                <bean class="com.jd.bdp.datadev.web.interceptor.ProjectSpaceInterceptor">
+
+                </bean>
+            </mvc:interceptor>
+        <!--=================================================================================-->
+     <!--  <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/**"/>
+            <mvc:mapping path="/scriptcenter/"/>
+            <bean class="com.jd.bdp.urm.sso.ErpToBdpInterceptor"/>
+        </mvc:interceptor>
+
+
+        <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/**"/>
+            <mvc:mapping path="/scriptcenter/"/>
+            <bean class="com.jd.bdp.urm.sso.UrmUserHolderInterceptor">
+                <property name="domain" value="${bdp.domain.name}"/>
+                <property name="appCode" value="${appCode}"/>
+                <property name="cacheTime" value="${urm.menu.cache.time}"/>
+            </bean>
+        </mvc:interceptor>
+
+
+        <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/**"/>
+            <mvc:mapping path="/scriptcenter/"/>
+            <bean class="com.jd.bdp.urm.sso.LoginRequiredInterceptor">
+                <property name="appCode" value="${appCode}"/>
+                <property name="domain" value="${bdp.domain.name}"/>
+            </bean>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/**"/>
+            <mvc:mapping path="/scriptcenter/"/>
+            <bean class="com.jd.bdp.urm.sso.BdpParamInterceptor">
+                <property name="bdpDomain" value="${bdp.domain.name}"/>
+            </bean>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/scriptcenter/index.html"/>
+            <mvc:mapping path="/scriptcenter/home/home_data_log.html"/>
+            <mvc:mapping path="/scriptcenter/client.html"/>
+            <bean class="com.jd.bdp.urm.sso.LeftMenuInterceptor">
+                <property name="bdpDomain" value="${bdp.domain.name}"/>
+            </bean>
+        </mvc:interceptor>-->
+    </mvc:interceptors>
+
+
+</beans>

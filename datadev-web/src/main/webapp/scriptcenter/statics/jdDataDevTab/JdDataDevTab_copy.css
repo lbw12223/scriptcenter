@@ -1,0 +1,557 @@
+
+.undisplay {
+    display: none;
+}
+
+.display {
+    display: block;
+}
+
+.datadev-tab-vertical .tab-header {
+    list-style-type: none;
+    background-color: #363A40;
+    float: left;
+    border-right: 1px solid #14191F;
+    width: 30px;
+    height: 100%;
+    float: left;
+}
+
+.datadev-tab-vertical .tab-header li {
+    width: 30px;
+    writing-mode: tb-rl;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.datadev-tab-vertical .tab-header li.active {
+    border-left: 3px solid #3286E9;
+    background-color: #252A2F;
+}
+
+.datadev-tab-vertical .tab-header li a {
+    display: block;
+    line-height: 30px;
+    color: #E4ECFA;
+    text-decoration: none;
+    color: #E4ECFA;
+    letter-spacing: 3px;
+}
+
+.datadev-tab-vertical .tab-content {
+    margin-left: 30px;
+    background: #252A2F;
+    color: #A3A9B2;
+    height: 100%;
+}
+
+.datadev-tab-horizontal .tab-header {
+    list-style-type: none;
+    background-color: #1F252C;
+    border-bottom: 1px solid #14191F;
+    height: 30px;
+    width: 100%;
+    float: left;
+}
+
+.datadev-tab-horizontal .tab-header li {
+    padding-left: 10px;
+    padding-right: 10px;
+    float: left;
+    line-height: 30px;
+    border-right: 1px solid #14191F;
+    position: relative;
+}
+.datadev-tab-horizontal .tab-header li:hover {
+    background: #292D36;
+}
+
+.datadev-tab-horizontal .tab-header li span.icon {
+    position: absolute;
+    top: 8px;
+    left: 3px;
+    font-size: 14px;
+}
+
+.datadev-tab-horizontal .tab-header li.active {
+    border-top: 1px solid #3286E9;
+    background: #31353F;
+    border-bottom: 1px solid #14191F;
+    height: 30px;
+    line-height: 30px;
+}
+.datadev-tab-horizontal .tab-header li.active .log-circle::after {
+    background-image: linear-gradient(to left, #31353F, rgba(49, 53, 63, .1));
+}
+.datadev-tab-horizontal .tab-header li.active  .log-circle::before{
+    background-color: #31353F;
+}
+
+.datadev-tab-horizontal .tab-header li a {
+    display: block;
+    color: #E4ECFA;
+    text-decoration: none;
+    color: #E4ECFA;
+}
+
+.datadev-tab-horizontal .tab-header li a span.labelName {
+    max-width: 130px;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    float: left;
+}
+.datadev-tab-horizontal .tab-header li a span.labelName[git-status="MOD"] {
+    color:#428bca;
+}
+.datadev-tab-horizontal .tab-header li a span.labelName[git-status="ADD"] {
+    color:#428bca;
+}
+.datadev-tab-horizontal .tab-header li a span.labelName[git-status="NON"] {
+}
+.datadev-tab-horizontal .tab-header li a span.modify-status {
+    float: left;
+    display: block;
+    width: 10px;
+    color: red;
+    top: 2px;
+    position: relative;
+    height: 100%;
+}
+
+.datadev-tab-horizontal .tab-content {
+    background: #252A2F;
+    color: #A3A9B2;
+    height: 100%;
+    height: calc(100% - 30px);
+
+}
+.datadev-tab-horizontal .triangle_border {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent #333; /*透明 透明  灰*/
+
+    position: relative;
+}
+
+.datadev-tab-horizontal .triangle_border span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 0 9px 9px;
+    border-style: solid;
+    border-color: transparent transparent #2B2E33; /*透明 透明  黄*/
+    position: absolute;
+    top: -12px;
+    left: 15px;
+}
+
+.datadev-tab-horizontal .tabPullDown {
+    display: block;
+    background: #2B2E33;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.50);
+    width: 120px;
+    height: 185px;
+    position: absolute;
+    z-index: 3000;
+    top: 0px;
+    left: 0px;
+}
+
+.datadev-tab-horizontal .tabPullDown ul {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    line-height: 35px;
+    cursor: pointer;
+    list-style-type: none;
+}
+
+.datadev-tab-horizontal .tabPullDown ul li span {
+    margin-left: 20px;
+}
+
+.datadev-tab-horizontal .tabPullDown ul li:hover {
+    color: #FFFFFF;
+    background: #3286E9;
+}
+
+/*右侧*/
+.datadev-tab-right {
+    position: relative;
+}
+
+.datadev-tab-right .tab-header {
+    width: 33px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    list-style-type: none;
+    background-color: #363A40;
+    height: 100%;
+    border-left: 1px solid #14191F;
+}
+
+.datadev-tab-right .tab-header li {
+    writing-mode: tb-rl;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 33px;
+    border-right: 3px solid #363A40;
+    box-sizing: border-box;
+}
+
+.datadev-tab-right .tab-header li.active {
+    background-color: #252A2F;
+    border-right: 3px solid #3286E9;
+    box-sizing: border-box;
+}
+
+.datadev-tab-right .tab-header li a {
+    display: block;
+    line-height: 33px;
+    color: #E4ECFA;
+    text-decoration: none;
+    letter-spacing: 3px;
+}
+
+.datadev-tab-right .tab-content {
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    right: 33px;
+    background: #31353C;
+    border-left: 1px solid #0C0F13;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.50);
+}
+
+.datadev-tab-horizontal .moreTitle {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 20px;
+    cursor: pointer;
+    padding-top: 5px;
+    text-align: center;
+    background: #1F252C;
+    display: none;
+    padding-left: 3px;
+    z-index: 10;
+}
+.datadev-tab-horizontal .fullScreen {
+    height: 29px;
+    width: 29px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 20px;
+    cursor: pointer;
+    padding-top: 5px;
+    text-align: center;
+    background: #1F252C;
+    display: block;
+    color: red;
+    overflow: hidden;
+    padding-left: 3px;
+    z-index: 10;
+}
+.datadev-tab-horizontal .minScreen {
+
+}
+
+.datadev-tab-horizontal .moreTagUL {
+    width: 250px;
+    list-style-type: none;
+    background: #363A40;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.50);
+    max-height: 200px;
+    overflow: auto;
+    position: absolute;
+    top: 30px;
+    right: 0px;
+}
+
+.datadev-tab-horizontal .moreTagUL li {
+    line-height: 35px;
+    height: 35px;
+    text-indent: 10px;
+}
+
+.datadev-tab-horizontal .moreTagUL li a {
+    text-decoration: none;
+    color: #A5AEBD;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.datadev-tab-horizontal .moreTagUL li a:hover {
+    background: #3286E9;
+    color: white;
+}
+
+.datadev-tab-horizontal .moreTagUL li a.selected {
+    background: #3286E9;
+    color: white;
+}
+
+span.datadevClosFlag {
+    cursor: pointer;
+    margin-left: 8px;
+    color: #606675;
+    font-family: Helvetica, STHeiti;
+    font-size: 18px;
+    top: -1px;
+    position: relative;
+}
+
+span.datadevClosFlag:hover {
+    color: #D8D8D8;
+}
+
+.script-detail-form {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+.script-detail-form h4 {
+    font-size: 14px;
+    color: #A5AEBD;
+    border-bottom: 1px solid #44494F
+}
+
+.script-detail {
+    width: 100% !important;
+    margin: 0px 0px 20px 0px !important;
+}
+
+label.script-detail-label {
+    width: 120px;
+    float: left;
+}
+
+.script-detail-content {
+    float: left;
+    width: 271px;
+}
+
+.script-detail-content input {
+    width: 100%;
+}
+
+.script-detail-content textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+}
+
+.script-args {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+.script-args h4 {
+    font-size: 14px;
+    color: #A5AEBD;
+    border-bottom: 1px solid #44494F;
+}
+
+.script-args-button-group {
+    margin: 0px 0px 20px 20px;
+}
+
+.script-args-button-group .bdp-btn {
+    margin-right: 10px;
+}
+
+.script-args-content {
+    margin-left: 20px;
+}
+
+.script-args-li-checkbox {
+    width: 11px !important;
+    height: 11px !important;
+}
+
+.script-args-table {
+    background: #272A2F;
+    border: 1px solid #44494F;
+
+}
+
+.script-run-history {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+.script-run-history h4 {
+    font-size: 14px;
+    color: #A5AEBD;
+    border-bottom: 1px solid #44494F;
+}
+
+.script-run-history-content {
+    line-height: 32px;
+    position: relative;
+    top: -6px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.script-run-history-content a.bdp-btn {
+    position: absolute;
+    right: 20px;
+}
+
+.script-run-history-label {
+    float: left;
+    width: 80px;
+    margin-right: 15px;
+}
+
+.script-run-history-checkbox {
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 2px;
+    margin-left: 20px !important;
+}
+
+.script-run-history-time-content {
+    /*width: 50%;*/
+    float: left;
+    line-height: 28px;
+    position: relative;
+    top: -5px;
+}
+
+.script-run-history-period {
+    float: left;
+    margin: 0 10px;
+}
+
+.script-run-history-Time {
+    width: 260px;
+    background: #272A2F;
+    border: 1px solid #44494F;
+    padding-left: 10px;
+}
+
+#runGridCommonCtrlDiv .operate-item {
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+#runGridCommonCtrlDiv .operate-item:hover {
+    color: #3286E9;
+}
+
+#runGridCommonCtrlDiv .operate-item-one {
+    margin-left: 20px !important;
+}
+
+.icon-calendar {
+    position: absolute;
+    top: 7px;
+    right: 15px;
+    font-size: 16px;
+}
+
+.script-operate-history-label {
+    float: left;
+    width: 80px;
+    margin-right: 5px;
+}
+
+.operate-history {
+    margin-right: 1px;
+    height: 30px;
+}
+
+.script-operate-history-content {
+    line-height: 25px;
+    position: relative;
+}
+
+.script-operate-history-content a.bdp-btn {
+    position: absolute;
+    right: 20px;
+}
+
+.scriptOperateMo {
+    width: 260px;
+}
+
+.opearationSys {
+    width: 160px;
+    float: left;
+}
+
+.script-operate-history-time-content {
+    float: left;
+    line-height: 28px;
+    position: relative;
+    top: -5px;
+}
+
+.script-operate-history-Time {
+    width: 260px;
+    background: #272A2F;
+    border: 1px solid #44494F;
+    padding-left: 10px;
+}
+
+.script-query-history-Time {
+    width: 200px;
+    background: #272A2F;
+    border: 1px solid #44494F;
+    padding-left: 10px;
+}
+
+.run-history-checkbox {
+    position: relative;
+    -webkit-appearance: none;
+    background: #272A2F;
+    border: 1px solid #44494F;
+    border-radius: 2px;
+    top: 1px;
+    cursor: pointer;
+}
+
+.run-history-checkbox:checked {
+    background: #3286E9;
+}
+
+.run-history-checkbox:checked:after {
+    content: '\00a0';
+    display: inline-block;
+    border: 2px solid #fff;
+    border-top-width: 0;
+    border-right-width: 0;
+    width: 10px;
+    height: 6px;
+    -webkit-transform: rotate(-50deg);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+.checkbox-span {
+    margin-left: 10px;
+}

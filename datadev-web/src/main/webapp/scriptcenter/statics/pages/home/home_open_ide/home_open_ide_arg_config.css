@@ -1,0 +1,86 @@
+div.paramDiv {
+    border: 1px solid silver;
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+table.userCustomer {
+    border: 1px solid silver;
+    border-collapse: collapse;
+    width: 430px;
+    font-size: 12px;
+}
+
+table.userCustomer td {
+    background: #272A2F;
+    border: 1px solid #373B40;
+    height: 39px;
+    text-indent: 5px;
+    color: #A3A9B2;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+table.userCustomer thead td {
+    background: #191B1F;
+    color: #737E8E;
+    line-height: 39px;
+}
+
+table.userCustomer thead td.alignCenter {
+    text-align: center;
+    text-indent: 0px;
+}
+
+table.userCustomer tbody tr:hover {
+    background-color: #191B1F;
+}
+
+table.userCustomer tbody tr:hover td {
+    background: none;
+}
+
+table.userCustomer tbody tr td.merge {
+    text-align: center;
+}
+
+table.userCustomer tbody tr.mergeTr td {
+    background-color: #34383E;
+}
+
+.argTools {
+    font-size: 14px;
+    text-align: center;
+}
+
+.argTools span {
+    cursor: pointer;
+}
+
+.argTools span:hover {
+    color: #23527c;
+}
+
+.script-args-button-group a:hover {
+    opacity: 0.9;
+}
+
+.argValue::-webkit-input-placeholder {
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+
+.argValue::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+
+.argValue:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+
+.argValue:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #A5AEBD;
+    opacity: 0.6;
+}

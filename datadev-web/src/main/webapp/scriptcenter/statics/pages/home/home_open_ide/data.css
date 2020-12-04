@@ -1,0 +1,63 @@
+.dataDiv {
+    width: 100%;
+    height: 100%;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+    background: #272A2F;
+    padding: 20px;
+    position: relative;
+}
+
+.dataDiv h4 {
+    font-size: 14px;
+    border-bottom: 1px solid #44494F;
+}
+
+.script-data-label {
+    float: left;
+    position: relative;
+    top: 6px;
+    margin-right: 15px;
+}
+
+.script-data-item {
+    float: left;
+    line-height: 18px;
+}
+
+.script-data {
+    width: 250px;
+    height: 30px;
+    float: left;
+    position: relative;
+}
+
+.label-content {
+    padding-left: 30px;
+    height: 30px;
+    position: relative;
+}
+
+.data-head {
+    position: absolute;
+    width: 90%;
+    right: 20px;
+    width: calc(100% - 40px)
+}
+
+.data-content {
+    padding-top: 118px;
+    height: 100%;
+    width: 100%;
+}
+.data-content-chroll{
+    height: 100%;
+    overflow: auto;
+}
+a.data-download{
+    position: absolute;
+    right: 20px;
+    top: 67px;
+}

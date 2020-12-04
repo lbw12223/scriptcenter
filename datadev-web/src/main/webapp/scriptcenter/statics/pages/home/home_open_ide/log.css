@@ -1,0 +1,52 @@
+.logDiv {
+    width: 100%;
+    height: 100%;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+    background: #272A2F;
+    padding: 20px;
+    position: relative;
+}
+
+.logDiv h4 {
+    font-size: 14px;
+    border-bottom: 1px solid #44494F;
+}
+
+.script-log-label {
+    float: left;
+    position: relative;
+    top: 6px;
+    margin-right: 15px;
+}
+
+.script-log-item {
+    float: left;
+    line-height: 18px;
+}
+
+.script-log {
+    width: 250px;
+    height: 30px;
+    float: left;
+    position: relative;
+}
+
+.label-content {
+    padding-left: 30px;
+}
+
+.log-head {
+    position: absolute;
+    width: 90%;
+    right: 20px;
+    width: calc(100% - 40px)
+}
+
+.log-content {
+    padding-top: 118px;
+    height: 100%;
+    width: 100%;
+}

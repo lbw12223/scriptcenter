@@ -1,0 +1,17 @@
+<div class="script-online-history">
+    <h4 class="bdp-control-title">上线历史</h4>
+
+
+    <div class="jd-table-parent" id="online-jd-table-parent" style="margin-left:20px;width: 740px;height:540px;overflow: hidden;">
+        <table class="jd-table table table-hover " id="online-grid-table">
+        </table>
+        <div id="online-grid-pager">
+
+        </div>
+    </div>
+
+</div>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_online_history.js?_dc=$!{staticVersion}"></script>
+
+
+

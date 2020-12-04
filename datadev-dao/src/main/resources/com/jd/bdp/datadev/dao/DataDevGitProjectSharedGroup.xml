@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitProjectSharedGroupDao">
+
+    <sql id="datadev_script_project_column">
+        id,
+        git_project_id as gitProjectId,
+        git_group_id as gitGroupId,
+        group_name as groupName,
+        group_access_level  as groupAccessLevel
+    </sql>
+
+
+    <!--保存-->
+    <insert id="insert">
+        INSERT INTO git_project_shared_group (
+        git_project_id,
+        git_group_id,
+        group_name,
+        group_access_level)
+        VALUES
+        <foreach collection="gitProjectSharedGroupList" item="gitProjectSharedGroup" open="" separator="," close="">
+            (#{gitProjectSharedGroup.gitProjectId},#{gitProjectSharedGroup.gitGroupId}, #{gitProjectSharedGroup.groupName},#{gitProjectSharedGroup.groupAccessLevel})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByProjectId" parameterType="Long">
+        DELETE FROM git_project_shared_group where git_project_id = #{gitProjectId}
+    </delete>
+
+    <delete id="deleteSharedGroup" parameterType="DataDevGitProjectSharedGroup">
+        delete from git_project_shared_group
+        where git_project_id = #{gitProjectId} and git_group_id = #{gitGroupId}
+    </delete>
+
+</mapper>

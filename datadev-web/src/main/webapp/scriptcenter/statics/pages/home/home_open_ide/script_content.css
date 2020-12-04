@@ -1,0 +1,148 @@
+
+.scriptContentMain{
+    width: 100%;height: 100%;overflow: hidden;background: #2F3338;
+}
+.scriptContentMain_code{
+    width:100%;height:100%;background-color: #1D1F21;
+}
+.scriptContentMain_nocode{
+    width:100%;height:100%;text-align: center;background: rgb(029,031,033)
+}
+.scriptContentMain_version{
+    font-size: 12px;color: #A3A9B2;
+}
+.downLoadData:hover {
+    color: #428bca;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#packZipDetail {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+}
+
+#packZipDetail .ztreeWrap {
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+#packZipDetail .treeTable {
+    line-height: 32px;
+    float: left;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+#packZipDetail .treeTable ul {
+    width: 100%;
+    overflow: auto;
+}
+
+#packZipDetail .treeTable ul li {
+    white-space: nowrap;
+}
+
+#packZipDetail .treeTable li input.checkbox {
+    display: block;
+    float: left;
+    position: relative;
+    top: 5px;
+    margin-left: 0px !important;
+}
+
+#packZipDetail .treeTable li span.script-icon {
+    margin-left: 10px;
+    position: relative;
+    top: 1px;
+    font-size: 18px;
+}
+
+#packZipDetail .treeTable li span.script-name {
+    margin-left: 6px;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+#packZipDetail .treeTable .nodeDiv {
+    width: 100%;
+    line-height: 40px;
+    height: 40px;
+}
+
+#packZipDetail .treeTable .script-file {
+    float: left;
+    width: 48%;
+    height: 100%;
+    cursor: pointer;
+}
+
+#packZipDetail .treeTable .version {
+    float: left;
+    width: 8%;
+    height: 100%;
+}
+#packZipDetail .treeTable .version span{
+    cursor: pointer;
+    text-decoration: underline;
+}
+#packZipDetail .treeTable .noVersion span{
+    text-decoration: none !important;
+    cursor: default !important;
+}
+
+#packZipDetail .treeTable .modified {
+    float: left;
+    width: 18%;
+    height: 100%;
+}
+
+#packZipDetail .treeTable .mender {
+    float: left;
+    width: 14%;
+    height: 100%;
+}
+
+#packZipDetail .treeTable .table-border {
+    border-bottom: 1px solid #2C3034;
+}
+
+#packZipDetail .treeTable .tree-table-title {
+    background: #191B1F;
+    height: 45px;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #737E8E;
+    letter-spacing: 0;
+    line-height: 45px;
+    border-top: 1px solid #2C3034;
+    border-bottom: 1px solid #2C3034;
+    padding-left: 20px;
+}
+
+
+#packTreeUl {
+    padding-left: 20px;
+    background-color: #1C2024;
+}
+
+#packZipDetail li.close-li > ul {
+    display: none;
+}
+
+#packZipDetail li.open-li > ul {
+    display: block;
+}
+
+#packZipDetail .selectNode {
+    color: #FFFFFF;
+}

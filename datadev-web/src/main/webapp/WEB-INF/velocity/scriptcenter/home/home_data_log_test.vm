@@ -1,0 +1,124 @@
+#set($layout="layout_bdp_no_left.vm")
+#set($page_title="数据")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/dataLog.css?_dc=111$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.css?_dc=$!{staticVersion}">
+
+<input type="hidden" value="$!{runDetailId}" id="runDetailId">
+<input type="hidden" value="$!{hasData}" id="hasData">
+<input type="hidden" value="$!{dataLog}" id="dataLog">
+<div id="dataLogContainer" class="datadev-tab-horizontal">
+    <div style="width:100%;overflow:hidden;">
+        <ul class="tab-header datadev-ul" style="width:100%;margin-left:0px;">
+            <li target="runDetailDiv"  data-label="运行详情"><a href="javascript:;">运行详情</a></li>
+            <li target="logDiv" data-label="运行日志"><a href="javascript:;">运行日志</a></li>
+#*
+            #if($!{hasData}==1)
+*#
+            <li target="dataDiv" data-label="运行结果"><a href="javascript:;">运行结果</a></li>
+#*
+            #end
+*#
+        </ul>
+    </div>
+    <div id="runDetailDiv" class="tab-content">
+        <form class="bdp-form-horizontal bdp-form-inline">
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3">项目名称：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label  id="script-detail-project"></label>
+                </div>
+            </div>
+
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3">脚本路径：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-detail-file-path" ></label>
+                </div>
+            </div>
+
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 运行ID：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-id"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 运行人：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-operator"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 开始时间：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-startTime"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 结束时间：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-stopTime"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 耗时：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-totalTime"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 运行状态：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-status"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 集群：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-cluster"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 集市：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-market"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 生产账号：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-run-account"></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 队列：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <label id="script-detail-queue" ></label>
+                </div>
+            </div>
+            <div class="bdp-form-group ">
+                <label class=" bdp-control-label bdp-col-xs-3"> 运行参数：</label>
+                <div class="bdp-control-content bdp-col-xs-7">
+                    <textarea id="script-detail-args" style="color:#A3A9B2;resize: none;height: 100px" readonly></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="logDiv" style="display: none" class="logDiv tab-content">
+        <div class="log-content">
+            <div id="logCode" style="width: 100%;height: 100%">
+            </div>
+        </div>
+
+    </div>
+    <div id="dataDiv" style="display: none" class="dataDiv tab-content">
+        #parse("/scriptcenter/home/home_open_ide/home_data_log_result.vm")
+    </div>
+</div>
+
+
+<script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/dataLog.js?_dc=11$!{staticVersion}"></script>

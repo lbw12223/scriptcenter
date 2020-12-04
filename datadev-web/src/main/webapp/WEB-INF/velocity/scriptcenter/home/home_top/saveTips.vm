@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/account.css?_dc=$!{staticVersion}" type="text/css">
+
+<div class="bdp-modal " id="saveTipsModal" role="dialog" aria-hidden="true" style="overflow:hidden;z-index: 9990 !important;">
+    <div class="bdp-modal-dialog " style="width: 710px;">
+        <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">保存提示</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 710px;height: 334px;position: relative;">
+
+            </div> <!--这是弹出框的底部内容-->
+            <div class="bdp-modal-footer" style="height: 52px">
+                <a class="bdp-btn bdp-btn-primary" id="saveTipsOk">保存</a>
+                <a class="bdp-btn bdp-btn-default" id="saveTipsNo">不保存</a>
+                <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/scriptcenter/statics/pages/home/home_top/account.js?_dc=$!{staticVersion}"></script>

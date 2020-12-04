@@ -1,0 +1,15 @@
+#set($page_title="404")
+#set($layout="layout_bdp_no_left.vm")###
+<div   id=""  style=" ">
+    <div style="border:0px solid silver;text-align: center;background: url('/scriptcenter/statics/image/404-02.gif') no-repeat;background-size: 100%;width: 100%;height: 100%" >
+    <p style="line-height: 30px;color: #666666;font-size: 14px;">抱歉【$!{userHolder.name}($!{userHolder.erp})】你访问的页面不存在，<a href="/scriptcenter/index.html" target="_self">返回首页</a></p>
+    </div>
+</div>
+<!-- Scripts -->
+#define($cssBlock)
+
+<style type="text/css">
+    .bdp-algor-noright-content {}
+</style>
+#end
+

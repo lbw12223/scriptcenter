@@ -1,0 +1,90 @@
+#set($page_title="标注对象-平台运营")
+
+#set($layout="layout_bdp_left.vm")
+#set($selected_menu_id="cv_dir")
+<script src="/cv/statics/audio/audio.min.js?_dc=$!{staticVersion}"></script>
+<script>
+    audiojs.events.ready(function() {
+        var as = audiojs.createAll();
+    });
+</script>
+<div class="main-content" id="mainContainer">
+    <div class="page-content">
+        <!-- bread开始 -->
+        <div class="row">
+            <div class="bdp-col-xs-12">
+                <div class="bdp-page-header bdp-clearfix">
+                    <h1>标注对象</h1>
+                    <span class=" icon-chevron-right bdp-bread-arrow">
+                        <a href="/cv/dir/index.html" target="_blank">目录管理</a>
+                    </span>
+                    <span class=" icon-chevron-right bdp-bread-arrow">对象管理</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-wrap">
+            <form class="bdp-form-horizontal bdp-form-search bdp-margin-top-20" id="commonAuditForm">
+
+                <div class="row">
+                    <div class="bdp-col-xs-12 ">
+                        <input class="bdp-hidden" id="taskType" value="$!{taskType}">
+                        <label class="bdp-control-label" style="margin-left: 30px;">文件名称：</label>
+                        <input class=" bdp-form-control" placeholder="文件名称" style="width: 200px;" id="queryFileName"
+                               autocomplete="off"/>
+                        <button type="button" class="bdp-btn bdp-btn-primary " style="margin-left: 30px;"
+                                id="search-btn">查询
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <p class="bdp-col-xs-12 bdp-btn-group" id="OptBtn" style="margin-top: 20px;">
+                    #if(${cvFileDir.fileSource} == 1)
+                        <button type="button" class="btns bdp-btn bdp-btn-primary"  #if(${cvFileDir.available} == 0) disabled #end id="addBtn">上传文件</button>
+                    #end
+                    #if(${cvFileDir.fileSource} == 2)
+                        <button type="button" class="btns bdp-btn bdp-btn-primary"  #if(${cvFileDir.available} == 0) disabled #end id="ossDirBtn">拉取OSS目录</button>
+                    #end
+                    <button type="button" class="btns bdp-btn bdp-btn-default bdp-disabled" id="deleteBtn">删除</button>
+                    <input type="hidden" id="dirId" value="${cvFileDir.id}"/>
+                    <input type="hidden" id="available" value="${cvFileDir.available}"/>
+                </p>
+            </div>
+##            <div class="row" id="voiceDiv" style="display:none">
+##                <audio style="margin: 2px 5px 0px 5px; width: 440px " src="http://kolber.github.io/audiojs/demos/mp3/juicy.mp3" id="myAudio" autoplay></audio>
+##            </div>
+            <div class="row" id="GridCommonCtrlDiv">
+                <div class="bdp-col-xs-12" id="GridCommonCtrl">
+                    <div ng-controller="GridCommonCtrl">
+                        <div class="grace-grid-container" grace-grid grid-options="gridOptions">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+#parse("/cv/file/originPirctureItem.vm")
+#parse("/cv/file/invoiceItem.vm")
+
+<style type="text/css">
+    .fontRed {
+        color: red;
+    }
+</style>
+<link rel="stylesheet" href="/cv/statics/fileUpload/css/blueimp-gallery.min.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/cv/statics/fileUpload/css/jquery.fileupload.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/cv/statics/art/skins/simple.css?_dc=$!{staticVersion}">
+
+
+#define($javascriptBlock)
+
+<script src="/cv/statics/pages/file/index.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/pages/task/audit/manual/graceTableSimpleDataConfig.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/art/js/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/pages/validateFunction.js?_dc=$!{staticVersion}"></script>
+
+#end

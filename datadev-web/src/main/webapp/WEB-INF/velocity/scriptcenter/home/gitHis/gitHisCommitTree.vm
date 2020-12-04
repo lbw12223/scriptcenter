@@ -1,0 +1,41 @@
+#set($layout="layout_blank.vm")
+#set($page_title="GitHis")
+
+<link rel="stylesheet" type="text/css"
+      href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+
+<input type="hidden" id="gitProjectId" value="${dataDevGitHisDetail.gitProjectId}">
+<input type="hidden" id="commitId" value="${dataDevGitHisDetail.commitId}">
+
+<input type="hidden" id="gitProjectFilePath" value="${gitProjectFilePath}">
+<input id="gitProjectName" type="hidden" value="$!{dataDevGitProject.gitProjectName}"/>
+
+
+
+<div id="gitHisCommitDetail">
+    <div style="">
+        <p class="gitHisCommitDetail_info" style="">CommitId：${dataDevGitHisDetail.commitId}  </p>
+        <p class="gitHisCommitDetail_info" style=""  title="${dataDevGitHisDetail.comment}">提交信息：${dataDevGitHisDetail.comment}<p>
+    </div>
+    <div class="" style="width: 610px;height: 500px;overflow: auto;margin-top: 15px;">
+        <ul id="fileTree" class="ztree" style="display: inline-block;min-height: 100%;min-width: 100%;">
+        </ul>
+    </div>
+
+</div>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/treeGrid/js/jquery.treegrid.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/jQuery.md5.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/clipboard.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/js/bdpUtil.js?dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/treeGrid/js/jquery.treegrid.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/home/gitHis/gitTree.js?_dc=$!{staticVersion}"></script>

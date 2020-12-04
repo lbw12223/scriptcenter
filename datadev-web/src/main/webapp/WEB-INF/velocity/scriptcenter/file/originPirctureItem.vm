@@ -1,0 +1,27 @@
+<div class="bdp-modal fade in" id="myModalForOrigin" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="bdp-modal-dialog" style="width: 650px !important;">
+        <div class="bdp-modal-content">
+            <div class="bdp-modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+##                <h4 class="bdp-modal-title" id="myModalScriptLabel">  </h4>
+            </div>
+            <div class="bdp-modal-body" style="width: 650px;">
+
+                <form class="bdp-form-horizontal bdp-form-search">
+                    <div class="row">
+                        <div class="bdp-col-xs-12 bdp-text-center">
+                            <img id="image" src="" alt="Picture" style="max-width:100%;max-height:100%">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="bdp-modal-footer">
+                <button type="button" class="bdp-btn bdp-btn-default preSourceBtn" >上一页</button>
+                <button type="button" class="bdp-btn bdp-btn-default nextSourceBtn"  >下一页</button>
+                <button type="button" class="bdp-btn bdp-btn-default" data-dismiss="modal" id="cancelBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

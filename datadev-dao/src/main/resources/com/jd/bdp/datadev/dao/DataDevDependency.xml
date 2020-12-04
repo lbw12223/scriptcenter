@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevDependencyDao">
+    <sql id="dependDetailColumns">
+        id,
+        dependency_id AS dependencyId,
+        script_id AS scriptId,
+        git_project_file_path AS gitProjectFilePath,
+        git_project_id AS gitProjectId,
+        dependency_git_project_file_path AS dependencyGitProjectFilePath,
+        dependency_version AS dependencyVersion
+    </sql>
+    <sql id="dependencyColumns">
+        id,
+        script_id AS scriptId,
+        git_project_file_path AS gitProjectFilePath,
+        git_project_id AS gitProjectId,
+        created,
+        creator,
+        md5
+    </sql>
+    <insert id="saveDependencyDetails">
+        INSERT INTO script_file_dependency_detail(
+            dependency_id,
+            script_id,
+            git_project_file_path,
+            git_project_id,
+            dependency_git_project_file_path,
+            dependency_version
+        )
+        VALUES
+        <foreach collection="list" item="detail" open="" separator="," close="">
+            (
+            #{detail.dependencyId},
+            #{detail.scriptId},
+            #{detail.gitProjectFilePath},
+            #{detail.gitProjectId},
+            #{detail.dependencyGitProjectFilePath},
+            #{detail.dependencyVersion}
+            )
+        </foreach>
+
+    </insert>
+    <select id="getDependencyDetailsByDependId" resultType="DataDevDependencyDetail">
+        SELECT
+        <include refid="dependDetailColumns"></include>
+        FROM script_file_dependency_detail
+        WHERE dependency_id = #{dependencyId}
+    </select>
+    <insert id="saveDependency" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO script_file_dependency(
+        script_id,
+        git_project_file_path,
+        git_project_id,
+        created,
+        creator,
+        md5
+        )
+        VALUES (
+        #{scriptId},
+        #{gitProjectFilePath},
+        #{gitProjectId},
+        now(),
+        #{creator},
+        #{md5}
+        )
+    </insert>
+    <select id="getById" resultType="DataDevDependency">
+        SELECT
+        <include refid="dependencyColumns"></include>
+        FROM script_file_dependency
+        WHERE id = #{id}
+
+    </select>
+    <select id="getDetailByDependencyIdAndPath" resultType="DataDevDependencyDetail">
+        SELECT <include refid="dependDetailColumns"></include>
+        FROM script_file_dependency_detail
+        WHERE dependency_id = #{dependencyId} AND git_project_id = #{gitProjectId} AND dependency_git_project_file_path = #{gitProjectFilePath}
+    </select>
+
+
+
+</mapper>

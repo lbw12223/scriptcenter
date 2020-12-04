@@ -1,0 +1,91 @@
+<div id="pullDownBackground" style="display: none;"></div>
+
+#*日志区域右键*#
+<div class="clearLog" style="display: none;">
+    <ul>
+        <li id="clearLogEventLi">
+            <span class="bdp-icon ide-delete" style="margin-left: 10px;position: relative;top: -1px;"></span>
+            <span style="margin-left: 5px">清除日志</span>
+        </li>
+    </ul>
+</div>
+#*编辑区域右键*#
+<div class="moreFunction" style="display: none;">
+    <ul>
+        #if($!{canRun} == "true")
+            <li envent-type="run"><span class="keyWord">运行</span><span class="keyMap" style="">Ctrl+Enter</span>
+            </li>
+        #end
+        #if($!{scriptType} == "3")
+            <li envent-type="debug"><span class="keyWord">调试</span><span class="keyMap"
+                                                                         style="">Ctrl+Shift+Enter</span></li>
+        #end
+        #if($!{canRun} == "true")
+            <li envent-type="stop" style="display: none"><span class="keyWord">停止</span><span class="keyMap"
+                                                                                              style=""></span></li>
+        #end
+        #if($!{canEdit} == "true")
+            <li envent-type="save" class="meun_split_border" style="">
+                <span class="keyWord">保存</span>
+                <span class="keyMap" style="">Ctrl+S</span>
+            </li>
+            <li id="scriptGit" envent-type="git" class="meun_split_border">
+                <span class="keyWord">Git</span>
+                <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
+            </li>
+        #end
+        <li envent-type="scriptUrl" class="meun_split_border">
+            <span class="keyWord">复制脚本URL</span>
+            <span class="keyMap" style=""></span>
+        </li>
+        <li envent-type="position">
+            <span class="keyWord">定位</span>
+            <span class="keyMap" style=""></span>
+        </li>
+        <li envent-type="copyfilename">
+            <span class="keyWord">复制文件名</span>
+            <span class="keyMap" style=""></span>
+        </li>
+        <li envent-type="copyfilepath">
+            <span class="keyWord">复制路径</span>
+            <span class="keyMap" style=""></span>
+        </li>
+        <li envent-type="rename">
+            <span class="keyWord">重命名</span>
+            <span class="keyMap" style="">F2</span>
+        </li>
+        <li envent-type="down">
+            <span class="keyWord">下载到本地</span>
+            <span class="keyMap" style=""></span>
+        </li>
+        <li envent-type="addtemplate">
+            <span class="keyWord">保存为模板</span>
+            <span class="keyMap" style=""></span>
+        </li>
+    </ul>
+</div>
+
+#*Git*#
+<div id="rightClickGitMenu" class="rightMenu" style="display: none;width: 120px;z-index: 1001;">
+    <ul class="menuUl">
+        <li class="pull" style="padding-left: 10px">
+            <span class="bdp-icon ide-pull" style="color: #42A5F5"></span>
+            <span class="" style="margin-left: 5px">Pull</span>
+        </li>
+        <li class="push" style="padding-left: 10px">
+            <span class="bdp-icon ide-push" style="color: #4CD1B3"></span>
+            <span class="" style="margin-left: 5px">Push</span>
+        </li>
+        <li class="showGitHistory" style="padding-left: 10px">
+            <span class="bdp-icon ide-commit" style="color: #4CD1B3"></span>
+            <span class="name" style="margin-left: 5px">提交历史</span>
+        </li>
+    </ul>
+</div>
+
+
+
+<script src="/scriptcenter/statics/pages/devcenter/script_edit_meuns.js?_dc=$!{staticVersion}"></script>
+
+
+

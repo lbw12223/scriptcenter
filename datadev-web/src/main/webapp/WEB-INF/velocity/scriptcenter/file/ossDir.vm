@@ -1,0 +1,58 @@
+#set($layout="layout_blank.vm")
+<div style="padding: 10px;">
+    <input type="hidden" name="dirId" id="dirId" value="${dir.id}"/>
+
+    <p style="font-size: 14px;font-weight: bold;height: 40px;line-height: 40px;border-bottom: 1px solid silver;margin-top: -20px;">Oss目录选择[$!{dir.dirName}]</p>
+    <div style="position: relative;height:30px;margin-top: 20px;">
+        <label class="bdp-control-label">文件夹名称：</label>
+        <input class="bdp-form-control" style="width: 405px"
+               name="searchOssDirs"
+               id="searchOssDirs" placeholder="请输入查找内容" autocomplete="off"/>
+        <span class="icon-search " style="position: absolute;left: 455px;font-size: 15px;margin-top: 7px"></span>
+    </div>
+    <div id="dirContent" style="border:1px solid silver;position: relative;margin-top:20px;z-index: 10;height: 352px;overflow-y:auto; ">
+    #*    <ul class="oss_app">
+            <li class="active"></li>
+        </ul>*#
+    </div>
+
+    <div style="margin-top:15px;text-align: center;">
+        <button type="button" class="bdp-btn bdp-btn-search" id="add-btn">选择</button>
+        <button type="button" class="bdp-btn bdp-btn-default" id="cancel-btn" data-dismiss="modal">取消</button>
+    </div>
+</div>
+<style type="text/css">
+    div.oss_app_div {
+        background: #F5F7F8;
+    }
+
+    ul.oss_app {
+        list-style-type: none;
+        position: relative;
+    }
+
+    ul.oss_app li {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 4px;
+        cursor: pointer;
+        position: relative;
+        border: 1px dotted silver;
+        float: left;
+        font-size: 14px;
+    }
+
+    ul.oss_app li.active {
+        background: #375CB4;
+        color: white;
+    }
+    .fontRed {
+        color: red;
+    }
+</style>
+
+<script src="/cv/statics/pages/file/ossToken.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/art/js/iframeTools.js?_dc=$!{staticVersion}"></script>

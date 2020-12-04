@@ -1,0 +1,67 @@
+
+#saveModal .dialog-group {
+    height: 32px;
+    line-height: 32px;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+#saveModal .file-label {
+    width: 110px;
+    float: left;
+    margin-right: 15px;
+}
+
+#saveModal .file-item {
+    width: 400px;
+    float: left;
+}
+
+#saveModal .file-input {
+    background: #272A2F;
+    border: 1px solid #44494F;
+    width: 100%;
+}
+
+#saveModal .file-input:hover {
+    border: 1px solid #384F78;
+    box-shadow: 0 0 10px 0 rgba(50, 134, 233, 0.30);
+}
+
+#saveModal .file-select {
+    background: #34383E;
+    /*border: 1px solid #44494F !important;*/
+    width: 100%;
+    cursor: default !important;
+
+}
+
+#saveModal .file-dir {
+    background: #272A2F;
+    border: 1px solid #44494F ;
+    width: 100%;
+    cursor: default !important;
+}
+
+#saveModal .file-text {
+    background: #272A2F;
+    height: 80px;
+    width: 100%;
+    resize: none;
+    line-height: 20px !important;
+    overflow: auto;
+}
+
+#saveModal .dir-root {
+    height: 152px;
+    position: absolute;
+    right: 13px;
+    top: 33px;
+    background: #1C2024;
+    border: 1px solid #44494F;
+    overflow: auto;
+    overflow-x: hidden;
+}
+#saveModal .bdp-help-block{
+    left: 130px;
+}

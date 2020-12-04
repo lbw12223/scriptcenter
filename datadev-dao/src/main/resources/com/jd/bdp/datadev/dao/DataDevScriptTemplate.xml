@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptTemplateDao">
+
+    <sql id="script_template_columns">
+    template.id,
+    template.name,
+    template.desc,
+    template.content,
+    template.script_type As scriptType,
+    template.template_type As templateType,
+    template.incharge,
+    template.status,
+    template.creator,
+    template.created,
+    template.mender,
+    template.modified,
+    template.deleted,
+    template.python_type as pythonType,
+    template.args,
+    template.script_file_id as scriptFileId
+    </sql>
+    <sql id="scriptTemplateWithShowColumns">
+    template.id,
+    template.name,
+    template.desc,
+    template.content,
+    template.script_type As scriptType,
+    template.template_type As templateType,
+    template.incharge,
+    template.status,
+    template.creator,
+    template.created,
+    template.mender,
+    template.modified,
+    template.deleted,
+    template.python_type as pythonType,
+    template.args,
+    template.script_file_id as scriptFileId,
+    temShow.show_order as showOrder
+    </sql>
+
+    <select id="getScriptTemplateById" resultType="DataDevScriptTemplate">
+        SELECT
+        <include refid="script_template_columns"></include>
+        FROM
+        script_template as template
+        WHERE id=#{id} and IFNULL(deleted,0) = 0
+    </select>
+    <select id="getTemplateByScriptId" resultType="DataDevScriptTemplate">
+        SELECT
+        <include refid="script_template_columns"></include>
+        FROM
+        script_template as template
+        WHERE script_file_id=#{scriptFileId} and IFNULL(deleted,0) = 0 limit 1
+    </select>
+
+
+    <select id="searchOwnedScriptTemplate" resultType="DataDevScriptTemplate">
+        SELECT
+        <include refid="scriptTemplateWithShowColumns"></include>
+        FROM
+        script_template as template
+        left join script_template_show as temShow
+        on temShow.template_id = template.id and temShow.erp = #{erp}
+        WHERE script_type = #{scriptType}
+        <if test="pythonType!=null and pythonType !=''">
+            and python_type = #{pythonType}
+        </if>
+        <if test="key !=null and key!= ''">
+            AND ( `name` like concat("%",#{key},"%") OR `desc` like concat("%",#{key},"%"))
+        </if>
+        and (template_type = 0 or creator = #{erp})
+        AND IFNULL(template.deleted,0) = 0 and IFNULL(status,0) = 0
+
+    </select>
+    <select id="searchSharedGitScriptTemplate" resultType="DataDevScriptTemplate">
+        select
+        template.id,template.name,template.desc,template.content,template.script_type as scriptType,template.template_type as templateType,
+        template.incharge,template.status,template.creator,template.created,template.mender,template.modified,
+        template.deleted,template.python_type as pythonType ,template.args,template.script_file_id as scriptFileId,temShow.show_order as showOrder
+        from script_template template
+        inner join script_template_share
+        on script_template_share.share_type = 2 and script_template_share.template_id = template.id
+        left join script_template_show as temShow
+        on template.id = temShow.template_id and temShow.erp = #{erp}
+        WHERE template.script_type = #{scriptType} and template.incharge in
+        <foreach collection="users" open="(" close=")" separator="," item="name">
+            #{name}
+        </foreach>
+        <if test="pythonType!=null and pythonType !=''">
+            and template.python_type = #{pythonType}
+        </if>
+        <if test="key !=null and key!= ''">
+            AND ( template.`name` like concat("%",#{key},"%") OR template.`desc` like concat("%",#{key},"%"))
+        </if>
+        AND IFNULL(template.deleted,0) = 0 and IFNULL(template.status,0) = 0
+    </select>
+
+    <select id="searchSharedErpScriptTemplate" resultType="DataDevScriptTemplate">
+        select
+        template.id,template.name,template.desc,template.content,template.script_type as scriptType,template.template_type as templateType,
+        template.incharge,template.status,template.creator,template.created,template.mender,template.modified,
+        template.deleted,template.python_type as pythonType ,template.args,template.script_file_id as scriptFileId,temShow.show_order as showOrder
+        from script_template template
+        inner join script_template_share on script_template_share.template_id = template.id and script_template_share.share_type = 1 and script_template_share.share_target = #{erp}
+        left join script_template_show as temShow
+        on template.id = temShow.template_id and temShow.erp = #{erp}
+        WHERE template.script_type = #{scriptType}
+        <if test="pythonType!=null and pythonType !=''">
+            and template.python_type = #{pythonType}
+        </if>
+        <if test="key !=null and key!= ''">
+            AND ( template.`name` like concat("%",#{key},"%") OR template.`desc` like concat("%",#{key},"%"))
+        </if>
+        AND IFNULL(template.deleted,0) = 0 and IFNULL(template.status,0) = 0
+
+    </select>
+
+
+    <!--保存-->
+    <insert id="insertScriptTemplate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_template (
+        name,
+        script_type,
+        template_type,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        incharge,
+        `desc`,
+        python_type,
+        args,
+        script_file_id,
+        status
+        )
+        VALUES(
+        #{name},
+        #{scriptType},
+        #{templateType},
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        0,
+        #{incharge},
+        #{desc},
+        #{pythonType},
+        #{args},
+        #{scriptFileId},
+        #{status}
+        )
+    </insert>
+    <select id="getAllSystemTemplate" resultType="DataDevScriptTemplate">
+        select
+        <include refid="script_template_columns"></include>
+        from script_template as template
+        where IFNULL(template_type,0) = 0 and IFNULL(deleted,0) = 0;
+    </select>
+    <update id="updateScriptTemplate">
+        update script_template as template
+        set
+        modified = now()
+        <if test="template.scriptFileId !=null ">
+            , script_file_id = #{template.scriptFileId}
+        </if>
+        <if test="template.name !=null and template.name !=''">
+            , template.name = #{template.name}
+        </if>
+        <if test="template.desc !=null and template.desc !=''">
+            , template.desc = #{template.desc}
+        </if>
+        <if test="template.status !=null">
+            , template.status = #{template.status}
+        </if>
+        <if test="template.deleted !=null">
+            , template.deleted = #{template.deleted}
+        </if>
+        <if test="template.creator !=null and template.creator !=''">
+            , template.creator = #{template.creator}
+        </if>
+        <if test="template.mender !=null and template.mender !=''">
+            , template.mender = #{template.mender}
+        </if>
+        <if test="template.incharge !=null and template.incharge !=''">
+            , template.incharge = #{template.incharge}
+        </if>
+
+        where id = #{template.id}
+    </update>
+
+    <select id="getTemplateByName" resultType="DataDevScriptTemplate">
+        select
+        <include refid="script_template_columns"></include>
+        from script_template as template
+        where template.name = #{templateName} and template.id != #{templateId} and IFNULL(deleted,0) = 0 and
+        IFNULL(template.status,0) = 0 limit 1
+    </select>
+
+
+</mapper>

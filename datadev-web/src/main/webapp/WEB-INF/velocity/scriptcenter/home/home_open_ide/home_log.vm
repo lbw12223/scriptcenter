@@ -1,0 +1,34 @@
+#set($layout="layout_bdp_no_left.vm")
+#set($page_title="日志")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/log.css?_dc=$!{staticVersion}">
+<input type="hidden" value="$!{runDetailId}" id="runDetailId">
+<div class="logDiv">
+    <div class="log-head">
+        <h4 class="bdp-control-title">代码运行日志</h4>
+        <div class="label-content">
+            <div class="bdp-form-group script-log">
+                <label class=" bdp-control-label script-log-label">ID：</label>
+                <div class="script-log-content script-log-item">
+                    <input class="bdp-form-control" value="$!{id}" readonly="readonly" autocomplete="off"/>
+                </div>
+            </div>
+            <div class="bdp-form-group script-log">
+                <label class=" bdp-control-label script-log-label">运行状态：</label>
+                <div class="script-log-content script-log-item">
+                    <input class="bdp-form-control" value="$!{status}" readonly="readonly" autocomplete="off"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="log-content">
+        <div id="logCode" style="width: 100%;height: 100%">
+        </div>
+    </div>
+
+
+
+
+</div>
+<script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/log.js?_dc=$!{staticVersion}"></script>

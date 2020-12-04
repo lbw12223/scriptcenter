@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptTemplateShareDao">
+
+    <sql id="script_template_share_columns">
+        id,
+        template_id as templateId,
+        share_type as shareType,
+        share_target as shareTarget,
+        creator,
+        created
+    </sql>
+    <select id="getSharesByTemplateId" resultType="DataDevScriptTemplateShare">
+        select
+        <include refid="script_template_share_columns"></include>
+        from script_template_share
+        where template_id = #{templateId}
+    </select>
+
+
+    <select id="getShareGitTemplate" resultType="DataDevScriptTemplateShare">
+        select
+        <include refid="script_template_share_columns"></include>
+        from script_template_share
+        where template_id = #{templateId} and share_type = #{shareType} order by id desc limit 1
+    </select>
+
+
+
+    <delete id="deleteByTemplateId">
+        delete from script_template_share
+        where template_id = #{templateId}
+    </delete>
+    <insert id="insertTemplateShares">
+        insert into script_template_share(
+          template_id,
+          share_type,
+          share_target,
+          creator,
+          created
+        )
+        values
+        <foreach collection="shares" item="shareOne" separator=",">
+            (
+            #{shareOne.templateId},
+            #{shareOne.shareType},
+            #{shareOne.shareTarget},
+            #{shareOne.creator},
+            now()
+            )
+        </foreach>
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,58 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/funtion_manage.css?_dc=$!{staticVersion}" type="text/css">
+
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+<div id="functionShowModal">
+    <div class="bdp-modal-body account-body" style="position: relative;">
+        <div class="funtionToolDiv">
+            <span id="funcName"></span>
+            <a class="bdp-btn bdp-btn-primary" id="copyFunc">复制</a>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <td> 属性名</td>
+                    <td>属性信息</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="commonTr">
+                    <td>函数名称</td>
+                    <td id="funcTrName"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>责任人</td>
+                    <td id="funcTrOwner"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>函数类型</td>
+                    <td id="funcTrType"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>修改人</td>
+                    <td id="funcTrMender"></td>
+                </tr>
+                <tr class="commonTr">
+                    <td>修改时间</td>
+                    <td id="funcTrModified"></td>
+                </tr>
+                <tr class="expTr">
+                    <td>命令格式</td>
+                    <td><textarea id="expText" readonly></textarea></td>
+                </tr>
+                <tr class="descTr">
+                    <td>参数说明</td>
+                    <td><textarea id="descText" readonly></textarea></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> <!--这是弹出框的底部内容-->
+</div>
+
+
+<script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage_detail.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>

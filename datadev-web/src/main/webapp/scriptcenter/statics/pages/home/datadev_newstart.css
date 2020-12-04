@@ -1,0 +1,12 @@
+/**
+覆盖新手入门部分样式
+ */
+.bdp-new-help-content{
+    color: black !important;
+    font-size: 13px !important;
+    line-height: 16px !important;
+}
+.bdp-new-help-zIndex {
+    outline: #F8E71C solid 1px !important;
+    outline-offset: 5px !important;
+}

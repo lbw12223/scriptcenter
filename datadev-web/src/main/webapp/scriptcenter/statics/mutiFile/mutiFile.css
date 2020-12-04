@@ -1,0 +1,43 @@
+
+
+
+.mutil-icon{cursor: default;font-size: 18px; }
+.mutil-icon-default:before{content: "\e927";}
+.mutil-icon-python:before{content: "\e93f";}
+.mutil-icon-sql:before{content: "\e941";}
+.mutil-icon-shell:before{content: "\e940";}
+.mutil-icon-zip:before{content: "\e942";}
+.mutil-icon-java:before{content: "\e9f7";}
+.mutil-icon-txt:before{content: "\e9f6";}
+.mutil-icon-xml:before{content: "\e9f9";}
+.mutil-icon-html:before{content: "\e9f2";}
+.mutil-icon-csv:before{content: "\e9f2";}
+.mutil-icon-prop:before{content: "\e9f8";}
+.mutil-icon-jar:before{content: "\e943";}
+
+
+
+
+
+
+
+.mutilFileTable{border-collapse: collapse;font-size: 12px;width: 100%;}
+.mutilFileTable td{height: 52px;background: #272A2F;padding-left: 10px;padding-right:10px;border: 1px solid #373B40;word-wrap:break-word;word-break:break-all;}
+.mutilFileTable thead td{background: #191B1F;}
+
+div.itemHeader{float: left;}
+div.itemHeaderIcon{padding: 10px 0px 0px 0px;float: left;}
+div.itemHeaderFileName{height: 40px;line-height: 40px;text-indent: 5px;overflow: hidden;cursor: default;}
+
+div.item{}
+div.itemInProcess{display: none;}
+div.itemSuccess{color: #1ACA7E;}
+div.itemError{color: #CA8F1A;}
+div.itemProcessContainer{width: 100%;height: 4px;background: #323439;border-radius: 4px;}
+div.itemProcessContainer .process{background: #3286E9;width: 0%;height: 4px;border-radius: 4px; }
+div.itemSpeed{margin-top: 10px;}
+div.itemOpt{}
+div.itemOpt span{cursor: pointer;display: inline-block;}
+div.itemOpt span:hover{color: #3286E9;}
+
+div#fileTreeWrapper{padding: 0px;height: 160px;overflow-y: auto;overflow-x: hidden;border: 1px solid #44494F;border-top: none}

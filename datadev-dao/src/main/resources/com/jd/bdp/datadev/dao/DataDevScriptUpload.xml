@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptUpLoadDao">
+    <!--保存-->
+    <insert id="insertScriptUpLoad" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_upload (
+        creator,
+        created,
+        description,
+        git_project_id,
+        git_project_dir_path
+        )
+        VALUES(
+        #{creator},
+        now(),
+        #{description},
+        #{gitProjectId},
+        #{gitProjectDirPath}
+        )
+    </insert>
+
+    <select id="findAllCount" resultType="Long">
+        select count(*) from script_upload where git_project_id = #{gitProjectId}
+    </select>
+
+    <select id="findByPage" resultType="DataDevScriptUpLoad">
+        select id, creator, created, description from script_upload
+        where git_project_id = #{gitProjectId}
+        <if test = "startTime != null ">
+            and created >= #{startTime}
+        </if>
+        <if test="endTime != null ">
+            and created <![CDATA[<=]]> #{endTime}
+        </if>
+        <if test="creator != null and creator != '' ">
+            and creator = #{creator}
+        </if>
+        order by created desc
+        limit #{offSet}, #{pageSize}
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+#set($layout="layout_blank.vm")
+#set($page_title="useGitProject")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/useGitProject.css?_dc=$!{staticVersion}" type="text/css">
+<div id="useGitProjectArt">
+    <form id="useGitProForm" onsubmit="return false;">
+        <div class="project-path-content bdp-form-group" style="padding-left: 0px !important;">
+            <label class="bdp-control-label"><i class="bdp-note">*</i>git地址：</label>
+            <div class="project-item" style="width:500px!important;">
+                <input class="bdp-form-control" id="gitDressId" name="gitDress" style="width: 70%" autocomplete="off">
+                   <div class="pop-title"  id="toGitId" title="跳转到git">
+##                       <img src="/scriptcenter/statics/image/git.png" style="width: 17px;height: 14px;padding-top: 2px;margin-top:5px;" id="imgBlack">
+##                       <img class="bdp-hidden" src="/scriptcenter/statics/image/githover.png" style="width: 17px;height: 14px;padding-top: 2px;margin-top:5px;" id="imgHour">
+                   </div>
+                </input>
+
+                <button class="bdp-btn-primary" id="testGitBtnId" style="height: 25px; border-color: #3286e9;margin-left:50px;">测试有效性</button>
+                <label class="hidden bdp-help-block positionB" id="errorSelfId" ></label>
+
+
+            </div>
+        </div>
+        <div class="project-desc-content bdp-form-group" id="testId" style="margin-top: 30px;padding-left:20px!important;">
+            <div class="tips" style="height: 81px; padding-top: 10px;padding-left: 20px;line-height: 20px;margin-right: 50px!important;width: 550px!important;">
+                <p>操作步骤提示：</p>
+                <p>1.登录<a href="http://git.jd.com" target="_blank">git.jd.com</a>，选择现有项目，复制git的http地址，并将可见级别设置为private。</p>
+                <p>2.将bdp_ide账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）。</p>
+            </div>
+        </div>
+    </form>
+    <div class="buttons-div" style="position: absolute;bottom: 0px;margin-bottom: 20px; ">
+        <a class="bdp-btn bdp-btn-primary" id="cloneGitProBtn">确定</a>
+        <a class="bdp-btn bdp-btn-default" id="closeProjectBtn">取消</a>
+    </div>
+</div>
+
+<script src="/scriptcenter/statics/pages/home/project/useGitProject.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>

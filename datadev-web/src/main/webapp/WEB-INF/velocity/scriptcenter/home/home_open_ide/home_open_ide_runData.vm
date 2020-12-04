@@ -1,0 +1,28 @@
+## jqgrid表格组件使用
+#set($layout="layout_data.vm")
+##<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/dataLog.css?_dc=111$!{staticVersion}">
+
+<input type="hidden" value="${dataDevScriptRunDetail.id}" id="runDetailId"/>
+
+
+#*<div class="jd-table-parent" style="overflow: hidden;background: #272A2F;">
+    <div style="display: none;" id="cols">
+        ${cols}
+    </div>
+    <table class="jd-table table table-hover " id="grid-table" style="background: #272A2F;">
+    </table>
+    <div id="grid-pager">
+    </div>
+</div>*#
+<div>
+    #parse("/scriptcenter/home/home_open_ide/home_data_log_result.vm")
+</div>
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/pages/home/home_right_ifame.js?_dc=121111$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script>
+    initResultData();
+</script>
+#*<script src="/scriptcenter/statics/pages/home/jqgrid.js?_dc=$!{staticVersion}"></script>*#
+#end

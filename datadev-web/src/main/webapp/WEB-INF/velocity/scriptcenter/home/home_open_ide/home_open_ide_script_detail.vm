@@ -1,0 +1,39 @@
+<form class="bdp-form-horizontal bdp-form-inline script-detail-form">
+
+    <h4 class="bdp-control-title">脚本详情</h4>
+
+    <div class="bdp-form-group script-detail" id="script_detail_project_name">
+        <label class=" bdp-control-label script-detail-label">项目名称：</label>
+        <div class="script-detail-content script-detail-item">
+            <label id="script-detail-project" style="margin-top: 8px;"></label>
+         </div>
+    </div>
+
+    <div class="bdp-form-group script-detail">
+        <label class=" bdp-control-label script-detail-label script-detail-name">脚本路径：</label>
+        <div class="script-detail-content script-detail-item">
+            <label id="script-detail-file-path" style="margin-top: 8px;"></label>
+         </div>
+    </div>
+
+    <div class="bdp-form-group script-detail">
+        <label class=" bdp-control-label script-detail-label">创建人：</label>
+        <div class="script-detail-content script-detail-item">
+             <label id="script-detail-creator" style="margin-top: 8px;"></label>
+        </div>
+    </div>
+    <div class="bdp-form-group script-detail">
+        <label class=" bdp-control-label script-detail-label">创建时间：</label>
+        <div class="script-detail-content script-detail-item">
+            <label id="script-detail-created" style="margin-top: 8px;"></label>
+         </div>
+    </div>
+    <div class="bdp-form-group script-detail">
+        <label class=" bdp-control-label script-detail-label">描述：</label>
+        <div class="script-detail-content script-detail-item">
+            <textarea class="bdp-form-control " id="script-detail-description" ></textarea>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" src="/scriptcenter/statics/pages/home/scriptDetail.js?_dc=$!{staticVersion}"></script>

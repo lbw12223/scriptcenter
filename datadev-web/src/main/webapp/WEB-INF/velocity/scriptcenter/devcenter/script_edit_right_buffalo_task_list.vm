@@ -1,0 +1,47 @@
+<div class="script-buffalo-task-list">
+    <h4 class="bdp-control-title">任务列表</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-control-label script-buffalo-task-label">关键字：</label>
+        <div class="script-buffalo-task-content">
+            <input id="buffalo_task_key_word" placeholder="请输入版本号、任务名称、任务描述">
+            <a class="bdp-btn bdp-btn-primary" id="buffalo_task_list_query" style="position: absolute;right: 44px;">查询</a>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 33px;float: left;width: 50%;">
+        <label class="bdp-control-label script-buffalo-task-label">产品名称：</label>
+
+        <div class="script-buffalo-task-content">
+            <select id="buffalo_task_type" class="select-content" style="">
+                <option value=""></option>
+                <option value="2">任务调度3.5</option>
+                <option value="1">任务调度4.0</option>
+            </select>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 33px;float: left;width: 50%;">
+        <label class="bdp-control-label script-buffalo-task-label">项目空间：</label>
+
+        <div class="script-buffalo-task-content">
+            <select id="buffalo_appgroup" class="select-content" style="">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="jd-table-parent" id="buffalo-list-jd-table-parent"
+         style="margin-left:20px;width: 740px;height:435px;overflow: hidden;">
+        <table class="jd-table table table-hover " id="buffalo-list-grid-table">
+        </table>
+        <div id="buffalo-list-grid-pager">
+
+        </div>
+    </div>
+
+
+</div>
+
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_buffalo_task_list.js?_dc=$!{staticVersion}"></script>
+
+
+

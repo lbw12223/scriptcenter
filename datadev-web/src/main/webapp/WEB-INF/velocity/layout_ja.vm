@@ -1,0 +1,20 @@
+##测试环境下不要显示JA统计的脚本，浪费网络速度
+#if(${bdpDomain} != 'http://t.bdp.360buy.com')
+<input type="hidden" id="ja_erpInfo" value="$!{userHolder.erp}"/>
+<!-- ja统计需要的js -->
+<script type="text/javascript">
+    var jaq = jaq || [];
+    jaq.push(['account', 'UA-J2011-15']);
+    jaq.push(['domain', 'bdp.jd.com']);
+    jaq.push(['erp_account', $("#ja_erpInfo").val()]);
+    (function () {
+        var ja = document.createElement('script');
+        ja.type = 'text/javascript';
+        ja.async = true;
+        ja.src = ('https:' == document.location.protocol ? 'https://cscssl' : 'http://csc') + '.jd.com/joya.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ja, s);
+    })();
+</script>
+
+#end

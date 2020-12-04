@@ -1,0 +1,42 @@
+#mergeListContent {
+    width: 100%;
+    height: 100%;
+    background: #31353C;
+    position: relative;
+    padding-right: 160px;
+}
+
+#mergeListContent .merge-btn-content {
+    width: 160px;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+#mergeListContent .merge-btn-content .btn-wrap{
+    margin-top: 10px;
+    margin-left: 30px;
+}
+#mergeListContent .merge-btn-content a.bdp-btn {
+    width: 120px;
+}
+
+#merge-jd-table-parent {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    float: left;
+    margin-left: 10px;
+    border: 1px solid #44494F;
+    user-select: none;
+}
+#merge-jd-table-parent .ui-jqgrid tr.ui-state-highlight.ui-row-ltr td {
+    background-color: #3C5481;
+
+}
+#merge-jd-table-parent .ui-jqgrid tr.ui-row-ltr td{
+    text-align: center;
+}
+

@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/upline.css?_dc=$!{staticVersion}" type="text/css">
+
+<div class="bdp-modal " id="upLineModal" role="dialog" aria-hidden="true"
+     style="overflow:hidden;z-index: 9990 !important;">
+    <div class="bdp-modal-dialog " style="width: 710px;">
+        <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">上线至任务调度Buffalo</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 710px;height: 495px;position: relative;">
+                <div class="after-upline" style="display: none">
+                    <div class="upline-icon-content">
+                        <div class="upline-icon-wrap"><span class="bdp-icon bdp-icon-sszx-cg"></span></div>
+                    </div>
+                    <div class="after-test after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    脚本上线完成
+                                 </span>
+                                <span id="afterUplineNotFirstTips" class="upline-info">
+                                    已自动替换现有测试任务脚本
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="after-online after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    已提交，系统将在审批通过后自动替换现有线上任务中的脚本
+                                </span>
+                            </div>
+                        </div>
+                        <div class="upline-map-content">
+                            <div class="upline-explain-wrap">
+                                <span class="upline-explain">
+                                    审批流程示意图：
+                                </span>
+                            </div>
+                            <div class="upline-map-wrap">
+                                <div class="upline-map-tip">脚本上传</div>
+                                <div class="upline-map-ico">
+                                    <div class="map-line"></div>
+                                    <div class="map-triangle"></div>
+                                </div>
+                                <div class="upline-map-tip">脚本应用负责人审批</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="after-nojob after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    脚本上线完成
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="before-upline" style="display: none">
+                    <form id="upline-form">
+                        <div class="bdp-form-group upline-group">
+                            <label class="bdp-control-label"><i class="bdp-note">*</i>脚本名称：</label>
+                            <div class=" upline-item">
+                                <input class="bdp-form-control " id="upLineScriptName" readonly autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="bdp-form-group upline-group">
+                            <label class="bdp-control-label"><i class="bdp-note">*</i>项目空间：</label>
+                            <div class=" upline-item">
+                                <select class="bdp-form-control" name="uplineAppSelect" id="uplineAppSelect"></select>
+                            </div>
+                            <i class="icon-question-sign  bdp-hint-sign"
+                               data-hint="“项目空间”主要用于资源归类及权限控制，如列表中没有您需要的应用，请点击”申请新应用”添加。<a href='$!{bdpDomain}/jsd/appgroup/list.html' target='_blank'>申请新应用</a>"
+                               data-original-title="" data-placement="bottom"></i>
+                        </div>
+                        <div class="bdp-form-group upline-group" style="height: 80px">
+                            <label class="bdp-control-label "><i class="bdp-note">*</i> 版本描述：</label>
+                            <div class=" upline-item">
+                                <textarea class="upline-text bdp-form-control" name="description" id="upLineDescription"
+                                          placeholder="请输入文字"></textarea>
+                            </div>
+                        </div>
+                        <div class="bdp-form-group upline-group" style="height: 235px;margin-bottom: 5px;">
+                            <label class="bdp-control-label">更新任务列表：</label>
+                            <div class=" upline-item">
+                                <div class="jd-table-parent" id="upline-buffalo-list-jd-table-parent"
+                                     style="height:235px;overflow: hidden;width: 100%">
+                                    <table class="jd-table table table-hover " id="upline-buffalo-list-grid-table">
+                                    </table>
+                                    <div id="upline-buffalo-list-grid-pager">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="bdp-form-group upline-group tip-group">
+                            <span class="upline-tip">提示：系统将在审批通过后自动替换上述任务列表中的脚本</span>
+                        </div>
+                    </form>
+
+                </div>
+
+
+            </div> <!--这是弹出框的底部内容-->
+            <div class="bdp-modal-footer" style="height: 52px">
+                <div id="afterUpLineButtons">
+                    <a class="bdp-btn bdp-btn-primary" id="checkApprovalInfo">查看审批信息</a>
+                    <a class="bdp-btn bdp-btn-primary" id="checkTestJobInfo">查看任务</a>
+                    <a class="bdp-btn bdp-btn-primary" id="createBuffolaJob">创建新调度任务</a>
+                    <a class="bdp-btn bdp-btn-default" data-dismiss="modal">关闭</a>
+                </div>
+                <div id="beforeUpLineButtons">
+                    <a class="bdp-btn bdp-btn-primary" id="uplineOk">提交</a>
+                    <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+#parse("/scriptcenter/home/home_top/script_upline_duplication.vm")
+<script src="/scriptcenter/statics/pages/home/home_top/upline.js?_dc=$!{staticVersion}"></script>

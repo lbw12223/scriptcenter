@@ -1,0 +1,26 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}" type="text/css">
+
+<div id="createSqlModal">
+    <div class="bdp-modal-body account-body" style="width: 610px;height: 445px;position: relative;">
+        <div class="create-content">
+            <ul id="createSqlUl">
+                <li class="active" target="selectSqlSentence">查询语句</li>
+                <li target="createSqlSentence">创建语句</li>
+            </ul>
+            <a class="bdp-btn bdp-btn-primary" id="copySqlBtn">一键复制</a>
+
+        </div>
+        <div class="sql-content">
+            <textarea id="selectSqlSentence">
+
+            </textarea>
+            <textarea id="createSqlSentence" style="display: none">
+
+            </textarea>
+        </div>
+    </div> <!--这是弹出框的底部内容-->
+</div>
+
+<script src="/scriptcenter/statics/pages/home/home_left/createSql.js?_dc=$!{staticVersion}"></script>

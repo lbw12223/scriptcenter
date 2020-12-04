@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jsf="http://jsf.jd.com/schema/jsf"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://jsf.jd.com/schema/jsf http://jsf.jd.com/schema/jsf/jsf.xsd">
+    <!-- 注册中心   192.168.150.121 i.jsf.jd.com  #测试index服务地址 -->
+    <jsf:registry id="jsfRegistry" protocol="jsfRegistry" index="${jsf.register}" >
+    </jsf:registry>
+
+    <!-- 服务端 -->
+
+    <jsf:server id="jsf" protocol="jsf" threads="300"/>
+
+    <import resource="applicationContext-jsf-server.xml"/>
+    <import resource="applicationContext-jsf-client.xml"/>
+
+
+
+</beans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 1.cfs客户端配置(大多数情况使用默认配置即可)
+         一个cfs客户端只能由一个Jim客户端对象使用
+         如果一个应用使用多个Jim客户端，则需要设置唯一的appcode，如：<property name="appCode" value="cart"></property>
+         如果是一个服务器部署多个实例的情况或者Hadoop、Storm、Spark环境，需要设置localSave属性为false，如:<property name="localSave" value="false">
+    -->
+    <bean id="jimClient" class="com.jd.jim.cli.ReloadableJimClientFactoryBean" lazy-init="true">
+        <property name="jimUrl" value="${jim.jimUrl.url}" />
+    </bean>
+</beans>

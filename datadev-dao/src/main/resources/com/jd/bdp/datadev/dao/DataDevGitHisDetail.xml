@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevGitHisDetailDao">
+    <sql id="gitHisColumns">
+            id,
+            git_project_id as gitProjectId,
+            git_project_file_path as gitProjectFilePath,
+            created,
+            email,
+            creator,
+            commit_id as commitId,
+            commit_type as commitType,
+            `comment`,
+            before_commit_ids as beforeCommitIds
+    </sql>
+
+
+    <insert id="insertGitHis">
+        INSERT INTO git_his_detail (
+            git_project_id ,
+            git_project_file_path,
+            created,
+            email,
+            creator,
+            commit_id,
+            git_his_id,
+            commit_type,
+            `comment`,
+            before_commit_ids
+        )
+        VALUES(
+            #{gitProjectId},
+            #{gitProjectFilePath},
+            #{created}
+            #{email},
+            #{creator},
+            #{commitId},
+            #{gitHisId},
+            #{commitType},
+            #{comment},
+            #{beforeCommitIds}
+        )
+    </insert>
+
+    <insert id="batchInsertGitHisDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO git_his_detail (
+        git_project_id ,
+        git_project_file_path,
+        created,
+        email,
+        creator,
+        commit_id,
+        git_his_id,
+        commit_type,
+        `comment`,
+        before_commit_ids
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.gitProjectId},
+            #{item.gitProjectFilePath},
+            #{item.created},
+            #{item.email},
+            #{item.creator},
+            #{item.commitId},
+            #{item.gitHisId},
+            #{item.commitType},
+            #{item.comment},
+            #{item.beforeCommitIds}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <delete id="deleteGitHisDetail">
+        DELETE FROM git_his_detail WHERE git_project_id=#{gitProjectId}
+    </delete>
+
+
+    <select id="listFileCommit" resultType="DataDevGitHisDetail">
+        SELECT
+            id,
+            git_project_id as gitProjectId,
+            git_project_file_path as gitProjectFilePath,
+            created,
+            email,
+            creator,
+            commit_id as commitId,
+            commit_type as commitType,
+            `comment`,
+            before_commit_ids as beforeCommitIds
+        FROM git_his_detail
+        WHERE git_his_detail.git_project_id = #{dataDevGitHisDetail.gitProjectId} AND git_his_detail.git_project_file_path = #{dataDevGitHisDetail.gitProjectFilePath}
+        <if test="dataDevGitHisDetail.keyWord !=null and dataDevGitHisDetail.keyWord !=''">
+            AND (`comment` LIKE concat("%",#{dataDevGitHisDetail.keyWord},"%") OR commit_id LIKE concat(#{dataDevGitHisDetail.keyWord},"%"))
+        </if>
+        <if test="dataDevGitHisDetail.creator !=null and dataDevGitHisDetail.creator !=''">
+            AND git_his_detail.creator = #{dataDevGitHisDetail.creator}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{dataDevGitHisDetail.start},#{dataDevGitHisDetail.limit}
+    </select>
+
+    <select id="countFileCommit" resultType="Long">
+        SELECT COUNT(git_his_detail.commit_id)
+        FROM git_his_detail
+        WHERE git_his_detail.git_project_id = #{dataDevGitHisDetail.gitProjectId} AND git_his_detail.git_project_file_path = #{dataDevGitHisDetail.gitProjectFilePath}
+        <if test="dataDevGitHisDetail.keyWord !=null and dataDevGitHisDetail.keyWord !=''">
+            AND (`comment` LIKE concat("%",#{dataDevGitHisDetail.keyWord},"%") OR commit_id LIKE concat(#{dataDevGitHisDetail.keyWord},"%"))
+        </if>
+        <if test="dataDevGitHisDetail.creator !=null and dataDevGitHisDetail.creator !=''">
+            AND git_his_detail.creator = #{dataDevGitHisDetail.creator}
+        </if>
+
+    </select>
+
+
+    <select id="countDirCommit" resultType="Long">
+        SELECT COUNT(DISTINCT git_his_detail.commit_id)
+        FROM git_his_detail
+        JOIN script_file ON script_file.git_project_id = git_his_detail.git_project_id
+        AND script_file.git_project_file_path = git_his_detail.git_project_file_path
+        AND script_file.deleted = 0
+        WHERE git_his_detail.git_project_id = #{dataDevGitHisDetail.gitProjectId} AND git_his_detail.git_project_file_path LIKE concat(#{dataDevGitHisDetail.gitProjectFilePath},"%")
+        <if test="dataDevGitHisDetail.keyWord !=null and dataDevGitHisDetail.keyWord !=''">
+            AND (git_his_detail.`comment` LIKE concat("%",#{dataDevGitHisDetail.keyWord},"%") OR git_his_detail.commit_id LIKE concat(#{dataDevGitHisDetail.keyWord},"%"))
+        </if>
+        <if test="dataDevGitHisDetail.creator !=null and dataDevGitHisDetail.creator !=''">
+            AND git_his_detail.creator = #{dataDevGitHisDetail.creator}
+        </if>
+    </select>
+
+    <select id="listDirCommit" resultType="DataDevGitHisDetail">
+        SELECT
+        git_his_detail.id as id,
+        git_his_detail.git_project_id as gitProjectId,
+        git_his_detail.git_project_file_path as gitProjectFilePath,
+        git_his_detail.created,
+        git_his_detail.email,
+        git_his_detail.creator,
+         git_his_detail.commit_id as commitId,
+        git_his_detail.commit_type as commitType,
+        git_his_detail.`comment`,
+        git_his_detail.before_commit_ids as beforeCommitIds
+        FROM git_his_detail
+        JOIN script_file ON script_file.git_project_id = git_his_detail.git_project_id
+        AND script_file.git_project_file_path = git_his_detail.git_project_file_path
+        AND script_file.deleted = 0
+        WHERE git_his_detail.git_project_id = #{dataDevGitHisDetail.gitProjectId} AND git_his_detail.git_project_file_path LIKE concat(#{dataDevGitHisDetail.gitProjectFilePath},"%")
+        <if test="dataDevGitHisDetail.keyWord !=null and dataDevGitHisDetail.keyWord !=''">
+            AND (git_his_detail.`comment` LIKE concat("%",#{dataDevGitHisDetail.keyWord},"%") OR git_his_detail.commit_id LIKE concat(#{dataDevGitHisDetail.keyWord},"%"))
+        </if>
+        <if test="dataDevGitHisDetail.creator !=null and dataDevGitHisDetail.creator !=''">
+            AND git_his_detail.creator = #{dataDevGitHisDetail.creator}
+        </if>
+        GROUP BY commit_id
+        ORDER BY git_his_detail.id DESC
+        LIMIT #{dataDevGitHisDetail.start},#{dataDevGitHisDetail.limit}
+    </select>
+
+
+    <select id="selectGitHisDetailById" resultType="DataDevGitHisDetail">
+        SELECT
+        <include refid="gitHisColumns"></include>
+        FROM
+        git_his_detail where id = #{id}
+    </select>
+
+    <select id="selectGitHisDetailByCommitId" resultType="DataDevGitHisDetail">
+        SELECT
+        git_his_detail.id as id,
+        git_his_detail.git_project_id as gitProjectId,
+        git_his_detail.git_project_file_path as gitProjectFilePath,
+        git_his_detail.created,
+        git_his_detail.email,
+        git_his_detail.creator,
+         git_his_detail.commit_id as commitId,
+        git_his_detail.commit_type as commitType,
+        git_his_detail.`comment`,
+        git_his_detail.before_commit_ids as beforeCommitIds
+        FROM
+        git_his_detail
+        JOIN script_file ON script_file.git_project_id = git_his_detail.git_project_id
+        AND script_file.git_project_file_path = git_his_detail.git_project_file_path
+        AND script_file.deleted = 0
+        where  git_his_detail.git_project_id = #{gitProjectId} and git_his_detail.commit_id = #{commitId}
+    </select>
+
+    <select id="countGitHisDetailByCommitId" resultType="Long">
+        SELECT COUNT(id)
+        FROM
+        git_his_detail where commit_id = #{commitId}
+    </select>
+
+</mapper>

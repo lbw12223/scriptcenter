@@ -1,0 +1,264 @@
+.messageBack {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9996;
+    background: rgba(0, 0, 0, 0.5) !important; /* 兼容ie几不知道，好像ie5 */
+    background: #000;
+    filter: Alpha(opacity=60);
+    font-family: MicrosoftYaHei sans-serif;
+    letter-spacing: 0;
+    font-size: 12px;
+}
+.newMessageBack {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9996;
+    background: rgba(0, 0, 0, 0.5) !important; /* 兼容ie几不知道，好像ie5 */
+    background: #000;
+    filter: Alpha(opacity=60);
+    font-family: MicrosoftYaHei sans-serif;
+    letter-spacing: 0;
+    font-size: 12px;
+}
+
+.successMessageBack {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+
+    filter: Alpha(opacity=60);
+}
+
+.messageContent {
+    color: white;
+    padding: 10px 10px 10px 10px;
+    width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    min-width: 100px;
+    margin: 0px auto;
+    margin-top: 150px;
+}
+
+.confirm {
+    background: #3286E9;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.30);
+    border-radius: 1px;
+}
+
+.noBackConfirm {
+    position: absolute;
+    top: 80px;
+    right: 100px;
+    margin: 0px !important;
+    z-index: 9000;
+}
+
+.success {
+    background: #2EB294;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.30);
+    border-radius: 1px;
+    text-align: center;
+}
+
+.error {
+    background: #D03F3F;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.30);
+    border-radius: 1px;
+    text-align: center;
+}
+
+.message {
+    font-size: 12px;
+}
+
+.messageButton {
+    background: #1E6CC9;
+    border-radius: 8px;
+    text-decoration: none;
+    padding: 3px 10px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.messageCloseButton {
+    margin-left: 20px;
+}
+
+.messageButton:hover {
+    background: white;
+    color: #1E6CC9;
+}
+
+.messageCloseA {
+    text-decoration: none;
+    font-size: 12px;
+    color: white;
+    cursor: pointer;
+    opacity:0.7 ;
+}
+
+.messageCloseA:hover {
+    /*color: #363A40;*/
+    color: white;
+    opacity: 1.0;
+}
+
+/*loading start*/
+.loader {
+    width: 30px;
+    float: left;
+    height: 18px;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    margin-top: -2px;
+}
+
+/*第三种动画加载开始*/
+@-webkit-keyframes loading-3 {
+    50% {
+        transform: scale(0.4);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.loading-3 {
+    position: relative;
+}
+
+.loading-3 i {
+    display: block;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    position: absolute;
+    background: #333;
+}
+
+.loading-3 i:nth-child(1) {
+    top: 5px;
+    left: 0;
+    -webkit-animation: loading-3 1s ease 0s infinite;
+}
+
+.loading-3 i:nth-child(2) {
+    top: 3.4px;
+    left: 3.4px;
+    -webkit-animation: loading-3 1s ease 0.12s infinite;
+}
+
+.loading-3 i:nth-child(3) {
+    top: 0;
+    left: 5px;
+    -webkit-animation: loading-3 1s ease 0.24s infinite;
+}
+
+.loading-3 i:nth-child(4) {
+    top: -3.4px;
+    left: 3.4px;
+    -webkit-animation: loading-3 1s ease 0.36s infinite;
+}
+
+.loading-3 i:nth-child(5) {
+    top: -5px;
+    left: 0;
+    -webkit-animation: loading-3 1s ease 0.48s infinite;
+}
+
+.loading-3 i:nth-child(6) {
+    top: -3.4px;
+    left: -3.4px;
+    -webkit-animation: loading-3 1s ease 0.6s infinite;
+}
+
+.loading-3 i:nth-child(7) {
+    top: 0;
+    left: -5px;
+    -webkit-animation: loading-3 1s ease 0.72s infinite;
+}
+
+.loading-3 i:nth-child(8) {
+    top: 3.4px;
+    left: -3.4px;
+    -webkit-animation: loading-3 1s ease 0.84s infinite;
+}
+
+/*loading end*/
+
+.bdp-msg {
+    background: #2F3338;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.30);
+    border-radius: 3px;
+    width: 400px;
+    padding: 10px 20px 20px 20px;
+    color: #E4ECFA;
+}
+
+.bdp-msg-title {
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+    color: #E4ECFA;
+    border-bottom: 1px solid #44494F;
+    position: relative;
+}
+
+.bdp-msg-title-content {
+    display: block;
+    float: left;
+    color: #E4ECFA;
+    opacity: 0.8;
+}
+
+.bdp-msg-title-close {
+    font-family: Helvetica, STHeiti;
+    display: block;
+    float: right;
+    margin-right: 5px;
+    font-size: 20px !important;
+}
+.bdp-msg-title-close:hover {
+    color: #EBEBEB;
+}
+/*.bdp-msg-main-content {*/
+    /*font-size: 14px;*/
+    /*margin-top: 30px;*/
+    /*color: #E4ECFA;*/
+    /*opacity: 0.8;*/
+ /*}*/
+
+/*.bdp-msg-sub-content {*/
+    /*font-size: 12px;*/
+    /*margin-top: 30px;*/
+    /*color: #E4ECFA;*/
+    /*opacity: 0.8;*/
+/*}*/
+
+.bdp-msg-main-content{
+    overflow: auto;
+    max-height: 400px;
+}
+
+.bdp-msg-buttons {
+    margin-top: 30px;
+    text-align: center;
+}

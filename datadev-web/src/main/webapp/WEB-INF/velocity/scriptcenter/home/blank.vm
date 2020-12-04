@@ -1,0 +1,17 @@
+#set($layout="layout_blank.vm")
+<div>
+    fdsfsdf
+</div>
+<script>
+//    document.domain="bdp.jd.com";
+    var bc = new BroadcastChannel('test_channel');
+    bc.addEventListener("message",function(ev){
+        console.log(ev)
+        parent.window.postMessage(ev.data,"*")
+    });
+    bc.onMessage=function (e) {
+        console.log(ev)
+        parent.window.postMessage(ev.data,"*")
+    }
+</script>
+

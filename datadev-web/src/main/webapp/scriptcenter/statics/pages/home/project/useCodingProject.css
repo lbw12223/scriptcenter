@@ -1,0 +1,92 @@
+
+
+#useCodingProjectArt{
+    background-color: #2F3338;
+    height: 100%;
+    width: 100%;
+    padding-top: 30px;
+}
+#useCodingProjectArt .bdp-form-group {
+    width: 100%;
+    float: left;
+    padding-left: 45px;
+}
+
+#useCodingProjectArt .bdp-form-group .bdp-control-label {
+    float: left;
+    margin-top: 7px;
+    text-align: right;
+    width: 80px;
+}
+
+#useCodingProjectArt .bdp-form-group .project-item {
+    float: left;
+    width: 400px;
+    margin-left: 10px;
+    position: relative;
+}
+/*创建项目开始*/
+#useCodingProjectArt .project-item span.project-url-span {
+    display: block;
+    float: left;
+    width: 108px;
+    background: #363A40;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 4px;
+}
+#useCodingProjectArt .project-item textarea {
+    height: 100px;
+}
+
+#useCodingProjectArt .project-desc-content .tips {
+    background: #2A2F33;
+    width: 477px;
+    color: #DC9116;
+}
+/*新建项目*/
+#createCodingGroupBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+#useCodingProjectArt .project-item .git-group-select {
+    width: 201px;
+}
+#useCodingProjectArt .buttons-div{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+#codingProForm{
+    display: block;
+    float: left;
+}
+
+.positionB{
+    position: initial!important;
+}
+
+#toCodingId{
+    margin-left: -4px;
+    height: 30px;
+    width: 44px;
+    background-color: #262A2F;
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #44494F;
+    text-align: center;
+    line-height: 30px;
+    vertical-align: middle;
+    background-image: url("/scriptcenter/statics/image/git.png");
+    background-repeat: no-repeat;
+    background-position: 13px;
+    background-size:17px 50%;
+    cursor:pointer;
+
+}
+#toCodingId:hover{
+    background-image: url("/scriptcenter/statics/image/githover.png");
+}
+
+

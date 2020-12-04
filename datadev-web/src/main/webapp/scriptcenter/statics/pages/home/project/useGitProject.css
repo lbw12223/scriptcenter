@@ -1,0 +1,102 @@
+
+
+#useGitProjectArt{
+    background-color: #2F3338;
+    height: 100%;
+    width: 100%;
+    padding-top: 30px;
+}
+#useGitProjectArt .bdp-form-group {
+    width: 100%;
+    float: left;
+    padding-left: 45px;
+}
+
+#useGitProjectArt .bdp-form-group .bdp-control-label {
+    float: left;
+    margin-top: 7px;
+    text-align: right;
+    width: 80px;
+}
+
+#useGitProjectArt .bdp-form-group .project-item {
+    float: left;
+    width: 400px;
+    margin-left: 10px;
+    position: relative;
+}
+/*创建项目开始*/
+#useGitProjectArt .project-item span.project-url-span {
+    display: block;
+    float: left;
+    width: 108px;
+    background: #363A40;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 4px;
+}
+#useGitProjectArt .project-item textarea {
+    height: 100px;
+}
+
+#useGitProjectArt .project-desc-content .tips {
+    background: #2A2F33;
+    width: 477px;
+    color: #DC9116;
+}
+/*新建项目*/
+#createGitGroupBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+#useGitProjectArt .project-item .git-group-select {
+    width: 201px;
+}
+#useGitProjectArt .buttons-div{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+#gitProForm{
+    display: block;
+    float: left;
+}
+
+.positionB{
+    position: initial!important;
+}
+
+#toGitId{
+    margin-left: -4px;
+    height: 30px;
+    width: 44px;
+    background-color: #262A2F;
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #44494F;
+    text-align: center;
+    line-height: 30px;
+    vertical-align: middle;
+    background-image: url("/scriptcenter/statics/image/git.png");
+    background-repeat: no-repeat;
+    background-position: 13px;
+    background-size:17px 50%;
+    cursor:pointer;
+
+}
+#toGitId:hover{
+    background-image: url("/scriptcenter/statics/image/githover.png");
+}
+
+/*.gitImg{*/
+    /*width: 17px;*/
+    /*height: 14px;*/
+    /*padding-top: 2px;*/
+    /*margin-top: 5px;*/
+/*}*/
+
+
+/*创建项目结束*/
+
+

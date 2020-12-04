@@ -1,0 +1,52 @@
+#set($layout="layout_blank.vm")
+#set($page_title="packZip")
+<link type="text/css" rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/packZip.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" type="text/css"
+      href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+<input type="hidden" id="gitProjectId" value="${gitProjectId}">
+<input type="hidden" id="gitProjectFilePath" value="${gitProjectFilePath}">
+<div class=" account-body" style="width:100%;position: relative;">
+    <form id="packZipForm">
+        <div class="bdp-form-group dialog-group" id="fileNameDiv" style="height: 32px;line-height: 32px">
+            <label class="bdp-control-label file-label"><i class="bdp-note">*</i>zip文件名：</label>
+            <div class=" file-item">
+                <input class="bdp-form-control file-input" value="" id="fileName" name="name"
+                       placeholder="请输入名称" autocomplete="off">
+            </div>
+        </div>
+        <div class="bdp-form-group dialog-group" id="commentDiv" style="height: 86px;line-height: 32px">
+            <label class="bdp-control-label file-label"><i class="bdp-note">*</i>描述：</label>
+            <div class=" file-item">
+                <textarea class="bdp-form-control file-comment" value="" id="comment" name="comment"
+                          placeholder="请输入文件描述" autocomplete="off"></textarea>
+            </div>
+        </div>
+
+        <div class="bdp-form-group dialog-group" id="savePathDiv" style="height: 256px;line-height: 32px">
+            <label class="bdp-control-label file-label"> <i class="bdp-note">*</i>选择目录：</label>
+            <div class=" file-item">
+                <input class="bdp-form-control file-dir" id="savePath" value="" readonly unselectable="on"
+                       name="dirPath" autocomplete="off">
+            </div>
+            <div class=" file-item dir-root">
+                <ul id="fileTree" class="ztree" style="">
+                </ul>
+            </div>
+        </div>
+        <div class="bdp-form-group dialog-group pack-tips"  style="height: 26px;">
+            <span style="line-height:27px;">提示：文件打包后，默认保存在bdp.target目录下。</span>
+        </div>
+
+    </form>
+</div> <!--这是弹出框的底部内容-->
+<div class="" style="height: 32px;text-align: center;">
+    <a class="bdp-btn bdp-btn-primary" id="pack2Save">确定</a>
+    <a class="bdp-btn bdp-btn-default" id="closeDia">取消</a>
+</div>
+
+<script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_top/packZip.js?_dc=$!{staticVersion}"></script>

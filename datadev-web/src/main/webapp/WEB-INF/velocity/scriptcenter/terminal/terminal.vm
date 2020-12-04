@@ -1,0 +1,22 @@
+#set($layout="layout_bdp_no_left.vm")
+#set($page_title="Terminal")
+<link rel="stylesheet" href="/scriptcenter/statics/terminal/dist/xterm.css?_dc=$!{staticVersion}">
+<script src="/scriptcenter/statics/terminal/dist/xterm.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/terminal/dist/addons/attach/attach.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/terminal/dist/addons/fit/fit.js?_dc=$!{staticVersion}"></script>
+
+
+<div id="terminal" style="width: 100%;height: 100%;">
+
+</div>
+<script>
+    var term = new Terminal({cursorBlink: true});
+    term.open(document.getElementById('terminal'));
+    var socket = new WebSocket("ws://"+location.host+"/scriptcenter/openTerminal");
+    term.attach(socket);
+    term.fit();
+    socket.onclose = function () {
+        term.writeln("closed. Thank you for use!");
+    };
+
+</script>

@@ -1,0 +1,539 @@
+#set($layout="layout_bdp_no_left_guide.vm")
+#set($page_title="首页")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_index.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/spin/spin.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/autocompleter/jquery.autocompleter.css?_dc=$!{staticVersion}"
+      type="text/css">
+
+<link href="/scriptcenter/statics/bdp/plugins/jqGrid/ui.jqgrid.css?_dc=$!{staticVersion}" rel="stylesheet">
+
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/script_manage.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/guide/guide.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+
+<div id="step1" style="width:0px;height:0px;display: none;"></div>
+
+<input type="hidden" id="firstStepInput" value="$!{firstStep}">
+<div id="guideBackground" class="guide-background"></div>
+<div id="guideBody" class="guide-body" style="display: none;">
+    <div class="guide-title">
+        <div class="leftFlag"><span></span></div>
+        <div id="guide-title-content"></div>
+    </div>
+
+    <div class="guide-description">
+        <p id="guide-description-content"></p>
+    </div>
+    <div class="guide-battons" style="">
+        <a href="javascript:void(0)"
+           id="guide-pre"
+           style="">上一步</a>
+        <a href="javascript:void(0)"
+           id="guide-next" class="master">下一步</a>
+        <a href="javascript:void(0)"
+           id="guide-ikown"
+           style="" >知道啦</a>
+        <a href="javascript:showClLinkClick()"
+           id="showCfLink"
+           style="" class="master" target="_blank" >新手快速入门</a>
+    </div>
+</div>
+
+<div id="homeIndexMainContainer">
+    <div id="homdeIndexLeftMenu">
+        <div id="leftContent">
+            <div id="leftContentDiv" style="height: 100%;" class="datadev-tab-vertical">
+                <ul class="datadev-ul tab-header ">
+                    <li target="script-manage" id="step_script_manage_tab" class="active"><a href="javascript:;" class="first">脚本管理</a></li>
+                    <li target="table-query"><a href="javascript:;">表查询</a></li>
+                    <li target="function-manage"><a href="javascript:;">函数管理</a></li>
+                ##                    <li target="resource-manage"><a href="javascript:;">资源管理</a></li>
+                </ul>
+                <div id="script-manage" class="tab-content">
+                    <div id="scriptManageTab" class="script-manage-tab left_manage"  style="width: 100%;height: 100%; display: block; position: relative">
+                        <div class="content icon-content" id="scriptManageTool">
+                            <span class="bdp-icon search ide-search pop-title" data-title="搜索(双击Shift)"></span>
+                            <span class="bdp-icon addDir ide-xjml pop-title" data-title="创建目录"></span>
+                            <span class="bdp-icon refresh ide-shuax pop-title" data-title="刷新"></span>
+                            <span class="bdp-icon upLoad ide-left-sc pop-title" data-title="上传脚本"></span>
+                            <span class="bdp-icon newGit ide-left-cjb pop-title" data-title="新建项目"></span>
+                        </div>
+                        <div class="content appSelect-content"
+                             style="position: absolute;top: 35px;left: 0px;text-align:left;padding-right: 30px">
+                            <select id="appSelect" class="appSelect">
+                                <option value=""></option>
+                            </select>
+                            <span class="bdp-icon newGit bdp-icon-cdsq pop-title" id="gitMenuBtn" data-title="菜单"
+                                  style="z-index:200;position: absolute;top: 6px;right: 6px;"></span>
+                        </div>
+                        <div class="content script-content">
+                            <ul id="tree" class="ztree">
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div id="gitManage" class="script-manage-tab git-manage" style="display: none">
+                        <div class="git-tips-content" style="padding: 20px;">
+##                            <div class="git-icon-content" style="margin-top: 40px">
+##                                <div class="button-content">
+##                                    <div style="width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;"
+##                                         class="git-btn" id="createLeftGitBtn">
+##                                        新建Git项目
+##                                    </div>
+##                                </div>
+##                            </div>
+
+                            <div class="git-icon-content" style="margin-top:40px">
+                                <div class="button-content" style="text-align: center;">
+                                    <div style="width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;"
+                                         class="git-btn" id="getLeftAvailGit">
+                                        使用现有Git项目
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="git-icon-content" style="margin-top: 40px">
+                                <div class="button-content" style="text-align: center;">
+                                    <div style="width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;"
+                                         class="git-btn" id="createLeftCodingBtn">
+                                        新建Coding项目
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="git-icon-content" style="margin-top:40px">
+                                <div class="button-content" style="text-align: center;">
+                                    <div style="width: 204px;background: #3286E9;font-size: 16px;color: white;line-height: 40px;height: 40px;border-radius: 4px;"
+                                         class="git-btn" id="getLeftAvailCoding">
+                                        使用现有Coding项目
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tips-title"><span>重要提示：</span></div>
+                            <div class="tips-word"><span>平台已与集团git.jd.com打通，系统每10分钟同步一次项目信息；<br></span></div>
+                            <div class="tips-word"><span>平台仅操作bdp_ide_branch分支，如无该分支，平台将从master创建分支bdp_ide_branch。<br><br></span></div>
+                            <div class="tips-word">
+                                 <span>
+                                      <span style="font-weight: bold"> 操作步骤：</span><br><br>
+                                      ● 新建git项目：<br>
+                                      在开发平台新建git项目，系统将默认在组中添加bdp_ide账号（owner角色）；<br><br>
+                                      ● 使用现有git项目：<br>
+                                      登录git.jd.com，选择现有git项目，修改可见级别为private，将bdp_ide账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）。<br>
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="table-query" class="tab-content">
+                </div>
+                <div id="function-manage" class="tab-content">
+                </div>
+                <div id="resource-manage" class="tab-content">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="homeIndexSplitHandler"></div>
+    <div id="homdeIndexRightContent">
+        <div style="width: 100%;height: 100%;position: relative;top:0px;background: #1C2024;">
+            <div id="rightContentTopBanner">
+                <div id="addScriptTabDiv" class="buttonDiv">
+                    <a href="javascript:void(0)" id="addScriptTab" class="toolButton">
+                        <span class="bdp-icon ide-xj "><span class="iconFont">新建</span></span>
+                    </a>
+                </div>
+                <div class="buttonDiv">
+                    <a href="javascript:void(0)" id="save" class="toolButton">
+                        <span class="bdp-icon ide-save"><span class="iconFont">保存</span></span>
+                    </a>
+                </div>
+                <div class="buttonDiv">
+                    <a href="javascript:void(0)" id="saveAs" class="toolButton">
+                        <span class="bdp-icon ide-lcw"><span class="iconFont">另存为</span></span>
+                    </a>
+                </div>
+                <div class="buttonDiv">
+                    <a href="javascript:void(0)" id="format" class="toolButton ">
+                        <span class="bdp-icon ide-gsh"><span class="iconFont">格式化</span></span>
+                    </a>
+                </div>
+                <div id="queueCode" class="queueCode">
+                    <span id="queueName" class="queueName" data-index="-1">不使用集市资源</span>
+                    <span id="queueDropIcon" class="bdp-icon znz-arrow"></span>
+                </div>
+                <div id="runDiv" class="buttonDiv">
+                    <a href="javascript:void(0)" id="run" class="toolButton">
+                        <span class="bdp-icon ide-yx"><span class="iconFont">运行</span></span>
+                    </a>
+                </div>
+                <div class="buttonDiv">
+                    <a href="javascript:void(0)" id="stop" class="toolButton">
+                        <span class="bdp-icon ide-tz"><span class="iconFont">停止</span></span>
+                    </a>
+                </div>
+                <div id="upLineButtonDiv" class="buttonDiv">
+                    <a href="javascript:void(0)" id="upLine" class="toolButton pop-title" data-title="脚本上线至任务调度buffalo">
+                        <span class="bdp-icon ide-sx"><span class="iconFont">上线</span></span>
+                    </a>
+                </div>
+                <div class="buttonDiv">
+                    <a href="javascript:void(0)" id="help" class="toolButton available">
+                        <span class="bdp-icon ide-help"><span class="iconFont">帮助</span></span>
+                    </a>
+                </div>
+
+            </div>
+            <div id="codeEditContainer" class="datadev-tab-horizontal" style="position: relative !important; top: 0px;">
+                <div class="tabPullDown" style="display: none;">
+                    <div class="triangle_border">
+                        <span></span>
+                    </div>
+                    <ul>
+                        <li envent-type="closeCurrent"><span>关闭当前</span></li>
+                        <li envent-type="closeOther"><span>关闭其他</span></li>
+                        <li envent-type="closeLeft"><span>关闭左侧</span></li>
+                        <li envent-type="closeRight"><span>关闭右侧</span></li>
+                        <li envent-type="closeAll"><span>关闭所有</span></li>
+                    </ul>
+                </div>
+                <div  style="width:100%;overflow:hidden;">
+                    <ul class="tab-header datadev-ul" style="width:500%;margin-left:0px;">
+                        <li target="well-come" data-label="欢迎页"><a href="javascript:;">欢迎页</a></li>
+                        <li target="parameterTest" data-label="parameterTest"><a href="javascript:;">Parameter_Test.py<span
+                                class="datadevClosFlag">x</span></a></li>
+                        <li target="createTable" data-label="createTable"><a href="javascript:;">create_table.sql<span
+                                class="datadevClosFlag">x</span></a></li>
+                    </ul>
+                    <div class="moreTitle">
+                        <span class="bdp-icon ide-more"></span>
+                    </div>
+                    <ul class="moreTagUL">
+                    </ul>
+                </div>
+##                <div id="well-come" class="tab-content">
+###*
+##                    #parse("/scriptcenter/home/home_open_ide_welcome.vm")
+##*#
+##                </div>
+                <div id="parameterTest" class="tab-content">
+                    <div id="code" style="width: 100%;height: 60%;">
+                    </div>
+                    <div id="logOrData" class="datadev-tab-horizontal" style="width: 100%;height: 40%;">
+                        <div style="width:100%;overflow:hidden;">
+                            <ul class="tab-header datadev-ul" style="width:500%;margin-left:0px;">
+                                <li target="run-log" data-title="日志" data-label="日志" class="active"><a href="javascript:;">日志</a></li>
+                                <li target="result1" data-title="result1" data-label="result1"><a href="javascript:;">结果1<span
+                                        class="datadevClosFlag">x</span></a></li>
+                                <li target="result2" data-title="result2" data-label="result2"><a href="javascript:;">结果2<span
+                                        class="datadevClosFlag">x</span></a></li>
+                            </ul>
+                        </div>
+                        <div id="run-log" class="tab-content" style="overflow: auto;overflow-y: hidden;">
+                            <div id="run-log-content" style="position: relative;left: 0px;margin-bottom: -6px;height: 100%;padding-bottom: 4px;overflow-y: auto;">
+                                <p>=============================================================================================</p><p style="word-wrap:break-word ;">2018-07-25&nbsp;16:06:30,198&nbsp;&nbsp;&nbsp;172.22.178.118&nbsp;(zhangrui156)&nbsp;开始执行脚本...</p><p style="word-wrap:break-word ;">2018-07-25&nbsp;16:06:30,198&nbsp;&nbsp;&nbsp;172.22.178.118&nbsp;执行参数:{"2":"20180726160630","1":"20180725160630"}</p><p style="word-wrap:break-word ;">2018-07-25&nbsp;16:06:30,198&nbsp;&nbsp;&nbsp;172.22.178.118&nbsp;执行环境变量:{}</p><p style="word-wrap:break-word ;">2018-07-25&nbsp;16:06:30,208&nbsp;&nbsp;&nbsp;dos2unix:&nbsp;converting&nbsp;file&nbsp;/data0/bdp_client/dataDevAgent_data/work/27298/parameter_test_wxl_02/dataDevScript_1002.py&nbsp;to&nbsp;UNIX&nbsp;format&nbsp;...</p><p style="word-wrap:break-word ;">01:&nbsp;20180725160630</p><p style="word-wrap:break-word ;">10:&nbsp;20180726160630</p><p style="word-wrap:break-word ;">/data0/bdp_client/dataDevAgent_data/work/27298/parameter_test_wxl_02/dataDevScript_1002.py</p><p style="word-wrap:break-word ;">2018-07-25&nbsp;16:06:30,329&nbsp;&nbsp;&nbsp;172.22.178.118&nbsp;脚本执行完成...</p></div>
+                            </div>
+                            <div style="height: 6px;background: rgb(68, 73, 79);position: relative;left: 0px;bottom: 0px;border-top:1px solid #0C0F13">
+                            </div>
+                        </div>
+                        <div id="result1" class="tab-content" style="overflow: auto;overflow-y: hidden;"></div>
+                        <div id="result2" class="tab-content" style="overflow: auto;overflow-y: hidden;"></div>
+                    </div>
+                </div>
+                <div id="createTable" class="tab-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="queueCodeDropDiv">
+    <ul id="queueCodeDropDivUL" class="queueCodeDropUl">
+        <li id="queueCodeLi" class="setUpQueueCode"><span class="bdp-icon "></span><span>XX测试账号/XX开发队列</span></li>
+        <li id="queueCodeLi" class="setUpQueueCode"><span class="bdp-icon "></span><span>XX测试账号/XX开发队列</span></li>
+        <li id="queueCodeLi" class="setUpQueueCode"><span class="bdp-icon "></span><span>XX测试账号/XX开发队列</span></li>
+        <li id="queueCodeLi" class="setUpQueueCode"><span class="bdp-icon bdp-icon-ywgl"></span><span>配置账号队列</span></li>
+    </ul>
+</div>
+
+<div id="runErrorDiv" style="position: absolute;
+display: none;
+    background-color: #252A2F;
+    width: 144px;
+    height: 29px;
+    color: red;
+    line-height: 30px;">
+    请选择或配置账号队列
+</div>
+
+<div id="spins"
+     style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: rgba(0,0,0,0.5) !important"></div>
+
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/account.css?_dc=$!{staticVersion}" type="text/css">
+<div class="bdp-modal " id="codeModal" role="dialog" aria-hidden="true"  >
+    <div class="bdp-modal-dialog " style="width: 710px;">
+        <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">配置账号队列</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 710px;height: 334px;position: relative;">
+                <div class="leftBodyDiv noselect">
+                    <div class="account-tool">
+                        <span class="bdp-icon ide-xzmu pop-title" id="account-add" data-title="添加"></span>
+                        <span class="bdp-icon ide-delete pop-title" id="account-remove" data-title="删除"></span>
+                        <span class="bdp-icon ide-fz pop-title" id="account-copy" data-title="复制"></span>
+                        <span class="bdp-icon ide-pop-up pop-title" id="account-up" data-title="上移"></span>
+                        <span class="bdp-icon ide-pop-down pop-title" id="account-down" data-title="下移"></span>
+                    </div>
+                    <div class="account-history">
+                        <ul class="account-history-ul">
+                            <li class="active">账号队列配置</li>
+                            <li>账号队列配置2</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="rightBodyDiv">
+                    <form id="account-form">
+                        <div class="bdp-form-group dialog-group">
+                            <label class="bdp-control-label account-label">名称：</label>
+                            <div class="account-input">
+                                <input class="bdp-form-control" value="账号队列配置" id="accountName" name="name" placeholder="只支持中文、字母、数字、下划线、中划线" autocomplete="off"
+                                       style="width: 100%" >
+                            </div>
+                        </div>
+                        <div class="bdp-form-group dialog-group">
+                            <label class="bdp-control-label account-label"> 集市：</label>
+                            <div class="account-input">
+                                <select class="bdp-form-control" value="" name="marketLinuxUser" id="marketSelect" placeholder="请选择集市"
+                                        autocomplete="off" style="width: 100%">
+                                    <option value="1">合规集市_icc_10k</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bdp-form-group dialog-group" id="accountDiv">
+                            <label class="bdp-control-label account-label">账号：</label>
+                            <div class="account-input">
+                                <select class="bdp-form-control" value="" name="accountCode" id="accountCodeSelect"
+                                        placeholder="请选择账号" autocomplete="off" style="width: 100%">
+                                    <option value="1">合规集市超级生产账号_icc_10k</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bdp-form-group dialog-group">
+                            <label class="bdp-control-label account-label">队列：</label>
+                            <div class="account-input">
+                                <select class="bdp-form-control queue-select" value="" name="queueCode" id="queueCodeSelect" placeholder="请选择队列"
+                                        autocomplete="off" style="width: 100%">
+                                    <option value="1">合规集市生产队列_formal_10k</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="bdp-form-group dialog-group">
+                        <div class="queue-tip">
+                            <span>提示：如无所需账号和队列，请<a id="applyMarket">点击此处</a>申请。</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="apply-div">
+                    <a class="bdp-btn bdp-btn-primary " id="apply-account">应用</a>
+                </div>
+
+            </div> <!--这是弹出框的底部内容-->
+            <div class="bdp-modal-footer" style="height: 52px">
+                <a class="bdp-btn bdp-btn-primary" id="account-ok">确定</a>
+                <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/upline.css?_dc=$!{staticVersion}" type="text/css">
+<div class="bdp-modal" id="upLineModal" role="dialog" aria-hidden="true"
+     style="overflow:hidden;z-index: 9990 !important;">
+    <div  class="bdp-modal-dialog" id="upLineModalInner" style="width: 710px;">
+        <div id="upLineModelContentHeader"  class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">代码上线</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 710px;height: 495px;position: relative;">
+                <div class="after-upline" style="display: none">
+                    <div class="upline-icon-content">
+                        <div class="upline-icon-wrap"><span class="bdp-icon bdp-icon-sszx-cg"></span></div>
+                    </div>
+                    <div class="after-test after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    脚本上线完成
+                                 </span>
+                                <span class="upline-info">
+                                    已自动替换现有测试任务脚本
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="after-online after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    已提交，系统将在审批通过后自动替换现有线上任务中的脚本
+                                </span>
+                            </div>
+                        </div>
+                        <div class="upline-map-content">
+                            <div class="upline-explain-wrap">
+                                <span class="upline-explain">
+                                    审批流程示意图：
+                                </span>
+                            </div>
+                            <div class="upline-map-wrap">
+                                <div class="upline-map-tip">脚本上传</div>
+                                <div class="upline-map-ico">
+                                    <div class="map-line"></div>
+                                    <div class="map-triangle"></div>
+                                </div>
+                                <div class="upline-map-tip">脚本应用负责人审批</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="after-nojob after-upline-tips">
+                        <div class="upline-info-content">
+                            <div class="upline-info-wrap">
+                                <span class="upline-info">
+                                    脚本上线完成
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="before-upline" style="">
+                    <form id="upline-form">
+                        <div class="bdp-form-group upline-group">
+                            <label class="bdp-control-label">脚本名称：</label>
+                            <div class=" upline-item" style="width: 500px !important;">
+                                <input class="bdp-form-control "  value="python.py" id="upLineScriptName" readonly autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="bdp-form-group upline-group">
+                            <label class="bdp-control-label">项目空间：</label>
+                            <div class=" upline-item"  style="width: 500px !important;">
+                                <select class="bdp-form-control" name="uplineAppSelect"  id="uplineAppSelect">
+                                    <option value="1">数据开发</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bdp-form-group upline-group" style="height: 200px;margin-bottom: 5px;">
+                            <label class="bdp-control-label">更新任务列表：</label>
+                            <div class=" upline-item"  style="width: 400px !important;">
+                                <div class="jd-table-parent" id="upline-buffalo-list-jd-table-parent"
+                                     style="height:200px;overflow: hidden;width: 500px">
+                                    <table class="jd-table table table-hover " id="upline-buffalo-list-grid-table">
+                                    </table>
+                                    <div id="upline-buffalo-list-grid-pager">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bdp-form-group upline-group" style="height: 80px">
+                            <label class="bdp-control-label "><i class="bdp-note">*</i> 版本描述：</label>
+                            <div class=" upline-item"  style="width: 400px !important;">
+                                <textarea class="upline-text"  name="description" id="upLineDescription"
+                                          placeholder="请输入文字" style="width: 400px !important;" >上线内容：XXXXXXX</textarea>
+                            </div>
+                        </div>
+                        <div class="bdp-form-group upline-group tip-group">
+                            <span class="upline-tip">提示：系统将在审批通过后自动替换上述任务列表中的脚本</span>
+                        </div>
+                    </form>
+
+                </div>
+
+
+            </div> <!--这是弹出框的底部内容-->
+            <div class="bdp-modal-footer" style="height: 52px">
+                <div id="afterUpLineButtons"style="display: none">
+                    <a class="bdp-btn bdp-btn-primary" id="checkApprovalInfo">查看审批信息</a>
+                    <a class="bdp-btn bdp-btn-primary" id="checkTestJobInfo">查看任务</a>
+                    <a class="bdp-btn bdp-btn-primary" id="createBuffolaJob">创建新调度任务</a>
+                    <a class="bdp-btn bdp-btn-default" data-dismiss="modal">关闭</a>
+                </div>
+                <div id="beforeUpLineButtons">
+                    <a class="bdp-btn bdp-btn-primary" id="uplineOk">提交</a>
+                    <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ <div id="newScriptDiv" style="display: none">
+##     <div class="triangle_border_up">
+##         <span></span>
+##     </div>
+     <ul>
+         <li class="scriptLi" data-index="1">
+             <div class="scriptType">
+                 <span>SQL</span>
+             </div>
+         ##            <span class="scriptTriangle">></span>
+             <span class="blankScript" data-templete-type="0">空白</span>
+             <span class="scriptSplit">|</span>
+             <span class="templateScript" data-templete-type="1">模板</span>
+
+         </li>
+         <li class="scriptLi" data-index="2">
+             <div class="scriptType">
+                 <span>Shell</span>
+             </div>
+         ##            <span class="scriptTriangle">></span>
+             <span class="blankScript" data-templete-type="0">空白</span>
+             <span class="scriptSplit">|</span>
+             <span class="templateScript" data-templete-type="1">模板</span>
+         </li>
+         <li class="scriptLi" data-index="3" data-python="1">
+             <div class="scriptType">
+                 <span>Python 2.x</span>
+             </div>
+         ##            <span class="scriptTriangle">></span>
+             <span class="blankScript" data-templete-type="0">空白</span>
+             <span class="scriptSplit">|</span>
+             <span class="templateScript" data-templete-type="1">模板</span>
+         </li>
+         <li class="scriptLi" data-index="3" data-python="2">
+             <div class="scriptType">
+                 <span>Python 3.x</span>
+             </div>
+         ##            <span class="scriptTriangle">></span>
+             <span class="blankScript" data-templete-type="0">空白</span>
+             <span class="scriptSplit">|</span>
+             <span class="templateScript" data-templete-type="1">模板</span>
+         </li>
+     </ul>
+ </div>
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/guide/guide.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/jdDataDevTab/JdDataDevTab_copy.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ext-language_tools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_index_guide_config.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_index_guide.js?_dc=$!{staticVersion}"></script>
+
+#end
+

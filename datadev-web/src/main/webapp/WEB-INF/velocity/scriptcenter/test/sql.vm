@@ -1,0 +1,39 @@
+#set($layout="layout_bdp_no_left.vm")
+<script src="/scriptcenter/statics/bdp/js/jquery-1.9.1.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/sql/sql-parser.js?_dc=$!{staticVersion}"></script>
+
+
+<div>
+
+</div>
+<script>
+    var sql = "select id, userName , age ,  from user where ()id > 100 and ss > 1000 ";
+
+  /*  sql = "select \n" +
+            "    T1.source,\n" +
+            "    sum(pv) as PV,\n" +
+            "    count(distinct T1.browser_uniq_id) as UV\n" +
+            "from\n" +
+            "    (\n" +
+            "    select \n" +
+            "        *\n" +
+            "    from dev.wyshi_zgzx_page_visits \n" +
+            "    where date >= sysdate(-7)\n" +
+            "    ) T1\n" +
+            "join \n" +
+            "   (\n" +
+            "   select\n" +
+            "        type,user_name\n" +
+            "    from dev.swy_zgzx_customer_active_whole\n" +
+            "    where type = '云仓'\n" +
+            "    group by type,user_name\n" +
+            "   )T2 \n" +
+            "on lower(trim(T1.user_name)) = lower(trim(T2.user_name)) \n" +
+            "group by T1.source";*/
+    var sqlParse = SQLParser.parse(sql);
+    console.log("fields:" + sqlParse.fields.toString());
+    console.log("fields:" + sqlParse.toString());
+
+</script>
+
+

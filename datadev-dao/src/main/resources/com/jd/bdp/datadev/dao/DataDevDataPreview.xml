@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevDataPreviewDao">
+    <sql id="dataPreviewColumns">
+        id,
+        run_detail_id as runDetailId,
+        cluster_code as clusterCode,
+        db_name as dbName,
+        tb_name as tbName,
+        linux_user as linuxUser,
+        modified,
+        creator,
+        created
+    </sql>
+
+    <select id="getByTbInfo" resultType="com.jd.bdp.datadev.datapreview.domain.DataDevDataPreview">
+        select
+        <include refid="dataPreviewColumns"></include>
+        from data_preview
+        where cluster_code = #{clusterCode} and linux_user = #{linuxUser}
+        and db_name = #{dbName} and tb_name = #{tbName} order by id desc limit 1
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into data_preview(
+        run_detail_id,cluster_code,db_name,tb_name,linux_user,modified,creator,created
+        )
+        values (
+        #{runDetailId},#{clusterCode},#{dbName},#{tbName},#{linuxUser},now(),#{creator},now()
+        )
+    </insert>
+    <update id="update">
+        update data_preview
+        set modified = now(),run_detail_id = #{runDetailId}
+        where id = #{id}
+    </update>
+
+
+
+</mapper>

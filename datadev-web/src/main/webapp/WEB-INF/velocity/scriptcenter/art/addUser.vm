@@ -1,0 +1,29 @@
+#set($layout="layout_blank.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newGitProject.css?_dc=$!{staticVersion}" type="text/css">
+<input type="hidden" id="gitProjectId" value="${gitProjectId}"/>
+<div id="gitProjectArt">
+
+    <form id="gitProForm">
+
+        <div style="width: 100%" class="project-name-content bdp-form-group">
+            <label style="margin-left: -50px" class="bdp-control-label"><i class="bdp-note">*</i>添加成员：</label>
+            <div style="width: 320px; margin-left: 0px" class="project-item">
+                <input class="bdp-form-control" id="addUserInput" autocomplete="off" style="width: 100%">
+            </div>
+        </div>
+
+    </form>
+    <div class="buttons-div">
+        <a class="bdp-btn bdp-btn-primary" id="addUserBtn">添加成员</a>
+        <a class="bdp-btn bdp-btn-default" id="closeUserBtn">关闭</a>
+    </div>
+</div>
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+#*<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>*#
+<script src="/scriptcenter/statics/pages/home/addUser.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
+#end

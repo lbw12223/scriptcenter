@@ -1,0 +1,79 @@
+#set($layout="layout_blank.vm")
+#set($page_title="diff")
+
+
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
+<input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
+<input type="hidden" id="showSideCount" value="$!{showSideCount}">
+<input type="hidden" id="canEdit" value="$!{canEdit}">
+
+    #if($!{canEdit} == true)
+        #if(${showSideCount} == 1)
+        <div class="diff-title">Git最后提交版本：$!{showCommitId}</div>
+            <div style="width: 100%;height: 100%;">
+                <div id="code" style="width: 100%;height: 100%;" class="acediff-editor">$!{showContent}</div>
+            </div>
+        #end
+        #if(${showSideCount} == 2)
+        <div id="flex-container" style="position: inherit!important;">
+            <div>
+                <p class="diff-title" id="leftTips">Git前一次版本：${beforeCommitId}</p>
+                <div id="acediff-left-editor" class="acediff-editor">${beforeContent}</div>
+            </div>
+            <div id="acediff-gutter" onmousewheel="return false;" style="padding-top:20px;overflow: hidden;"></div>
+            <div>
+                <p class="diff-title" id="rightTips">Git最后提交版本：${currentCommitId}</p>
+                <div id="acediff-right-editor" class="acediff-editor">$!{currentContent}</div>
+            </div>
+        </div>
+        #end
+    #end
+
+    #if($!{canEdit} == false)
+        #if(${showSideCount} == 1)
+        <div class="diff-title">Git最后提交版本：$!{showCommitId}</div>
+        <div style="">
+            <p style="margin-top: 50px;text-align: center;"><a href="javascript:;" class="downloadA" data-id="$!{dataDevGitHisDetail.id}" data-commitid="$!{showCommitId}">
+                <span class="bdp-icon download" style="font-size: 20px;"></span>
+                $!{dataDevScriptFile.name}
+            </a></p>
+        </div>
+        #end
+        #if(${showSideCount} == 2)
+        <div id="flex-container" style="position: inherit!important;">
+            <div>
+                <p class="diff-title" id="leftTips">Git前一次版本：${beforeCommitId}</p>
+                <div id="acediff-left-editor" class="acediff-editor">
+                    <p style="margin-top: 50px;text-align: center;"><a href="javascript:;" class="downloadA" data-id="$!{dataDevGitHisDetail.id}" data-commitid="$!{beforeCommitId}">
+                        <span class="bdp-icon download" style="font-size: 20px;"></span>
+                        $!{dataDevScriptFile.name}
+                    </a></p>
+                </div>
+            </div>
+            <div id="acediff-gutter" onmousewheel="return false;" style="padding-top:20px;overflow: hidden;"></div>
+            <div>
+                <p class="diff-title" id="rightTips">Git最后提交版本：${currentCommitId}</p>
+                <div id="acediff-right-editor" class="acediff-editor">
+                    <p style="margin-top: 50px;text-align: center;"><a href="javascript:;" class="downloadA" data-id="$!{dataDevGitHisDetail.id}" data-commitid="$!{currentCommitId}">
+                        <span class="bdp-icon download" style="font-size: 20px;"></span>
+                        $!{dataDevScriptFile.name}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+        #end
+    #end
+
+#*<div style="height: 40px;background: #363A40;position:absolute;left:0px;bottom:0px;width:100%;padding-left: 15px;padding-top: 3px;">
+    <p>脚本路径：${dataDevGitHisDetail.gitProjectFilePath}  </p>
+    <p  title="${dataDevGitHisDetail.comment}">提交信息：${dataDevGitHisDetail.comment}<p>
+</div>*#
+
+<script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace118.js?_dc=$!{staticVersion}" type="text/javascript" charset="utf-8"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/ace-diff.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/gitHis/gitHisDetail.js?_dc=$!{staticVersion}"></script>
+

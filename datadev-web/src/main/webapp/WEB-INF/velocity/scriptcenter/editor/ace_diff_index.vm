@@ -1,0 +1,10 @@
+#set($layout="layout_bdp_no_left.vm")
+#set($page_title="demo")
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+
+#define($javascriptBlock)
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/ace_diff_index.js?_dc=$!{staticVersion}"></script>
+#end

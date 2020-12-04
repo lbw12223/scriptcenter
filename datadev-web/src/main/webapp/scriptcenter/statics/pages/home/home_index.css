@@ -1,0 +1,633 @@
+
+.bdp-modal {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+.bdp-modal h4 {
+    font-size: 14px;
+}
+
+
+.triangle_border_up{
+    width:0;
+    height:0;
+    margin:0px auto;
+    position:relative;
+}
+.triangle_border_up span{
+    display:block;
+    width:0;
+    height:0;
+    border-width:0 9px 9px;
+    border-style:solid;
+    border-color:transparent transparent #2B2E33;/*透明 透明  黄*/
+    position:absolute;
+    top:-9px;
+    left:-9px;
+    margin-left: -80px;
+}
+#newScriptDiv {
+    background: #2B2E33;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.50);
+    width: 280px;
+    /*height: 140px;*/
+    position: absolute;
+    z-index: 3000;
+}
+
+#newScriptDiv ul {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    line-height: 35px;
+}
+
+#newScriptDiv ul li{
+    border-bottom: 1px solid #1F252C;
+}
+
+/*#newScriptDiv ul li span {*/
+    /*margin-left: 20px;*/
+/*}*/
+
+/*#newScriptDiv ul li:hover {*/
+    /*color: #FFFFFF;*/
+    /*background: #3286E9;*/
+/*}*/
+
+#newScriptDiv ul li div.scriptType {
+    width:100px;
+    margin-left: 20px;
+    float: left;
+    color:#5B6572;
+}
+
+#newScriptDiv ul li span.scriptSplit {
+    /*color: #5B6572;*/
+    /*background: #2B2E33;*/
+    /*box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.50);*/
+    /*border: 1px solid #44494F;*/
+    color: #44494F;
+    font-size: 8px;
+}
+
+#newScriptDiv ul li div.scriptType span {
+    font-weight: 700;
+}
+
+#newScriptDiv ul li span.blankScript{
+    padding-left: 40px;
+    padding-right: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#newScriptDiv ul li span.templateScript{
+    padding-left: 10px;
+    padding-right: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#newScriptDiv ul li span.blankScript:hover,#newScriptDiv ul li span.templateScript:hover{
+    color:#3286E9;
+}
+
+/*#newScriptDiv ul li span.blankScript:hover {*/
+    /*color: #FFFFFF;*/
+    /*background: #3286E9;*/
+/*}*/
+/*#newScriptDiv ul li span.templateScript:hover {*/
+    /*color: #FFFFFF;*/
+    /*background: #3286E9;*/
+/*}*/
+
+#homeMask {
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 2000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+div.queueCode {
+    width: 144px;
+    height: 30px;
+    border: 1px solid #454E57;
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #5D626A;
+    letter-spacing: 0;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin-top: 5px;
+}
+div.queueCode.runError {
+    border-color: red;
+}
+
+#queueCode:hover {
+    background: #1C2024;
+    border: 1px solid #384F78;
+    box-shadow: 0 0 10px 0 rgba(50, 134, 233, 0.30);
+}
+
+div.clickNode {
+    background: #1C2024;
+    border: 1px solid #384F78;
+    box-shadow: 0 0 10px 0 rgba(50, 134, 233, 0.30);
+}
+
+#queueDropIcon {
+    position: absolute;
+    top: 1px;
+    background: url(/scriptcenter/statics/bdp/plugins/select2/select2.png) no-repeat 0 1px;
+    width: 18px;
+    height: 30px;
+    display: block;
+    z-index: 100;
+    right: 0px;
+}
+
+#queueName {
+    width: 100px;
+    float: left;
+    display: block;
+    overflow: hidden;
+    margin-left: 11px;
+    height: 30px;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: white;
+}
+
+#queueCodeDropDiv {
+    background: #363A40;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.50);
+    font-family: MicrosoftYaHei sans-serif;
+    width: 187px;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2001;
+    display: none;
+}
+
+#queueCodeDropDiv ul {
+    max-height: 250px;
+    overflow: auto;
+}
+
+#queueCodeDropDiv li {
+    line-height: 35px;
+    height: 35px;
+    overflow: hidden;
+}
+
+#queueCodeDropDiv li span.name {
+    display: block;
+    float: left;
+    width: 167px;
+    overflow: hidden;
+    margin-left: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#queueCodeDropDiv .setUpQueueCode {
+    background: #2B2E33;
+    line-height: 35px;
+}
+
+#queueCodeDropDiv .setUpQueueCode span.bdp-icon {
+    display: block;
+    float: left;
+    font-size: 16px;
+    margin: 8px 1px 0px 10px;
+}
+
+#queueCodeDropDiv li:hover {
+     color: #73A5F1;
+}
+#queueCodeDropDiv li.active {
+    background: #3286E9;
+    color: #FFFFFF;
+}
+
+.bdp-modal div.bdp-modal-content {;
+    background: #2F3338;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.50);
+    border-radius: 3px;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+}
+
+.bdp-modal div.bdp-modal-footer {
+    background: transparent;
+    border-top: 1px solid #44494F;;
+}
+
+.bdp-modal button.bdp-btn {
+    width: 65px;
+    height: 32px;
+
+}
+.bdp-modal button.close:hover{
+    /*opacity: 0.5;*/
+    color: #EBEBEB;
+}
+.bdp-modal button.close {
+    color: #8992A2;
+    font-family: Helvetica, STHeiti;
+    /*font-weight: bold;*/
+    opacity: 1.0;
+    text-shadow:none;
+}
+
+.bdp-modal button.bdp-btn-ok {
+    background: #3286E9;
+    border-radius: 3px;
+    color: #D7E3F7;
+    margin-right: 5px;
+}
+
+.bdp-modal button.bdp-btn-no {
+    background: #262A2F;
+    border-radius: 3px;
+    color: #9DA5B3;
+    margin-left: 5px;
+}
+
+#rightContentTopBanner div.buttonDiv {
+    float: left;
+    height: 100%;
+    padding: 13px 10px 12px 10px;
+}
+
+a.toolButton {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 13px;
+    color: silver;
+    letter-spacing: 0;
+    cursor: pointer;
+    display: block;
+}
+a.toolButton span.iconFont{
+    font-family: MicrosoftYaHei sans-serif !important;
+}
+
+a.available {
+    cursor: pointer;
+}
+
+a.unavailable {
+    cursor: default;
+    color: grey;
+}
+
+a.toolButton span.bdp-icon {
+    margin-right: 6px;
+    margin-top: 1px;
+    font-size: 16px;
+}
+a.toolButton span.bdp-icon:hover {
+    color: #3286E9;
+}
+
+a.toolButton span.buttonName {
+    position: relative;
+    top: -3px;
+}
+
+div#homeIndexMainContainer {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -o-flex;
+    display: -ms-flex;
+    display: flex;
+    height: 100%;
+    padding: 0px;
+    overflow: hidden;
+    background: #1C2024;
+}
+
+div#leftContent {
+    width: 100%;
+    float: left;
+    height: 100%;
+    background: #1C2024;
+}
+
+div#homdeIndexLeftMenu {
+    background-color: red;
+    width: 275px;
+    /*color:white;*/
+}
+
+div#homeIndexSplitHandler {
+    width: 5px;
+    border-right: 1px solid #2F3338;
+    cursor: e-resize;
+    background-color: #2F3338;
+}
+
+div#homdeIndexRightContent {
+    flex: 1;
+    position: relative;
+}
+
+div#rightContentTopBanner {
+    position: relative;
+    top: 0px;
+    width: 100%;
+    height: 45px;
+    line-height: 40px;
+    padding-left: 10px;
+    background-color: #252A2F;
+    border-bottom: 1px solid #14191F;
+    padding-top: 5px;
+}
+
+div#codeEditContainer {
+    background: #1C2024;
+    position: absolute;
+    top: 45px;
+    width: 100%;
+    bottom: 0px;
+}
+
+
+.ico-disabled{
+    cursor: default;
+    color: #5B6572;
+}
+.ico-disabled:hover{
+    background-color: transparent !important;
+}
+.ico-disabled:hover {
+    color: grey !important;
+}
+
+.ico-disabled:hover .iconFont {
+    color: grey !important;
+}
+
+.triangle_up {
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-bottom-color: #A3A9B2;
+    border-bottom-width: 6px;
+    display: inline-block;
+}
+
+.triangle_down {
+    width: 0;
+    height: 0;
+    border: 4px solid transparent;
+    border-top-color: #A3A9B2;
+    border-top-width: 6px;
+    display: inline-block;
+}
+
+.separate-icon {
+    line-height: 30px;
+    position: relative;
+    top: -4px;
+    margin: 0px 5px;
+}
+
+.buttonDiv .triangle_icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.buttonDiv .triangle_up {
+    top: 3px;
+}
+
+.buttonDiv .triangle_down {
+    top: 8px;
+}
+
+.buttonDiv .triangle_up:hover {
+    border-bottom-color: #3286E9;
+}
+.buttonDiv .triangle_down:hover {
+    border-up-color: #3286E9;
+}
+.run-addtion-content {
+    position: absolute;
+    display: none;
+    background: #363A40;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.50);
+    width: 100px;
+    z-index: 3000;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    line-height: 35px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.run-addtion-content li {
+    padding-left: 20px;
+}
+.run-addtion-content li:hover{
+    background-color: #3286E9;
+    color:white;
+}
+
+.run-addtion-content ul li:first-child{
+    border-bottom: 1px solid #2B2E33;
+}
+
+#pushForm .bdp-help-block{
+    margin-left: 117px !important;
+}
+#templateSaveContent{
+    /*overflow: hidden;*/
+    display: inline-block;
+}
+.datadev-form-inline{
+    display: inline-block;
+}
+.datadev-form-group{
+    width: 100%;
+    float: left;
+    margin-bottom: 15px;
+    position: relative;
+}
+.datadev-control-title{
+    border-bottom: 1px solid #44494F;
+    padding-bottom: 12px;
+    font-size: 14px;
+    color: #A3A9B2;
+    margin: 10px 0 20px 0;
+    text-indent: 10px;
+    float: left;
+    width: 100%;
+}
+.datadev-control-label{
+    text-align: right;
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+    float: left;
+    line-height: 35px;
+}
+.datadev-form-content{
+    float: left;
+}
+.datadev-form-content input{
+    height: 35px;
+    width: 100%;
+}
+.datadev-form-content textarea{
+    width: 100%;
+    height: 80px;
+    position: relative;
+}
+textarea.datadev-form-control {
+    padding: 10px;
+}
+.datadev-form-control{
+    display: inline-block;
+    min-height: 30px;
+    font-size: 12px !important;
+    border-radius: 0 !important;
+    padding: 0 10px;
+    background: #1C2024;
+    border: 1px solid #44494F;
+    color: #A3A9B2;
+}
+.datadev-form-control[disabled], fieldset[disabled] .datadev-form-control {
+    cursor: not-allowed;
+}
+
+.datadev-form-control[disabled], .datadev-form-control[readonly], fieldset[disabled] .datadev-form-control {
+    opacity: 1;
+    background: #272A2F;
+    border: 1px solid #44494F;
+}
+#templateSaveContent .template-label{
+    width: 100px;
+}
+#templateSaveContent .template-content{
+    width: 420px;
+    margin-left: 10px;
+}
+
+#templateSaveContent .template-desc-content{
+
+}
+.template-select{
+    width: 420px;
+}
+.txtScriptDiv{
+    padding: 20px 10px 0px;
+}
+.txtScriptDiv .txtChooseContainer{
+    height: 120px;
+    margin-top: 30px;
+}
+.txtScriptDiv .txtChooseContent{
+    float: left;
+    width: 120px;
+    height: 100%;
+}
+.txtScriptDiv .round-wrap{
+    width: 80px;
+    height: 80px;
+    margin-left: 20px;
+    border: 1px solid #507EB5;
+    border-radius: 50%;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+.txtScriptDiv .round-wrap span.bdp-icon{
+    line-height: 80px;
+    font-size: 32px;
+    color: #507EB5;
+    left: 1px;
+    position: relative;
+    top: -2px;
+}
+.txtScriptDiv .txtChooseContent:hover .round-wrap{
+    background-color: #3286E9 !important;
+    box-shadow: 2px 5px 10px 0 rgba(0,0,0,0.50);
+}
+.txtScriptDiv .txtChooseContent:hover .txtName{
+    color: #666 !important;
+}
+.txtScriptDiv .txtChooseContent:hover .round-wrap span.bdp-icon{
+    color: #2F3338 !important;
+}
+.txtScriptDiv .txtName{
+    margin-top: 10px;
+    height: 20px;
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 14px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+    text-align: center;
+    font-weight: bold;
+    user-select: none;
+}
+.template-select-radio{
+    width: 15px !important;
+    margin-left: 30px !important;
+    position: relative;
+    top: -3px;
+}
+.template-select-title{
+    line-height: 30px;
+    position: relative;
+    top: -13px;
+    margin-left: 6px;
+}
+
+#selectGitOrCoding{
+    top: 40px;
+    left: 140px;
+    margin-top: 0px;
+    z-index: 999;
+    width: 100px;
+    position: absolute;
+    background: #2B2E33;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.50);
+    padding-left: 10px;
+    right: 5px;
+}
+#selectGitOrCoding ul {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    line-height: 25px;
+}
+#searchDiv{
+    width: 600px;
+    margin: 0px auto;
+    margin-top: 50px;
+    position: relative;
+    border:0px solid silver;
+    background: #363A40;
+}

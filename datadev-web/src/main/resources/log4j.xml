@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %-5p %c(%t); %x:%m%n" />
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="org.apache.log4j.FileAppender">
+        <param name="Append" value="false"/>
+        <param name="file" value="/export/Logs/cv.bdp.jd.local/cv.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %c(%t) [%d{yyy-MM-dd HH:mm:ss}] - %m \n"/>
+        </layout>
+    </appender>
+
+    <category name="java.sql" additivity="true">
+        <priority value="info"/>
+        <appender-ref ref="FILE"/>
+    </category>
+    <category name="com.jd.bdp.datadev.dao.DataDevScriptFileDao" additivity="true">
+        <priority value="debug"/>
+        <appender-ref ref="CONSOLE"/>
+    </category>
+
+    <!--<category name="com.jd.bdp.datadev.dao.DataDevScriptFileDao" additivity="true">-->
+        <!--<priority value="debug"/>-->
+        <!--<appender-ref ref="CONSOLE"/>-->
+    <!--</category>-->
+
+    <category name="com.jd.bdp.cv" additivity="true">
+        <priority value="info"/>
+        <appender-ref ref="FILE"/>
+    </category>
+    <category name="net.sf.json" additivity="true">
+        <priority value="info"/>
+        <appender-ref ref="FILE"/>
+    </category>
+
+    <category name="org.springframework.web" additivity="true">
+        <priority value="info"/>
+        <appender-ref ref="CONSOLE" />
+    </category>
+
+    <root>
+        <priority value="info" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+</log4j:configuration>

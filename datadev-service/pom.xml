@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>datadev</artifactId>
+        <groupId>com.jd.bdp</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>datadev-service</artifactId>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>bdprc-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-datapreview-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp.data.assets</groupId>
+            <artifactId>data-assets-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>api-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-api</artifactId>
+            <version>1.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bdp.jd.com</groupId>
+            <artifactId>cv-parse-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.jchardet</groupId>
+            <artifactId>jchardet</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.SQLinForm</groupId>
+            <artifactId>SQLinForm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>urm2-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>bdp-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>bdp-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>urm2-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>bdp-commons</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
+                </exclusion>
+                <!--<exclusion>-->
+                <!--<groupId>org.apache.hadoop</groupId>-->
+                <!--<artifactId>hadoop-common</artifactId>-->
+                <!--</exclusion>-->
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.5</version>
+        </dependency>
+        <!-- UMP JVM Monitor -->
+        <dependency>
+            <groupId>com.jd.ump</groupId>
+            <artifactId>jannotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.ump</groupId>
+            <artifactId>profiler</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.jd.common</groupId>
+            <artifactId>jd-common-cached</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.common</groupId>
+            <artifactId>jd-common-util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.jcloud</groupId>
+            <artifactId>jcloud-sdk</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!--json-->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib-ext-spring</artifactId>
+        </dependency>
+
+
+        <!-- GENERAL UTILS begin -->
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+        </dependency>
+
+        <!--        <dependency>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </dependency>-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+        </dependency>
+
+
+        <!-- dubbo start-->
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.jboss.netty</groupId>-->
+        <!--<artifactId>netty</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>io.netty</groupId>-->
+        <!--<artifactId>netty</artifactId>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.zookeeper</groupId>-->
+        <!--<artifactId>zookeeper</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>com.github.sgroschupf</groupId>-->
+        <!--<artifactId>zkclient</artifactId>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>net.sf.ezmorph</groupId>
+            <artifactId>ezmorph</artifactId>
+        </dependency>
+        <!-- dubbo end -->
+
+
+        <!--quartz -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+
+
+        <!--velocity for sending mail-->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>velocity-tools</groupId>
+            <artifactId>velocity-tools</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+        </dependency>
+
+
+        <!-- 下面是测试需要的jar -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--&lt;!&ndash; jes jdbc 继承 &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>com.jd.bdp</groupId>-->
+        <!--<artifactId>sql4es-jdbc</artifactId>-->
+        <!--</dependency>-->
+
+
+        <!-- JDQ -->
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>jdq</artifactId>
+            <version>3.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp.atom</groupId>
+            <artifactId>atom-api</artifactId>
+        </dependency>
+
+
+        <!--客户端停止任务-->
+        <dependency>
+            <groupId>com.jd.bdp.agent</groupId>
+            <artifactId>bdp-agent-ide-service-api</artifactId>
+        </dependency>
+
+
+        <!-- omdm 人力资源管理平台 -->
+        <dependency>
+            <groupId>jd-omdm-client</groupId>
+            <artifactId>jd-omdm-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcloud</groupId>
+            <artifactId>jss-sdk-java</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- JIM DB 缓存 -->
+        <dependency>
+            <groupId>com.jd.jim.cli</groupId>
+            <artifactId>jim-cli-jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.jim.cli</groupId>
+            <artifactId>jim-cli-api</artifactId>
+        </dependency>
+
+        <!-- 身份证识别 -->
+        <!--<dependency>-->
+        <!--<groupId>com.jd.lab.cv</groupId>-->
+        <!--<artifactId>cv-jsf</artifactId>-->
+        <!--<version>1.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.jd.bdp.hbase</groupId>-->
+        <!--<artifactId>sdk</artifactId>-->
+        <!--<version>2.1-SNAPSHOT</version>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<groupId>org.apache.httpcomponents</groupId>-->
+        <!--<artifactId>httpclient</artifactId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-agent-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-agent-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd</groupId>
+            <artifactId>jsf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>urm2-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.bdp</groupId>
+            <artifactId>datadev-api</artifactId>
+            <version>1.6-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <artifactId>bdp-planning-api</artifactId>
+            <groupId>com.jd.bdp</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--baidu API -->
+
+        <!--<dependency>-->
+        <!--<groupId>com.baidu.aip</groupId>-->
+        <!--<artifactId>aip-core</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>com.baidu.developer</groupId>-->
+        <!--<artifactId>invoice-parse-api-core</artifactId>-->
+        <!--<version>1.3.8</version>-->
+        <!--</dependency>-->
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

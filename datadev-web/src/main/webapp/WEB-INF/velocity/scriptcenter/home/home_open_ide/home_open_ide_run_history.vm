@@ -1,0 +1,54 @@
+<div class="script-run-history">
+    <h4 class="bdp-control-title">运行记录</h4>
+
+    <div class="bdp-form-group" style=";margin-bottom: 10px;margin-top: -7px">
+        <label class="bdp-control-label script-run-history-label">状态：</label>
+        <div class="script-run-history-content">
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="0" ><span class="checkbox-span">成功</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="3" ><span class="checkbox-span">失败</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="4" ><span class="checkbox-span">强制终止</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="2" ><span class="checkbox-span">执行中</span>
+            <a class="bdp-btn bdp-btn-primary" id="run-history-query">查询</a>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">
+        <label class="bdp-control-label script-run-history-label">开始时间：</label>
+        <div class="script-run-history-time-content">
+            <input id="runStartTimeFrom" class="script-run-history-Time date-picker start-time">
+            <span class="icon-calendar"></span>
+        </div>
+        <label class="bdp-control-label script-run-history-period">--</label>
+        <div class="script-run-history-time-content">
+            <input id="runStartTimeTo" class="script-run-history-Time date-picker end-time">
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+    <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">
+        <label class="bdp-control-label script-run-history-label">结束时间：</label>
+        <div class="script-run-history-time-content">
+            <input id="runEndTimeFrom" class="script-run-history-Time date-picker start-time">
+            <span class="icon-calendar"></span>
+        </div>
+        <label class="bdp-control-label script-run-history-period">--</label>
+        <div class="script-run-history-time-content">
+            <input id="runEndTimeTo" class="script-run-history-Time date-picker end-time">
+            <span class="icon-calendar"></span>
+        </div>
+    </div>
+
+    <div class="jd-table-parent" id="run-jd-table-parent" style="margin-left:20px;width: 740px;height:420px;overflow: hidden;">
+        <table class="jd-table table table-hover " id="run-grid-table" >
+        </table>
+        <div id="run-grid-pager">
+
+        </div>
+    </div>
+
+
+
+
+</div>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_run_history.js?_dc=$!{staticVersion}"></script>
+
+
+

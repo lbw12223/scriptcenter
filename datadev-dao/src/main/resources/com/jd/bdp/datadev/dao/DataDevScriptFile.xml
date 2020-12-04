@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptFileDao">
+    <sql id="script_file_columns" >
+        script_file.id as id,
+        dir_id as dirId,
+        git_project_dir_path as gitProjectDirPath,
+        name,
+        type,
+        size,
+        version,
+        git_version as gitVersion,
+        publish_version as publishVersion,
+        hbase_pre_key as hbasePreKey,
+        description,
+        owner,
+        application_id as applicationId,
+        creator,
+        created,
+        mender,
+        modified,
+        deleted,
+        start_shell_path as startShellPath,
+        file_md5 as fileMd5,
+        is_show as isShow,
+        script_file.git_project_id AS gitProjectId,
+        script_file.git_project_file_path as gitProjectFilePath,
+        where_is_new as whereIsNew,
+        is_big_file,
+        args,
+        script_file.dependency_id AS dependencyId,
+        relation_dependency_id as relationDependencyId,
+        last_git_version_md5 as lastGitVersionMd5,
+        last_git_modified as lastGitModified,
+        last_git_version as lastGitVersion,
+        git_deleted as gitDeleted,
+        cgroup_args as cgroupArgs
+    </sql>
+
+    <select id="findById" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE id = #{id} AND IFNULL(deleted,0) = 0
+    </select>
+
+
+    <!--保存-->
+    <insert id="insertScriptFile" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_file (
+        name,
+        type,
+        size,
+        dir_id,
+        git_project_dir_path,
+        version,
+        git_version,
+        description,
+        owner,
+        application_id,
+        deleted,
+        creator,
+        created,
+        mender,
+        modified,
+        hbase_pre_key,
+        start_shell_path,
+        file_md5,
+        is_show,
+        git_project_id,
+        git_project_file_path,
+        where_is_new,
+        is_big_file,
+        args,
+        relation_dependency_id,
+        script_upload_id,
+        last_git_version_md5,
+        last_git_version
+        )
+        VALUES(
+        #{name},
+        #{type},
+        #{size},
+        #{dirId},
+        #{gitProjectDirPath},
+        #{version},
+        #{gitVersion},
+        #{description},
+        #{owner},
+        #{applicationId},
+        0,
+        #{creator},
+        now(),
+        #{mender},
+        now(),
+        #{hbasePreKey},
+        #{startShellPath},
+        #{fileMd5},
+        #{isShow},
+        #{gitProjectId},
+        #{gitProjectFilePath},
+        #{whereIsNew},
+        #{isBigFile},
+        #{args},
+        #{relationDependencyId},
+        #{scriptUpLoadId},
+        #{lastGitVersionMd5},
+        #{lastGitVersion}
+        )
+    </insert>
+
+
+    <!--保存-->
+    <insert id="insertScriptFiles" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO script_file (
+        name,
+        type,
+        size,
+        dir_id,
+        git_project_dir_path,
+        version,
+        git_version,
+        description,
+        owner,
+        application_id,
+        deleted,
+        creator,
+        created,
+        mender,
+        modified,
+        hbase_pre_key,
+        start_shell_path,
+        file_md5,
+        is_show,
+        git_project_id,
+        git_project_file_path,
+        where_is_new,
+        is_big_file,
+        args,
+        relation_dependency_id,
+        script_upload_id,
+        last_git_version_md5,
+        last_git_version
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.name},
+            #{item.type},
+            #{item.size},
+            #{item.dirId},
+            #{item.gitProjectDirPath},
+            #{item.version},
+            #{item.gitVersion},
+            #{item.description},
+            #{item.owner},
+            #{item.applicationId},
+            0,
+            #{item.creator},
+            now(),
+            #{item.mender},
+            now(),
+            #{item.hbasePreKey},
+            #{item.startShellPath},
+            #{item.fileMd5},
+            #{item.isShow},
+            #{item.gitProjectId},
+            #{item.gitProjectFilePath},
+            #{item.whereIsNew},
+            #{item.isBigFile},
+            #{item.args},
+            #{item.relationDependencyId},
+            #{item.scriptUpLoadId},
+            #{item.lastGitVersionMd5},
+            #{item.lastGitVersion}
+            )
+        </foreach>
+
+    </insert>
+
+
+    <select id="findTmpByRelationDependencyId" resultType="DataDevScriptFile">
+        SELECT <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE relation_dependency_id = #{relationDependencyId} AND is_show = 1 limit 1
+    </select>
+
+
+    <update id="updateGitScriptFile">
+        UPDATE script_file
+        SET
+        <if test="dataDevScriptFile.name !=null and dataDevScriptFile.name!= ''">
+            name=#{dataDevScriptFile.name},
+        </if>
+        <if test="dataDevScriptFile.isShow !=null ">
+            is_show=#{dataDevScriptFile.isShow},
+        </if>
+        <if test="dataDevScriptFile.dirId !=null ">
+            dir_id = #{dataDevScriptFile.dirId},
+        </if>
+        <if test="dataDevScriptFile.isBigFile != null ">
+            is_big_file=#{dataDevScriptFile.isBigFile},
+        </if>
+        <if test="dataDevScriptFile.whereIsNew != null ">
+            where_is_new=#{dataDevScriptFile.whereIsNew},
+        </if>
+        <if test="dataDevScriptFile.size != null ">
+            size=#{dataDevScriptFile.size},
+        </if>
+        <if test="dataDevScriptFile.version != null ">
+            version=#{dataDevScriptFile.version},
+        </if>
+        <if test="dataDevScriptFile.type != null ">
+            type=#{dataDevScriptFile.type},
+        </if>
+        <if test="dataDevScriptFile.description != null ">
+            description=#{dataDevScriptFile.description},
+        </if>
+        <if test="dataDevScriptFile.startShellPath != null ">
+            start_shell_path=#{dataDevScriptFile.startShellPath},
+        </if>
+        <if test="dataDevScriptFile.gitProjectDirPath != null ">
+            git_project_dir_path=#{dataDevScriptFile.gitProjectDirPath},
+        </if>
+        <if test="dataDevScriptFile.gitProjectFilePath != null ">
+            git_project_file_path=#{dataDevScriptFile.gitProjectFilePath},
+        </if>
+        <if test="dataDevScriptFile.deleted != null ">
+            deleted=#{dataDevScriptFile.deleted},
+        </if>
+        <if test="dataDevScriptFile.gitVersion != null and dataDevScriptFile.gitVersion != ''">
+            git_version=#{dataDevScriptFile.gitVersion},
+        </if>
+        <if test="dataDevScriptFile.mender != null ">
+            mender=#{dataDevScriptFile.mender},
+        </if>
+        <if test="dataDevScriptFile.fileMd5 != null ">
+            file_md5=#{dataDevScriptFile.fileMd5},
+        </if>
+        <if test="dataDevScriptFile.args != null ">
+            args=#{dataDevScriptFile.args},
+        </if>
+        <if test="dataDevScriptFile.dependencyId !=null">
+            dependency_id = #{dataDevScriptFile.dependencyId},
+        </if>
+        <if test="dataDevScriptFile.relationDependencyId !=null">
+            relation_dependency_id = #{dataDevScriptFile.relationDependencyId},
+        </if>
+
+        <if test="dataDevScriptFile.lastGitVersionMd5 !=null and dataDevScriptFile.lastGitVersionMd5 != ''">
+            last_git_version_md5 = #{dataDevScriptFile.lastGitVersionMd5},
+        </if>
+        <if test="dataDevScriptFile.lastGitVersionMd5 !=null and dataDevScriptFile.lastGitVersionMd5 != ''">
+            last_git_modified = now(),
+        </if>
+        <if test="dataDevScriptFile.lastGitVersion !=null and dataDevScriptFile.lastGitVersion != ''">
+            last_git_version = #{dataDevScriptFile.lastGitVersion},
+        </if>
+        <if test="dataDevScriptFile.gitDeleted !=null">
+            git_deleted = #{dataDevScriptFile.gitDeleted},
+        </if>
+        <if test="dataDevScriptFile.cgroupArgs !=null">
+            cgroup_args = #{dataDevScriptFile.cgroupArgs},
+        </if>
+        modified=now()
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </update>
+
+
+    <select id="findScriptsByFilter" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM
+        script_file
+        WHERE git_project_id = #{gitProjectId}
+        <if test="owner != null and owner != ''">
+            AND owner = #{owner}
+        </if>
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="typeList != null ">
+            AND
+            <foreach collection="typeList" item="item" open="(" close=")" separator="or">
+                type = #{item}
+            </foreach>
+        </if>
+        <if test="keyWord != null and keyWord != ''">
+            AND name like concat('%',#{keyWord},'%')
+        </if>
+        AND IFNULL(deleted,0) = 0 AND IFNULL(is_show,0) = 0 ORDER BY id desc
+        <if test="limit != null">
+             limit #{limit}
+        </if>
+    </select>
+
+
+    <select id="getScriptDirFile" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId}
+        <choose>
+            <when test="gitProjectDirPath !=null and gitProjectDirPath!=''">
+                AND git_project_dir_path = #{gitProjectDirPath}
+            </when>
+            <otherwise>
+                AND (git_project_dir_path = "" OR git_project_dir_path IS NULL )
+            </otherwise>
+        </choose>
+        AND IFNULL(is_show,0) = 0 and IFNULL(deleted,0) = 0
+    </select>
+    <select id="getScriptDirFileRecur" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId}
+        <if test="gitProjectDirPath!=null and gitProjectDirPath!=''">
+            AND git_project_file_path LIKE concat(#{gitProjectDirPath},"%")
+        </if>
+        AND IFNULL(is_show,0) = 0 and IFNULL(deleted,0) = 0
+    </select>
+
+
+
+
+    <select id="getSingleScriptFile" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} and IFNULL(deleted,0) = 0
+    </select>
+
+    <select id="getSingleScriptFileIgnoreDeleted" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </select>
+
+
+
+    <update id="realDeleteSingleScriptFile">
+       DELETE  FROM script_file  WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath}
+    </update>
+
+    <update id="deleteScriptDirFile">
+       UPDATE script_file SET deleted = 1,modified=now() WHERE git_project_id = #{gitProjectId} AND git_project_dir_path = #{gitProjectDirPath}
+    </update>
+
+    <update id="deleteScriptDirFileRecursion">
+       UPDATE  script_file SET deleted = 1,modified=now()  WHERE git_project_id = #{gitProjectId} AND git_project_dir_path LIKE concat(#{gitProjectDirPath},'%')
+    </update>
+
+    <select id="queryDirAll" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId} AND IFNULL(is_show,0) = 0 and git_project_dir_path LIKE concat(#{gitProjectDirPath},'%')
+    </select>
+
+
+
+
+    <select id="countScriptFile" resultType="Integer">
+        SELECT count(1)
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId} AND git_project_file_path = #{gitProjectFilePath} AND IFNULL(deleted,0) = 0
+    </select>
+    <select id="findScriptsByFuzzy" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE  git_project_id = #{gitProjectId} AND git_project_file_path like concat(#{gitProjectFilePath},"%") AND IFNULL(deleted,0) = 0
+    </select>
+
+    <select id="getDependencyFiles" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file INNER JOIN script_file_dependency_detail on script_file.id = script_file_dependency_detail.script_id
+        WHERE script_file_dependency_detail.dependency_id = #{dependencyId}
+    </select>
+
+   <select id="findCount" resultType="Integer">
+       select count(*) from script_file where script_upload_id = #{scriptUpLoadId}
+   </select>
+
+    <select id="findByScriptUpLoadId" resultType="DataDevScriptFile">
+       select
+       <include refid="script_file_columns"></include>
+       from script_file where script_upload_id = #{scriptUpLoadId} order by git_project_file_path limit #{offSet}, #{pageSize}
+    </select>
+
+    <select id="getNoLastGitVersionMd5" resultType="DataDevScriptFile">
+        select
+        <include refid="script_file_columns"></include>
+        from script_file
+        WHERE  git_project_id = #{gitProjectId}
+        AND length(ifnull(last_git_version_md5,'')) = 0  AND IFNULL(deleted,0) = 0
+        AND length(ifnull(git_version,'')) > 0 AND is_big_file = 0 AND IFNULL(git_deleted,0) = 0
+    </select>
+
+    <select id="getScriptsByType" resultType="DataDevScriptFile">
+        select
+        <include refid="script_file_columns"></include>
+        from script_file
+        where type = #{scriptType} limit #{limit}
+    </select>
+
+    <update id="initScriptHisType">
+        update script_file_his
+        INNER join script_file
+        on script_file.id = script_file_his.file_id
+        set script_file_his.type = script_file.type
+        where script_file_his.type = 5
+    </update>
+
+    <select id="countErpScriptFile" resultType="Integer">
+        SELECT count(1)
+        FROM script_file
+        WHERE  creator = #{erp} AND IFNULL(deleted,0) = 0
+    </select>
+
+
+    <update id="updateErpScriptFile">
+        update script_file
+        set creator = #{targetErp}
+        WHERE IFNULL(deleted,0) = 0 AND creator = #{sourceErp}
+    </update>
+
+    <select id="selectAll" resultType="DataDevScriptFile">
+        select
+        <include refid="script_file_columns"></include>
+        from script_file
+        where git_project_id = #{gitProjectId}
+    </select>
+
+
+    <update id="fixBugUpdateVersion">
+      update script_file
+      set version = ( select max(version)  from script_file_his where file_id = #{fileId})
+      where id = #{fileId}
+    </update>
+
+
+
+</mapper>
+

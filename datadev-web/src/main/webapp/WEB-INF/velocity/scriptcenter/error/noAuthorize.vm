@@ -1,0 +1,30 @@
+#set($page_title="无权限")
+#set($layout="layout_bdp_no_left.vm")###
+<div id="" style=" ">
+    <div style="border: 0px solid silver;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-image: url(/scriptcenter/statics/image/noAuthorize-02.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #1C2024;">
+##        <div style="position: absolute;width: 100%;bottom: 30px;">
+##            <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">抱歉,【$!{userHolder.name}($!{userHolder.erp})】当前页面您没有访问权限</p>
+##            <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">如需咨询反馈，请咨询系统管理员</p>
+##        </div>
+    </div>
+</div>
+<!-- Scripts -->
+#define($cssBlock)
+
+<style type="text/css">
+    .bdp-algor-noright-content {
+
+    }
+</style>
+#end
+#define($javascriptBlock)
+
+#end
+

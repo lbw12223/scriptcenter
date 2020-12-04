@@ -1,0 +1,279 @@
+#flex-container {
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    position: absolute;
+    width: 100%;
+    overflow: auto;
+    bottom: 0px;
+    top: 30px;
+}
+
+#flex-container > div {
+    flex-grow: 1;
+    -webkit-flex-grow: 1;
+    position: relative;
+    width: 0px;
+}
+
+#flex-container > div#acediff-gutter {
+    flex: 0 0 60px;
+    -webkit-flex: 0 0 60px;
+    border-left: 1px solid #111111;
+    border-right: 1px solid #111111;
+    background-color: #25282c;
+
+    /* prevents the bounce on FF, mac osx */
+    overflow: auto;
+    height: 100%;
+    padding-top: 40px;
+    /*width: 100%;*/
+}
+
+#acediff-gutter svg {
+    background-color: #222222;
+}
+
+.diff-title {
+    line-height: 40px;
+    height: 40px;
+    text-indent: 40px;
+    background: #25282c;
+    white-space: pre;
+}
+
+#acediff-left-editor {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 100%;
+}
+
+#acediff-right-editor {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 100%;
+}
+
+.acediff-diff {
+    background-color: #004d7a;
+    border-top: 1px solid #036daa;
+    border-bottom: 1px solid #036daa;
+    position: absolute;
+    z-index: 4;
+}
+
+.acediff-diff.targetOnly {
+    height: 0px !important;
+    border-top: 1px solid #036daa;
+    border-bottom: 0px;
+    position: absolute;
+}
+
+.acediff-connector {
+    fill: #004d7a;
+    stroke: #003554;
+}
+
+.acediff-copy-left {
+    float: right;
+}
+
+.acediff-copy-right,
+.acediff-copy-left {
+    position: relative;
+}
+
+.acediff-copy-right div {
+    color: #ffffff;
+    position: absolute;
+    margin: -3px 2px;
+    cursor: pointer;
+}
+
+.acediff-copy-right div:hover {
+    color: #004ea0;
+}
+
+.acediff-copy-left div {
+    color: #ffffff;
+    position: absolute;
+    right: 0px;
+    margin: -3px 2px;
+    cursor: pointer;
+}
+
+.acediff-copy-left div:hover {
+    color: #c98100;
+}
+.show-tips{
+    height: 30px;
+    line-height: 30px;
+    background-color: #2F3338;
+}
+.show-tips span{
+    color: #DC9116;
+    padding-left: 30px;
+}
+
+
+.pack-zip-detail {
+    display: none;
+    width: 100%;
+    height: 100%;
+
+}
+
+.pack-zip-detail .ztreeWrap {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.pack-zip-detail .treeTable {
+    line-height: 32px;
+    float: left;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+    position: relative;
+    overflow-x: auto;
+}
+
+.pack-zip-detail input.checkbox {
+    background: #272A2F;
+    border: 1px solid #44494F !important;
+    border-radius: 2px;
+}
+
+.pack-zip-detail input.part_check:after {
+    position: absolute;
+    left: 2px;
+    top: 2.142857px;
+    display: table;
+    width: 0px;
+    height: 0px;
+    border: 4px solid #A3A9B2;
+    content: ' ';
+    -webkit-transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+    transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6);
+}
+
+.pack-zip-detail .treeTable ul {
+    width: 100%;
+    overflow: hidden;
+}
+
+.pack-zip-detail .treeTable ul li {
+    white-space: nowrap;
+}
+
+
+.pack-zip-detail .treeTable li span.script-icon {
+    margin-left: 10px;
+    position: relative;
+    top: 1px;
+    font-size: 18px;
+}
+
+.pack-zip-detail .treeTable li span.script-name {
+    margin-left: 6px;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+#packZipDetail .treeTable li.file-li span.script-name {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pack-zip-detail .treeTable .nodeDiv {
+    width: 690px;
+    line-height: 40px;
+    height: 40px;
+}
+
+.pack-zip-detail .treeTable .script-file {
+    float: left;
+    width: 250px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.pack-zip-detail .treeTable .version {
+    float: left;
+    width: 80px;
+    height: 100%;
+}
+
+.pack-zip-detail .treeTable .version span {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.pack-zip-detail .treeTable .noVersion span {
+    text-decoration: none !important;
+    cursor: default !important;
+}
+
+.pack-zip-detail .treeTable .modified {
+    float: left;
+    width: 140px;
+    height: 100%;
+}
+
+.pack-zip-detail .treeTable .mender {
+    float: left;
+    width: 120px;
+    height: 100%;
+}
+
+.pack-zip-detail .treeTable .table-border {
+    border-bottom: 1px solid #2C3034;
+}
+
+.pack-zip-detail .treeTable .tree-table-title {
+    background: #191B1F;
+    height: 45px;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #737E8E;
+    letter-spacing: 0;
+    line-height: 45px;
+    border-top: 1px solid #2C3034;
+    border-bottom: 1px solid #2C3034;
+    padding-left: 20px;
+    width: 690px;
+}
+
+.table-left-tab {
+    width: 35px;
+    background: #272B2F;
+    border: 1px solid #14191F;
+    position: absolute;
+    height: 100%;
+    left: 0px;
+}
+
+.pack-tree-ul {
+    padding-left: 20px;
+    background-color: #1C2024;
+}
+
+.pack-zip-detail li.close-li > ul {
+    display: none;
+}
+
+.pack-zip-detail li.open-li > ul {
+    display: block;
+    overflow: hidden;
+}
+
+.pack-zip-detail .selectNode {
+    color: #FFFFFF;
+}

@@ -1,0 +1,220 @@
+#set($layout="layout_blank_dev_center.vm")
+
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/table_query.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pagination/pagination.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+
+<div class="table-query-tab left_manage" id="tableQueryTab" style="position: relative;">
+##    <div class="content icon-content" id="tableQueryTool">
+####        <span class="icon create-table ide-left-drsj pop-title" data-title="创建表"></span>
+##        <span class="icon load-data bdp-icon-tjzfblb pop-title" data-title="导入数据"></span>
+##    </div>
+
+    <div id="tableQueryOuterContent">
+        <div style="width:100%;overflow:hidden;padding: 5px 10px 0px 10px">
+            <ul class="tableQueryUl" style="">
+                <li target="OwnTablesContent" class="table-query-mode active" data-label="我xxx有权限的表"><span>我xxx有权限的表</span>
+                </li>
+                <li target="AllTablesContent" class="table-query-mode " data-label="所有的表"><span href="javascript:;">所有的表</span>
+                </li>
+            </ul>
+        </div>
+        <div id="OwnTablesContent" class="table-query-content" style="display: block">
+            <div class="content maq-content">
+                <div class="market-content full-select-content">
+                    <select class="query-market-select select" id="queryMarketSelect">
+
+                    </select>
+                </div>
+                <div class="account-content full-select-content">
+                    <select class="query-account-select select" id="queryAccountSelect">
+
+                    </select>
+                </div>
+                <div class="db-content full-select-content">
+                    <select class="query-Db-select select" id="queryDbSelect">
+
+                    </select>
+                </div>
+                <div class="table-content full-select-content">
+                ##            <select class="query-table-select select" id="queryTableSelect">
+                ##
+                ##            </select>
+                    <input class="query-table-select select" id="queryTableSelect">
+
+                </div>
+            </div>
+
+            <div class="content seasql-content">
+                <div class="search-col-content" id="searchColContent">
+                    <input placeholder="请输入列名、描述搜索">
+                    <span class="bdp-icon ide-search"></span>
+                </div>
+                <div class="quick-tool-content">
+                    <span class="bdp-icon ide-left-yjSQL pop-title" data-title="生成SQL" id="createSqlIcon"></span>
+                    <span class="bdp-icon bdp-icon-sjzs pop-title" data-title="查看表详情" id="toThink" style="margin-right: 10px;"></span>
+                </div>
+            </div>
+            <div class="content column-content">
+                <div class="jd-table-parent" id="table-query-jd-table-parent"
+                     style="width: 100%;height:100%;overflow: hidden;">
+                    <table class="jd-table table table-hover " id="table-query-grid-table">
+                    </table>
+                    <div id="table-query-grid-pager">
+
+                    </div>
+                </div>
+            </div>
+            <div class=" content apply-content">
+                <div id="tableQueryApply" class="appaly-word" style="text-indent: 10px;">
+                    如无所需数据权限，请<a>点击此处申请</a>
+                </div>
+            </div>
+        </div>
+        <div id="AllTablesContent" style="display: none" class="table-query-content">
+            <div class="all-table-search-content">
+                <input id="tableSearchInput" placeholder="请输入表名、描述" autocomplete="off">
+                <span class="bzzx-ss bdp-icon all-table-query-icon" id="allTableQueryBtn"></span>
+            </div>
+            <div class="all-table-search-content">
+                <select class="all-table-market-select all-table-select" id="allTableMarketSelect">
+
+                </select>
+            </div>
+            <div class="all-table-search-content">
+                <select class="all-table-db-select all-table-select" id="allTableDbSelect">
+                    <option></option>
+                </select>
+            </div>
+            <div class="all-table-content">
+                <div class="all-table-num-content">请输入关键字进行搜索
+                </div>
+                <div class="all-table-detail-content" id="allTableDetailContent">
+                    <div id="searchAllTabOrColSpinner" style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
+                    </div>
+                    <div id="allTableContainer" class="all-table-container">
+                    </div>
+                    <div id="allTablePager" class="all-table-pager">
+                    </div>
+                    <div class="draggable-columns-content" id="draggableColumnsContent">
+                        <div class="draggable-header">
+                            <div class="header-table-name pop-title" id="draggableNameHeader" data-title=""><span></span></div>
+                            <div class="header-close"><span>×</span></div>
+                        </div>
+                        <div class="columns_search_input"><input id="columnsSearchInput" placeholder="请输入列名、描述" autocomplete="off"> <span id="columnsSearchButton" class="bdp-icon bzzx-ss"></span></div>
+                        <div class="draggable-content">
+                            <div class="jd-table-parent all-grid-table-parent" id="allGridColumnParent"
+                                 style="height:100%;width: 100%;float: left;">
+                                <table class="jd-table table table-hover all-grid-table" id="allGridColumn"
+                                       style="overflow: hidden;">
+                                </table>
+                                <div class="jd-grid-pager" id="jdGridPager">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="resize-s-div resize-content"></div>
+                        <div class="resize-e-div resize-content"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bdp-modal " id="createSqlModal" role="dialog" aria-hidden="true"
+     style="overflow:hidden;z-index: 9990 !important;">
+    <div class="bdp-modal-dialog " style="width: 610px;">
+        <div class="bdp-modal-content "> <!--这是弹出框的头部-->
+            <div class="bdp-modal-header"
+                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="bdp-modal-title">一键生成SQL</h4>
+            </div> <!--这是弹出框的主要内容-->
+            <div class="bdp-modal-body account-body" style="width: 610px;height: 445px;position: relative;">
+                <div class="create-content">
+                    <ul id="createSqlUl">
+                        <li class="active" target="selectSqlSentence">查询语句</li>
+                        <li target="createSqlSentence">创建语句</li>
+                    </ul>
+                    <a class="bdp-btn bdp-btn-primary" id="copySqlBtn">一键复制</a>
+
+                </div>
+                <div class="sql-content">
+                    <textarea id="selectSqlSentence">
+
+                    </textarea>
+                    <textarea id="createSqlSentence" style="display: none">
+
+                    </textarea>
+                </div>
+
+
+            </div> <!--这是弹出框的底部内容-->
+        </div>
+    </div>
+</div>
+##<div id="dataPreviewContent" style="" data-id="">
+##    <div class="show-info-tips" style="">
+##        <span>数据预览</span><span>——</span><span class="mr-name"></span>-<span class="db-name"></span>-<span class="tb-name"></span>
+##        <span class="bdp-icon bzzx-close close-preview"></span>
+##    </div>
+##    <div class="jd-table-parent all-grid-table-parent" id="allPreviewTableParent" style="width: 100%;position: absolute;top:30px;bottom:0px;overflow: hidden;">
+##        <div id="dataPreviewSpinner"
+##             style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: rgba(0,0,0,0.5) !important">
+##
+##        </div>
+##        <table class="jd-table table table-hover all-grid-table" id="allPreviewTable">
+##
+##        </table>
+##        <div class="jd-grid-pager" id="jdPreviewGridPager">
+##
+##        </div>
+##    </div>
+##    <div class="" id="noDataTips" style="width: 100%;position: absolute;top:30px;bottom:0px;overflow: hidden;display: none;text-align: center;line-height: 200px;">
+##        (该表无数据)
+##    </div>
+##</div>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/home/resize.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/table_query.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/home_left/createSql.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pagination/pagination.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/spin/spin.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
+<script>
+    var QIAN_KUN = undefined;
+
+    window["bdp-qiankun"] = {
+        mount: function (msg) {
+            QIAN_KUN = msg;
+            console.log(msg)
+            setTimeout(function (){
+                msg.utils.broadcast("helloworld", "hello")
+            }, 2000)
+        }
+    }
+
+    var frameBus = new FrameBus();
+    frameBus.on("tab:change", function(data) {
+        console.log("tagchange", data)
+    })
+    frameBus.on("helloworld", function(data){
+        console.log("helloworld",data)
+    })
+    frameBus.on("menu:items3-1", function (data){
+        console.log("trigger_Menu---", data)
+    })
+    frameBus.on("menu:items3", function (data){
+        console.log("trigger_Menu---", data)
+    })
+</script>

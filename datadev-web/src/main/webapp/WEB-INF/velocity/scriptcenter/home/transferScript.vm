@@ -1,0 +1,121 @@
+#set($layout="layout_blank.vm")
+#set($page_title="transferScript")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/transferScript.css?_dc=$!{staticVersion}" type="text/css">
+##<link rel="stylesheet" href="/scriptcenter/statics/pages/process.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" type="text/css" href="/scriptcenter/statics/zTree/css/zTreeStyle/zTreeStyle.css?_dc=$!{staticVersion}">
+<input type="hidden" id="projectId" value="$!{projectId}">
+<input type="hidden" id="scriptId" value="$!{scriptId}">
+<input type="hidden" id="scriptName" value="$!{scriptName}">
+<input type="hidden" id="scriptVersion" value="$!{scriptVersion}">
+<input type="hidden" id="jsdAppgroupId" value="$!{jsdAppgroupId}">
+
+
+<div id="transferScriptArt">
+    <form id="transferForm">
+        #if($!{scriptId} > 0)
+            <div class="project-name-content bdp-form-group">
+                <label class="bdp-control-label"><i class="bdp-note">*</i>脚本名称：</label>
+                <div class="project-item">
+                    <label class="bdp-control-label bdp-col-xs-11"
+                           style="text-align:left;padding-left:8px">$!{scriptName}</label>
+                </div>
+            </div>
+            <div class="project-name-content bdp-form-group">
+                <label class="bdp-control-label"><i class="bdp-note">*</i>项目空间：</label>
+                <div class="project-item">
+                    <label class="bdp-control-label bdp-col-xs-11"
+                           style="text-align:left;padding-left:8px" id="jsdAppgroupName">$!{jsdAppgroupName}</label>
+                    <label class="bdp-control-label bdp-col-xs-11" style="display: none">$!{jsdAppgroupId}</label>
+                </div>
+            </div>
+            <div class="project-path-content bdp-form-group">
+                <label class="bdp-control-label"><i class="bdp-note">*</i>git项目：</label>
+                <div class="project-item">
+                    <select class="bdp-form-control project-select" id="projectSelect" name="projectSelect"
+                            value="$!{projectId}"></select>
+                </div>
+                <i  class="icon-question-sign  bdp-hint-sign"
+                    data-hint="<a href='javascript:void(0)' id='createGitProject'>创建git项目</a>或者<a href='http://git.jd.com/' target='_blank'>使用已有git项目</a>" data-original-title="" data-placement="bottom"></i>
+            </div>
+            <div class="project-path-content bdp-form-group">
+                <label class="bdp-control-label"><i class="bdp-note">*</i>目录：</label>
+                <div class="project-item">
+                    <input class="bdp-form-control" placeholder="请选择目录" name="projectDirPath" id="projectDirPath"
+                           value="" autocomplete="off" readonly real-path="">
+                </div>
+                <div class=" file-item dir-root" style="height:200px;background: #1C2024;border: 1px solid #44494F;position: absolute;width: 400px;top: 30px;right: 65px;overflow: auto;padding-left: 10px;padding-right: 10px;" >
+                    <ul id="fileTree" class="ztree" style="margin-left: 10px">
+                    </ul>
+                </div>
+            </div>
+            <div class="project-tips-content bdp-form-group" style="margin-top: 200px;">
+                <div class="project-item">
+                    <div class="tips" style="background: #2A2F33;color: #DC9116;margin-left: 80px">提示：1.将脚本管理中的脚本同步到开发平台中。</div>
+                </div>
+            </div>
+        #else
+        ##            <div class="project-path-content bdp-form-group">
+        ##                <label class="bdp-control-label"><i class="bdp-note">*</i>导入项目：</label>
+        ##                <div class="project-item">
+        ##                    <select class="bdp-form-control project-select" id="projectSelect" name="projectSelect"
+        ##                            value="$!{projectId}"></select>
+        ##                </div>
+        ##            </div>
+        ##            <div class="project-path-content bdp-form-group">
+        ##                <label class="bdp-control-label"><i class="bdp-note">*</i>导入目录：</label>
+        ##                <div class="project-item">
+        ##                    <input class="bdp-form-control" name="projectDirPath" id="projectDirPath" value="$!{dirPath}">
+        ##                </div>
+        ##            </div>
+        ##            <div class="project-name-content bdp-form-group">
+        ##                <label class="bdp-control-label"><i class="bdp-note">*</i>项目空间：</label>
+        ##                <div class="project-item">
+        ##                    <select class="bdp-form-control application-select" id="applicationSelect"
+        ##                            name="applicationSelect"></select>
+        ##                </div>
+        ##            </div>
+        ##            <div class="project-desc-content bdp-form-group">
+        ##                <div class="project-item">
+        ##                    <span>将项目空间成员加入Git项目成员中</span><input id="transferMember" class="transferMember" type="checkbox"
+        ##                                                         name="tranferMember" checked>
+        ##                </div>
+        ##            </div>
+        ##            <div class="project-tips-content bdp-form-group">
+        ##                <div class="project-item">
+        ##                    <div class="tips" style="background: #2A2F33;color: #DC9116;">提示：脚本迁移后将不支持在任务调度的脚本管理中修改，请谨慎操作。</div>
+        ##                </div>
+        ##            </div>
+        #end
+
+
+    </form>
+    <div class="buttons-div">
+        <a class="bdp-btn bdp-btn-primary" id="tranferOkBtn">导入</a>
+        <a class="bdp-btn bdp-btn-default" id="closeTranferBtn">取消</a>
+    </div>
+</div>
+<div id="duplicationNameDiv" style="display:none; ">
+    <div style="margin-top: 20px;">当前脚本与该项目目录下脚本同名，请确定是否为同一脚本（多个版本视为同一脚本）。</div>
+    <div style="margin-top: 40px;color: #DC9116">如果为同一脚本，请选择“确定”，系统将自动关联两个脚本；</div>
+    <div style="margin-top: 37px;color: #DC9116">如果为不同脚本，请选择“上一步”后修改目录。</div>
+    <div class="buttons-div" style="text-align: center;margin-top: 210px;padding-top: 26px;">
+        <a class="bdp-btn bdp-btn-default" id="lastStep">上一步</a>
+        <a class="bdp-btn bdp-btn-primary" id="updateScript">确定</a>
+    </div>
+</div>
+<div id="processDivContent" style="display: none">
+    <div id="processTransfer">
+    </div>
+    <div class="processTip">
+        <div class="process-item"><label>当前文件：</label><span id="currentFileName">0</span></div>
+        <div class="process-item"><label>成功数量：</label><span id="successNum">0</span></div>
+        <div class="process-item"><label>失败数量：</label><span id="failureNum">0</span></div>
+        <div class="process-item"><label>总数：</label><span id="totalNum">0</span></div>
+    </div>
+</div>
+<script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/jQuery.md5.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/process.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/transferScript.js?_dc=$!{staticVersion}"></script>

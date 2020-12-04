@@ -1,0 +1,38 @@
+<div  class="nav-tree" style="position: fixed;" id="leftId">
+    <a class="icon-off" style="position: absolute;right: 0px;" id="showId"></a>
+    <div  class="scroll-wrapper nav-scoll scrollbar-inner" style="position: fixed;" id="nav-treeId">
+        <div class="nav-scoll scrollbar-inner scroll-content scroll-scrolly_visible" style="margin-bottom: 0px; margin-right: 0px; position: fixed; height: 618px;">
+            <div class="tree-layout"></div>
+            <div class="tree-height">
+                #foreach($item in $cvUser.getLeftMenuList())
+                    <dl style="margin-bottom: 0px !important;">
+                        <dt>${item.menuName}</dt>
+                        #foreach($sub in $item.subMenus)
+                            <dd style="padding-bottom: 0px !important;"><a data-url="${sub.menuUrl}" href="${sub.menuUrl}" class="leftMeun" id="${sub.selectedMenuId}" class="active ">${sub.menuName}</a></dd>
+                        #end
+                    </dl>
+                #end
+            </div>
+        </div>
+        <div class="scroll-element scroll-x scroll-scrolly_visible" style="margin-bottom: 0px;">
+            <div class="scroll-element_outer">
+                <div class="scroll-element_size"></div>
+                <div class="scroll-element_track"></div>
+                <div class="scroll-bar" style="width: 88px;">
+                </div>
+            </div>
+        </div>
+        <div class="scroll-element scroll-y scroll-scrolly_visible" style="margin-bottom: 0px;">
+            <div class="scroll-element_outer">
+                <div class="scroll-element_size"></div>
+                <div class="scroll-element_track"></div>
+                <div class="scroll-bar" style="height: 359px; top: 0px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+##<script src="/cv/statics/pages/left_menu.js></script>
+

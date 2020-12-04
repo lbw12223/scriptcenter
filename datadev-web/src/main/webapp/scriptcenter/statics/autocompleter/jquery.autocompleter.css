@@ -1,0 +1,183 @@
+
+.field {
+    position: relative;
+    padding:0 10px 10px 10px;
+}
+
+.field input {
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: white;
+    height: 30px;
+    font-size: 14px;
+    padding: 0 12px;
+    border: 1px solid #2c4a93;
+    background: #1C2024;
+    border-radius: 30px;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.field input:focus {
+    outline: 0
+}
+
+.autocompleter {
+    width: 100%;
+    background: #ddd;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    z-index: 100
+}
+
+.autocompleter, .autocompleter-hint {
+    position: absolute
+}
+
+.autocompleter-list {
+    background: #363A40;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.autocompleter-item-selected {
+    background: #454A52;
+    color: #A3A9B2;
+}
+
+.autocompleter-item {
+    padding: 6px 14px;
+    color: #A5AEBD;
+    font-size: 14px;
+    cursor: pointer;
+ /*    height: 20px;
+    line-height: 20px;*/
+}
+
+.autocompleter-item:hover {
+    background: #454A52;
+    color: #A3A9B2;
+}
+
+.autocompleter-item strong {
+    color: #F5A623;
+}
+
+.autocompleter-item span {
+    color: #bbb
+}
+
+.autocompleter-hint {
+    color: #ccc;
+    text-align: left;
+    top: -45px;
+    font-weight: 400;
+    left: 0;
+    width: 100%;
+    padding: 12px 12px 12px 13px;
+    font-size: 20px;
+    display: none
+}
+
+.autocompleter-hint span {
+    color: transparent
+}
+
+.autocompleter-hint-show {
+    display: block
+}
+
+.autocompleter-closed {
+    display: block;
+}
+
+/*scriptType*/
+.fileType {
+    background: #1E6CC9;
+    border-radius: 8px;
+    text-decoration: none;
+    padding: 3px 10px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.type_triangle_border {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent transparent #333; /*透明 透明  灰*/
+    position: relative;
+}
+
+.type_triangle_border span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-width: 0 9px 9px;
+    border-style: solid;
+    border-color: transparent transparent #363A40; /*透明 透明  黄*/
+    position: absolute;
+    top: -12px;
+    left: 15px;
+}
+
+.typePullDown {
+    display: block;
+    background: #363A40;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.90);
+    width: 120px;
+    position: absolute;
+    z-index: 3000;
+}
+
+.typePullDown ul {
+    border: 0px solid red;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A5AEBD;
+    letter-spacing: 0;
+    cursor: pointer;
+    list-style-type: none;
+    padding: 0px;
+}
+
+.typePullDown ul li {
+    line-height: 35px;
+    height: 35px;
+}
+
+.typePullDown ul li:hover {
+    color: #FFFFFF;
+    background: #3286E9;
+}
+.typePullDown ul li:hover span{
+    color: white;
+}
+
+#searchName::-webkit-input-placeholder{
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+#searchName::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+#searchName:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+#searchName:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+    color: #A5AEBD;
+    opacity: 0.6;
+}
+
+
+

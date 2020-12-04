@@ -1,0 +1,136 @@
+.guide-background {
+    position: absolute;
+    box-sizing: content-box;
+    z-index: 999999;
+    background-color: #000;
+    opacity: 0;
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.9) 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(0, 0, 0, 0.4)), color-stop(100%, rgba(0, 0, 0, 0.9)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.9) 100%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.9) 100%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.9) 100%);
+    background: radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.4) 0, rgba(0, 0, 0, 0.9) 100%);
+    filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#66000000',endColorstr='#e6000000',GradientType=1)";
+    -ms-filter: "alpha(opacity=50)";
+    filter: alpha(opacity=50);
+    -webkit-transition: all .3s ease-out;
+    -moz-transition: all .3s ease-out;
+    -ms-transition: all .3s ease-out;
+    -o-transition: all .3s ease-out;
+    transition: all .3s ease-out;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    opacity: 0.8;
+}
+.guide-body {
+    border-radius: 3px;
+    left: 0px;
+    top: 0px;
+    width: 360px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    box-sizing: content-box;
+    position: absolute;
+    z-index: 10000000;
+    box-shadow: 0 2px 20px 0 rgba(0,0,0,0.50);
+    background-color: transparent;
+}
+.guide-description {
+    background: white;
+    padding: 20px;
+}
+
+.guide-description-content {
+    text-align: left;
+    color: black;
+    font-family: MicrosoftYaHei;
+    font-size: 14px;
+    color: #363A40;
+    letter-spacing: 0;
+    line-height: 28px;
+
+}
+
+.firstGuideBody{
+    width: 510px;
+}
+.firstGuideBodyTitle{
+    height: 170px !important;
+    background: url("guid_bg_0.png") no-repeat !important;
+    background-size:100% 100% !important;
+    background-attachment: fixed;
+}
+.guide-title {
+    height: 70px;
+    background: url("guid_bg_1.png") no-repeat;
+    text-align: center;
+    line-height: 70px;
+    font-family: MicrosoftYaHei;
+    font-size: 20px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-shadow: 0 5px 10px rgba(0,0,0,0.30);
+    transform:inherit;
+}
+
+
+.guide-selected {
+    position: relative !important;
+    z-index: 9999999 !important;
+    border: 1px dashed #3286E9 !important;
+}
+
+
+.leftFlag {
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: transparent #480DA9 transparent transparent;
+    position: absolute;
+    top: 25px;
+    left: -30px;
+}
+
+
+.guide-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.guide-battons {
+    background: white;
+    padding: 25px;
+}
+
+.guide-battons a {
+    color: black;
+    padding: 7px 20px 7px 20px;
+    background: white;
+    text-decoration: none;
+    border: 1px solid #363A40;
+    border-radius: 3px;
+}
+.guide-battons a.master{
+    background: #363A40;
+    border-radius: 3px;
+    color: white;
+}
+.guide-battons a:hover {
+    opacity: 0.8;
+}
+/*最后一步*/
+.lastStepTitle{
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+}
+.lastStepTitle-title-content{
+    transform: inherit;
+}

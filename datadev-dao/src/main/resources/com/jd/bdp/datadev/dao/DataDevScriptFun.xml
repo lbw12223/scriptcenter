@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jd.bdp.datadev.dao.DataDevScriptFunDao">
+    <sql id="datadev_fun_detail_column">
+        id,
+        fun_dir_id as funDirId,
+        name,
+        type,
+        owner,
+        format,
+        comment,
+        creator,
+        created,
+        mender,
+        modified
+    </sql>
+    <select id="getDetailByDirId" resultType="DataDevFunDetail">
+        SELECT
+        <include refid="datadev_fun_detail_column"></include>
+        FROM fun_detail
+        WHERE
+        <choose>
+            <when test="funDirId != null and funDirId != ''">
+                fun_dir_id = #{funDirId}
+            </when>
+            <otherwise>
+                ifnull(fun_dir_id,0) = 0
+            </otherwise>
+        </choose>
+    </select>
+    <select id="findById" resultType="DataDevFunDetail">
+        SELECT
+        <include refid="datadev_fun_detail_column"></include>
+        FROM fun_detail
+        WHERE id=#{id}
+    </select>
+
+
+    <select id="getDetailByKeyword" resultType="DataDevFunDetail">
+        SELECT
+        <include refid="datadev_fun_detail_column"></include>
+        FROM fun_detail
+        WHERE 1=1
+        <if test="keyword !=null and keyword!= ''">
+            AND ( name like concat("%",#{keyword},"%") OR comment like concat("%",#{keyword},"%"))
+        </if>
+    </select>
+
+    <select id="getDataDevFunNameList" resultType="java.lang.String">
+        SELECT DISTINCT (name)
+        FROM fun_detail
+    </select>
+
+</mapper>

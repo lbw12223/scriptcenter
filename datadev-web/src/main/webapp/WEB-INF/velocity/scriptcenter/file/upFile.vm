@@ -1,0 +1,166 @@
+#set($layout="layout_blank.vm")
+<link rel="stylesheet" href="/cv/statics/fileUpload/css/blueimp-gallery.min.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/cv/statics/fileUpload/css/jquery.fileupload.css?_dc=$!{staticVersion}">
+<div class="container">
+
+    <div class="bdp-prompts" style="margin-bottom: 5px">
+        <p>
+            <b>规则：</b><br/>
+            <b>1.只能由字母、数字、下划线(_)、中文、中划线(-)、以及点号(.)组成</b></br>
+            <b>2.长度必须在1-${maxFileNameLength}之间</b></br>
+            <b>3.单个文件<span class="fontRed">$!{upFileConfig.maxFileSize}M</span> </b></br>
+            <b>4.文件类型<span class="fontRed">$!{upFileConfig.allowType}</span></b></br>
+            <b>5.单次上传<span class="fontRed">${upFileConfig.maxNumberOfFiles}</span>个文件
+                #if($upFileConfig.code  == "DIR_FILE_IMAGE" || $upFileConfig.code  == "DIR_FILE_INVOICE" )
+                    ，超过数量请使用客户端上传<a href="/cv/statics/tmpFile/CvClientGui.jar" target="_blank">CvClientGui.jar</a></b>
+                #end
+                #if($upFileConfig.code == "USER_BATCH_ADD")
+                    ，只显示前1000数据
+                #end
+            </br>
+        </p>
+    </div>
+
+     <form id="fileupload"  action="${upFileConfig.actionUrl}" method="POST" enctype="multipart/form-data" style=";">
+         <input type="hidden" name="dirId" id="dirId" value="${dir.id}"/>
+         <span id="reg" style="display: none ;">${upFileConfig.reg}</span>
+         <span id="maxFileSize" style="display: none ;">${upFileConfig.maxFileSize}</span>
+         <span id="maxNumberOfFiles" style="display: none ;">${upFileConfig.maxNumberOfFiles}</span>
+         <input type="hidden" name="upFileConfig"  value="${upFileConfig.code}"/>
+
+         <div class="row fileupload-buttonbar">
+            <div class="bdp-col-xs-12">
+                <button type="button" class="bdp-btn bdp-btn-primary fileinput-button"  title="选择文件">
+                    <i class="bdp-icon sszx-xj"></i>
+                    <span>选择文件</span>
+                    <input type="file" name="files[]" multiple>
+                </button>
+          #*      <button type="submit" class="bdp-btn bdp-btn-default start"   title="开始上传">
+                    <i class="bdp-icon bz-ssz"></i>
+                    <span>开始上传</span>
+                </button>*#
+
+            #*    <button type="reset" class="bdp-btn bdp-btn-default cancel"   title="取消">
+                    <i class="bdp-icon bz-ssz"></i>
+                    <span>取消</span>
+                </button>*#
+
+#*                <button type="button" class="bdp-btn bdp-btn-default delete"   title="删除">
+                    <i class="bdp-icon bz-ssz"></i>
+                    <span>删除</span>
+                </button>*#
+
+         #*       <input type="checkbox" class="toggle">*#
+                <!-- The global file processing state -->
+                <span class="fileupload-process"></span>
+            </div>
+            <!-- The global progress state -->
+         #*   <div class="bdp-col-xs-12  fileupload-progress fade"  >
+                <!-- The global progress bar -->
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                </div>
+                <div class="progress-extended">&nbsp;</div>
+            </div>*#
+        </div>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+    </form>
+</div>
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+           #* <span class="preview"></span>*#
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>上传</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+               <button class="btn btn-warning cancel">
+                    <i class="bdp-icon bdp-icon-sc2"></i>
+                    <span>取消</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+
+        <td colspan="2">
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error && file.handType == 3) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td colspan = "1">
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+             {% if (file.deleteUrl && file.handType == 1) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="bdp-icon bdp-icon-sc2"></i>
+                    <span>删除</span>
+                </button>
+             {% } %}
+
+             {% if (file.handType == 3) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="bdp-icon bdp-icon-sc2"></i>
+                    <span>取消</span>
+                </button>
+             {% }   %}
+        </td>
+    </tr>
+{% } %}
+</script>
+<style type="text/css">
+    .fontRed{color: red;}
+</style>
+<script src="/cv/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/art/js/iframeTools.js?_dc=$!{staticVersion}"></script>
+
+<script src="/cv/statics/fileUpload/js/vendor/jquery.ui.widget.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/fileUpload/js/tmpl.min.js?_dc=$!{staticVersion}"></script>
+<script src="/cv/statics/fileUpload/js/load-image.all.min.js?_dc=$!{staticVersion}"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="/cv/statics/fileUpload/js/jquery.iframe-transport.js?_dc=$!{staticVersion}"></script>
+<!-- The basic File Upload plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload processing plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-process.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-image.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-audio.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload video preview plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-video.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload validation plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-validate.js?_dc=$!{staticVersion}"></script>
+<!-- The File Upload user interface plugin -->
+<script src="/cv/statics/fileUpload/js/jquery.fileupload-ui.js?_dc=$!{staticVersion}"></script>
+<!-- The main application script -->
+<script src="/cv/statics/pages/file/fileUp.js?_dc=$!{staticVersion}"></script>

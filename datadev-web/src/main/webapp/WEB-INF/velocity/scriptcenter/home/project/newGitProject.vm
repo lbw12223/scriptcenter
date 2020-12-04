@@ -1,0 +1,44 @@
+#set($layout="layout_blank.vm")
+#set($page_title="newGitProject")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newGitProject.css?_dc=$!{staticVersion}" type="text/css">
+<div id="gitProjectArt">
+    <form id="gitProForm">
+        <div class="project-path-content bdp-form-group">
+            <label class="bdp-control-label"><i class="bdp-note">*</i>项目组路径：</label>
+            <div class="project-item">
+                <span class="project-url-span">http://git.jd.com/</span>
+                <select class="git-group-select" id="gitGroupSelect" name="gitGroup">
+                </select>
+                <a class="bdp-btn bdp-btn-primary" id="createGitGroupBtn">创建组</a>
+            </div>
+        </div>
+        <div class="project-name-content bdp-form-group">
+            <label class="bdp-control-label"><i class="bdp-note">*</i>项目名称：</label>
+            <div class="project-item">
+                <input class="bdp-form-control" id="gitProjectNameInput" value="" name="gitName" placeholder="请输入项目名称"
+                       autocomplete="off"
+                       style="width: 100%">
+            </div>
+        </div>
+        <div class="project-desc-content bdp-form-group">
+            <label class="bdp-control-label"><i class="bdp-note">*</i>项目描述：</label>
+            <div class="project-item">
+                        <textarea class="bdp-form-control" value="" name="gitDesc" id="gitProjectDescText" placeholder="请输入描述" autocomplete="off"
+                                  style="width: 100%"></textarea>
+            </div>
+        </div>
+
+        <div class="project-desc-content bdp-form-group">
+            <div class="tips">提示：平台将默认将BDP_IDE加入项目，并授权Maintainer权限</div>
+        </div>
+    </form>
+    <div class="buttons-div">
+        <a class="bdp-btn bdp-btn-primary" id="addGitProBtn">创建项目</a>
+        <a class="bdp-btn bdp-btn-default" id="closeProjectBtn">关闭</a>
+    </div>
+</div>
+
+<script src="/scriptcenter/statics/pages/home/project/newGitProject.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>

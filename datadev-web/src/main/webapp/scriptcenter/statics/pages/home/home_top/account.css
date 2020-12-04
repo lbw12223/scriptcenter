@@ -1,0 +1,134 @@
+#codeModal div.leftBodyDiv {
+    width: 191px;
+    height: 280px;
+    float: left;
+    background: #272A2F;
+    border: 1px solid #44494F;
+}
+
+#codeModal div.rightBodyDiv {
+    width: 457px;
+    height: 270px;
+    float: left;
+    margin-left: 20px;
+    line-height: 32px;
+    padding-left: 10px;
+}
+
+#codeModal div.dialog-group {
+    height: 35px;
+}
+
+#codeModal div.account-tool {
+    width: 100%;
+    height: 40px;
+}
+
+#codeModal div.account-body {
+    font-family: MicrosoftYaHei;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+#codeModal label.account-label {
+    width: 50px;
+    float: left
+}
+
+#codeModal div.account-input {
+    float: left;
+    width: 381px;
+    margin-left: 16px;
+    position: relative;
+}
+
+#codeModal div.queue-tip {
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #DC9116;
+    letter-spacing: 0;
+    margin-left: 14px;
+}
+
+div.queue-tip a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #DC9116;
+}
+div.queue-tip a:hover {
+    color: #3286E9;
+}
+
+.queue-select {
+    background: #272A2F;
+    border: 1px solid #384F78;
+}
+
+.apply-div {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
+
+.account-tool {
+    line-height: 40px;
+    font-size: 12px;
+    border-bottom: 1px solid #44494F;
+}
+
+.account-tool span {
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+.account-tool span:hover {
+    color: #3286E9;;
+}
+
+div.account-history {
+    overflow: auto;
+    height: 280px;
+    width: 100%;
+}
+
+ul.account-history-ul {
+    line-height: 30px;
+    font-family: MicrosoftYaHei sans-serif;
+    font-size: 12px;
+    color: #A3A9B2;
+    letter-spacing: 0;
+}
+
+ul.account-history-ul li {
+    padding-left: 9px;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+ul.account-history-ul li:hover {
+    background: #2F3338;
+}
+
+ul.account-history-ul li.active {
+    color: #FFFFFF;
+    background: #3286E9;
+}
+
+.noselect {
+
+    -webkit-touch-callout: none; /* iOS Safari */
+
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+
+    -khtml-user-select: none; /* Konqueror */
+
+    -moz-user-select: none; /* Firefox */
+
+    -ms-user-select: none; /* Internet Explorer/Edge */
+
+    user-select: none; /* Non-prefixed version, currently*/
+}

@@ -1,0 +1,30 @@
+#set($page_title="用户激活")
+#set($layout="layout_bdp_no_left.vm")###
+
+<div class="  " id=""  style="  position: absolute;
+        top: 160px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        margin: auto auto auto auto;
+        height: 100%;
+        width: 500px;
+        text-align: center;">
+    <div style="border:0px solid silver ; text-align: center;margin-top: 50px;">
+        <img src="/cv/statics/image/noRight.png" />
+        <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;"> 用户激活：<a href="http://bdp.jd.com/atom/workflow/v2/apply/add.html?workFlowId=10268" class="bdp-algor-noright-content-info-a">申请权限</a></p>
+        <p style="margin-top: 15px;line-height: 30px;color: #666666;font-size: 14px;">如需咨询反馈，请加入咚咚产品交流群：<img class="bdp-algor-noright-content-dongdong" src="/cv/statics/image/dongdong.png">4245577</p>
+    </div>
+</div>
+<!-- Scripts -->
+#define($cssBlock)
+
+<style type="text/css">
+    .bdp-algor-noright-content {
+    }
+</style>
+#end
+#define($javascriptBlock)
+
+#end
+

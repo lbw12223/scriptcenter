@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>$!{page_title} - 数据开发</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/scriptcenter/statics/image/favicon.ico"/>
+    <script>
+        var selected_menu_id = '$!{selected_menu_id}';
+        var _bdpDomain = '$!{bdpDomain}';
+        var _staticVersion = '$!{staticVersion}';
+    </script>
+    #if($cssBlock) $cssBlock #end
+    <!-- 下面是公用的JS文件 -->
+    <script type="text/javascript" src="/scriptcenter/statics/bdp/js/bdp-core.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/jquery.cookie.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/top.js?_dc=$!{staticVersion}"></script>
+    <script src="/scriptcenter/statics/pages/left_menu.js?_dc=$!{staticVersion}"></script>
+</head>
+
+<body>
+
+    <input type="hidden" id="pin" value="${cvUser.pin}"/>
+
+#*    #parse("layout_bdp_top.vm")*#
+
+    <!-- 工作区内容区域 -->
+    <div class="main-container container-fluid" id="main-container">
+        <div class="main-container-inner">
+            $screen_content
+        </div>
+    </div>
+<!-- 下面是每个页面单独需要使用的JS文件 -->
+    #if($javascriptBlock) $javascriptBlock
+    #end
+</body>
+</html>

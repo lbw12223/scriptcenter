@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--
+        <context:property-placeholder location="classpath:*.properties"/>
+    -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!-- 为集成安全部配置文件加解密组件, 需在项目中所有的PropertyPlaceholderConfigurer配置上ignoreUnresolveablePlaceholders为true -->
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:datadev.properties</value>
+                <value>classpath:hbase.properties</value>
+                <value>classpath:jdq.properties</value>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:jimdb.properties</value>
+                <value>classpath:sso.properties</value>
+                <value>classpath:urm.properties</value>
+            </list>
+        </property>
+        <!-- 为集成安全部配置文件加解密组件, 将所有引用了important.properties文件的PropertyPlaceholder改造成PropertyFactoryBean + PropertyPlaceholderConfigurer的形式 -->
+        <property name="properties" ref="secApplicationProperties"/>
+    </bean>
+    <!-- 为集成安全部配置文件加解密组件, 将所有引用了important.properties文件的PropertyFactoryBean改为com.jd.security.configsec.spring.config.JDSecurityPropertyFactoryBean-->
+    <bean id="secApplicationProperties" class="com.jd.security.configsec.spring.config.JDSecurityPropertyFactoryBean">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <!-- 为集成安全部配置文件加解密组件, 需将important.properties文件配置在secLocation中, 并去除locations中的important.properties-->
+        <property name="secLocation" value="classpath:important.properties"/><!-- 不能使用classpath*: -->
+    </bean>
+
+    <!-- jimDb  -->
+    <import resource="applicationContext-jimdb.xml"/>
+    <!-- dao -->
+    <import resource="applicationContext-dao.xml"/>
+    <!-- aop -->
+    <import resource="applicationContext-aop.xml"/>
+
+    <!--config tomcat目录-->
+    <import resource="applicationContext-config.xml"/>
+
+    <!-- service -->
+    <import resource="applicationContext-service.xml"/>
+
+    <import resource="applicationContext-ump.xml"/>
+    <!-- JSF配置接口 -->
+    <import resource="applicationContext-jsf.xml"/>
+    <!-- work -->
+    <import resource="applicationContext-worker.xml"/>
+
+</beans>
+
