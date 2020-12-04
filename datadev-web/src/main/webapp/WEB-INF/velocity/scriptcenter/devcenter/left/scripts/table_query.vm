@@ -14,7 +14,7 @@
     <div id="tableQueryOuterContent">
         <div style="width:100%;overflow:hidden;padding: 5px 10px 0px 10px">
             <ul class="tableQueryUl" style="">
-                <li target="OwnTablesContent" class="table-query-mode active" data-label="我xxx有权限的表"><span>我xxx有权限的表</span>
+                <li target="OwnTablesContent" class="table-query-mode active" data-label="我有权限的表"><span>我xxx有权限的表</span>
                 </li>
                 <li target="AllTablesContent" class="table-query-mode " data-label="所有的表"><span href="javascript:;">所有的表</span>
                 </li>
