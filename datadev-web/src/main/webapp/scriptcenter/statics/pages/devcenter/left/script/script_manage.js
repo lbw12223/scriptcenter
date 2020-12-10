@@ -1392,7 +1392,9 @@ $(function () {
                     if (node) {
                         zTree.removeNode(node);
                     }
-                    removeQianKunScriptTab(key)
+                    removeQianKunScriptTab(key);
+                    //删除“当前选中的zTree节点”cookie
+                    HOME_COOKIE.rmActiveGitPathCookie($("#loginErp").val());
 
                     top.$.successMsg("删除脚本成功");
                 } else {
