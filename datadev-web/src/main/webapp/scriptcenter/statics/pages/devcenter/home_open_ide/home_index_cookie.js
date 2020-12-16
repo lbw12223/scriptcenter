@@ -3,7 +3,7 @@
 // var H_C_K_A_G = "H_C_K_A_G";
 var H_C_K_A_G_2 = "H_C_K_A_G_2";
 var H_C_K_A_G_P = "H_C_K_A_G_P";
-// var D_C = "D_C";
+var D_C = "D_C";
 
 var HOME_COOKIE = {
 
@@ -77,26 +77,9 @@ var HOME_COOKIE = {
     //     }
     //     return null;
     // },
-    // changeName: function (key, newKey, params) {
-    //     var homeIndexCookieTabs = $.cookie(H_C_K_T);
-    //     homeIndexCookieTabs = HOME_COOKIE.coverToCookieArray(homeIndexCookieTabs);
-    //     if (homeIndexCookieTabs && homeIndexCookieTabs.length > 0) {
-    //         for (var index = 0; index < homeIndexCookieTabs.length; index++) {
-    //             var tabs = homeIndexCookieTabs[index];
-    //             if (tabs.key == key) {
-    //                 tabs.params = params;
-    //                 tabs.key = newKey;
-    //                 tabs.isTmp = false;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     $.cookie(H_C_K_T, HOME_COOKIE.covertToCookieStr(homeIndexCookieTabs), {expires: 7});
-    //     var activeKey = this.getActiveLiCookie();
-    //     if (!activeKey || activeKey == key) {
-    //         this.setActiveLiCookie(newKey);
-    //     }
-    // },
+    changeName: function (loginErp, newKey) {
+        HOME_COOKIE.setActiveGitPathCookie(loginErp, newKey);
+    },
     // setActiveLiCookie: function (key) {
     //     $.cookie(H_C_K_A_L, key, {expires: 7});
     // },
@@ -114,21 +97,21 @@ var HOME_COOKIE = {
     // getActiveGitCookie: function (erp) {
     //     return $.cookie(H_C_K_A_G + "_" + erp);
     // },
-    // changeColorCookie: function () {
-    //    var dc = HOME_COOKIE.getColorCookie() ;
-    //    if(dc == "white"){
-    //        $.cookie(D_C, "black", {expires: 365})
-    //    }else{
-    //        $.cookie(D_C, "white", {expires: 365})
-    //    }
-    // },
-    // getColorCookie: function () {
-    //     var dc = $.cookie(D_C)
-    //     if(dc && dc === "white"){
-    //         return "white"
-    //     }
-    //     return "black";
-    // },
+    changeColorCookie: function () {
+       var dc = HOME_COOKIE.getColorCookie() ;
+       if(dc == "white"){
+           $.cookie(D_C, "black", {expires: 365})
+       }else{
+           $.cookie(D_C, "white", {expires: 365})
+       }
+    },
+    getColorCookie: function () {
+        var dc = $.cookie(D_C)
+        if(dc && dc === "white"){
+            return "white"
+        }
+        return "black";
+    },
 
     setActiveGit2Cookie: function (erp, gitProjectid) {
         if (erp && gitProjectid) {

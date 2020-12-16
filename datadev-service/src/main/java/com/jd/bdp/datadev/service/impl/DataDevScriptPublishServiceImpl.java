@@ -262,9 +262,9 @@ public class DataDevScriptPublishServiceImpl implements DataDevScriptPublishServ
             }
         }
         map.put("data", dataParam.toJSONString());
-        logger.error("==================================================" + url + ":==========================" + JSONObject.toJSONString(map));
+        logger.info("==================================================" + url + ":==========================" + JSONObject.toJSONString(map));
         String res = HttpUtil.doPost(url, map);
-        logger.error("==================================================job num :" + res);
+        logger.info("==================================================job num :" + res);
         List<DataDevScriptFilePublish> maxVersionList = publishDao.getMaxVersion(file.getGitProjectId(), file.getGitProjectFilePath(), file.getApplicationId());
         Map<Long, String> versionMap = new HashMap<Long, String>();
         for (DataDevScriptFilePublish publish : maxVersionList) {

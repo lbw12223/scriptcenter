@@ -1,5 +1,5 @@
 
-#set($layout="layout_blank.vm")
+#set($layout="layout_blank_dev_center.vm")
 
 
 <link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/saveFile.css?_dc=$!{staticVersion}" type="text/css">
@@ -91,6 +91,7 @@
 
 
 <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/home_index_cookie.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_content_right.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>

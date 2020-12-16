@@ -3,6 +3,8 @@ var hasProjectStatus = false;
 var locationScriptObj = {};
 var addScriptUrl = "/scriptcenter/script/addScript.ajax";
 var getTemplateHtml = "/scriptcenter/scriptTemplate/templates.html";
+var cg = "false";
+var preSelectedId = undefined;
 
 var isRefresh = false;
 var SCRIPT_GIT_STSTUS = {
@@ -389,8 +391,11 @@ function parentRenameScript(gitProjectId, gitProjectFilePath, gitProjectDirPath,
     $("#saveModal").FileMode("scriptRename", info);
 }
 
-function renameScript(gitProjectId, gitProjectFilePath) {
+function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
+    console.log("gitprojectId:", gitProjectId);
+    console.log("gitProjectFilePath:", gitProjectFilePath);
     var node = zTree.getNodeByParam("path", gitProjectFilePath);
+    console.log("nodeTid:", node.tId);
     if (node && !node.isParent) {
         var info = {
             gitProjectId: node.gitProjectId,
@@ -400,7 +405,7 @@ function renameScript(gitProjectId, gitProjectFilePath) {
             type: node.type
         };
         var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
-            title: "选择项目类型",
+            title: "修改文件名",
             lock: true,
             width: "538px",
             height: "150px",
@@ -414,7 +419,8 @@ function renameScript(gitProjectId, gitProjectFilePath) {
         $.dialog.data("info", info);
         $.dialog.data("currentArt", currentArt);
         $.dialog.data("zTree", zTree);
-
+        $.dialog.data("loginErp", loginErp);
+        preSelectedId = node.tId;
     }
 }
 
@@ -476,6 +482,63 @@ function showRightMenuBackground() {
     $("#rightMenuBackground").show();
 }
 
+function initKeyMap() {
+    cg = $("#cg").val();
+    var isMac = (navigator.userAgent.indexOf('Mac') >= 0) ? true : false;
+    if (isMac) {
+        $("#save").attr("data-title", "⌘S");
+        $("#format").attr("data-title", "⌃⌥L");
+        $("#scriptManageTool span.search").attr("data-title", "⇧⇧");
+        $("#run").attr("data-title", "⌃↩");
+    } else {
+        $("#save").attr("data-title", "Ctrl+S");
+        $("#format").attr("data-title", "Ctrl+Shift+F");
+        $("#scriptManageTool span.search").attr("data-title", "Shift+Shift");
+        $("#run").attr("data-title", "Ctrl+Enter");
+    }
+    $(document).keydown(function (event) {
+        if (event.ctrlKey && event.keyCode == 13) {
+            //ctrl enter
+            runOrStopScript();
+            return false;
+        } else if (!isMac && event.ctrlKey && event.keyCode == 67 || isMac && event.metaKey && event.keyCode == 67) {
+            //ctrl c command c
+            return copySelected();
+        } else if (event.keyCode == 113) {
+            var selectedLi = $("#tree li.selectedNode");
+            if (selectedLi && selectedLi.length == 1) {
+                var tId = selectedLi.attr("id");
+                var node = zTree.getNodeByTId(tId);
+                if (!node.isParent) {
+                    renameScript(node.gitProjectId, node.path, $("#loginErp").val());
+                }
+            }
+            return false;
+        } else if (isMac && event.ctrlKey && event.altKey && event.keyCode == 76) {
+            $("#format").click();
+            return false;
+        } else if (!isMac && event.ctrlKey && event.shiftKey && event.keyCode == 70) {
+            $("#format").click();
+            return false;
+        } else if (event.shiftKey && event.keyCode == 119) {
+            var activeWIndow = datadevInit.getActiveWindow();
+            if (activeWIndow && activeWIndow.jq) {
+                activeWIndow.jq("#stepOut").click();
+            }
+        } else if (event.keyCode == 118) {
+            var activeWIndow = datadevInit.getActiveWindow();
+            if (activeWIndow && activeWIndow.jq) {
+                activeWIndow.jq("#stepInto").click();
+            }
+        } else if (event.keyCode == 119) {
+            var activeWIndow = datadevInit.getActiveWindow();
+            if (activeWIndow && activeWIndow.jq) {
+                activeWIndow.jq("#stepOver").click();
+            }
+        }
+    })
+}
+
 $(function () {
 
 
@@ -487,13 +550,14 @@ $(function () {
         var pullDirUrl = "/scriptcenter/script/pullDir.ajax";
         var pullFileUrl = "/scriptcenter/script/pullFile.ajax";
         var pushDirUrl = "/scriptcenter/script/pushDir.ajax";
-        var preSelectedId = undefined;
+
         var rightClickNode;//右键菜单的节点
         var oldnodes = [];
         var setting = {};
         initSelect();
         initEvent();
         initMenu();
+        initKeyMap();
 
         function addSelect(appgroupId, msg) {
             if (!hasProjectStatus) {
@@ -710,6 +774,21 @@ $(function () {
                             return true;
                         },
                         onRightClick: function (event, treeId, treeNode) {
+                            // zTree = $.fn.zTree.getZTreeObj("tree");
+                            // if (treeNode.isParent) {
+                            //     zTree.expandNode(treeNode);
+                            // }
+                            var id = treeNode.tId;
+                            if (preSelectedId) {
+                                $("#" + preSelectedId).removeClass("selectedNode")
+                            }
+                            $("#" + id).addClass("selectedNode");
+                            preSelectedId = id;
+                            //添加选中treeNode节点cookie
+                            if (HOME_COOKIE.getActiveGit2Cookie($("#loginErp").val())) {
+                                HOME_COOKIE.setActiveGitPathCookie($("#loginErp").val(), HOME_COOKIE.getActiveGit2Cookie($("#loginErp").val()) + "/" + treeNode.path);
+                            }
+
                             rightClickNode = treeNode;
                             if (!treeNode) {
                                 $("#rightClickMenu li.remove").hide();
@@ -1134,7 +1213,7 @@ $(function () {
                         copy();
                         break;
                     case "script_rename":
-                        renameScript(rightClickNode.gitProjectId, rightClickNode.path);
+                        renameScript(rightClickNode.gitProjectId, rightClickNode.path, $("loginErp").val());
                         break;
                     case "script_download":
                         downloadScript(rightClickNode.path, rightClickNode.gitProjectId);
@@ -1418,7 +1497,7 @@ $(function () {
                         var file = data.obj;
                         file.targetRange = isTargetFile ? 2 : 0;
                         var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
-                            title: "选择项目类型",
+                            title: "移动脚本",
                             lock: true,
                             width: "538px",
                             height: "450px",

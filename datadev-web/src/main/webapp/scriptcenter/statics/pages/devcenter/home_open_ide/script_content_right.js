@@ -397,11 +397,11 @@ var uploadRequest = undefined;
         return znodesDir;
     }
 
-    function refreshScriptInifo(key, gitProjectId, newPath, name) {
+    function refreshScriptInifo(loginErp, gitProjectId, newPath) {
         var newKey = getKey(gitProjectId, newPath);
-        var params = getParam(gitProjectId, newPath, name);
+        // var params = getParam(gitProjectId, newPath, name);
         //scriptMap.put(newKey, scriptMap.get(key));
-        HOME_COOKIE.changeName(key, newKey, params);
+        HOME_COOKIE.changeName(loginErp, newKey);
         //$("#codeEditContainer").JdDataDevTab("changeTabInfos", key, newKey, params);
     }
 
@@ -606,6 +606,7 @@ var uploadRequest = undefined;
         info = ($.dialog.data("info"));
         zTree = ($.dialog.data("zTree"));
         callBack = ($.dialog.data("callbackfun"));
+        var loginErp = ($.dialog.data("loginErp"));
 
         initSelect();
 
@@ -670,9 +671,9 @@ var uploadRequest = undefined;
 
                                 //locationScript(zNode.gitProjectId, zNode.path);
 
-                                if (modeCode != MOVE_MODE) {
-                                    HOME_COOKIE.setActiveLiCookie(newKey)
-                                }
+                                // if (modeCode != MOVE_MODE) {
+                                //     HOME_COOKIE.setActiveLiCookie(newKey)
+                                // }
                                 break;
                             case DIR_MODE:
                                 if (treeSource === 0) {
@@ -684,7 +685,7 @@ var uploadRequest = undefined;
                                     top.$.errorMsg(zNode.msg);
                                 } else {
                                     updateNode(zNode);
-                                    refreshScriptInifo(key, zNode.gitProjectId, zNode.path, zNode.name);
+                                    refreshScriptInifo(loginErp, zNode.gitProjectId, zNode.path);
                                     var newKey = getKey(zNode.gitProjectId, zNode.path);
                                 }
                                 break;

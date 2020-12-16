@@ -130,7 +130,7 @@
                         #if($!{scriptType} == "1" || $!{scriptType} == "2" || $!{scriptType} == "3")
                             <div class="buttonDiv">
                                 <a href="javascript:void(0)" id="format" class="toolButton pop-title" data-title="">
-                                    <span class="bdp-icon ide-gsh"><span class="iconFont">格式化$!{scriptType} </span></span>
+                                    <span class="bdp-icon ide-gsh"><span class="iconFont">格式化</span></span>
                                 </a>
                             </div>
                         #end
@@ -246,12 +246,12 @@
                 <div style="float: left;width: 60px;">列：<span id="colnumber">1</span>&nbsp;</div>
                 <div style="float: left;">最后修改信息：&nbsp; <span id="lastmender">$!{lastmender}</span>/<span
                         id="lastmodified"> $!{lastmodified}</span></div>
-##                <div style="float: left;margin-left: 30px">当前版本：&nbsp;<span><a href="javascript:;" class="changeVersion"
-##                                                                               id="currentVersionInfo">$!{version}</a></span>
-##                </div>
-##                <div style="float: left;margin-left: 30px">最新版本：&nbsp;<span><a href="javascript:;" class="changeVersion"
-##                                                                               id="lastVersionInfo">$!{lastVersion}</a></span>
-##                </div>
+                <div style="float: left;margin-left: 30px">当前版本：&nbsp;<span><a href="javascript:;" class="changeVersion"
+                                                                               id="currentVersionInfo">$!{version}</a></span>
+                </div>
+                <div style="float: left;margin-left: 30px">最新版本：&nbsp;<span><a href="javascript:;" class="changeVersion"
+                                                                               id="lastVersionInfo">$!{lastVersion}</a></span>
+                </div>
                 <div style="float: left;margin-left: 30px" id="gitVersionStatusTip"><span></span></div>
                 <div style="float: left;margin-left: 30px;display: none;" id="cheDepDiv"><a href="javascript:;" class=""
                                                                                             id="cheDep">查看依赖</a></div>
@@ -381,7 +381,7 @@
                 <li target="args-config"><a href="javascript:;" class="first">参数配置</a></li>
                 <li target="script-detail"><a href="javascript:;">脚本详情</a></li>
                 <li target="buffalo-task-list"><a href="javascript:;">任务列表</a></li>
-                <li target="online-history"><a href="javascript:;">上线历史</a></li>
+                <li target="online-history"><a href="javascript:;">发布历史</a></li>
                 <li target="operate-history"><a href="javascript:;">操作记录</a></li>
                 <li target="run-history"><a href="javascript:;">运行记录</a></li>
             </ul>
