@@ -381,6 +381,10 @@ public class ScriptOperateController {
 
         fileService.tryUpdateFile(oldFile.getGitProjectId(), oldFile.getGitProjectFilePath(), userHolder.getErp(), bytes, oldFile.getVersion(), oldFile.getGitVersion(), true);
         fileService.tmpFileUpdateHisAndDetail(oldFile.getId(), path, file.getName(), file.getGitProjectId(), oldFile.getGitProjectFilePath());
+        //保存文件描述
+        DataDevScriptFile params = new DataDevScriptFile();
+        params.setDescription(file.getDescription());
+        fileService.updateDataDevScriptFile(file.getGitProjectId(), path, params);
 
         JDGitFiles jdGitFiles = new JDGitFiles();
         jdGitFiles.setErp(userHolder.getErp());

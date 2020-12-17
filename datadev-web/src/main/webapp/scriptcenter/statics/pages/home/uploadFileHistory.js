@@ -87,6 +87,11 @@ $(function() {
         clearBtn: true
     });
     $("#uploadFileStartTime,#uploadFileEndTime,#selectUploadErp").on("change", function () {
+        if (!timeRangeValid($("#uploadFileStartTime").val(), $("#uploadFileEndTime").val())) {
+            $("#timeRangeChecker").attr("style", "display: block; color: red !important; float: left; padding-left: 85px;");
+            return
+        }
+        $("#timeRangeChecker").attr("style", "display: none");
         jQuery("#uploadFile-grid-table").jqGrid("setGridParam", {
             postData: {
                 gitProjectId: $.trim($("#gitProjectId").val()),
@@ -97,6 +102,10 @@ $(function() {
         })
     });
     $("#uploadFileSelect").click(function () {
+        if (!timeRangeValid($("#uploadFileStartTime").val(), $("#uploadFileEndTime").val())) {
+            $.errorMsg("结束时间不能大于开始时间");
+            return
+        }
         jQuery("#uploadFile-grid-table").trigger("reloadGrid");
     });
 
@@ -136,4 +145,8 @@ function openFileDetail(id) {
         close: function () {
         }
     });
+}
+
+function timeRangeValid(start, end) {
+    return !start || !end || start <= end;
 }

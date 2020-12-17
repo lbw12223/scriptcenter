@@ -31,6 +31,10 @@
             <input id="uploadFileEndTime" class="script-query-history-Time date-picker">
             <span class="icon-calendar"></span>
         </div>
+
+        <label id="timeRangeChecker" style="display: none;">
+            结束时间不能大于开始时间
+        </label>
     </div>
 
     <div class="jd-table-parent" id="uploadFile-jd-table-parent" style="width:100%;height:100%;overflow: hidden;">
