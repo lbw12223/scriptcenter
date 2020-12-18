@@ -1464,7 +1464,7 @@ function hiddenAllRightMeun(isFromBoradCast) {
     $(".clearLog").hide();
     $(".moreFunction").hide();
     //让左侧清除右键
-    if(isFromBoradCast == undefined){
+    if(isFromBoradCast == undefined && QIAN_KUN && QIAN_KUN.utils){
         QIAN_KUN.utils.broadcast("clear-left-right-meun", "clearLeft")
     }
 

@@ -220,6 +220,7 @@ function showArgs(args, startShellPath, cgroupArgs) {
                 initSqlParamsTbody(argName);
             }
         } catch (e) {
+            console.error("error:", e);
         }
     }
     if (startShellPath) {

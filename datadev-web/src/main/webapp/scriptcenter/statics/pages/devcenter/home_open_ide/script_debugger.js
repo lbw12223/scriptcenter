@@ -1589,7 +1589,6 @@ $(function () {
 
 
 
-        debugger ;
         //初始化对象
         editor = ace.edit("code");
         //设置风格和语言（更多风格和语言，请到github上相应目录查看）

@@ -231,6 +231,7 @@ $(function () {
         } else if (toolNode.hasClass("deleteTemplateBtn")) {
             toDeleteTemplate(templateId);
         } else if (toolNode.hasClass("shareTemplateBtn")) {
+            console.log("ready to enter toShareTemplate...");
             toShareTemplate(templateId);
         } else if (toolNode.hasClass("topTemplateBtn")) {
             //目前置顶 表示取掉置顶  目前非置顶 表示要置顶
@@ -288,6 +289,7 @@ $(function () {
     }
 
     function toShareTemplate(templateId) {
+        console.log("enter toShareTemplate...");
         saveTemplate && saveTemplate(null, templateId, function (template) {
             var name = template.name;
             var desc = template.desc;
