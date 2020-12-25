@@ -100,7 +100,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         //releaseInfo.put("scriptVersion",resObject.getString("version"));
         releaseInfo.put("fileId",resObject.getLongValue("fileId"));
         releaseInfo.put("version",resObject.getString("version"));
-        releaseInfo.put("scriptUrl","/datadev/api/downloadScriptNoAuth.ajax?id="+file.getId()+"&version="+file.getVersion());
+        releaseInfo.put("scriptUrl","/scriptcenter/api/downloadScriptNoAuth.ajax?id="+file.getId()+"&version="+file.getVersion());
         releaseInfo.put("scriptDesc",file.getVerDescription());
 
         releaseInfoFromDevDto.setShowInfo(releaseInfo);
