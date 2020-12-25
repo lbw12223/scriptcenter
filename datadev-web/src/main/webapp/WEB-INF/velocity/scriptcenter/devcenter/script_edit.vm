@@ -263,9 +263,9 @@
                     <ul class="sideBar-ul ">
                         <li class="sideBar-li color_run unRun-mode ico-disabled" data-command="run"><span
                                 class="sideBar-icon bdp-icon ide-rzyx pop-title" data-title="运行"></span></li>
-                        <li class="sideBar-li color_run run-mode debug-mode " style="" data-command="restart"><span
-                                class="sideBar-icon restart sideBar-command pop-title" id="restartCommand"
-                                data-title="重新运行"></span></li>
+##                        <li class="sideBar-li color_run run-mode debug-mode " style="" data-command="restart"><span
+##                                class="sideBar-icon restart sideBar-command pop-title" id="restartCommand"
+##                                data-title="重新运行"></span></li>
                         <li class="sideBar-li color_run debug-mode" style="display: none" data-command="continue"><span
                                 class="sideBar-icon bdp-icon ide-hfyx pop-title" id="debugContinue"
                                 data-title="继续执行"></span></li>
