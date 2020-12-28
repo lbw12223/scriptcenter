@@ -104,8 +104,7 @@ public class ProjectSpaceRightComponent implements InitializingBean {
                             (role.indexOf(RoleEnum.ADMIN.toValue()) != -1 ||
                                     role.indexOf(RoleEnum.BIZ_MNG.toValue()) != -1 ||
                                     role.indexOf(RoleEnum.PRJ_MNG.toValue()) != -1 ||
-                                    role.indexOf(RoleEnum.PRJ_DEV.toValue()) != -1 ||
-                                    role.indexOf(RoleEnum.PRJ_MT.toValue()) != -1)) {
+                                    role.indexOf(RoleEnum.PRJ_DEV.toValue()) != -1 )) {
                         hasRight = true;
                         if (hasRight) {
                             break;
