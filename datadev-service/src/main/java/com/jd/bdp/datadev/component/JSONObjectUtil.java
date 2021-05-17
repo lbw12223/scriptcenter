@@ -12,6 +12,14 @@ public class JSONObjectUtil {
         jsonObject.put("obj", object);
         return jsonObject;
     }
+    public static JSONObject getSuccessList(Object object) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 0);
+        jsonObject.put("success", true);
+        jsonObject.put("message", "请求成功");
+        jsonObject.put("list", object);
+        return jsonObject;
+    }
 
     public static JSONObject getSuccessResult(String message, Object object) {
         JSONObject jsonObject = new JSONObject();

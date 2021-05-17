@@ -45,7 +45,7 @@ public class DataDevScriptTemplateServiceImpl implements DataDevScriptTemplateSe
         Long end1 = new Date().getTime();
 
 
-        List<DataDevGitProject> dataDevGitProjectList = gitProjectService.getErpProjectBySearch(erp, null);
+        List<DataDevGitProject> dataDevGitProjectList = gitProjectService.getErpProjectBySearch(erp, null,-1);
         List<String> allUsers = gitProjectService.getAllUserHaveSameProject(dataDevGitProjectList);
 
 

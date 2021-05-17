@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.amp.sdk.annotation.AuthChecker;
 import com.jd.bdp.datadev.component.HbaseScript;
 import com.jd.bdp.datadev.component.ImportScriptManager;
+import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.component.UrmUtil;
 import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
 import com.jd.bdp.datadev.domain.*;
+import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
 import com.jd.bdp.datadev.jdgit.*;
 import com.jd.bdp.datadev.model.Script;
@@ -16,7 +18,9 @@ import com.jd.bdp.datadev.service.DataDevGitProjectMemberService;
 import com.jd.bdp.datadev.service.DataDevGitProjectService;
 import com.jd.bdp.datadev.service.DataDevScriptDirService;
 import com.jd.bdp.datadev.service.DataDevScriptFileService;
+import com.jd.bdp.datadev.web.exception.ParamsException;
 import com.jd.bdp.datadev.web.exception.ScriptException;
+import com.jd.bdp.domain.authorityCenter.MarketInfoDto;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -57,11 +61,103 @@ public class ScriptApiController {
     @Autowired
     private DataDevGitProjectMemberService dataDevGitProjectMemberService;
 
+
+    /**
+     * 根据ProjectType获取coding，本地，git项目
+     * <p>
+     * projectType:coding = 1
+     * projectType:git = 2
+     * projectType:local = 3
+     *
+     * @param erp
+     * @param projectType
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/getProjectByErp")
+    @ResponseBody
+    @AuthChecker
+    public JSONObject getProjectByErp(String erp, Integer projectType, String keyword) throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        try {
+            if(StringUtils.isBlank(erp)){
+                throw new ParamsException("Erp，不能为NULL");
+            }
+            if(projectType == null && (projectType < 0  || projectType > 3)){
+                throw new ParamsException("projectType取值范围[1,2,3]");
+            }
+
+            List<DataDevGitProject> erpProjectBySearch = dataDevGitProjectService.getErpProjectBySearch(erp, keyword, projectType);
+            if (erpProjectBySearch != null) {
+
+                for (DataDevGitProject temp : erpProjectBySearch) {
+                    JSONObject project = new JSONObject();
+                    project.put("projectId", temp.getGitProjectId());
+                    project.put("projectName", temp.getGitProjectName());
+                    project.put("projectType", projectType);
+                    jsonArray.add(project);
+                }
+            }
+            return JSONObjectUtil.getSuccessList(jsonArray);
+        } catch (Exception e) {
+            logger.error("getProjectByErp", e);
+            return JSONObjectUtil.getFailResult(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping("/getProjectTree")
+    @ResponseBody
+    @AuthChecker
+    public JSONObject getProjectTree(Long projectId, Long dirId) throws Exception {
+        JSONObject result = new JSONObject();
+        try {
+        } catch (Exception e) {
+            logger.error("uploadScript==============================================================result", e);
+            result.put("message", e.getMessage());
+            result.put("success", false);
+            result.put("code", 1);
+            return result;
+        }
+        return null;
+    }
+
+    @RequestMapping("/loadScript")
+    @ResponseBody
+    @AuthChecker
+    public void loadScript(Long scriptId, Integer version) throws Exception {
+        JSONObject result = new JSONObject();
+        try {
+        } catch (Exception e) {
+            logger.error("uploadScript==============================================================result", e);
+            result.put("message", e.getMessage());
+            result.put("success", false);
+            result.put("code", 1);
+        }
+    }
+
+
+    @RequestMapping("/diffScript")
+    @ResponseBody
+    @AuthChecker
+    public void diffScript(Long scriptId, Integer version, Integer diffVersion) throws Exception {
+        JSONObject result = new JSONObject();
+        try {
+        } catch (Exception e) {
+            logger.error("uploadScript==============================================================result", e);
+            result.put("message", e.getMessage());
+            result.put("success", false);
+            result.put("code", 1);
+        }
+
+    }
+
+
     @RequestMapping("/uploadScript")
     @ResponseBody
     @AuthChecker
     public JSONObject uploadScript(String userToken, @RequestParam("file") MultipartFile file, Script data) throws Exception {
-        logger.error("uploadScript==============================================================file" + JSONObject.toJSONString(data) );
+        logger.error("uploadScript==============================================================file" + JSONObject.toJSONString(data));
         JSONObject result = new JSONObject();
         try {
             if (file != null && file.getBytes() != null && file.getSize() > 0) {
@@ -111,10 +207,10 @@ public class ScriptApiController {
             result.put("success", true);
             result.put("code", 0);
             result.put("obj", resObj);
-            logger.error("uploadScript==============================================================result" + JSONObject.toJSONString(result) );
+            logger.error("uploadScript==============================================================result" + JSONObject.toJSONString(result));
             return result;
         } catch (Exception e) {
-            logger.error("uploadScript==============================================================result" ,e );
+            logger.error("uploadScript==============================================================result", e);
             result.put("message", e.getMessage());
             result.put("success", false);
             result.put("code", 1);
@@ -162,7 +258,7 @@ public class ScriptApiController {
                                            @RequestParam(value = "isCheckErpRight", defaultValue = "false") Boolean isCheckErpRight) throws Exception {
         logger.error("============================================================downloadScriptNoAuth:" + JSON.toJSONString(data));
 
-        if(holder == null || holder.getErp() == null){
+        if (holder == null || holder.getErp() == null) {
             holder = new UrmUserHolder();
             holder.setErp(urmUtil.getBdpManager());
         }
@@ -234,8 +330,8 @@ public class ScriptApiController {
                     !("YG4GRNESGW2ZHVJFNXEXPIG3JRE5RJUCJCKRQNA").equalsIgnoreCase(token)) {
                 throw new RuntimeException("appId, token 不合法");
             }
-            Integer countScript =  dataDevScriptFileDao.countErpScriptFile(erp);
-            if(countScript > 0){
+            Integer countScript = dataDevScriptFileDao.countErpScriptFile(erp);
+            if (countScript > 0) {
                 JSONObject scriptFile = new JSONObject();
                 scriptFile.put("systemName", "datadev");
                 scriptFile.put("systemDesc", "大数据平台-开发平台");
@@ -245,9 +341,9 @@ public class ScriptApiController {
             }
 
 
-            List<DataDevGitProject> gitProjectList = dataDevGitProjectService.getErpProjectBySearch(erp, "");
+            List<DataDevGitProject> gitProjectList = dataDevGitProjectService.getErpProjectBySearch(erp, "", -1);
 
-            if(gitProjectList != null && gitProjectList.size() > 0){
+            if (gitProjectList != null && gitProjectList.size() > 0) {
                 JSONObject gitProject = new JSONObject();
                 gitProject.put("systemName", "datadev");
                 gitProject.put("systemDesc", "大数据平台-开发平台");
@@ -255,7 +351,6 @@ public class ScriptApiController {
                 gitProject.put("itemName", (gitProjectList != null ? gitProjectList.size() : 0) + "个Git或Coding项目");
                 data.add(gitProject);
             }
-
 
 
             result.put("data", data);
@@ -282,7 +377,7 @@ public class ScriptApiController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "handOverItem" ,method =RequestMethod.POST )
+    @RequestMapping(value = "handOverItem", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject handOverItem(String sourceErp, String targetErp, Long timestamp, String signature, String appId, String token, String data) throws Exception {
         JSONObject result = new JSONObject();
@@ -291,7 +386,7 @@ public class ScriptApiController {
                     !("YG4GRNESGW2ZHVJFNXEXPIG3JRE5RJUCJCKRQNA").equalsIgnoreCase(token)) {
                 throw new RuntimeException("appId, token 不合法");
             }
-            handOverItem(sourceErp,targetErp,data);
+            handOverItem(sourceErp, targetErp, data);
 
 
             result.put("data", "大数据平台-开发平台(交接成功)");
@@ -304,9 +399,10 @@ public class ScriptApiController {
         }
         return result;
     }
-    @RequestMapping(value = "handOverItemRaw" ,method = RequestMethod.POST)
+
+    @RequestMapping(value = "handOverItemRaw", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject handOverItemRaw( @RequestBody String data) throws Exception {
+    public JSONObject handOverItemRaw(@RequestBody String data) throws Exception {
         JSONObject result = new JSONObject();
         try {
             JSONObject map = JSONObject.parseObject(data);
@@ -320,8 +416,7 @@ public class ScriptApiController {
                     !("YG4GRNESGW2ZHVJFNXEXPIG3JRE5RJUCJCKRQNA").equalsIgnoreCase(token)) {
                 throw new RuntimeException("appId, token 不合法");
             }
-            handOverItem(sourceErp,targetErp,datas);
-
+            handOverItem(sourceErp, targetErp, datas);
 
 
             result.put("data", "大数据平台-开发平台(交接成功)");
@@ -335,23 +430,23 @@ public class ScriptApiController {
         return result;
     }
 
-    private void handOverItem(String sourceErp, String targetErp , String datas){
-        boolean doScriptUpdate = false ;
-        boolean doGitProjectAdd = false ;
-        if(StringUtils.isEmpty(datas)){
-            doScriptUpdate = true ;
-            doGitProjectAdd = true ;
-        }else{
-            doScriptUpdate = datas.indexOf("datadev-script") != -1 ;
-            doGitProjectAdd = datas.indexOf("datadev-gitProject") != -1 ;
+    private void handOverItem(String sourceErp, String targetErp, String datas) {
+        boolean doScriptUpdate = false;
+        boolean doGitProjectAdd = false;
+        if (StringUtils.isEmpty(datas)) {
+            doScriptUpdate = true;
+            doGitProjectAdd = true;
+        } else {
+            doScriptUpdate = datas.indexOf("datadev-script") != -1;
+            doGitProjectAdd = datas.indexOf("datadev-gitProject") != -1;
 
         }
-        if(doScriptUpdate){
+        if (doScriptUpdate) {
             dataDevScriptFileDao.updateErpScriptFile(sourceErp, targetErp);
         }
-        if(doGitProjectAdd){
+        if (doGitProjectAdd) {
             //给targetErp添加这个项目的权限
-            List<DataDevGitProject> gitProjectList = dataDevGitProjectService.getErpProjectBySearch(sourceErp, "");
+            List<DataDevGitProject> gitProjectList = dataDevGitProjectService.getErpProjectBySearch(sourceErp, "", -1);
 
             for (DataDevGitProject gitProject : gitProjectList) {
                 try {

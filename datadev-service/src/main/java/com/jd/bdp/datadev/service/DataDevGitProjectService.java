@@ -59,7 +59,7 @@ public interface DataDevGitProjectService {
      * @param erp
      * @return
      */
-    List<DataDevGitProject> getErpProjectBySearch(String erp,String keyword);
+    List<DataDevGitProject> getErpProjectBySearch(String erp,String keyword , Integer projectType);
 
     /**
      * gitProjectId

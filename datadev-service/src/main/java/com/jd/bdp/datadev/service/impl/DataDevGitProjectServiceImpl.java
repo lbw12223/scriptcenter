@@ -6,6 +6,7 @@ import com.jd.bdp.datadev.domain.DataDevGitDto;
 import com.jd.bdp.datadev.domain.DataDevGitGroup;
 import com.jd.bdp.datadev.domain.DataDevGitProject;
 import com.jd.bdp.datadev.enums.DataDevGitInitFlag;
+import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.jdgit.JDGitCommits;
 import com.jd.bdp.datadev.jdgit.JDGitProjects;
 import com.jd.bdp.datadev.service.DataDevGitProjectService;
@@ -86,7 +87,7 @@ public class DataDevGitProjectServiceImpl implements DataDevGitProjectService {
      */
     @Override
     public List<DataDevGitProject> getErpProject(String erp) {
-        return  getErpProjectBySearch(erp,null);
+        return  getErpProjectBySearch(erp,null,-1);
     }
 
     @Override
@@ -130,11 +131,15 @@ public class DataDevGitProjectServiceImpl implements DataDevGitProjectService {
      * @return
      */
     @Override
-    public List<DataDevGitProject> getErpProjectBySearch(String erp ,String keyword) {
+    public List<DataDevGitProject> getErpProjectBySearch(String erp ,String keyword , Integer projectType) {
+
+
+        DataDevProjectTypeEnum dataDevProjectTypeEnum = DataDevProjectTypeEnum.enumValueOf(projectType);
+
         List<DataDevGitProject> result = new ArrayList<DataDevGitProject>();
         Set<Long> projectIds = new HashSet<Long>();
-        List<DataDevGitProject> erpProjects = dataDevGitProjectDao.getErpDataDevGitProject(erp,keyword);
-        List<DataDevGitProject> sharedGroupProjects = dataDevGitProjectDao.getErpDataDevGitProjectBySharedGroup(erp,keyword);
+        List<DataDevGitProject> erpProjects = dataDevGitProjectDao.getErpDataDevGitProject(erp,keyword,dataDevProjectTypeEnum.idMin,dataDevProjectTypeEnum.idMax);
+        List<DataDevGitProject> sharedGroupProjects = dataDevGitProjectDao.getErpDataDevGitProjectBySharedGroup(erp,keyword,dataDevProjectTypeEnum.idMin,dataDevProjectTypeEnum.idMax);
 
         if (erpProjects != null && erpProjects.size() > 0) {
             for (DataDevGitProject dataDevGitProject : erpProjects) {

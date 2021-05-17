@@ -55,13 +55,13 @@ public class ScriptManageController {
     @ResponseBody
     public JSONObject getApps(UrmUserHolder userHolder, String keyword) throws Exception {
         String erp = userHolder.getErp();
-        if(StringUtils.isNotBlank(keyword)){
-            keyword=keyword.replaceAll("\\_","\\\\_");
-            keyword=keyword.replaceAll("\\%","\\\\%");
+        if (StringUtils.isNotBlank(keyword)) {
+            keyword = keyword.replaceAll("\\_", "\\\\_");
+            keyword = keyword.replaceAll("\\%", "\\\\%");
         }
         List<DataDevApplication> list = new ArrayList<DataDevApplication>();//appGroupUtil.getAppsByErp(erp);
 
-        List<DataDevGitProject> dataDevGitProjectList = dataDevGitProjectService.getErpProjectBySearch(erp, keyword);
+        List<DataDevGitProject> dataDevGitProjectList = dataDevGitProjectService.getErpProjectBySearch(erp, keyword, -1);
         if (dataDevGitProjectList != null && dataDevGitProjectList.size() > 0) {
             for (DataDevGitProject temp : dataDevGitProjectList) {
                 DataDevApplication dataDevApplication = new DataDevApplication();
@@ -259,7 +259,7 @@ public class ScriptManageController {
     @RequestMapping("/getScript.ajax")
     @ResponseBody
     public JSONObject getScript(UrmUserHolder userHolder, Long gitProjectId, String gitProjectFilePath, String version) throws Exception {
-        if(env.equals("dev")){
+        if (env.equals("dev")) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("res", "res");
             jsonObject.put("md5", "oldFile != null ? oldFile.getFileMd5() : MD5Util.getMD5Str(res)");
@@ -277,11 +277,11 @@ public class ScriptManageController {
             throw new RuntimeException("脚本不存在");
         }
         DataDevScriptTemplate template = templateService.getTemplateByFileId(oldFile.getId());
-        if(template !=null && !template.getIncharge().equals(userHolder.getErp())){
+        if (template != null && !template.getIncharge().equals(userHolder.getErp())) {
             throw new RuntimeException("无权限操作模板");
         }
-        DataDevScriptGitStatusEnum gitStatus = template!=null?DataDevScriptGitStatusEnum.NON:DataDevScriptGitStatusEnum.getGitStatus(oldFile.getGitVersion(), oldFile.getLastGitVersion(), oldFile.getFileMd5(), oldFile.getLastGitVersionMd5(), oldFile.getGitDeleted());
-        if(template!=null){
+        DataDevScriptGitStatusEnum gitStatus = template != null ? DataDevScriptGitStatusEnum.NON : DataDevScriptGitStatusEnum.getGitStatus(oldFile.getGitVersion(), oldFile.getLastGitVersion(), oldFile.getFileMd5(), oldFile.getLastGitVersionMd5(), oldFile.getGitDeleted());
+        if (template != null) {
             gitStatus = DataDevScriptGitStatusEnum.NON;
         }
         String res = fileService.getScriptContent(gitProjectId, gitProjectFilePath, version, userHolder.getErp());
@@ -308,8 +308,8 @@ public class ScriptManageController {
         if (StringUtils.isNotBlank(gitProjectFilePath)) {
             gitProjectFilePath = URLDecoder.decode(gitProjectFilePath, "utf-8");
         }
-        DataDevScriptFile currentVersionFile = fileService.getScriptByGitProjectIdAndFilePath(gitProjectId,gitProjectFilePath,currentVersion);
-        DataDevScriptFile lastVersionFile = fileService.getScriptByGitProjectIdAndFilePath(gitProjectId,gitProjectFilePath,lastVersion);
+        DataDevScriptFile currentVersionFile = fileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath, currentVersion);
+        DataDevScriptFile lastVersionFile = fileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath, lastVersion);
         model.addAttribute("gitProjectId", gitProjectId);
         model.addAttribute("gitProjectFilePath", gitProjectFilePath);
         model.addAttribute("currentVersion", currentVersion);
@@ -318,8 +318,8 @@ public class ScriptManageController {
         model.addAttribute("canEdit", DataDevScriptTypeEnum.canEdit(Integer.parseInt(scriptType)));
         model.addAttribute("choice", choice);
         model.addAttribute("modifiedStatus", modifiedStatus);
-        model.addAttribute("currentRelationDependencyId", currentVersionFile!=null?currentVersionFile.getRelationDependencyId():null);
-        model.addAttribute("lastRelationDependencyId", lastVersionFile!=null?lastVersionFile.getRelationDependencyId():null);
+        model.addAttribute("currentRelationDependencyId", currentVersionFile != null ? currentVersionFile.getRelationDependencyId() : null);
+        model.addAttribute("lastRelationDependencyId", lastVersionFile != null ? lastVersionFile.getRelationDependencyId() : null);
         return "/scriptcenter/editor/ace_diff_choice";
     }
 

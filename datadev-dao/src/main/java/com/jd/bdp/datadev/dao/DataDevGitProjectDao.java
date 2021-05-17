@@ -61,7 +61,7 @@ public interface DataDevGitProjectDao {
      * @param erp
      * @return
      */
-    List<DataDevGitProject> getErpDataDevGitProject(@Param("erp") String erp ,@Param("keyword")String  keyword);
+    List<DataDevGitProject> getErpDataDevGitProject(@Param("erp") String erp ,@Param("keyword") String  keyword , @Param("idMin") Long idMin, @Param("idMax") Long idMax );
 
 
     /**
@@ -69,7 +69,7 @@ public interface DataDevGitProjectDao {
      * @param erp
      * @return
      */
-    List<DataDevGitProject> getErpDataDevGitProjectBySharedGroup(@Param("erp") String erp ,@Param("keyword")String  keyword);
+    List<DataDevGitProject> getErpDataDevGitProjectBySharedGroup(@Param("erp") String erp ,@Param("keyword")String  keyword ,@Param("idMin") Long idMin, @Param("idMax") Long idMax);
 
 
     /**

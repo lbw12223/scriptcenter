@@ -131,6 +131,14 @@
             AND (git_project.git_project_name LIKE concat("%",#{keyword},"%") OR git_project.git_project_path LIKE
             concat("%",#{keyword},"%") escape "\\")
         </if>
+
+        <if test="idMin !=null and idMin >= 0">
+            AND git_project.git_project_id >= #{idMin}
+        </if>
+        <if test="idMax !=null and idMax >= 0">
+            AND git_project.git_project_id <![CDATA[<]]> #{idMax}
+        </if>
+
     </select>
     <select id="getErpDataDevGitProjectBySharedGroup" resultType="DataDevGitProject">
         SELECT DISTINCT
@@ -148,6 +156,13 @@
             AND (gitProject.git_project_name LIKE concat("%",#{keyword},"%") OR gitProject.git_project_path LIKE
             concat("%",#{keyword},"%") escape "\\")
         </if>
+        <if test="idMin !=null and idMin >= 0">
+            AND gitProject.git_project_id >= #{idMin}
+        </if>
+        <if test="idMax !=null and idMax >= 0">
+            AND  gitProject.git_project_id <![CDATA[<]]> #{idMax}
+        </if>
+
     </select>
 
     <select id="getAllGitProjectByKeyWord" resultType="DataDevGitProject">
