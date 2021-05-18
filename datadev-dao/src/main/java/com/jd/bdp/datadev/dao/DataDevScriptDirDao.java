@@ -55,6 +55,13 @@ public interface DataDevScriptDirDao {
     DataDevScriptDir getDataDevScriptDirBy(@Param("gitProjectId") Long gitProjectId, @Param("path") String path);
 
     /**
+     * @param gitProjectId
+     * @param pId
+     * @return
+     */
+    List<DataDevScriptDir> getDirsByGitProjectId(@Param("gitProjectId") Long gitProjectId, @Param("pId") Long pId);
+
+    /**
      * @param gitParentProjectDirPath
      * @param gitProjectId
      * @return

@@ -310,6 +310,22 @@
         </choose>
         AND IFNULL(is_show,0) = 0 and IFNULL(deleted,0) = 0
     </select>
+
+    <select id="getScriptDirFileByProjectIdAndDirId" resultType="DataDevScriptFile">
+        SELECT
+        <include refid="script_file_columns"></include>
+        FROM script_file
+        WHERE git_project_id = #{gitProjectId}
+        <choose>
+            <when test="dirId !=null and dirId >= 0 ">
+                AND dir_id = #{dirId}
+            </when>
+            <otherwise>
+                AND dirId = 0
+            </otherwise>
+        </choose>
+        AND IFNULL(is_show,0) = 0 and IFNULL(deleted,0) = 0
+    </select>
     <select id="getScriptDirFileRecur" resultType="DataDevScriptFile">
         SELECT
         <include refid="script_file_columns"></include>

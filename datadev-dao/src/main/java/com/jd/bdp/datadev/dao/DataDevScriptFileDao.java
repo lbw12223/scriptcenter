@@ -189,7 +189,7 @@ public interface DataDevScriptFileDao {
     void fixBugUpdateVersion(@Param("fileId") Long fileId);
 
 
-
+    List<DataDevScriptFile> getScriptDirFileByProjectIdAndDirId(@Param("gitProjectId") Long gitProjectId, @Param("dirId") Long dirId);
 
 
 }

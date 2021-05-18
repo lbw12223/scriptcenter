@@ -33,6 +33,15 @@ public interface DataDevScriptDirService {
     DataDevScriptDir getDataDevScriptDir(Long gitProjectId, String path);
 
     /**
+     * 通过GitProjectId 和 pId 获取DataDevScriptDir
+     *
+     * @param gitProjectId
+     * @param path
+     * @return
+     */
+    List<DataDevScriptDir> getDataDevScriptDirByPid(Long gitProjectId, Long pId);
+
+    /**
      * 获取GitProjectId下的所有目录
      * @param isTargetSelect 是否获取target目录
      * @param gitProjectId

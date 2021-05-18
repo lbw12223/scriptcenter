@@ -324,6 +324,11 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
     }
 
     @Override
+    public List<DataDevScriptFile> getScriptsByGitProjectIdAndDirId(Long gitProjectId, Long dirId) {
+        return dataDevScriptFileDao.getScriptDirFileByProjectIdAndDirId(gitProjectId, dirId);
+    }
+
+    @Override
     public DataDevScriptFile getScriptByGitProjectIdAndFilePath(Long gitProjectId, String filePath) {
         return getScriptByGitProjectIdAndFilePath(gitProjectId, filePath, null);
     }

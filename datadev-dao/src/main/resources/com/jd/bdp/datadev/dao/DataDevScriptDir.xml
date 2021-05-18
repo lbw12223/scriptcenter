@@ -84,7 +84,7 @@
         AND git_project_id = #{gitProjectId} AND IFNULL(deleted,0) = 0 limit 1
     </select>
 
-    <select id="DirsByGitProjectId" resultType="DataDevScriptDir">
+    <select id="getDirsByGitProjectId" resultType="DataDevScriptDir">
         SELECT
         <include refid="dir_column"></include>
         FROM script_dir

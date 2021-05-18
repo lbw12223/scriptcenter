@@ -9,6 +9,7 @@ import com.jd.bdp.datadev.component.ImportScriptManager;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.component.UrmUtil;
 import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
+import com.jd.bdp.datadev.dao.DataDevScriptFileHisDao;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
@@ -33,9 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -57,10 +56,14 @@ public class ScriptApiController {
     @Autowired
     private DataDevScriptFileDao dataDevScriptFileDao;
 
-
     @Autowired
     private DataDevGitProjectMemberService dataDevGitProjectMemberService;
 
+    @Autowired
+    private DataDevScriptDirService dataDevScriptDirService;
+
+    @Autowired
+    private DataDevScriptFileService dataDevScriptFileService;
 
     /**
      * 根据ProjectType获取coding，本地，git项目
@@ -106,33 +109,98 @@ public class ScriptApiController {
     }
 
 
+    /**
+     *
+     * @param projectId
+     * @param dirId        不传为0时，查询根目录下的dir和file，不为0时，查询p_id为dirId的dir 和 dir_id为dirId的file
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/getProjectTree")
     @ResponseBody
     @AuthChecker
     public JSONObject getProjectTree(Long projectId, Long dirId) throws Exception {
         JSONObject result = new JSONObject();
+        logger.info(String.format("projectId=%s, dirId=%s", projectId, dirId));
         try {
+            // 参数校验
+            if (projectId == null || projectId <= 0) {
+                throw new ParamsException("projectId必填，且必须大于0");
+            }
+            if (dirId != null && dirId < 0) {
+                throw new ParamsException("dirId非必填，但不能小于0");
+            }
+            if (dirId == null) {
+                dirId = 0L;
+            }
+
+            List<DataDevScriptDir> dataDevScriptDirs = dataDevScriptDirService.getDataDevScriptDirByPid(projectId, dirId);
+            List<DataDevScriptFile> dataDevScriptFiles = dataDevScriptFileService.getScriptsByGitProjectIdAndDirId(projectId, dirId);
+            JSONArray jsonArray = new JSONArray();
+            for (DataDevScriptDir dataDevScriptDir : dataDevScriptDirs) {
+                JSONObject dir = new JSONObject();
+                dir.put("id", dataDevScriptDir.getId());
+                dir.put("type", "dir");
+                dir.put("name", dataDevScriptDir.getName());
+                dir.put("fullPath", dataDevScriptDir.getGitProjectDirPath());
+                jsonArray.add(dir);
+            }
+            // file去重
+            for (DataDevScriptFile dataDevScriptFile : dataDevScriptFiles) {
+                JSONObject file = new JSONObject();
+                file.put("id", dataDevScriptFile.getId());
+                file.put("type", "file");
+                file.put("name", dataDevScriptFile.getName());
+                file.put("fullPath", dataDevScriptFile.getGitProjectFilePath());
+                jsonArray.add(file);
+            }
+            return JSONObjectUtil.getSuccessList(jsonArray);
         } catch (Exception e) {
-            logger.error("uploadScript==============================================================result", e);
-            result.put("message", e.getMessage());
-            result.put("success", false);
-            result.put("code", 1);
-            return result;
+            logger.error("getProjectTree failed", e);
+            return JSONObjectUtil.getFailResult(e.getMessage());
         }
-        return null;
     }
 
     @RequestMapping("/loadScript")
     @ResponseBody
     @AuthChecker
-    public void loadScript(Long scriptId, Integer version) throws Exception {
-        JSONObject result = new JSONObject();
+    public void loadScript(HttpServletResponse response, Long scriptId, String version) throws Exception {
         try {
+            // 参数校验
+            if (scriptId == null || scriptId <= 0) {
+                throw new ParamsException("scriptId必填，且必须大于0");
+            }
+
+            DataDevScriptFile data = scriptFileService.findById(scriptId);
+            if (data == null) {
+                throw new RuntimeException("id为" + scriptId + "的脚本不存在");
+            }
+            if (StringUtils.isBlank(version)) {
+                version = data.getVersion();
+            }
+
+            byte[] res = null;
+            //正常单文件下载
+            String fileName = null;
+            if (StringUtils.isNotBlank(data.getGitProjectFilePath())) {
+                String path = URLDecoder.decode(data.getGitProjectFilePath(), "utf-8");
+                DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(data.getGitProjectId(), path, version);
+                if (scriptFile == null) {
+                    throw new RuntimeException("项目id为" + data.getGitProjectId() + "，脚本路径为" + data.getGitProjectFilePath() + (StringUtils.isNotBlank(data.getVersion()) ? ("，版本号为" + data.getVersion()) : "") + "的脚本不存在");
+                }
+                res = scriptFileService.getScriptBytes(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), data.getVersion(), urmUtil.getBdpManager(), true);
+                fileName = scriptFile.getName();
+            }
+            response.setStatus(org.apache.http.HttpStatus.SC_OK);
+            fileName = StringUtils.isBlank(fileName) ? "script" : fileName;
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setContentType(MediaType.APPLICATION_OCTET_STREAM.toString());
+            response.setContentLength(res != null ? res.length : 0);
+            response.getOutputStream().write(res);
+            response.getOutputStream().close();
+            logger.error("============================下载文件成功，文件：" + fileName + "，大小：" + (res != null ? res.length : 0));
         } catch (Exception e) {
-            logger.error("uploadScript==============================================================result", e);
-            result.put("message", e.getMessage());
-            result.put("success", false);
-            result.put("code", 1);
+            logger.error("loadScript failed:", e);
         }
     }
 

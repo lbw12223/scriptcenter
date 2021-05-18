@@ -143,6 +143,16 @@ public interface DataDevScriptFileService {
     List<DataDevScriptFile> getScriptsByGitProjectIdAndDirPath(Long gitProjectId, String gitProjectDirPath);
 
     /**
+     * 获取 Project 某个dirId下面的 脚本文件
+     *
+     * @param gitProjectId
+     * @param dirId
+     * @return
+     * @throws Exception
+     */
+    List<DataDevScriptFile> getScriptsByGitProjectIdAndDirId(Long gitProjectId, Long dirId);
+
+    /**
      * 根据project与脚本全路径唯一确定一个脚本
      *
      * @param gitProjectId

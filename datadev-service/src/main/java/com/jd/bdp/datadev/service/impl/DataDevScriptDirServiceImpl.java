@@ -77,6 +77,12 @@ public class DataDevScriptDirServiceImpl implements DataDevScriptDirService {
         return dataDevScriptDirDao.getDataDevScriptDirBy(gitProjectId, path);
     }
 
+
+    @Override
+    public List<DataDevScriptDir> getDataDevScriptDirByPid(Long gitProjectId, Long pId) {
+        return dataDevScriptDirDao.getDirsByGitProjectId(gitProjectId, pId);
+    }
+
     @Override
     public List<ZtreeNode> getAllDataDevScriptDir(Long gitProjectId, boolean isTargetSelect) {
         List<DataDevScriptDir> list = dataDevScriptDirDao.getDirsByProjectId(gitProjectId);
