@@ -145,7 +145,6 @@ public class ScriptApiController {
                 dir.put("fullPath", dataDevScriptDir.getGitProjectDirPath());
                 jsonArray.add(dir);
             }
-            // file去重
             for (DataDevScriptFile dataDevScriptFile : dataDevScriptFiles) {
                 JSONObject file = new JSONObject();
                 file.put("id", dataDevScriptFile.getId());
@@ -188,7 +187,7 @@ public class ScriptApiController {
                 if (scriptFile == null) {
                     throw new RuntimeException("项目id为" + data.getGitProjectId() + "，脚本路径为" + data.getGitProjectFilePath() + (StringUtils.isNotBlank(data.getVersion()) ? ("，版本号为" + data.getVersion()) : "") + "的脚本不存在");
                 }
-                res = scriptFileService.getScriptBytes(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), data.getVersion(), urmUtil.getBdpManager(), true);
+                res = scriptFileService.getScriptBytes(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), data.getVersion(), urmUtil.getBdpManager(), false);
                 fileName = scriptFile.getName();
             }
             response.setStatus(org.apache.http.HttpStatus.SC_OK);
