@@ -207,7 +207,7 @@ public class ScriptApiController {
     @RequestMapping("/diffScript")
     @ResponseBody
     @AuthChecker
-    public void diffScript(Long scriptId, Integer version, Integer diffVersion) throws Exception {
+    public void diffScript(Long scriptId, String version, String diffVersion) throws Exception {
         JSONObject result = new JSONObject();
         try {
         } catch (Exception e) {
@@ -217,6 +217,80 @@ public class ScriptApiController {
             result.put("code", 1);
         }
 
+    }
+
+
+    @RequestMapping("/getScriptContent")
+    @ResponseBody
+    @AuthChecker
+    public JSONObject getScriptContent(Long scriptId, String version) throws Exception {
+        try {
+            // 参数校验
+            if (scriptId == null || scriptId <= 0) {
+                throw new ParamsException("scriptId必填，且必须大于0");
+            }
+            if (StringUtils.isBlank(version)) {
+                throw new ParamsException("version必填");
+            }
+
+            DataDevScriptFile file = scriptFileService.findById(scriptId);
+            if (file == null) {
+                throw new RuntimeException("id为" + scriptId + "的脚本不存在");
+            }
+            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            if (scriptFile == null) {
+                throw new RuntimeException("脚本不存在");
+            }
+            boolean canEdit = DataDevScriptTypeEnum.canEdit(scriptFile.getType());
+            String content = null;
+            if (canEdit) {
+                content = scriptFileService.getScriptContent(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), version, urmUtil.getBdpManager());
+            }
+            JSONObject result = new JSONObject();
+            result.put("content", content);
+            result.put("md5", scriptFile.getFileMd5());
+            String message = canEdit ? "获取脚本内容成功" : "该文件不支持编辑/查看，获取脚本内容失败";
+            return JSONObjectUtil.getSuccessResult(message, result);
+        } catch (Exception e) {
+            logger.error("getScriptContent failed:", e);
+            return JSONObjectUtil.getFailResult(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping("/getScriptDetail")
+    @ResponseBody
+    @AuthChecker
+    public JSONObject getScriptDetail(Long scriptId, String version) throws Exception {
+        try {
+            // 参数校验
+            if (scriptId == null || scriptId <= 0) {
+                throw new ParamsException("scriptId必填，且必须大于0");
+            }
+            if (StringUtils.isBlank(version)) {
+                throw new ParamsException("version必填");
+            }
+
+            DataDevScriptFile file = scriptFileService.findById(scriptId);
+            if (file == null) {
+                throw new RuntimeException("id为" + scriptId + "的脚本不存在");
+            }
+            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            if (scriptFile == null) {
+                throw new RuntimeException("脚本不存在");
+            }
+
+            JSONObject result = new JSONObject();
+            DataDevScriptTypeEnum typeEnum = DataDevScriptTypeEnum.enumValueOf(scriptFile.getType());
+            result.put("size", scriptFile.getSize());
+            result.put("type", typeEnum != null ? typeEnum.toName() : scriptFile.getType());
+            result.put("md5", scriptFile.getFileMd5());
+            result.put("name", scriptFile.getName());
+            return JSONObjectUtil.getSuccessResult(result);
+        } catch (Exception e) {
+            logger.error("getScriptDetail failed:", e);
+            return JSONObjectUtil.getFailResult(e.getMessage());
+        }
     }
 
 
