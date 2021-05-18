@@ -229,9 +229,6 @@ public class ScriptApiController {
             if (scriptId == null || scriptId <= 0) {
                 throw new ParamsException("scriptId必填，且必须大于0");
             }
-            if (StringUtils.isBlank(version)) {
-                throw new ParamsException("version必填");
-            }
 
             DataDevScriptFile file = scriptFileService.findById(scriptId);
             if (file == null) {
@@ -267,14 +264,18 @@ public class ScriptApiController {
             if (scriptId == null || scriptId <= 0) {
                 throw new ParamsException("scriptId必填，且必须大于0");
             }
-            if (StringUtils.isBlank(version)) {
-                throw new ParamsException("version必填");
-            }
 
             DataDevScriptFile file = scriptFileService.findById(scriptId);
             if (file == null) {
                 throw new RuntimeException("id为" + scriptId + "的脚本不存在");
             }
+
+            boolean canEdit = DataDevScriptTypeEnum.canEdit(file.getType());
+            // 文档属于可编辑类型，并且还没有从git/coding上拉取过，则先拉取
+            if (StringUtils.isBlank(file.getVersion()) && canEdit) {
+                scriptFileService.getScriptContent(file.getGitProjectId(), file.getGitProjectFilePath(), version, urmUtil.getBdpManager());
+            }
+
             DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
             if (scriptFile == null) {
                 throw new RuntimeException("脚本不存在");
