@@ -86,7 +86,7 @@ public class ScriptApiController {
             if(StringUtils.isBlank(erp)){
                 throw new ParamsException("Erp，不能为NULL");
             }
-            if(projectType == null && (projectType < 0  || projectType > 3)){
+            if(projectType == null || projectType < 0  || projectType > 3){
                 throw new ParamsException("projectType取值范围[1,2,3]");
             }
 
