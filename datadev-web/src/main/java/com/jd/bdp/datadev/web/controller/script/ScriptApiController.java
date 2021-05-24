@@ -293,6 +293,7 @@ public class ScriptApiController {
             result.put("md5", scriptFile.getFileMd5());
             result.put("name", scriptFile.getName());
             result.put("content", content);
+            result.put("version", scriptFile.getVersion());
             return JSONObjectUtil.getSuccessResult(result);
         } catch (Exception e) {
             logger.error("getScriptDetail failed:", e);
