@@ -270,13 +270,18 @@ public class ScriptApiController {
                 throw new RuntimeException("id为" + scriptId + "的脚本不存在");
             }
 
-            boolean canEdit = DataDevScriptTypeEnum.canEdit(file.getType());
-            // 文档属于可编辑类型，并且还没有从git/coding上拉取过，则先拉取
-            if (StringUtils.isBlank(file.getVersion()) && canEdit) {
-                scriptFileService.getScriptContent(file.getGitProjectId(), file.getGitProjectFilePath(), version, urmUtil.getBdpManager());
+            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            if (scriptFile == null) {
+                throw new RuntimeException("脚本不存在");
+            }
+            boolean canEdit = DataDevScriptTypeEnum.canEdit(scriptFile.getType());
+            String content = null;
+            if (canEdit) {
+                content = scriptFileService.getScriptContent(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), version, urmUtil.getBdpManager());
             }
 
-            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            // 更新后的脚本信息
+            scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
             if (scriptFile == null) {
                 throw new RuntimeException("脚本不存在");
             }
@@ -287,6 +292,7 @@ public class ScriptApiController {
             result.put("type", typeEnum != null ? typeEnum.toName() : scriptFile.getType());
             result.put("md5", scriptFile.getFileMd5());
             result.put("name", scriptFile.getName());
+            result.put("content", content);
             return JSONObjectUtil.getSuccessResult(result);
         } catch (Exception e) {
             logger.error("getScriptDetail failed:", e);
