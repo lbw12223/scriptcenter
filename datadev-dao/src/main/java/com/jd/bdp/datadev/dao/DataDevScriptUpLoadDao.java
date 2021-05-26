@@ -9,7 +9,10 @@ public interface DataDevScriptUpLoadDao {
 
     void insertScriptUpLoad(DataDevScriptUpLoad dataDevScriptUpLoad);
 
-    Long findAllCount(Long gitProjectId);
+    Long findAllCount(@Param("gitProjectId") Long gitProjectId,
+                      @Param("startTime") String startTime,
+                      @Param("endTime") String endTime,
+                      @Param("creator") String creator);
 
     List<DataDevScriptUpLoad> findByPage(@Param("gitProjectId") Long gitProjectId,
                                          @Param("startTime") String startTime,

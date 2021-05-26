@@ -138,7 +138,7 @@
                         #if($!{canRun} == "true")
                             <div id="queueCode" class="queueCode">
                                 <span id="queueName" class="queueName" data-index="-1">不使用集市资源</span>
-                                <span id="queueDropIcon" class=""></span>
+                                <span id="queueDropIcon" class="" style="z-index: 1;"></span>
                             </div>
                             <div class="buttonDiv">
                                 <a href="javascript:void(0)" id="run" class="toolButton pop-title"
@@ -259,7 +259,7 @@
             </div>
             <div class="logOrDataParent"
                  style="position:absolute;left:0px;bottom:0px;height:300px;width:100%;z-index: 4">
-                <div class="debug-sideBar" id="debugSideBar">
+                <div class="debug-sideBar" id="debugSideBar" style="background: #F3F5FA;">
                     <ul class="sideBar-ul ">
                         <li class="sideBar-li color_run unRun-mode ico-disabled" data-command="run"><span
                                 class="sideBar-icon bdp-icon ide-rzyx pop-title" data-title="运行"></span></li>
@@ -410,7 +410,7 @@
 
 
 #*zhangrui156*#
-<div id="queueCodeDropDiv">
+<div id="queueCodeDropDiv" style="z-index: 1">
     <ul class="queueCodeDropUl">
     </ul>
     <div id="queueCodeLi" class="setUpQueueCode"><span class="bdp-icon bdp-icon-ywgl"></span><span>配置账号队列</span></div>

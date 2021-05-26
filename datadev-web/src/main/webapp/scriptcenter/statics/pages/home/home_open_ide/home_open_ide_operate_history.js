@@ -1,5 +1,12 @@
 $(function () {
     var operateHistory = {};
+    var checkTimeFormat = function(time) {
+        var r = time.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+        if(r==null)
+            return false;
+        var d = new Date(r[1], r[3]-1,r[4],r[5],r[6],r[7]);
+        return (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4]&&d.getHours()==r[5]&&d.getMinutes()==r[6]&&d.getSeconds()==r[7]);
+    };
     $('#operateStartTime').datetimepicker({
         autoclose: true,
         language: "zh-CN",
@@ -18,7 +25,37 @@ $(function () {
         todayBtn: true,
         clearBtn: true
     });
+    var validateOperateTimeRange = function() {
+        $("#script-operate-history-validator").text("");
+
+        var startTime = $("#operateStartTime").val();
+        var startTimeIsValid = checkTimeFormat(startTime);
+        if (startTime !== "" && !startTimeIsValid) {
+            $("#script-operate-history-validator").text("起始时间格式错误");
+            console.error("起始时间格式错误");
+            return false;
+        }
+
+        var endTime = $("#operateEndTime").val();
+        var endTimeIsValid = checkTimeFormat(endTime);
+        if (endTime !== "" && !endTimeIsValid) {
+            $("#script-operate-history-validator").text("终止时间格式错误");
+            console.error("终止时间格式错误");
+            return false;
+        }
+
+        if (startTime !== "" && endTime !== "" && endTime < startTime) {
+            $("#script-operate-history-validator").text("起始时间不能晚于终止时间");
+            console.error("起始时间不能晚于终止时间");
+            return false;
+        }
+        return true;
+    };
     $("#gitProjectFilePath,#operateStartTime,#operateEndTime,#scriptOperateMo").on("change", function () {
+        if (!validateOperateTimeRange()) {
+            return;
+        }
+
         jQuery("#operate-grid-table").jqGrid("setGridParam", {
             postData: {
                 gitProjectId: $.trim($("#gitProjectId").val()),
@@ -33,6 +70,11 @@ $(function () {
     //datadev_editor_common._int($("#scriptOperateMo"), false);
     
     $("#operate-history-query").click(function () {
+        console.log("#operate-history-query click");
+        if (!validateOperateTimeRange()) {
+            console.error("保存时间 参数校验失败");
+            return;
+        }
         jQuery("#operate-grid-table").jqGrid('setGridParam',{
             page:1
         }).trigger("reloadGrid");

@@ -12,17 +12,19 @@
     </div>
     <div class="bdp-form-group" style="height: 33px">
         <label class="bdp-control-label script-operate-history-label">保存时间：</label>
+        <div style="float: left; position: relative;">
+            <div class="script-operate-history-time-content">
 
-        <div class="script-operate-history-time-content">
+                <input id="operateStartTime" class="script-operate-history-Time date-picker">
+                <span class="icon-calendar"></span>
+            </div>
+            <label class="bdp-control-label script-run-history-period">--</label>
 
-            <input id="operateStartTime" class="script-operate-history-Time date-picker">
-            <span class="icon-calendar"></span>
-        </div>
-        <label class="bdp-control-label script-run-history-period">--</label>
-
-        <div class="script-operate-history-time-content">
-            <input id="operateEndTime" class="script-operate-history-Time date-picker">
-            <span class="icon-calendar"></span>
+            <div class="script-operate-history-time-content">
+                <input id="operateEndTime" class="script-operate-history-Time date-picker">
+                <span class="icon-calendar"></span>
+            </div>
+            <label id="script-operate-history-validator" class="bdp-help-block"></label>
         </div>
     </div>
 
