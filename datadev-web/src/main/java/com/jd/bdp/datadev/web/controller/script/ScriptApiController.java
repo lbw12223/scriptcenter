@@ -169,6 +169,7 @@ public class ScriptApiController {
                 file.put("type", "file");
                 file.put("name", dataDevScriptFile.getName());
                 file.put("fullPath", dataDevScriptFile.getGitProjectFilePath());
+                file.put("version", dataDevScriptFile.getVersion());
                 jsonArray.add(file);
             }
             return JSONObjectUtil.getSuccessList(jsonArray);

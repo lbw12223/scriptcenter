@@ -189,6 +189,12 @@ public interface DataDevScriptFileDao {
     void fixBugUpdateVersion(@Param("fileId") Long fileId);
 
 
+    /**
+     * 只返回zip/shell/python类型文件
+     * @param gitProjectId
+     * @param dirId
+     * @return
+     */
     List<DataDevScriptFile> getScriptDirFileByProjectIdAndDirId(@Param("gitProjectId") Long gitProjectId, @Param("dirId") Long dirId);
 
 
