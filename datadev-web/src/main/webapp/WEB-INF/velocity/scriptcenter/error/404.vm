@@ -3,12 +3,14 @@
 <div id="" style=" ">
     <div style="border: 0px solid silver;
     text-align: center;
-    width: 100%;
-    height: 100%;
+    margin: 0px auto;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
     background-image: url(/scriptcenter/statics/image/404-02.gif);
     background-repeat: no-repeat;
     background-position: center;
-    background-color: #1C2024;">
+    background-color: white;">
     ##        <img src="/scriptcenter/statics/image/404-02.gif"/>
         <div style="position: absolute;width: 100%;bottom: 30px;">
         ##            <p style="line-height: 30px;color: #666666;font-size: 14px;">抱歉【$!{userHolder.name}($!{userHolder.erp})】你访问的页面不存在，<a

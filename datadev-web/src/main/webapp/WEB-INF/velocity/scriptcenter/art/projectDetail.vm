@@ -15,9 +15,6 @@
         <ul style="" class="datadev-ul tab-header ">
             <li target="project-detail-content"><a href="javascript:;" class="first">项目详情</a></li>
             <li target="user-detail-content"><a href="javascript:;">成员信息</a></li>
-#*
-            <li target="operate-detail-content"><a href="javascript:;">操作记录</a></li>
-*#
         </ul>
     </div>
 #*项目详情*#
@@ -26,7 +23,7 @@
             <table>
                 <thead>
                 <tr>
-                    <td> 属性名</td>
+                    <td>属性名</td>
                     <td>属性信息</td>
                 </tr>
                 </thead>

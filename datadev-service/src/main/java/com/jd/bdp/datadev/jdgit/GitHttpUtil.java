@@ -42,6 +42,7 @@ public class GitHttpUtil {
     private static Logger log = Logger.getLogger(GitHttpUtil.class);
 
     public static final Long _9YI = 900000000L;
+    public static final Long _10YI = 1000000000L;
 
     private static final String encoding = "UTF-8";
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHH:mm:ss");

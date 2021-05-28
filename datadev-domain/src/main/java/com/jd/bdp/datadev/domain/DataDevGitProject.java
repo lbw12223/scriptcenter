@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class DataDevGitProject {
 
+    private Long id ;
     private Long gitProjectId;
     private String gitProjectPath;
     private String gitProjectName;
@@ -25,6 +26,10 @@ public class DataDevGitProject {
     private List<DataDevGitProjectSharedGroup> sharedGitProjectGroup;
 
     private Long groupId ;
+
+    private String description ;
+
+    private Integer projectType ;
 
     public Long getGitProjectId() {
         return gitProjectId;
@@ -144,5 +149,29 @@ public class DataDevGitProject {
                 ", refreshTime=" + refreshTime +
                 ", sharedGitProjectGroup=" + sharedGitProjectGroup +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(Integer projectType) {
+        this.projectType = projectType;
     }
 }

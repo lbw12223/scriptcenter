@@ -6,7 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.common.utils.AjaxUtil;
 import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.component.*;
+import com.jd.bdp.datadev.dao.DataDevGitProjectDao;
 import com.jd.bdp.datadev.domain.*;
+import com.jd.bdp.datadev.enums.DataDevGitAccessLevelEnum;
+import com.jd.bdp.datadev.enums.DataDevGitInitFlag;
 import com.jd.bdp.datadev.enums.DataDevGitOrCodingEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptGitStatusEnum;
 import com.jd.bdp.datadev.jdgit.*;
@@ -78,6 +81,9 @@ public class ScriptProjectController {
     private DataDevScriptFileService dataDevScriptFileService;
 
     @Autowired
+    private DataDevGitProjectDao dataDevGitProjectDao ;
+
+    @Autowired
     private UrmUtil urmUtil;
     @Autowired
     private AppGroupUtil appGroupUtil;
@@ -85,10 +91,8 @@ public class ScriptProjectController {
     private String SysOwner;
     @Value("${coding.private.user}")
     private String SysOwnerCoding;
-    public int f() {
-        if (true) throw new RuntimeException("sdf");
-        return 1;
-    }
+
+
 
 
 
@@ -128,6 +132,39 @@ public class ScriptProjectController {
         initSingleGitProject.initSingleGitProject(dataDevGitProject);
         return JSONObjectUtil.getSuccessResult("创建成功", dataDevGitProject);
     }
+
+    @ExceptionMessageAnnotation(errorMessage = "创建本地 Project")
+    @RequestMapping("/createLocalProject.ajax")
+    @ResponseBody
+    public JSONObject createLocalProject(UrmUserHolder userHolder, String projectName, String description) throws Exception {
+        DataDevGitProject dataDevGitProject =  dataDevGitProjectDao.getLocalProjectByPath(projectName);
+
+        if(dataDevGitProject != null){
+            throw new RuntimeException("项目【"+projectName+"】已经存在！");
+        }
+        DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
+        insertDataDevGitProject.setGitProjectPath(projectName);
+        insertDataDevGitProject.setGitProjectName(projectName);
+        insertDataDevGitProject.setDescription(description);
+        insertDataDevGitProject.setFinishProjectMemberFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
+        insertDataDevGitProject.setFinishProjectTreeFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
+        dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
+        insertDataDevGitProject.setGitProjectId(insertDataDevGitProject.getId() + GitHttpUtil._10YI);
+        dataDevGitProjectDao.updateDataDevGitProjectById(insertDataDevGitProject);
+
+        List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
+        DataDevGitProjectMember currentUser = new DataDevGitProjectMember();
+        dataDevGitProjectMemberList.add(currentUser);
+        currentUser.setAccessLevel(DataDevGitAccessLevelEnum.Owner.toCode());
+        currentUser.setGitProjectId(insertDataDevGitProject.getGitProjectId());
+        currentUser.setGitMemberName(userHolder.getErp());
+        currentUser.setGitMemberUserName(userHolder.getErp());
+
+        dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
+        return JSONObjectUtil.getSuccessResult("创建成功", insertDataDevGitProject);
+    }
+
+
 
     /**
      * 添加项目成员
@@ -361,6 +398,11 @@ public class ScriptProjectController {
     public String newGitProject(UrmUserHolder userHolder) throws Exception {
         return "scriptcenter/home/project/newGitProject";
     }
+    @RequestMapping("/newLocalProject.html")
+    public String newLocalProject(UrmUserHolder userHolder) throws Exception {
+        return "scriptcenter/home/project/newLocalProject";
+    }
+
 
     @RequestMapping("/newGitProjectGroup.html")
     public String newGitProjectGroup(UrmUserHolder userHolder) throws Exception {

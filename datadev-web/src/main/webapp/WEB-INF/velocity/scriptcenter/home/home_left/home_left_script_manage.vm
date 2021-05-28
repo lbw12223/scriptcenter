@@ -206,9 +206,9 @@
     <div id="gitMenuDiv" class="rightMenu">
         <ul>
             <li class="gitProjectDetail"><span class="name">项目详情</span></li>
-            <li class="toGit"><span class="name" id="gitOrCoding">跳转至git</span></li>
+            <li class="toGit codingOrGitShow"><span class="name" id="gitOrCoding">跳转至git</span></li>
             <li class="uploadFileHistory"><span class="name">文件上传历史</span></li>
-            <li class="script_git" id="gitMenuScriptGit">
+            <li class="script_git" id="gitMenuScriptGit codingOrGitShow">
                 <span class="name" id="gitOrCodingSelect">Git</span>
                 <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
             </li>
