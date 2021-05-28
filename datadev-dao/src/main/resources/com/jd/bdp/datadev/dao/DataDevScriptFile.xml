@@ -316,6 +316,7 @@
         <include refid="script_file_columns"></include>
         FROM script_file
         WHERE git_project_id = #{gitProjectId}
+        AND `type` IN (2,3,4)
         <choose>
             <when test="dirId !=null and dirId >= 0 ">
                 AND dir_id = #{dirId}

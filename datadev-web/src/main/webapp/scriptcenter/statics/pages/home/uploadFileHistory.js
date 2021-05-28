@@ -27,7 +27,7 @@ $(function() {
                 label: "文件个数",
                 sortable: false,
                 formatter: function (cellvalue, options, record) {
-                    return "<a href='javascript:openFileDetail(" + record.id + ")' target='_blank'>" + cellvalue + "</a>"
+                    return "<a href='javascript:openFileDetail(" + record.id + ")'>" + cellvalue + "</a>"
                 },
             },
         ];
@@ -138,8 +138,8 @@ function openFileDetail(id) {
     $.dialog.open("/scriptcenter/project/fileDetail.html?scriptUpLoadId="+ id,{
         title: "上传文件详情",
         lock: true,
-        width: "900",
-        height: "600",
+        width: "900px",
+        height: "600px",
         opacity: 0.5,
         esc: false,
         close: function () {

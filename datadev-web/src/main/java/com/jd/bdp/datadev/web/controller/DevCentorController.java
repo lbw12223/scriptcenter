@@ -193,7 +193,7 @@ public class DevCentorController {
     }
     @RequestMapping({"table_query.html"})
     public String tableQuery(Model model,UrmUserHolder urmUserHolder) throws Exception {
-        return "scriptcenter/devcenter/left/scripts/table_query";
+        return "scriptcenter/devcenter/left/scripts/table_query_all_table";
     }
     @RequestMapping({"function_manage.html"})
     public String functionManage(Model model,UrmUserHolder urmUserHolder) throws Exception {

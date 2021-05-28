@@ -9,9 +9,7 @@ import com.jd.bdp.datadev.component.ImportScriptManager;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.component.UrmUtil;
 import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
-import com.jd.bdp.datadev.dao.DataDevScriptFileHisDao;
 import com.jd.bdp.datadev.domain.*;
-import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
 import com.jd.bdp.datadev.jdgit.*;
 import com.jd.bdp.datadev.model.Script;
@@ -21,8 +19,8 @@ import com.jd.bdp.datadev.service.DataDevScriptDirService;
 import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.datadev.web.exception.ParamsException;
 import com.jd.bdp.datadev.web.exception.ScriptException;
-import com.jd.bdp.domain.authorityCenter.MarketInfoDto;
 import com.jd.bdp.urm.sso.UrmUserHolder;
+import com.jd.common.security.DesEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -65,6 +64,10 @@ public class ScriptApiController {
     @Autowired
     private DataDevScriptFileService dataDevScriptFileService;
 
+    private String appId = "bdp.jd.com";
+    private String encryptKey = "!@#$QWER";
+//    private String appIdToken = DesEncrypter.cryptString(appId, "!@#$QWER");
+
     /**
      * 根据ProjectType获取coding，本地，git项目
      * <p>
@@ -79,10 +82,18 @@ public class ScriptApiController {
      */
     @RequestMapping("/getProjectByErp")
     @ResponseBody
-    @AuthChecker
-    public JSONObject getProjectByErp(String erp, Integer projectType, String keyword) throws Exception {
+    public JSONObject getProjectByErp(String appId, String token, Long time,
+                                      @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
         JSONArray jsonArray = new JSONArray();
         try {
+            if (!appTokenIsValidate(appId, token)) {
+                return JSONObjectUtil.getFailResult("appId/token错误");
+            }
+
+            JSONObject jsonObject = JSONObject.parseObject(data);
+            String erp = jsonObject.getString("erp");
+            Integer projectType = jsonObject.getInteger("projectType");
+            String keyword = jsonObject.getString("keyword");
             if(StringUtils.isBlank(erp)){
                 throw new ParamsException("Erp，不能为NULL");
             }
@@ -118,9 +129,16 @@ public class ScriptApiController {
      */
     @RequestMapping("/getProjectTree")
     @ResponseBody
-    @AuthChecker
-    public JSONObject getProjectTree(Long projectId, Long dirId) throws Exception {
-        JSONObject result = new JSONObject();
+    public JSONObject getProjectTree(String appId, String token, Long time,
+                                     @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
+        if (!appTokenIsValidate(appId, token)) {
+            return JSONObjectUtil.getFailResult("appId/token错误");
+        }
+
+        JSONObject jsonObject = JSONObject.parseObject(data);
+        Long projectId = jsonObject.getLong("projectId");
+        Long dirId = jsonObject.getLong("dirId");
+
         logger.info(String.format("projectId=%s, dirId=%s", projectId, dirId));
         try {
             // 参数校验
@@ -151,6 +169,7 @@ public class ScriptApiController {
                 file.put("type", "file");
                 file.put("name", dataDevScriptFile.getName());
                 file.put("fullPath", dataDevScriptFile.getGitProjectFilePath());
+                file.put("version", dataDevScriptFile.getVersion());
                 jsonArray.add(file);
             }
             return JSONObjectUtil.getSuccessList(jsonArray);
@@ -162,32 +181,39 @@ public class ScriptApiController {
 
     @RequestMapping("/loadScript")
     @ResponseBody
-    @AuthChecker
-    public void loadScript(HttpServletResponse response, Long scriptId, String version) throws Exception {
+    public JSONObject loadScript(String appId, String token, Long time,
+                           @RequestParam(value = "data", defaultValue = "{}")String data, HttpServletResponse response) throws Exception {
         try {
+            if (!appTokenIsValidate(appId, token)) {
+                return JSONObjectUtil.getFailResult("appId/token错误");
+            }
+
+            JSONObject jsonObject = JSONObject.parseObject(data);
+            Long scriptId = jsonObject.getLong("scriptId");
+            String version = jsonObject.getString("version");
             // 参数校验
             if (scriptId == null || scriptId <= 0) {
                 throw new ParamsException("scriptId必填，且必须大于0");
             }
 
-            DataDevScriptFile data = scriptFileService.findById(scriptId);
-            if (data == null) {
+            DataDevScriptFile findById = scriptFileService.findById(scriptId);
+            if (findById == null) {
                 throw new RuntimeException("id为" + scriptId + "的脚本不存在");
             }
             if (StringUtils.isBlank(version)) {
-                version = data.getVersion();
+                version = findById.getVersion();
             }
 
             byte[] res = null;
             //正常单文件下载
             String fileName = null;
-            if (StringUtils.isNotBlank(data.getGitProjectFilePath())) {
-                String path = URLDecoder.decode(data.getGitProjectFilePath(), "utf-8");
-                DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(data.getGitProjectId(), path, version);
+            if (StringUtils.isNotBlank(findById.getGitProjectFilePath())) {
+                String path = URLDecoder.decode(findById.getGitProjectFilePath(), "utf-8");
+                DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(findById.getGitProjectId(), path, version);
                 if (scriptFile == null) {
-                    throw new RuntimeException("项目id为" + data.getGitProjectId() + "，脚本路径为" + data.getGitProjectFilePath() + (StringUtils.isNotBlank(data.getVersion()) ? ("，版本号为" + data.getVersion()) : "") + "的脚本不存在");
+                    throw new RuntimeException("项目id为" + findById.getGitProjectId() + "，脚本路径为" + findById.getGitProjectFilePath() + (StringUtils.isNotBlank(findById.getVersion()) ? ("，版本号为" + findById.getVersion()) : "") + "的脚本不存在");
                 }
-                res = scriptFileService.getScriptBytes(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), data.getVersion(), urmUtil.getBdpManager(), false);
+                res = scriptFileService.getScriptBytes(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), findById.getVersion(), urmUtil.getBdpManager(), false);
                 fileName = scriptFile.getName();
             }
             response.setStatus(org.apache.http.HttpStatus.SC_OK);
@@ -201,12 +227,12 @@ public class ScriptApiController {
         } catch (Exception e) {
             logger.error("loadScript failed:", e);
         }
+        return null;
     }
 
 
     @RequestMapping("/diffScript")
     @ResponseBody
-    @AuthChecker
     public void diffScript(Long scriptId, String version, String diffVersion) throws Exception {
         JSONObject result = new JSONObject();
         try {
@@ -222,9 +248,16 @@ public class ScriptApiController {
 
     @RequestMapping("/getScriptContent")
     @ResponseBody
-    @AuthChecker
-    public JSONObject getScriptContent(Long scriptId, String version) throws Exception {
+    public JSONObject getScriptContent(String appId, String token, Long time,
+                                       @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
         try {
+            if (!appTokenIsValidate(appId, token)) {
+                return JSONObjectUtil.getFailResult("appId/token错误");
+            }
+
+            JSONObject jsonObject = JSONObject.parseObject(data);
+            Long scriptId = jsonObject.getLong("scriptId");
+            String version = jsonObject.getString("version");
             // 参数校验
             if (scriptId == null || scriptId <= 0) {
                 throw new ParamsException("scriptId必填，且必须大于0");
@@ -257,9 +290,16 @@ public class ScriptApiController {
 
     @RequestMapping("/getScriptDetail")
     @ResponseBody
-    @AuthChecker
-    public JSONObject getScriptDetail(Long scriptId, String version) throws Exception {
+    public JSONObject getScriptDetail(String appId, String token, Long time,
+                                      @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
         try {
+            if (!appTokenIsValidate(appId, token)) {
+                return JSONObjectUtil.getFailResult("appId/token错误");
+            }
+
+            JSONObject jsonObject = JSONObject.parseObject(data);
+            Long scriptId = jsonObject.getLong("scriptId");
+            String version = jsonObject.getString("version");
             // 参数校验
             if (scriptId == null || scriptId <= 0) {
                 throw new ParamsException("scriptId必填，且必须大于0");
@@ -270,13 +310,18 @@ public class ScriptApiController {
                 throw new RuntimeException("id为" + scriptId + "的脚本不存在");
             }
 
-            boolean canEdit = DataDevScriptTypeEnum.canEdit(file.getType());
-            // 文档属于可编辑类型，并且还没有从git/coding上拉取过，则先拉取
-            if (StringUtils.isBlank(file.getVersion()) && canEdit) {
-                scriptFileService.getScriptContent(file.getGitProjectId(), file.getGitProjectFilePath(), version, urmUtil.getBdpManager());
+            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            if (scriptFile == null) {
+                throw new RuntimeException("脚本不存在");
+            }
+            boolean canEdit = DataDevScriptTypeEnum.canEdit(scriptFile.getType());
+            String content = null;
+            if (canEdit) {
+                content = scriptFileService.getScriptContent(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), version, urmUtil.getBdpManager());
             }
 
-            DataDevScriptFile scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+            // 更新后的脚本信息
+            scriptFile = scriptFileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
             if (scriptFile == null) {
                 throw new RuntimeException("脚本不存在");
             }
@@ -287,6 +332,8 @@ public class ScriptApiController {
             result.put("type", typeEnum != null ? typeEnum.toName() : scriptFile.getType());
             result.put("md5", scriptFile.getFileMd5());
             result.put("name", scriptFile.getName());
+            result.put("content", content);
+            result.put("version", scriptFile.getVersion());
             return JSONObjectUtil.getSuccessResult(result);
         } catch (Exception e) {
             logger.error("getScriptDetail failed:", e);
@@ -635,6 +682,19 @@ public class ScriptApiController {
         }
 
 
+    }
+
+    private boolean appTokenIsValidate(String appId, String appIdToken) {
+        if (appId == null || appIdToken == null) {
+            return false;
+        }
+        try {
+            String trueToken = DesEncrypter.cryptString(appId, "!@#$QWER");
+            return trueToken.equals(appIdToken);
+        } catch (Exception e) {
+            logger.error("检验失败");
+            return false;
+        }
     }
 
 }

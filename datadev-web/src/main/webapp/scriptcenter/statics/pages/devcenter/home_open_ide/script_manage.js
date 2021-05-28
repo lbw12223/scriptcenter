@@ -331,8 +331,8 @@ function pack2Zip(gitProjectId, gitProjectFilePath) {
     var packZipArt = $.dialog.open(url, {
         title: "打包zip文件",
         lock: true,
-        width: "700",
-        height: "520",
+        width: "700px",
+        height: "520px",
         opacity: 0.5,
         esc: false,
         close: function () {

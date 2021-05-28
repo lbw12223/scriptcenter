@@ -143,7 +143,48 @@ $(function () {
         todayBtn: true,
         clearBtn: true
     });
+    var checkTimeFormat = function(time) {
+        var r = time.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+        if(r==null)
+            return false;
+        var d = new Date(r[1], r[3]-1,r[4],r[5],r[6],r[7]);
+        return (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4]&&d.getHours()==r[5]&&d.getMinutes()==r[6]&&d.getSeconds()==r[7]);
+    };
+    var validateOperateTimeRange = function(elem, fromElem, toElem) {
+        // $("#script-operate-history-validator").text("");
+        elem.text("");
+
+        var startTime = fromElem.val();
+        var startTimeIsValid = checkTimeFormat(startTime);
+        if (startTime !== "" && !startTimeIsValid) {
+            elem.text("起始时间格式错误");
+            console.error("起始时间格式错误");
+            return false;
+        }
+
+        var endTime = toElem.val();
+        var endTimeIsValid = checkTimeFormat(endTime);
+        if (endTime !== "" && !endTimeIsValid) {
+            elem.text("终止时间格式错误");
+            console.error("终止时间格式错误");
+            return false;
+        }
+
+        if (startTime !== "" && endTime !== "" && endTime < startTime) {
+            elem.text("起始时间不能晚于终止时间");
+            console.error("起始时间不能晚于终止时间");
+            return false;
+        }
+        return true;
+    };
     $("#gitProjectFilePath,#runStartTimeFrom,#runStartTimeTo,#runEndTimeFrom,#runEndTimeTo,input.script-run-history-checkbox").on("change", function () {
+        // 检验开始时间和结束时间
+        var startValidate = validateOperateTimeRange($("#script-run-history-start-validator"), $("#runStartTimeFrom"), $("#runStartTimeTo"));
+        var endValidate = validateOperateTimeRange($("#script-run-history-end-validator"), $("#runEndTimeFrom"), $("#runEndTimeTo"));
+        if (!startValidate || !endValidate) {
+            return;
+        }
+
         var status = "";
         $("input.script-run-history-checkbox:checked").each(function (index, element) {
             status += "," + $(element).val();
@@ -162,6 +203,13 @@ $(function () {
     })
 
     $("#run-history-query").click(function () {
+        // 检验开始时间和结束时间
+        var startValidate = validateOperateTimeRange($("#script-run-history-start-validator"), $("#runStartTimeFrom"), $("#runStartTimeTo"));
+        var endValidate = validateOperateTimeRange($("#script-run-history-end-validator"), $("#runEndTimeFrom"), $("#runEndTimeTo"));
+        if (!startValidate || !endValidate) {
+            return;
+        }
+
         jQuery("#run-grid-table").jqGrid('setGridParam', {
             page: 1
         }).trigger("reloadGrid");

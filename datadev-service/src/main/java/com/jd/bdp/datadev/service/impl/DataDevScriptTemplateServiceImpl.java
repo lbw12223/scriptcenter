@@ -262,7 +262,7 @@ public class DataDevScriptTemplateServiceImpl implements DataDevScriptTemplateSe
             if (StringUtils.isNotBlank(shareErps)) {
                 String[] erpArray = shareErps.split(",");
                 for (String erp : erpArray) {
-                    if (StringUtils.isNotBlank(erp)) {
+                    if (StringUtils.isNotBlank(erp) && !erp.equals(operator)) {
                         templateShares.add(new DataDevScriptTemplateShare(template.getId(), 1L, erp, operator));
                     }
                 }

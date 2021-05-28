@@ -857,7 +857,7 @@ public class ScriptOperateController {
         if (list.size() == 0 || list.size() == 1 && list.get(0).getDependencyGitProjectFilePath().equals(gitProjectFilePath)) {
             //说明没有选择其他依赖，这个时候取消依赖
             devDependencyService.deleteDependency(gitProjectId, gitProjectFilePath);
-            return JSONObjectUtil.getSuccessResult("取消依赖成功", false);
+            return JSONObjectUtil.getSuccessResult("设置依赖成功", false);
         } else {
             try {
                 List<DataDevDependencyDetail> newList = devDependencyService.getNewVersionDetails(list, gitProjectId, gitProjectFilePath);
@@ -867,7 +867,7 @@ public class ScriptOperateController {
                     updateParam.setDependencyId(holdDoubleValue.b.getId());
                     fileService.updateDataDevScriptFile(gitProjectId, gitProjectFilePath, updateParam);
                 }
-                return JSONObjectUtil.getSuccessResult("保存依赖成功", true);
+                return JSONObjectUtil.getSuccessResult("设置依赖成功", true);
             } catch (DependencyDetailNotFoundException e) {
                 return JSONObjectUtil.getFailResult(e.getMessage(), null);
             }

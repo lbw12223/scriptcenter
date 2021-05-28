@@ -11,28 +11,34 @@
             <a class="bdp-btn bdp-btn-primary" id="run-history-query">查询</a>
         </div>
     </div>
-    <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">
+    <div class="bdp-form-group" style="height: 32px;margin-bottom: 22px">
         <label class="bdp-control-label script-run-history-label">开始时间：</label>
-        <div class="script-run-history-time-content">
-            <input id="runStartTimeFrom" class="script-run-history-Time date-picker start-time">
-            <span class="icon-calendar"></span>
-        </div>
-        <label class="bdp-control-label script-run-history-period">--</label>
-        <div class="script-run-history-time-content">
-            <input id="runStartTimeTo" class="script-run-history-Time date-picker end-time">
-            <span class="icon-calendar"></span>
+        <div style="float: left; position: relative;">
+            <div class="script-run-history-time-content">
+                <input id="runStartTimeFrom" class="script-run-history-Time date-picker start-time">
+                <span class="icon-calendar"></span>
+            </div>
+            <label class="bdp-control-label script-run-history-period">--</label>
+            <div class="script-run-history-time-content">
+                <input id="runStartTimeTo" class="script-run-history-Time date-picker end-time">
+                <span class="icon-calendar"></span>
+            </div>
+            <label id="script-run-history-start-validator" class="bdp-help-block"></label>
         </div>
     </div>
-    <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">
+    <div class="bdp-form-group" style="height: 32px;margin-bottom: 22px">
         <label class="bdp-control-label script-run-history-label">结束时间：</label>
-        <div class="script-run-history-time-content">
-            <input id="runEndTimeFrom" class="script-run-history-Time date-picker start-time">
-            <span class="icon-calendar"></span>
-        </div>
-        <label class="bdp-control-label script-run-history-period">--</label>
-        <div class="script-run-history-time-content">
-            <input id="runEndTimeTo" class="script-run-history-Time date-picker end-time">
-            <span class="icon-calendar"></span>
+        <div style="float: left; position: relative;">
+            <div class="script-run-history-time-content">
+                <input id="runEndTimeFrom" class="script-run-history-Time date-picker start-time">
+                <span class="icon-calendar"></span>
+            </div>
+            <label class="bdp-control-label script-run-history-period">--</label>
+            <div class="script-run-history-time-content">
+                <input id="runEndTimeTo" class="script-run-history-Time date-picker end-time">
+                <span class="icon-calendar"></span>
+            </div>
+            <label id="script-run-history-end-validator" class="bdp-help-block"></label>
         </div>
     </div>
 

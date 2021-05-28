@@ -33,7 +33,7 @@ public class DataDevScriptUploadServiceImpl implements DataDevScriptUploadServic
         Long gitProjectId = dataDevScriptUpLoad.getGitProjectId();
         String creator = dataDevScriptUpLoad.getCreator();
 
-        Long total = dataDevScriptUpLoadDao.findAllCount(gitProjectId);
+        Long total = dataDevScriptUpLoadDao.findAllCount(gitProjectId, startTime, endTime, creator);
         if(StringUtils.isBlank(startTime)){
             startTime=null;
         }
