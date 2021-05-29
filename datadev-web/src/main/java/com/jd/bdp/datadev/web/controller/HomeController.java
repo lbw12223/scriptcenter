@@ -155,7 +155,7 @@ public class HomeController {
         model.addAttribute("cg", cg);
 
         Integer openScriptType = DataDevOpenScriptTypeEnum.Normal.toCode();
-        if (gitProjectId <= 0l) {
+        if (gitProjectId <= 0L) {
             DataDevScriptFilePublish publish = publishService.findByBuffaloScriptId(scriptId);
             if (publish != null) {
                 gitProjectId = publish.getGitProjectId();

@@ -265,7 +265,8 @@ $(function () {
             changeAllDb();
             commonAjaxEvents.commonPostAjax("/scriptcenter/buffalo/getAllMarket.ajax", {}, null, function (node, data) {
                 var obj = data.obj;
-                var options = "";//"<option value=''>请选择所在集市</option>";
+                // 2021.05.29修改集市为非必填项
+                var options = "<option value=''>请选择所在集市</option>";
                 if (obj && obj.length > 0) {
                     for (var index = 0; index < obj.length; index++) {
                         options += "<option value='" + obj[index].marketId + "' data-cluster='" + obj[index].clusterCode + "' data-linuxuser='" + obj[index].linuxUser + "' data-ugdap='" + obj[index].isUgdap + "'>" + obj[index].marketName + "</option>";
@@ -479,7 +480,7 @@ $(function () {
 
     function initMyTableEvent() {
         $("#tableQueryApply").click(function () {
-            window.open(_bdpDomain+"/planning/project/detail/"+top.window.projectSpaceId);
+            window.open(_bdpDomain + "/planning/project/detail/" + top.window.projectSpaceId);
         })
         $("#toThink").click(function () {
 
@@ -492,7 +493,7 @@ $(function () {
             var tbName = $("#queryTableSelect").val();
 
             if ($.trim(clusterCode).length < 1 || $.trim(marketCode).length < 1 || $.trim(dbName).length < 1 || $.trim(tbName).length < 1) {
-                return ;
+                return;
             }
             var href = "http://bdp.jd.com/dataassets/table/detail.html?cluster=" + clusterCode + "&linuxUser=" + marketCode + "&dbName=" + dbName + "&tbName=" + tbName;
             window.open(href);
@@ -715,7 +716,7 @@ $(function () {
                 marketName: marketName
             };
             var currentArt = $.dialog.open("/scriptcenter/devcenter/table_query_data_preview.html", {
-                title: "数据预览——"+marketName+"-"+dbName,
+                title: "数据预览——" + marketName + "-" + dbName,
                 lock: true,
                 width: "800px",
                 height: "300px",

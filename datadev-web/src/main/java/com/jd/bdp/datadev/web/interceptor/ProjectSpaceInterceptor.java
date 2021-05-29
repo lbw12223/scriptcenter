@@ -42,12 +42,14 @@ public class ProjectSpaceInterceptor implements HandlerInterceptor {
             String defaultProjectSpaceName = "项目空间";
 
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(COOKIE_KEY)) {
-                    String value = cookie.getValue();
-                    log.error("====ProjectSpaceInterceptor=cookie=value===== {} " , value);
-                    defaultProjectSpaceId = Long.parseLong(value);
-                    break;
+            if(cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(COOKIE_KEY)) {
+                        String value = cookie.getValue();
+                        log.error("====ProjectSpaceInterceptor=cookie=value===== {} ", value);
+                        defaultProjectSpaceId = Long.parseLong(value);
+                        break;
+                    }
                 }
             }
 

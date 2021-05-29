@@ -200,13 +200,14 @@ var uploadRequest = undefined;
         switch (modeCode) {
             case SAVE_MODE:
             case SAVE_AS_MODE:
+                var el = jq("#code").data("editor");
                 ajaxData = {
                     gitProjectId: gitProjectId,
                     gitProjectDirPath: newDir,
                     gitProjectFilePath: scriptPath,
                     name: name,
                     description: $(".file-text", $("#saveModal")).val() || "",
-                    content: jq("#code").data("editor").getValue() || "",
+                    content: el && el.getValue() ? el.getValue : "",
                     type: type
                 };
                 break;
@@ -601,7 +602,7 @@ var uploadRequest = undefined;
     }
     $(function () {
 
-        
+
         modeCode = ($.dialog.data("modeCode"));
         info = ($.dialog.data("info"));
         zTree = ($.dialog.data("zTree"));
@@ -789,13 +790,14 @@ var uploadRequest = undefined;
 
 })(jQuery)
 
-function clearData(){
+function clearData() {
 
-   ($.dialog.removeData("modeCode"));
-   ($.dialog.removeData("info"));
-   ($.dialog.removeData("zTree"));
-   ($.dialog.removeData("callbackfun"));
+    ($.dialog.removeData("modeCode"));
+    ($.dialog.removeData("info"));
+    ($.dialog.removeData("zTree"));
+    ($.dialog.removeData("callbackfun"));
 }
+
 function getKey(gitProjectId, path) {
     path = path || $("#gitProjectFilePath").val();
     gitProjectId = gitProjectId || $("#gitProjectId").val();
@@ -808,6 +810,7 @@ function getKey(gitProjectId, path) {
     }
     return path;
 }
+
 function getKey(gitProjectId, path) {
     gitProjectId = (gitProjectId + "").trim();
     path = path && path.trim() || "";
@@ -833,6 +836,7 @@ function getParam(gitProjectId, path, name, pythonType, isTmp) {
     }
     return params;
 }
+
 function getUrl(gitProjectId, path, pythonType) {
     var encodepath = encodeURIComponent(encodeURIComponent(path.trim()));
     var url = "/scriptcenter/home/home_open_ide.html?gitProjectFilePath=" + encodepath + "&gitProjectId=" + gitProjectId;

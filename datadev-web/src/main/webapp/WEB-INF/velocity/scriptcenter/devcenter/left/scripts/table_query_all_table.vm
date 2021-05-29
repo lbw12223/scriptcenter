@@ -1,38 +1,50 @@
 #set($layout="layout_blank_dev_center.vm")
 
-<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/table_query.css?_dc=$!{staticVersion}" type="text/css">
-<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/table_query.css?_dc=$!{staticVersion}"
+      type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}"
+      type="text/css">
 <link rel="stylesheet" href="/scriptcenter/statics/pagination/pagination.css?_dc=$!{staticVersion}" type="text/css">
 <link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
-
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/tableManage/css/table_query_all_table.css?_dc=$!{staticVersion}"
+      type="text/css">
 <div class="table-query-tab left_manage" id="tableQueryTab" style="position: relative;">
-##    <div class="content icon-content" id="tableQueryTool">
-####        <span class="icon create-table ide-left-drsj pop-title" data-title="创建表"></span>
-##        <span class="icon load-data bdp-icon-tjzfblb pop-title" data-title="导入数据"></span>
-##    </div>
+    ##    <div class="content icon-content" id="tableQueryTool">
+    ####        <span class="icon create-table ide-left-drsj pop-title" data-title="创建表"></span>
+    ##        <span class="icon load-data bdp-icon-tjzfblb pop-title" data-title="导入数据"></span>
+    ##    </div>
 
-    <div id="tableQueryOuterContent">
+    <div id="tableueryOuterContent">
 
         <div id="AllTablesContent" style="top: 10px;" class="table-query-content">
-            <div class="all-table-search-content">
-                <input id="tableSearchInput" placeholder="请输入表名、描述" autocomplete="off">
-                <span class="bzzx-ss bdp-icon all-table-query-icon" id="allTableQueryBtn"></span>
+            <div class="table-manage-search-base">
+                <div class="all-table-search-content">
+                    <input id="tableSearchInput" placeholder="请输入表名、描述" autocomplete="off">
+                    <span class="bzzx-ss bdp-icon all-table-query-icon" id="allTableQueryBtn"></span>
+                </div>
+                <span class="all-table-search-base-content-button"
+                        id="allTableSearchBaseContentButton">
+                    高级搜索
+                </span>
             </div>
-            <div class="all-table-search-content">
-                <select class="all-table-market-select all-table-select" id="allTableMarketSelect">
+            <div class="table-manage-search-advanced none" id="tableManageSearchAdvanced">
+                <div class="all-table-search-content">
+                    <select class="all-table-market-select all-table-select" id="allTableMarketSelect">
 
-                </select>
+                    </select>
+                </div>
+                <div class="all-table-search-content">
+                    <select class="all-table-db-select all-table-select" id="allTableDbSelect">
+                        <option></option>
+                    </select>
+                </div>
             </div>
-            <div class="all-table-search-content">
-                <select class="all-table-db-select all-table-select" id="allTableDbSelect">
-                    <option></option>
-                </select>
-            </div>
-            <div class="all-table-content">
+            <div>
                 <div class="all-table-num-content">请输入关键字进行搜索
                 </div>
                 <div class="all-table-detail-content" id="allTableDetailContent">
-                    <div id="searchAllTabOrColSpinner" style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
+                    <div id="searchAllTabOrColSpinner"
+                         style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
                     </div>
                     <div id="allTableContainer" class="all-table-container">
                     </div>
@@ -40,10 +52,14 @@
                     </div>
                     <div class="draggable-columns-content" id="draggableColumnsContent">
                         <div class="draggable-header">
-                            <div class="header-table-name pop-title" id="draggableNameHeader" data-title=""><span></span></div>
+                            <div class="header-table-name pop-title" id="draggableNameHeader" data-title="">
+                                <span></span></div>
                             <div class="header-close"><span>×</span></div>
                         </div>
-                        <div class="columns_search_input"><input id="columnsSearchInput" placeholder="请输入列名、描述" autocomplete="off"> <span id="columnsSearchButton" class="bdp-icon bzzx-ss"></span></div>
+                        <div class="columns_search_input"><input id="columnsSearchInput" placeholder="请输入列名、描述"
+                                                                 autocomplete="off"> <span id="columnsSearchButton"
+                                                                                           class="bdp-icon bzzx-ss"></span>
+                        </div>
                         <div class="draggable-content">
                             <div class="jd-table-parent all-grid-table-parent" id="allGridColumnParent"
                                  style="height:100%;width: 100%;float: left;">
@@ -122,16 +138,15 @@
 <script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
-
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
-
 <script src="/scriptcenter/statics/pages/home/resize.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/table_query.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/home/home_left/createSql.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pagination/pagination.min.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/spin/spin.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/tableManage/js/table_query_all_table.js?_dc=$!{staticVersion}"></script>
 <script>
     var QIAN_KUN = undefined;
 
@@ -139,23 +154,23 @@
         mount: function (msg) {
             QIAN_KUN = msg;
             console.log(msg)
-            setTimeout(function (){
+            setTimeout(function () {
                 msg.utils.broadcast("helloworld", "hello")
             }, 2000)
         }
     }
 
     var frameBus = new FrameBus();
-    frameBus.on("tab:change", function(data) {
+    frameBus.on("tab:change", function (data) {
         console.log("tagchange", data)
     })
-    frameBus.on("helloworld", function(data){
-        console.log("helloworld",data)
+    frameBus.on("helloworld", function (data) {
+        console.log("helloworld", data)
     })
-    frameBus.on("menu:items3-1", function (data){
+    frameBus.on("menu:items3-1", function (data) {
         console.log("trigger_Menu---", data)
     })
-    frameBus.on("menu:items3", function (data){
+    frameBus.on("menu:items3", function (data) {
         console.log("trigger_Menu---", data)
     })
 </script>

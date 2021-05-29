@@ -1,22 +1,25 @@
 #set($layout="layout_blank_dev_center.vm")
 
-<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/table_query.css?_dc=$!{staticVersion}" type="text/css">
-<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/left/script/table_query.css?_dc=$!{staticVersion}"
+      type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_left/createSql.css?_dc=$!{staticVersion}"
+      type="text/css">
 <link rel="stylesheet" href="/scriptcenter/statics/pagination/pagination.css?_dc=$!{staticVersion}" type="text/css">
 <link rel="stylesheet" href="/scriptcenter/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
 
 <div class="table-query-tab left_manage" id="tableQueryTab" style="position: relative;">
-##    <div class="content icon-content" id="tableQueryTool">
-####        <span class="icon create-table ide-left-drsj pop-title" data-title="创建表"></span>
-##        <span class="icon load-data bdp-icon-tjzfblb pop-title" data-title="导入数据"></span>
-##    </div>
+    ##    <div class="content icon-content" id="tableQueryTool">
+    ####        <span class="icon create-table ide-left-drsj pop-title" data-title="创建表"></span>
+    ##        <span class="icon load-data bdp-icon-tjzfblb pop-title" data-title="导入数据"></span>
+    ##    </div>
 
     <div id="tableQueryOuterContent">
         <div style="width:100%;overflow:hidden;padding: 5px 10px 0px 10px">
             <ul class="tableQueryUl" style="">
                 <li target="OwnTablesContent" class="table-query-mode active" data-label="我有权限的表"><span>我有权限的表</span>
                 </li>
-                <li target="AllTablesContent" class="table-query-mode " data-label="所有的表"><span href="javascript:;">所有的表</span>
+                <li target="AllTablesContent" class="table-query-mode " data-label="所有的表"><span
+                        href="javascript:;">所有的表</span>
                 </li>
             </ul>
         </div>
@@ -38,9 +41,9 @@
                     </select>
                 </div>
                 <div class="table-content full-select-content">
-                ##            <select class="query-table-select select" id="queryTableSelect">
-                ##
-                ##            </select>
+                    ##            <select class="query-table-select select" id="queryTableSelect">
+                    ##
+                    ##            </select>
                     <input class="query-table-select select" id="queryTableSelect">
 
                 </div>
@@ -53,7 +56,8 @@
                 </div>
                 <div class="quick-tool-content">
                     <span class="bdp-icon ide-left-yjSQL pop-title" data-title="生成SQL" id="createSqlIcon"></span>
-                    <span class="bdp-icon bdp-icon-sjzs pop-title" data-title="查看表详情" id="toThink" style="margin-right: 10px;"></span>
+                    <span class="bdp-icon bdp-icon-sjzs pop-title" data-title="查看表详情" id="toThink"
+                          style="margin-right: 10px;"></span>
                 </div>
             </div>
             <div class="content column-content">
@@ -91,7 +95,8 @@
                 <div class="all-table-num-content">请输入关键字进行搜索
                 </div>
                 <div class="all-table-detail-content" id="allTableDetailContent">
-                    <div id="searchAllTabOrColSpinner" style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
+                    <div id="searchAllTabOrColSpinner"
+                         style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
                     </div>
                     <div id="allTableContainer" class="all-table-container">
                     </div>
@@ -99,10 +104,14 @@
                     </div>
                     <div class="draggable-columns-content" id="draggableColumnsContent">
                         <div class="draggable-header">
-                            <div class="header-table-name pop-title" id="draggableNameHeader" data-title=""><span></span></div>
+                            <div class="header-table-name pop-title" id="draggableNameHeader" data-title="">
+                                <span></span></div>
                             <div class="header-close"><span>×</span></div>
                         </div>
-                        <div class="columns_search_input"><input id="columnsSearchInput" placeholder="请输入列名、描述" autocomplete="off"> <span id="columnsSearchButton" class="bdp-icon bzzx-ss"></span></div>
+                        <div class="columns_search_input"><input id="columnsSearchInput" placeholder="请输入列名、描述"
+                                                                 autocomplete="off"> <span id="columnsSearchButton"
+                                                                                           class="bdp-icon bzzx-ss"></span>
+                        </div>
                         <div class="draggable-content">
                             <div class="jd-table-parent all-grid-table-parent" id="allGridColumnParent"
                                  style="height:100%;width: 100%;float: left;">
@@ -198,23 +207,23 @@
         mount: function (msg) {
             QIAN_KUN = msg;
             console.log(msg)
-            setTimeout(function (){
+            setTimeout(function () {
                 msg.utils.broadcast("helloworld", "hello")
             }, 2000)
         }
     }
 
     var frameBus = new FrameBus();
-    frameBus.on("tab:change", function(data) {
+    frameBus.on("tab:change", function (data) {
         console.log("tagchange", data)
     })
-    frameBus.on("helloworld", function(data){
-        console.log("helloworld",data)
+    frameBus.on("helloworld", function (data) {
+        console.log("helloworld", data)
     })
-    frameBus.on("menu:items3-1", function (data){
+    frameBus.on("menu:items3-1", function (data) {
         console.log("trigger_Menu---", data)
     })
-    frameBus.on("menu:items3", function (data){
+    frameBus.on("menu:items3", function (data) {
         console.log("trigger_Menu---", data)
     })
 </script>

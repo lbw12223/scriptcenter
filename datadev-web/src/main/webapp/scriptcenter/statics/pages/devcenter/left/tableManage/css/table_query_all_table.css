@@ -1,0 +1,39 @@
+/*
+ * 表管理左侧查询条件样式
+ * created by hl
+ */
+.table-query-content .table-manage-search-base {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.table-query-content .table-manage-search-base .all-table-search-content {
+    position: relative;
+    width: 75%;
+}
+
+.table-query-content .table-manage-search-base .all-table-search-content .all-table-query-icon {
+    right: 8px;
+}
+
+.table-query-content .table-manage-search-base .all-table-search-base-content-button {
+    width: 25%;
+    cursor: pointer;
+    color: #2f64eb;
+    padding: 0 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.table-query-content .table-manage-search-base .all-table-search-base-content-button:hover {
+    color: #598bf7;
+}
+
+.table-query-content .table-manage-search-advanced {
+    display: block;
+}
+
+.table-query-content .table-manage-search-advanced.none {
+    display: none;
+}
