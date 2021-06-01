@@ -398,9 +398,15 @@ var homeOpenPageEvent = {
 
             })
         }
+    },
+    bindFrameBus: function () {
+        var frameBus = new FrameBus();
+        frameBus.on(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], function (data) {
+            console.log("valid code diff", data)
+        })
     }
-
 }
+
 
 homeOpenPageEvent.initPage();
 homeOpenPageEvent.initPageSizeChange();
@@ -411,7 +417,6 @@ $(document).contextmenu(function () {
 var firstShiftKeyTime = 0;
 var clickShiftKeyTime = 0;
 var isMac = (navigator.userAgent.indexOf('Mac') >= 0) ? true : false;
-
 $(document).keyup(function (event) {
     if (event.keyCode == 16) {
         var currentTime = new Date().getTime();
@@ -505,3 +510,5 @@ function wait() {
     spinner.spin($("#spins")[0]);
     return spinner;
 }
+
+

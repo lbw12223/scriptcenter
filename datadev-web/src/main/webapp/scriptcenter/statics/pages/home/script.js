@@ -1238,7 +1238,7 @@ function updatePackDetail(gitProjectId, gitProjectFilePath) {
         packDetail($("#currentRelationDependencyId").val());
     }
 }
-
+console.log('script')
 /**
  * 验证内容改变状态
  * 有改变则返回true否则false

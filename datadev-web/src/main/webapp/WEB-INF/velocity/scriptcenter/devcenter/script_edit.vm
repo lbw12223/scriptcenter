@@ -434,6 +434,7 @@ display: none;
 
 
 #define($javascriptBlock)
+<script src="/scriptcenter/statics/config/frameBusConfig.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
