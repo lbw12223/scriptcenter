@@ -171,12 +171,22 @@
 
                         ##
                             #if(($!{scriptType} == "2" || $!{scriptType} == "3" || $!{scriptType} == "1" || $!{scriptType} == "4") && $!{isShow} == "0")
-                                <div id="upLineButtonDiv" class="buttonDiv">
-                                <a href="javascript:void(0)" id="upLine" class="toolButton pop-title"
-                                   data-title="脚本上线至任务调度buffalo">
-                                    <span class="bdp-icon ide-sx"><span class="iconFont">上线</span></span>
-                                </a>
-                            </div>
+
+##                                <div id="upLineButtonDiv" class="buttonDiv">
+##                                    <a href="javascript:void(0)" id="upLine" class="toolButton pop-title"
+##                                    data-title="脚本上线至任务调度buffalo">
+##                                    <span class="bdp-icon ide-sx"><span class="iconFont">上线</span></span>
+##                                    </a>
+##                                </div>
+
+                                <div id="pushOnlineButtonWrap" class="buttonDiv">
+                                    <a href="javascript:void(0)" id="pushOnline"
+                                       class="toolButton pop-title"
+                                       data-title="脚本上线至任务调度buffalo">
+                                        <span class="bdp-icon ide-sx"><span class="iconFont">提交</span></span>
+                                    </a>
+                                </div>
+
                             #end
                         #end
 ##                        <div class="buttonDiv">
