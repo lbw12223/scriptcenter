@@ -226,6 +226,7 @@
 
 
 </div>
+<script src="/scriptcenter/statics/config/frameBusConfig.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/map.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
 

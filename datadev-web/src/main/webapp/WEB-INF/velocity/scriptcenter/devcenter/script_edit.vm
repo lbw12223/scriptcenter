@@ -463,6 +463,7 @@ display: none;
 
 
 
+<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_help.js?_dc=sssssss1111$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_editor.js?_dc=sssssss1111$!{staticVersion}"></script>
 
 <script src="/scriptcenter/statics/sql/dataDevSqlTip.js?_dc=$!{staticVersion}"></script>

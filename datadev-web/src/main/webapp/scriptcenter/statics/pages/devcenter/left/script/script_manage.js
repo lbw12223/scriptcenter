@@ -411,7 +411,7 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
             height: "150px",
             opacity: 0.5,
             esc: false,
-            resize:false,
+            resize: false,
             close: function () {
             }
         });
@@ -689,8 +689,7 @@ $(function () {
                         })
                         showEle.appendTo('body');
                     }
-                }
-                else if (type == "mouseleave" || type == 'mouseout') {
+                } else if (type == "mouseleave" || type == 'mouseout') {
                     $('.showTitleBox').remove();
                 } else if (type == 'mousemove') {
                     $('.showTitleBox').css({
@@ -714,8 +713,7 @@ $(function () {
                         })
                         showEle.appendTo('body');
                     }
-                }
-                else if (type == "mouseleave" || type == 'mouseout') {
+                } else if (type == "mouseleave" || type == 'mouseout') {
                     $('.showTitleBox').remove();
                 } else if (type == 'mousemove') {
                     $('.showTitleBox').css({
@@ -1150,8 +1148,6 @@ $(function () {
             })
 
 
-
-
             $("#appSelect").on("change", function (event, noZtree) {
                 $('.showTitleBox').remove();
                 HOME_COOKIE.setActiveGit2Cookie($("#loginErp").val(), getSelectedProjectId());
@@ -1339,17 +1335,17 @@ $(function () {
             });
         }
 
-    function copyContent(value) {
-        var input = document.createElement('textarea');
-        input.textContent = value;
-        document.body.appendChild(input);
-        input.focus();
-        input.setSelectionRange(0, input.value.length);
-        if (document.execCommand('copy')) {
-            document.execCommand('copy');
+        function copyContent(value) {
+            var input = document.createElement('textarea');
+            input.textContent = value;
+            document.body.appendChild(input);
+            input.focus();
+            input.setSelectionRange(0, input.value.length);
+            if (document.execCommand('copy')) {
+                document.execCommand('copy');
+            }
+            document.body.removeChild(input);
         }
-        document.body.removeChild(input);
-    }
 
         function showRightDirMenu(event, menu) {
 
@@ -1380,14 +1376,14 @@ $(function () {
                 height: "350px",
                 opacity: 0.5,
                 esc: false,
-                resize:false,
+                resize: false,
                 close: function () {
                 }
             });
             var info = {
-                gitProjectId:gitProjectId,
-                gitProjectDirPath:gitProjectDirPath,
-                targetRange:1
+                gitProjectId: gitProjectId,
+                gitProjectDirPath: gitProjectDirPath,
+                targetRange: 1
             }
             $.dialog.data("modeCode", "dir");
             $.dialog.data("gitProjectId", gitProjectId);
@@ -1503,7 +1499,7 @@ $(function () {
                             height: "450px",
                             opacity: 0.5,
                             esc: false,
-                            resize:false,
+                            resize: false,
                             close: function () {
                             }
                         });
@@ -1736,7 +1732,7 @@ $(function () {
                     top.$.successMsg("Pull成功");
                 }
             }, undefined, undefined, undefined, undefined, function () {
-               top.$.loadingMsg("正在Pull...")
+                top.$.loadingMsg("正在Pull...")
             })
         }
 
@@ -1881,7 +1877,14 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm: false
+        closeConfirm: function (cb) {
+            var frameBus = new FrameBus();
+            console.log(cb)
+            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {
+                label: 1,
+                cb: cb
+            })
+        }
     }
 
     QIAN_KUN.utils.addTab(params)
@@ -1918,6 +1921,7 @@ function getParam(gitProjectId, path, name, pythonType, isTmp) {
     }
     return params;
 }
+
 function getUrl(gitProjectId, path, pythonType) {
     var encodepath = encodeURIComponent(encodeURIComponent(path.trim()));
     var url = "/scriptcenter/home/home_open_ide.html?gitProjectFilePath=" + encodepath + "&gitProjectId=" + gitProjectId;
@@ -1954,7 +1958,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
                 text: "提交",
                 event: function () {
 
-                        submitCallBack && submitCallBack();
+                    submitCallBack && submitCallBack();
                     // $.removeMsg();
                 },
                 btnClass: 'bdp-btn-primary'
@@ -1998,11 +2002,12 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
 
     })
 }
+
 /*新建脚本 start */
 
 // 加入模板之后的新建脚本
-$(".blankScript").click(function (){
-    $("#newScriptDiv").css("display","none");
+$(".blankScript").click(function () {
+    $("#newScriptDiv").css("display", "none");
 
     var dataIndex = $(this).parent().attr("data-index");
     var pythonType = $(this).parent().attr("data-python");
@@ -2011,8 +2016,8 @@ $(".blankScript").click(function (){
     $("#mouseScriptDiv").hide();
     addScript(script, undefined, applicationId, script.default);
 })
-$(".templateScript").click(function(){
-    $("#newScriptDiv").css("display","none");
+$(".templateScript").click(function () {
+    $("#newScriptDiv").css("display", "none");
 
     templateModal($(this), undefined);
 })
@@ -2106,17 +2111,15 @@ function templateModal(node, treeNode) {
 }
 
 
-
-
-$(".addFile").click(function (event){
+$(".addFile").click(function (event) {
     showRightMenuBackground();
     hiddenLeftRightMeun();
-     var locat = $(".addFile").offset();
-     $("#newScriptDiv").css("top",(locat.top + 30) + "px").css("left",(locat.left - 140)  + "px").css("display","block");
+    var locat = $(".addFile").offset();
+    $("#newScriptDiv").css("top", (locat.top + 30) + "px").css("left", (locat.left - 140) + "px").css("display", "block");
 })
 /*新建脚本 end */
 
-$(window).resize(function() {
+$(window).resize(function () {
     hiddenLeftRightMeun()
 });
 

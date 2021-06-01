@@ -403,13 +403,20 @@ var homeOpenPageEvent = {
         var frameBus = new FrameBus();
         frameBus.on(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], function (data) {
             console.log("valid code diff", data)
+            var flag = scriptHelper.validIsChangeCode(editor);
+            console.log(flag)
+            if (flag && data.cb && Object.prototype.toString.call(data.cb) === '[object Function]') {
+                data.cb(flag)
+            }
         })
-    }
+    },
+
 }
 
 
 homeOpenPageEvent.initPage();
 homeOpenPageEvent.initPageSizeChange();
+homeOpenPageEvent.bindFrameBus();
 $(document).contextmenu(function () {
     return false;
 })
