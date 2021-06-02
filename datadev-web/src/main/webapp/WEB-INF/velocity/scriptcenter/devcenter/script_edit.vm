@@ -154,8 +154,7 @@
                                     </a>
                                 </div>
                             #end
-                            #if($!{scriptType} == "2" || $!{scriptType} == "3" )
-
+                            #if($!{scriptType} == "2" || $!{scriptType} == "3"  )
                                 <div class="buttonDiv">
                                 <a href="javascript:void(0)" id="dependencyButton" class="toolButton pop-title"
                                    data-title="设置运行依赖">

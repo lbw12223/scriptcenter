@@ -1585,8 +1585,10 @@ $(function () {
     }
 
 
+    /**
+     * 初始化ACE
+     */
     function initAce() {
-
 
 
         //初始化对象
@@ -1647,7 +1649,7 @@ $(function () {
                 }
             }
 
-
+            verifyModify();
 
             //当前光标在脚本中的位置
             var cursor = (editor.selection.getCursor());
@@ -1705,6 +1707,17 @@ $(function () {
         })
     }
 
+    function verifyModify() {
+        if (editor) {
+            var editValue = editor.getValue();
+            var oldMd5 = $("#fileMd5").val();
+            var newMd5 = $.md5(editValue);
+            parent.showModifyIcon && parent.showModifyIcon(getKey(), oldMd5 != newMd5);
+            notifyArgContentChange && notifyArgContentChange(editValue);
+            return oldMd5 != newMd5;
+        }
+        return false;
+    }
     function initUnEditTopButton() {
         var key = getKey();
         var scriptType = $("#scriptType").val();

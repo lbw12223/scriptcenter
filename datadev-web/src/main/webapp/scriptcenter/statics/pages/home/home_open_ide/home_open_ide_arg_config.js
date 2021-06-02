@@ -9,7 +9,6 @@ $("#addArgs").click(function () {
 })
 
 function addOneArg() {
-    debugger
     $(".mergeTr", argTbody).remove();
     var countTr = $("tr", argTbody).length;
     var html = "<tr data-index='" + (countTr + 1) + "'><td>" + (countTr + 1) + "</td>";
@@ -63,6 +62,7 @@ function sqlGetParamValues() {
 }
 
 function notifyArgContentChange(editValue) {
+
     if (scriptType * 1 === 1) {
         //sql
         //获取已经设置好的参数，重新设置或者添加
@@ -70,7 +70,7 @@ function notifyArgContentChange(editValue) {
         // var argsValueMap = sqlGetParamValues(editValue);
 
         if (args.length > 0) {
-            initSqlParamsTbody(args);
+             initSqlParamsTbody(args);
         } else {
             var mergeTrTemp = $(".mergeTr", argTbody);
             if (mergeTrTemp.length <= 0) {
@@ -210,7 +210,6 @@ function showArgs(args, startShellPath, cgroupArgs) {
             for (var i in object) {
                 var str = object[i];
                 argName.push(i);
-                console.log("value:" + str);
                 $("#addArgs").click();
                 $("#argTbody tr:eq(" + (i - 1) + ")").find("input.argValue").val(str);
                 argValueMap.put(i, str);

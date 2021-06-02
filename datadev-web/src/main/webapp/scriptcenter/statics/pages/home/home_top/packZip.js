@@ -21,7 +21,7 @@
                         gitProjectFilePath: path
                     }, null, function (node, data) {
                         if (data.obj.result == 1) {
-                            top.$.bdpMsg({
+                            $.bdpMsg({
                                 title: "提示",
                                 mainContent: "<div style='padding: 20px 10px;'>当前zip文件已经存在，请确定是否覆盖？</div>",
                                 width: "300px",
@@ -182,14 +182,14 @@
                         path: gitProjectFilePath,
                         runType: 1
                     })
-                    top.$.successMsg("打包成功！", 2000, function () {
+                    $.successMsg("打包成功！", 2000, function () {
                         loadScript(data.obj.gitProjectId, data.obj.path)
                         dependencyArt.close();
                         packZipArt.close();
                     })
                 }
             }, null, null, null, null, function () {
-                top.$.loadingMsg("正在打包zip脚本，请稍后！")
+                $.loadingMsg("正在打包zip脚本，请稍后！")
             })
         },
         getPath: function () {

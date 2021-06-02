@@ -1131,7 +1131,7 @@ var datadevInit = {
             this.changeTopButton(TOP_BUTTON.run, "undisplay");
         }
 
-        if (scriptTypeInt == 3) {
+        if (scriptTypeInt == 3 || scriptTypeInt == 2) {
             this.changeTopButton(TOP_BUTTON.dependencyButton, "available");
         } else {
             this.changeTopButton(TOP_BUTTON.dependencyButton, "undisplay");
@@ -1439,7 +1439,6 @@ var datadevInit = {
     },
     initPostMessage: function () {
         window.addEventListener("message", function (e) {
-            console.log(e)
         });
     },
     initPackZip: function () {

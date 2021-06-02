@@ -50,7 +50,7 @@ var commonAjaxEvents = {
                         succssCallback && succssCallback(node, data)
                     } else {
                         parentModal && parentModal.modal("hide");
-                        if (parent.$) {
+                        if (parent.$ && parent.$.errorMsg ) {
                             parent.$.errorMsg(alertMessage);
                         }else{
                             $.errorMsg(alertMessage);
@@ -101,7 +101,7 @@ var commonAjaxEvents = {
                     if (data.code * 1 === 0 || data._code * 1 === 0) {
                         succssCallback && succssCallback(node, data)
                     } else {
-                        if (parent.$) {
+                        if (parent.$ && parent.$.errorMsg) {
                             parent.$.errorMsg(alertMessage);
                         }else{
                             $.errorMsg(alertMessage);
@@ -178,7 +178,7 @@ var commonAjaxEvents = {
                         succssCallback && succssCallback(node, data)
                     } else {
                         parentModal && parentModal.modal("hide");
-                        if (parent.$) {
+                        if (parent.$ && parent.$.errorMsg) {
                             parent.$.errorMsg(alertMessage);
                         }else{
                             $.errorMsg(alertMessage);
@@ -251,7 +251,7 @@ var commonAjaxEvents = {
                     if (data.code * 1 === 0 || data._code * 1 === 0) {
                         succssCallback && succssCallback(node, data)
                     } else {
-                        if (parent.$) {
+                        if (parent.$ && parent.$.errorMsg) {
                             parent.$.errorMsg(alertMessage);
                         }else{
                             $.errorMsg(alertMessage);
