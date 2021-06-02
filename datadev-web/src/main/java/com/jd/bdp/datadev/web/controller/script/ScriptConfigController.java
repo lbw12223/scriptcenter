@@ -1,5 +1,6 @@
 package com.jd.bdp.datadev.web.controller.script;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.api.authorityCenter.AuthorityCenterMarketInfoInterface;
 import com.jd.bdp.api.bdptable.MetaDataJSFInterface;
@@ -7,6 +8,7 @@ import com.jd.bdp.api.common.JsfResultDto;
 import com.jd.bdp.api.think.cluster.ClusterJSFInterface;
 import com.jd.bdp.api.think.dto.ClusterHadoopMarketDto;
 import com.jd.bdp.common.utils.AjaxUtil;
+import com.jd.bdp.common.utils.MD5Util;
 import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.data.assets.domain.MetaTableColumnBaseInfo;
 import com.jd.bdp.datadev.component.AllMarketComponent;
@@ -14,11 +16,7 @@ import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.datapreview.domain.DataDevDataPreview;
 import com.jd.bdp.datadev.domain.DataDevScriptConfig;
 import com.jd.bdp.datadev.domain.HoldDoubleValue;
-import com.jd.bdp.datadev.service.DataDevCenterService;
-import com.jd.bdp.datadev.service.DataDevClusterAdminService;
-import com.jd.bdp.datadev.service.DataDevDataPreviewService;
-import com.jd.bdp.datadev.service.DataDevScriptConfigService;
-import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
+import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
 import com.jd.bdp.datadev.web.interceptor.ProjectSpaceIdParam;
 import com.jd.bdp.domain.authorityCenter.DataBaseDto;
@@ -27,10 +25,11 @@ import com.jd.bdp.domain.authorityCenter.TableInfoDto;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopAccount;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopMarket;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopQueue;
-import com.jd.bdp.domain.think.meta.MetaColumnInfo;
 import com.jd.bdp.domain.think.meta.MetaTableInfo;
 import com.jd.bdp.domain.urm.right.ApiResultDTO;
 import com.jd.bdp.urm.sso.UrmUserHolder;
+import com.jd.oss.search.service.CommonSearchService;
+import com.jd.oss.search.service.TableFieldsDataJsfInterface;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +73,17 @@ public class ScriptConfigController {
 
     @Autowired
     private DataDevCenterService dataDevCenterService;
+
+    @Autowired
+    private CommonSearchService commonSearchService;
+
+    @Autowired
+    private TableFieldsDataJsfInterface tableFieldsDataJsfInterface;
+
+    @Value("${xingtu.appId}")
+    private String xingtuAppId;
+    @Value("${xingtu.token}")
+    private String xingtuToken;
 
     @ExceptionMessageAnnotation(errorMessage = "获取运行配置信息")
     @RequestMapping("/getConfigByErp.ajax")
@@ -401,6 +411,60 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(result);
     }
 
+    @RequestMapping("/getAllTablesNew.ajax")
+    @ResponseBody
+    public JSONObject getAllTablesNew(@RequestParam(value = "searchWord", defaultValue = "*") String searchWord,
+                                      @RequestParam(value = "martCode", defaultValue = "") String martCode,
+                                      @RequestParam(value = "dbName", defaultValue = "") String dbName,
+                                      @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        JSONObject result = new JSONObject();
+        JSONArray list = null;
+        try {
+            JSONObject params = new JSONObject();
+            params.put("page", pageNumber);
+            params.put("pageSize", pageSize);
+            params.put("query", searchWord);
+            if (StringUtils.isNotBlank(martCode)) {
+                params.put("martCode", martCode);
+            }
+            if (StringUtils.isNotBlank(dbName)) {
+                params.put("dbName", dbName);
+            }
+            Long time = System.currentTimeMillis();
+            String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
+            JSONObject apiResult = commonSearchService.search(xingtuAppId, sign, time, params.toJSONString());
+            logger.error("===============查询所有表结果：" + apiResult);
+            if (apiResult != null && apiResult.getInteger("code") == 0) {
+                JSONObject data = apiResult.getJSONObject("data");
+                list = data.getJSONArray("datas");
+                for (Object o : list) {
+                    JSONObject tableInfo = (JSONObject) o;
+                    ClusterHadoopMarketDto marketDto = allMarketComponent.getMarketByCode(tableInfo.getString("cluster"), tableInfo.getString("martCode"));
+                    if (marketDto != null) {
+                        tableInfo.put("marketId", marketDto.getMarketId().toString());
+                        tableInfo.put("marketName", marketDto.getMarketName());
+                    } else {
+                        tableInfo.put("marketName", "--");
+                    }
+                    tableInfo.put("memo", tableInfo.getString("tbComment") == null ? "" : tableInfo.getString("tbComment"));
+                }
+
+                result.put("total", data.getInteger("totalRecord"));
+                result.put("num", list.size());
+            } else {
+                result.put("total", 0);
+                result.put("num", 0);
+            }
+        } catch (Exception e) {
+            logger.error("===========获取所有表报错：" + e.getMessage());
+            result.put("total", 0);
+            result.put("num", 0);
+        }
+        result.put("list", list);
+        return JSONObjectUtil.getSuccessResult(result);
+    }
+
     @RequestMapping("/getAllColumns.ajax")
     @ResponseBody
     public net.sf.json.JSONObject getAllColumns(UrmUserHolder userHolder, Long marketId, String dbName, String tbName,
@@ -445,6 +509,62 @@ public class ScriptConfigController {
         return AjaxUtil.gridJson(pageResultDTO);
     }
 
+    @RequestMapping("/getAllColumnsNew.ajax")
+    @ResponseBody
+    public net.sf.json.JSONObject getAllColumnsNew(UrmUserHolder userHolder, String martCode, String cluster, String dbName, String tbName,
+                                                   @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "rows", defaultValue = "20") Integer rows,
+                                                   @RequestParam(value = "searchWord", defaultValue = "") String searchWord) throws Exception {
+        PageResultDTO pageResultDTO = new PageResultDTO();
+        try {
+//            List<MetaTableColumnBaseInfo> list = new ArrayList<MetaTableColumnBaseInfo>();
+            logger.error("====getAllColumns : martCode :" + martCode + " cluster:" + cluster + " dbName:" + dbName + " tbName:" + tbName);
+
+            JSONObject params = new JSONObject();
+            params.put("martCode", martCode);
+            params.put("cluster", cluster);
+            params.put("dbName", dbName);
+            params.put("tbName", tbName);
+            Long time = System.currentTimeMillis();
+            String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
+            logger.error("===========data:" + params.toJSONString());
+            JSONObject apiResult = tableFieldsDataJsfInterface.queryTBFields(xingtuAppId, sign, time, params.toJSONString());
+            logger.error("===============查询表字段：" + apiResult);
+
+            JSONArray columns = new JSONArray();
+            if (apiResult != null && apiResult.getInteger("code") == 0) {
+                JSONObject data = apiResult.getJSONObject("data");
+                columns = data.getJSONArray("columns");
+            }
+            List<JSONObject> searchList = new ArrayList<JSONObject>();
+            if (StringUtils.isNotBlank(searchWord)) {
+                for (Object column : columns) {
+                    JSONObject json = (JSONObject) column;
+                    String columnName = json.getString("name");
+                    String columnComment = json.getString("comment");
+                    if (StringUtils.isNotBlank(columnName) && columnName.indexOf(searchWord) != -1
+                            || StringUtils.isNotBlank(columnComment) && columnComment.indexOf(searchWord) != -1) {
+                        searchList.add(json);
+                    }
+                }
+            }
+            int from = (page - 1) * rows;
+            int to = (page * rows) > searchList.size() ? searchList.size() : (page * rows);
+            List<JSONObject> result = (page - 1) * rows > searchList.size() ? new ArrayList<JSONObject>() : searchList.subList(from, to);
+            pageResultDTO.setRecords(Long.valueOf(searchList.size()));
+            pageResultDTO.setSuccess(true);
+            pageResultDTO.setRows(result);
+        } catch (Exception e) {
+            logger.error("=========================" + e.getMessage());
+            pageResultDTO.setSuccess(false);
+            pageResultDTO.setRecords(0L);
+            pageResultDTO.setMessage("获取列表失败！" + e.getMessage());
+        }
+
+        pageResultDTO.setPage(page);
+        pageResultDTO.setLimit(rows);
+        pageResultDTO.setMessage("获取成功");
+        return AjaxUtil.gridJson(pageResultDTO);
+    }
 
     @RequestMapping("/save.ajax")
     @ResponseBody

@@ -1,6 +1,7 @@
 package com.jd.bdp.datadev.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevScriptGitStatusEnum;
@@ -434,5 +435,12 @@ public interface DataDevScriptFileService {
      */
     void tmpFileUpdateHisAndDetail(Long scriptFileId, String gitProjectFilePath, String scriptFileName, Long gitProjectId, String oldGirProjectFilePath) throws Exception;
 
-
+    /**
+     * 获取脚本信息
+     * @param scriptId
+     * @param version
+     * @return
+     * @throws Exception
+     */
+    JSONObject getScriptDetail(Long scriptId, String version) throws Exception;
 }

@@ -1,0 +1,123 @@
+package com.jd.bdp.datadev.web.controller.script;
+
+import com.alibaba.fastjson.JSONObject;
+import com.jd.bdp.datadev.component.JSONObjectUtil;
+import com.jd.bdp.datadev.domain.diff.ReleaseCompareVo;
+import com.jd.bdp.datadev.service.DataDevScriptDiffService;
+import com.jd.bdp.urm.sso.UrmUserHolder;
+import com.jd.jbdp.release.model.vo.SubmitObj;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+@RequestMapping("/scriptcenter/diff/")
+public class ScriptDiffController {
+    private static final Logger logger = Logger.getLogger(ScriptDiffController.class);
+
+    @Autowired
+    private DataDevScriptDiffService dataDevScriptDiffService;
+
+    /**
+     * 获取对比内容
+     * @param userHolder
+     * @param projectSpaceId
+     * @param scriptId
+     * @param scriptName
+     * @return
+     */
+    @RequestMapping("/scriptCompare.ajax")
+    @ResponseBody
+    public JSONObject getFileContentFromBuffalo(UrmUserHolder userHolder, Long projectSpaceId, Long scriptId, String scriptName) {
+        ReleaseCompareVo releaseCompareVo = null;
+        try {
+            releaseCompareVo = dataDevScriptDiffService.compareInfo(projectSpaceId, scriptId, scriptName);
+            return JSONObjectUtil.getSuccessResult(releaseCompareVo);
+        } catch (Exception e) {
+            logger.error("scriptCompare.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult(e.getMessage(), releaseCompareVo);
+        }
+    }
+
+    /**
+     * 获取脚本关联任务列表（调度接口不支持分页）
+     * @param userHolder
+     * @param projectSpaceId
+     * @param scriptName
+     * @return
+     */
+    @RequestMapping("/scriptTaskList.ajax")
+    @ResponseBody
+    public JSONObject scriptTaskList(UrmUserHolder userHolder, Long projectSpaceId, String scriptName) {
+        String operator = userHolder.getErp();
+        try {
+            JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, scriptName, operator);
+            return JSONObjectUtil.getSuccessResult(result);
+        } catch (Exception e) {
+            logger.error("scriptCompare.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult(e.getMessage(), null);
+        }
+    }
+
+    /**
+     * 校验开发脚本和生产脚本
+     * @param userHolder
+     * @param projectSpaceId
+     * @param scriptId
+     * @param scriptName
+     * @return
+     */
+    @RequestMapping("/check.ajax")
+    @ResponseBody
+    public JSONObject check(UrmUserHolder userHolder, Long projectSpaceId, Long scriptId, String scriptName) {
+        String operator = userHolder.getErp();
+        try {
+            ReleaseCompareVo releaseCompareVo = dataDevScriptDiffService.compareInfo(projectSpaceId, scriptId, scriptName);
+            Integer checkCode = dataDevScriptDiffService.check(projectSpaceId, operator, releaseCompareVo);
+            String msg = "校验失败";
+            if (checkCode == 100) {
+                msg = "校验通过";
+            } else if (checkCode == 101) {
+                msg = "强校验不通过";
+            } else if (checkCode == 102) {
+                msg = "弱校验不通过";
+            }
+            return JSONObjectUtil.getSuccessResult(msg, checkCode);
+        } catch (Exception e) {
+            logger.error("check.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult(e.getMessage(), null);
+        }
+    }
+
+
+    /**
+     * 提交至发布中心
+     * 【前置条件：校验成功】
+     *
+     * @param userHolder
+     * @param projectSpaceId
+     * @param desc
+     * @param submitObj
+     * @return
+     */
+    @RequestMapping("/submit.ajax")
+    @ResponseBody
+    public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String desc, @RequestBody SubmitObj submitObj) {
+        String operator = userHolder.getErp();
+        try {
+            boolean success = dataDevScriptDiffService.submit2RC(projectSpaceId, desc, operator, submitObj);
+            if (success) {
+                return JSONObjectUtil.getSuccessResult("提交成功", true);
+            }
+            return JSONObjectUtil.getFailResult("提交失败", false);
+        } catch (Exception e) {
+            logger.error("scriptCompare.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult(e.getMessage(), false);
+        }
+    }
+
+
+}

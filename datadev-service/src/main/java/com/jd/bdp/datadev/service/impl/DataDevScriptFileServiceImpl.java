@@ -1895,4 +1895,38 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
 
     }
+
+    @Override
+    public JSONObject getScriptDetail(Long scriptId, String version) throws Exception {
+        DataDevScriptFile file = findById(scriptId);
+        if (file == null) {
+            throw new RuntimeException("id为" + scriptId + "的脚本不存在");
+        }
+
+        DataDevScriptFile scriptFile = getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+        if (scriptFile == null) {
+            throw new RuntimeException("脚本不存在");
+        }
+        boolean canEdit = DataDevScriptTypeEnum.canEdit(scriptFile.getType());
+        String content = null;
+        if (canEdit) {
+            content = getScriptContent(scriptFile.getGitProjectId(), scriptFile.getGitProjectFilePath(), version, urmUtil.getBdpManager());
+        }
+
+        // 更新后的脚本信息
+        scriptFile = getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath(), version);
+        if (scriptFile == null) {
+            throw new RuntimeException("脚本不存在");
+        }
+
+        JSONObject result = new JSONObject();
+        DataDevScriptTypeEnum typeEnum = DataDevScriptTypeEnum.enumValueOf(scriptFile.getType());
+        result.put("size", scriptFile.getSize());
+        result.put("type", typeEnum != null ? typeEnum.toName() : scriptFile.getType());
+        result.put("md5", scriptFile.getFileMd5());
+        result.put("name", scriptFile.getName());
+        result.put("content", content);
+        result.put("version", scriptFile.getVersion());
+        return result;
+    }
 }

@@ -9,6 +9,7 @@ $("#addArgs").click(function () {
 })
 
 function addOneArg() {
+    debugger
     $(".mergeTr", argTbody).remove();
     var countTr = $("tr", argTbody).length;
     var html = "<tr data-index='" + (countTr + 1) + "'><td>" + (countTr + 1) + "</td>";

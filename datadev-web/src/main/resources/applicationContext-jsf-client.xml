@@ -65,6 +65,15 @@
                   protocol="jsf" alias="${jsf.alias.devcenter}"  timeout="100000" lazy="true">
     </jsf:consumer>
 
+    <!--表清单服务JSF-->
+    <jsf:consumer id="queryTableJsfInterface" interface="com.jd.oss.search.service.TableFieldsDataJsfInterface"
+                  protocol="jsf" alias="${jsf.alias.metadata}" timeout="50000"/>
+    <jsf:consumer id="MetadataSearchService" interface="com.jd.oss.search.service.CommonSearchService"
+                  protocol="jsf" alias="${jsf.alias.metadata}" timeout="50000"/>
+
+    <!--发布中心-->
+    <jsf:consumer id="releaseSubmitInterface" interface="com.jd.jbdp.release.api.ReleaseSubmitInterface"
+                  protocol="jsf" alias="${jsf.alias.rc}" timeout="50000"/>
 
 
 </beans>
