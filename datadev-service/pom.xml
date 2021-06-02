@@ -30,11 +30,11 @@
             <version>1.2-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.jd.bdp.buffalo.devcenter</groupId>
-            <artifactId>sql-table-fetcher</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.jd.bdp.buffalo.devcenter</groupId>-->
+            <!--<artifactId>sql-table-fetcher</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.jd.bdp</groupId>
