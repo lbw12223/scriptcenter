@@ -124,16 +124,14 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
 
     @Override
     public Integer check(Long projectSpaceId, String devContent, ReleaseCompareVo releaseCompareVo) throws Exception {
-        DiffInfoVo currentInfo = releaseCompareVo.getScriptPair().getCurrentInfo();
-        // 不比较直接通过
-        if (currentInfo == null || !isPython(currentInfo.getFileType())) {
-            return 100;
-        }
-        DiffInfoVo remoteInfo = releaseCompareVo.getScriptPair().getRemoteInfo();
-        // 强校验不通过
-        if (remoteInfo == null || !isPython(currentInfo.getFileType())) {
-            return 101;
-        }
+        //TODO 强校验、弱校验 依赖调度接口
+        return 100;
+//        DiffInfoVo currentInfo = releaseCompareVo.getScriptPair().getCurrentInfo();
+//        // 不比较直接通过
+//        if (currentInfo == null || (!isPython(currentInfo.getFileType()) && !isShell(currentInfo.getFileType()))) {
+//            return 100;
+//        }
+//        DiffInfoVo remoteInfo = releaseCompareVo.getScriptPair().getRemoteInfo();
 
 //        Object currentContent = currentInfo.getContent();
 //        Object remoteContent = remoteInfo.getContent();
@@ -164,9 +162,6 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
 //        if (StringUtils.isNotBlank(parentMarketCode)) {
 //
 //        }
-
-
-        return 100;
     }
 
 
@@ -181,15 +176,6 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
         return submit != null && submit.getCode() == 0;
     }
-
-//    public static void main(String[] args) throws FileNotFoundException, ParseException {
-//        String sql = new HiveTask("python").getSql(new FileInputStream("D:\\BDP-Doc\\新建文件夹 (2)\\test.py"));
-//        Tuple2<List<String>, List<String>> tables = SqlTableParser.parse(sql);
-//        List<String> input = tables._1();
-//        List<String> output = tables._2();
-//        System.out.println(input);
-//        System.out.println(output);
-//    }
 
     private boolean isPython(String fileType) {
         return "py".equalsIgnoreCase(fileType) || "python".equalsIgnoreCase(fileType);
