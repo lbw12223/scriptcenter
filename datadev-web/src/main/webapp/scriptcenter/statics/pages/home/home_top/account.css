@@ -91,12 +91,12 @@ div.queue-tip a:hover {
 
 
 div.account-history {
-    overflow: auto;
-    height: 140px;
+    /* overflow: auto;
+    height: 140px; */
 }
 
 ul.account-history-ul,ul.account-history-ul2 {
-    margin-left: 60px;
+    /* margin-left: 60px; */
     line-height: 30px;
     font-family: MicrosoftYaHei sans-serif;
     font-size: 12px;
@@ -107,7 +107,7 @@ ul.account-history-ul,ul.account-history-ul2 {
 ul.account-history-ul li, ul.account-history-ul2 li{
     height: 32px;
     line-height: 32px;
-    padding-left: 14px;
+    padding-left: 25px;
     font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -146,18 +146,18 @@ ul.account-history-ul li.active,ul.account-history-ul2 li.active {
 }
 
 #codeModal .account-part{
-    height: 140px;
-    border-bottom: 1px solid #e8e8e8;
-    position: relative;
+    height: 280px;
+    overflow: auto;
 }
 
 #codeModal .account-part-name{
-    position: absolute;
+    /* position: absolute;
     left: 0;
     top: 0;
-    width: 60px;
+    width: 60px; */
+    padding-left: 15px;
     font-size: 14px;
     color: rgba(0,0,0,1);
-    text-align: center;
+    text-align: left;
     line-height: 3;
 }

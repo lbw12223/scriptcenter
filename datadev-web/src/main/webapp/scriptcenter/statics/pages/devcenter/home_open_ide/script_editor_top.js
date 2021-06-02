@@ -42,7 +42,7 @@ var configObj2 = [{
   },
     {
         "id" : 1,
-        "name" : "ceshide",
+        "name" : "ceshide2",
         "type" : null,
         "clusterCode" : "jdw",
         "marketLinuxUser" : "dd_edw",

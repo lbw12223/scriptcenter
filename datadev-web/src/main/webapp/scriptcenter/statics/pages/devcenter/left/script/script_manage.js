@@ -2088,7 +2088,7 @@ function templateModal(node, treeNode) {
             url += "&pythonType=" + pythonType;
         }
         var templateArt = $.dialog.open(url, {
-            title: "选择脚本模板",
+            title: "选择脚本模板11",
             lock: true,
             width: "908px",
             height: "524px",
@@ -2121,5 +2121,194 @@ $(".addFile").click(function (event) {
 $(window).resize(function () {
     hiddenLeftRightMeun()
 });
+
+
+function saveTemplate(activeWindow, templateId, callBack) {
+    
+    if (activeWindow) {
+        saveArgs()
+        datadevInit.directSave(function (data) {
+            var scriptType = activeWindow.jq("#scriptType").val();
+            var pythonType = activeWindow.jq("#pythonType").val();
+            if (scriptType == 3 && !pythonType) {
+                var firstLine = activeWindow.editor.session.getLine(0) || "";
+                pythonType = firstLine.toLocaleLowerCase().indexOf("python3") != -1 ? 2 : 1;
+            }
+            var scriptObj = getScriptObj(scriptType, pythonType);
+            templateId = templateId || activeWindow.jq("#templateId").val();
+            if (templateId && templateId > 0) {
+                commonAjaxEvents.commonPostAjax("/scriptcenter/scriptTemplate/getShareInfos.ajax", {
+                    templateId: templateId
+                }, $("#save"), function (node, data) {
+                    var infos = data.obj;
+                    var erps = infos.erps || "";
+                    var gitShares = !!infos.gitShares;
+                    var name = infos.name || "";
+                    var desc = infos.desc || "";
+                    showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, name, desc, callBack);
+                })
+            } else {
+                var name = activeWindow.name || "";
+                var index = name.lastIndexOf(".");
+                if (index != -1) {
+                    name = name.substring(0, index);
+                }
+                showSaveTemplate(activeWindow, templateId, scriptObj, "", false, name, activeWindow.desc || "", callBack);
+            }
+        }, null, activeWindow.key)
+    } else if (templateId && templateId > 0) {
+        commonAjaxEvents.commonPostAjax("/scriptcenter/scriptTemplate/getShareInfos.ajax", {
+            templateId: templateId
+        }, $("#save"), function (node, data) {
+            var infos = data.obj;
+            var erps = infos.erps || "";
+            var gitShares = !!infos.gitShares;
+            var name = infos.name || "";
+            var desc = infos.desc || "";
+            var scriptType = infos.scriptType;
+            var pythonType = infos.pythonType;
+            var scriptObj = getScriptObj(scriptType, pythonType);
+            showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, name, desc, callBack);
+        })
+    }
+}
+
+function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, name, desc, callBack) {
+    var typeName = scriptObj.typeName || scriptObj.name;
+    var type = scriptObj.scriptType;
+    var pythonType = scriptObj.pythonType;
+    var html =
+        "<form class='datadev-form-inline' id='templateSaveContent'>" +
+        "    <h4 class='datadev-control-title'>基本信息</h4>" +
+        "    <div class='datadev-form-group'>" +
+        "        <label class='template-label datadev-control-label'><i class='bdp-note'>*</i>模板名称：</label>" +
+        "        <div class='template-content template-name-content datadev-form-content'>" +
+        "            <input class='datadev-form-control' value='" + name + "' name='name' placeholder='请输入模板名称，最长30个字符' autocomplete='off'/>" +
+        "        </div>" +
+        "    </div>" +
+        "    <div class='datadev-form-group'>" +
+        "        <label class='template-label datadev-control-label'><i class='bdp-note'>*</i>模板类型：</label>" +
+        "        <div class='template-content template-type-content datadev-form-content'>" +
+        "            <input class='datadev-form-control' value='" + typeName + "' placeholder='' autocomplete='off' disabled/>" +
+        "        </div>" +
+        "    </div>" +
+        "    <div class='datadev-form-group'>" +
+        "        <label class='template-label datadev-control-label'><i class='bdp-note'>*</i>模板描述：</label>" +
+        "        <div class='template-content template-desc-content datadev-form-content'>" +
+        "            <textarea class='datadev-form-control' name='desc' placeholder='请输入模板描述，最长255个字符' autocomplete='off'>" + desc + "</textarea>" +
+        "        </div>" +
+        "    </div>" +
+        "    <h4 class='datadev-control-title'>分享设置</h4>" +
+        "    <div class='datadev-form-group'>" +
+        "        <label class='template-label datadev-control-label'>指定人（erp）：</label>" +
+        "        <div class='template-content template-erp-content datadev-form-content'>" +
+        "            <input id='templateShareErps' class='datadev-form-control bdp-form-control template-select' value='" + (erps || "") + "' name='shareErps' placeholder='' autocomplete='off'/>" +
+        "        </div>" +
+        "    </div>" +
+        "    <div class='datadev-form-group'>" +
+        "        <label class='template-label datadev-control-label'>分享到组或项目：</label>" +
+        "        <div class='template-content template-git-content datadev-form-content'>" +
+        // "            <input class='datadev-form-control bdp-form-control template-select' value='" + (gits || "") + "' id='templateShareGits' name='shareGits' placeholder='' autocomplete='off'/>" +
+        // "            <input class='datadev-form-control bdp-form-control template-select' type='checkbox' id='templateShareGits' "+(gitShares?"checked='checked'":"")+" name='shareGits' placeholder='' autocomplete='off' style='min-height: 14px !important;position: relative;top: 5px;border: 1px solid #44494F;'/>" +
+        "            <input class='template-select-radio' type='radio' id='templateShareGits' " + (gitShares ? "checked='checked'" : "") + " name='shareGits' placeholder='' autocomplete='off' style=''/><span class='template-select-title'>是</span>" +
+        "            <input class='template-select-radio' type='radio' " + (gitShares ? "" : "checked='checked'") + " name='shareGits' placeholder='' autocomplete='off' style=''/><span class='template-select-title'>否</span>" +
+        "        </div>" +
+        "    </div>" +
+        "</form>";
+
+    top.$ && top.$.bdpMsg && top.$.bdpMsg({
+        title: "保存模板",
+        mainContent: html,
+        width: "600px",
+        buttons: [
+            {
+                text: "保存",
+                id: "saveTemplateButton",
+                event: function () {
+                    console.log("9999991111111woba",top,this);
+                    var valid = top.$('#templateSaveContent').valid();
+                    if (valid) {
+                        var name = top.$("#templateSaveContent input[name='name']").val().trim();
+                        var desc = top.$("#templateSaveContent textarea[name='desc']").val();
+                        var shareErps = top.$("#templateSaveContent input[name='shareErps']").val();
+                        // var shareGits = $("#templateSaveContent input[name='shareGits']").val();
+                        var shareGits = top.$("#templateShareGits").is(":checked");
+                        commonAjaxEvents.commonPostAjax("/scriptcenter/scriptTemplate/saveTemplate.ajax", {
+                            id: templateId,
+                            name: name,
+                            desc: desc,
+                            shareErps: shareErps,
+                            shareGits: shareGits,
+                            gitProjectId: activeWindow && activeWindow.gitProjectId || "",
+                            gitProjectFilePath: activeWindow && activeWindow.gitProjectFilePath || "",
+                            scriptType: type || "",
+                            pythonType: pythonType || "",
+                        }, $("#saveTemplateButton"), function (node, data) {
+                            callBack && callBack(data.obj);
+                            if (!templateId || templateId < 0) {
+                                var obj = data.obj;
+                                openScript(obj.gitProjectId, obj.gitProjectFilePath, "模板-" + obj.name, null, true);
+                            } else if (activeWindow && activeWindow.win) {
+                                var params = getParam(activeWindow.gitProjectId, activeWindow.gitProjectFilePath, "模板-" + name, null, true);
+                                HOME_COOKIE.changeName(activeWindow.key, activeWindow.key, params);
+                                initInfo();
+                                // $("#codeEditContainer").JdDataDevTab("changeTabInfos", activeWindow.key, activeWindow.key, params);
+                            }
+                            top.$.successMsg("保存成功");
+                        })
+                    }
+                },
+                btnClass: 'bdp-btn-primary'
+            },
+            {
+                text: "取消",
+                event: function () {
+                    $.removeMsg();
+                }
+            }
+        ]
+    }, function () {
+        console.log("999999woba",top,top.$('#templateSaveContent'),this);
+        datadev_user_common._int(top.$("#templateShareErps"), true);
+        // datadev_git_common._int($("#templateShareGits"), true);
+        top.$('#templateSaveContent').validate({
+            rules: {
+                desc: {
+                    maxlength: 255,
+                    required: true
+                },
+                name: {
+                    required: true,
+                    maxlength: 30,
+                },
+            },
+            messages: {
+                name: {
+                    required: "必填字段！",
+                    maxlength: $.validator.format("最多{0}个字符"),
+                },
+                desc: {
+                    required: "必填字段！",
+                    maxlength: $.validator.format("最多{0}个字符"),
+                }
+            },
+            errorElement: 'label',
+            errorClass: 'bdp-help-block',
+            focusInvalid: false,
+            highlight: function (e) {
+                $(e).closest('.datadev-form-group').find(".datadev-form-control").removeClass('bdp-wrong').addClass('bdp-wrong');
+            },
+            success: function (e) {
+                $(e).closest('.datadev-form-group').find(".datadev-form-control").removeClass('bdp-wrong');
+                $(e).remove();
+            },
+            errorPlacement: function (error, element) {
+                error.attr("style", "margin-left:110px !important");
+                error.appendTo(element.parents(".datadev-form-group"));
+
+            }
+        });
+    })
+}
 
 

@@ -153,15 +153,15 @@ $(function () {
         ul2.empty();
         if (configObj2 && configObj2.length > 0) {
             tmpConfigArr2 = deepArray(configObj2);
-            var lis = "";
+            var lis2 = "";
             for (var index = 0; index < tmpConfigArr2.length; index++) {
                 var config = tmpConfigArr2[index];
                 // if (config.showOrder && config.showOrder > maxShowOrder) {
                 //     maxShowOrder = config.showOrder;
                 // }
-                lis += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+                lis2 += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
             }
-            ul2.append(lis);
+            ul2.append(lis2);
         }
 
 
@@ -177,7 +177,7 @@ $(function () {
     })
 //status; 1添加 2删除 3改变 其他值:默认不变
     $("#account-add").click(function () {
-        var ul = $("div.account-history ul");
+        var ul = $("div.account-history ul.account-history-ul");
         var dataId = addIndex--;
         var li = "<li class='account-history-li' data-id='" + dataId + "'>未命名</li>";
         ul.prepend(li);
