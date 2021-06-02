@@ -4,13 +4,17 @@ $(function () {
     var projectDetail = JSON.parse(projectDetailText);
     var gitProjectId = $("#gitProjectId").val();
 
-    $("#projectName").text(projectDetail.projectPath);
-    $("#projectId").text(projectDetail.gitProjectId);
-    $("#HTTP").text(projectDetail.webUrl);
-    $("#HTTP").attr("href",projectDetail.webUrl);
-    $("#SSH").text(projectDetail.sshUrl);
-    $("#creatTime").text(projectDetail.createDate);
-    $("#description").text(projectDetail.description);
+    var isCodingOrGit = $("#isCodingOrGit").val();
+    if(isCodingOrGit * 1 == 1){
+        $("#projectName").text(projectDetail.projectPath);
+        $("#projectId").text(projectDetail.gitProjectId);
+        $("#HTTP").text(projectDetail.webUrl);
+        $("#HTTP").attr("href",projectDetail.webUrl);
+        $("#SSH").text(projectDetail.sshUrl);
+        $("#creatTime").text(projectDetail.createDate);
+        $("#description").text(projectDetail.description);
+
+    }
 
     $("#scriptDetailDiv").JdDataDevTab({});
     $("#scriptDetailDiv").JdDataDevTab({
@@ -56,9 +60,11 @@ $(function () {
     function removeMember() {
         var gr = $("#member-grid-table").getGridParam('selrow');
         var gitMemberId = $("#member-grid-table").getCell(gr, "gitMemberId");
+        var id =  $("#member-grid-table").getCell(gr, "id");
         commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteProjectMember.ajax",{
             gitProjectId: gitProjectId,
-            gitMemberId: gitMemberId
+            gitMemberId: gitMemberId,
+            id:id
         }, $("#delete-user"), function (node, data) {
             jQuery("#member-grid-table").trigger("reloadGrid");
         });
@@ -177,6 +183,10 @@ $(function () {
                 },
                 {
                     name: 'gitMemberId',
+                    hidden: true,
+                },
+                {
+                    name: 'id',
                     hidden: true,
                 }
             ];

@@ -26,6 +26,8 @@ public class DataDevApplication {
     /**是否是默认应用 0 否 1 是*/
     private Integer defaultStatus;
 
+    private Integer projectType ;
+
     public Integer getDefaultStatus() {
         return defaultStatus;
     }
@@ -120,5 +122,13 @@ public class DataDevApplication {
 
     public void setAccesskey(String accesskey) {
         this.accesskey = accesskey;
+    }
+
+    public Integer getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(Integer projectType) {
+        this.projectType = projectType;
     }
 }

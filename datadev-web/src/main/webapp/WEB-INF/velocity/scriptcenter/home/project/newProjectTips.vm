@@ -2,14 +2,17 @@
 #set($page_title="newGitTips")
 <link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newProjectTips.css?_dc=$!{staticVersion}" type="text/css">
 <div id="projectTipsArt" style="overflow: hidden">
-        <div id="info">平台支持Git和Coding两种项目类型，点击下列按钮选择创建</div>
+        <div id="info">平台支持Git、Coding、本地项目类型，点击下列按钮选择创建</div>
     <div style = "line-height: 75px; user-select: none" >
         <div style = "line-height: 75px; user-select: none;" class="button-content">
-            <div style = "float:left; margin-left: 80px; width:180px; font-size: 20px" class="git-btn" id="selectGIT">
+            <div style = "float:left; margin-left: 10px; width:180px; font-size: 20px" class="git-btn" id="selectGIT">
                 Git
             </div>
-            <div style = "float:right;margin-right: 90px; width:180px;font-size: 20px" class="git-btn" id="selectCODING">
+            <div style = "float:left;margin-left: 20px; width:180px;font-size: 20px" class="git-btn" id="selectCODING">
                 Coding
+            </div>
+            <div style = "float:left;margin-left: 20px; width:180px;font-size: 20px" class="git-btn" id="selectLocal">
+                本地项目
             </div>
         </div>
     </div>

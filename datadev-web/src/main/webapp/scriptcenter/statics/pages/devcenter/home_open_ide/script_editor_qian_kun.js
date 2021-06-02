@@ -25,7 +25,7 @@ function openScript(nowGitProjectId, path, name) {
         closeConfirm: false
     }
 
-    QIAN_KUN.utils.addTab(params)
+    QIAN_KUN && QIAN_KUN.utils.addTab(params)
 }
 
 function updateQianKunTab(dataObj){

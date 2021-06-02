@@ -15,7 +15,7 @@ function hiddenLeftRightMeun(isFromBroadCast) {
 
     //清除右侧右键菜单
     if(isFromBroadCast == undefined){
-        QIAN_KUN.utils.broadcast("clear-right-right-meun", "clearRight")
+        QIAN_KUN && QIAN_KUN.utils.broadcast("clear-right-right-meun", "clearRight")
     }
 
 }

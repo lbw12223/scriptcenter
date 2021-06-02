@@ -20,11 +20,11 @@
     <bean id="projectSpaceRightComponent" class="com.jd.bdp.datadev.component.ProjectSpaceRightComponent"></bean>
 
     <task:scheduled-tasks>
-        <!--<task:scheduled ref="loadGitProject" method="refresh"  cron="0 0/20 * * * ?"/>-->
-        <!--<task:scheduled ref="initSingleGitProject" method="initGitProjects"  cron="0 0/20 * * * ?"/>-->
+<!--        <task:scheduled ref="loadGitProject" method="refresh"  cron="0 0/20 * * * ?"/>-->
+<!--        <task:scheduled ref="initSingleGitProject" method="initGitProjects"  cron="0 0/20 * * * ?"/>-->
 
-        <!--<task:scheduled ref="initGitGroup" method="initGroup"  cron="0 0/20 * * * ?"/>-->
-        <!--<task:scheduled ref="initSingleGitGroup" method="initGitGroups"  cron="0 0/20 * * * ?"/>-->
+<!--        <task:scheduled ref="initGitGroup" method="initGroup"  cron="0 0/20 * * * ?"/>-->
+<!--        <task:scheduled ref="initSingleGitGroup" method="initGitGroups"  cron="0 0/20 * * * ?"/>-->
 
         <task:scheduled ref="tmpWorkerService" method="execute"  cron="0 0 0 * * ?"/>
         <task:scheduled ref="allMarketComponent" method="execute"  cron="0 0/5 * * * ?"/>

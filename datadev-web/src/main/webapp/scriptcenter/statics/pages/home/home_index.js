@@ -2112,7 +2112,7 @@ var datadevInit = {
                         }
                         $.bdpMsg({
                             title: "提示",
-                            mainContent: " <div style='font-size: 14px;margin-top: 30px;color: #E4ECFA;opacity: 0.8;word-break: break-all'>是否将更改保存到" + append + "？</div><div style='font-size: 12px;margin-top: 30px;color: #E4ECFA;opacity: 0.8;'>文件尚未保存修改内容，如果不保存，您的修改将会丢失！</div>",
+                            mainContent: " <div style='font-size: 14px;margin-top: 30px;color: #666;opacity: 0.8;word-break: break-all'>是否将更改保存到" + append + "？</div><div style='font-size: 12px;margin-top: 30px;color: #666;opacity: 0.8;'>文件尚未保存修改内容，如果不保存，您的修改将会丢失！</div>",
                             buttons: [
                                 {
                                     text: "保存",
@@ -2217,6 +2217,7 @@ var datadevInit = {
         })
 
         $("#dependencyButton").click(function (event) {
+            console.log("99999")
             if ($(".ico-disabled", $(this)).length > 0) {
                 return;
             }

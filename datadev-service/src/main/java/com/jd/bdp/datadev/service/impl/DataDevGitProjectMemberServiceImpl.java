@@ -55,4 +55,14 @@ public class DataDevGitProjectMemberServiceImpl implements DataDevGitProjectMemb
         DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberDao.findByErp(gitProjectId, erp);
         return dataDevGitProjectMember;
     }
+
+    @Override
+    public DataDevGitProjectMember findById(Long id) {
+        return dataDevGitProjectMemberDao.findById(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        dataDevGitProjectMemberDao.deleteById(id);
+    }
 }

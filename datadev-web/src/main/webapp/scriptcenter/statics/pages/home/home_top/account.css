@@ -1,5 +1,11 @@
+
+#codeModal .bdp-modal-dialog{
+    width: 840px;
+}
+
+
 #codeModal div.leftBodyDiv {
-    width: 191px;
+    width: 242px;
     height: 280px;
     float: left;
     background: #272A2F;
@@ -7,12 +13,10 @@
 }
 
 #codeModal div.rightBodyDiv {
-    width: 457px;
-    height: 270px;
-    float: left;
-    margin-left: 20px;
+    overflow: hidden;
+    /*height: 270px;*/
+    padding-left: 40px;
     line-height: 32px;
-    padding-left: 10px;
 }
 
 #codeModal div.dialog-group {
@@ -20,8 +24,9 @@
 }
 
 #codeModal div.account-tool {
-    width: 100%;
+    padding: 0 6px;
     height: 40px;
+    background: rgba(255,255,255,1);
 }
 
 #codeModal div.account-body {
@@ -32,14 +37,12 @@
 }
 
 #codeModal label.account-label {
-    width: 50px;
-    float: left
+    width: 70px;
 }
 
 #codeModal div.account-input {
     float: left;
-    width: 381px;
-    margin-left: 16px;
+    width: 433px;
     position: relative;
 }
 
@@ -78,7 +81,7 @@ div.queue-tip a:hover {
 }
 
 .account-tool span {
-    margin-left: 6px;
+    margin-left: 8px;
     cursor: pointer;
 }
 
@@ -86,13 +89,14 @@ div.queue-tip a:hover {
     color: #3286E9;;
 }
 
+
 div.account-history {
     overflow: auto;
-    height: 280px;
-    width: 100%;
+    height: 140px;
 }
 
-ul.account-history-ul {
+ul.account-history-ul,ul.account-history-ul2 {
+    margin-left: 60px;
     line-height: 30px;
     font-family: MicrosoftYaHei sans-serif;
     font-size: 12px;
@@ -100,22 +104,25 @@ ul.account-history-ul {
     letter-spacing: 0;
 }
 
-ul.account-history-ul li {
-    padding-left: 9px;
+ul.account-history-ul li, ul.account-history-ul2 li{
+    height: 32px;
+    line-height: 32px;
+    padding-left: 14px;
+    font-size: 14px;
     white-space: nowrap;
-    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
+    color: rgba(0,0,0,0.65);
 }
 
-ul.account-history-ul li:hover {
-    background: #2F3338;
+ul.account-history-ul li:hover, ul.account-history-ul2 li:hover{
+    background: rgba(47,100,235,0.08);
 }
 
-ul.account-history-ul li.active {
-    color: #FFFFFF;
-    background: #3286E9;
+ul.account-history-ul li.active,ul.account-history-ul2 li.active {
+    color: rgba(47,100,235,1);
+    background: rgba(47,100,235,0.08);
 }
 
 .noselect {
@@ -131,4 +138,26 @@ ul.account-history-ul li.active {
     -ms-user-select: none; /* Internet Explorer/Edge */
 
     user-select: none; /* Non-prefixed version, currently*/
+}
+
+
+#codeModal .select2-container .select2-choice > .select2-chosen{
+    font-size: 14px;
+}
+
+#codeModal .account-part{
+    height: 140px;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+#codeModal .account-part-name{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 60px;
+    font-size: 14px;
+    color: rgba(0,0,0,1);
+    text-align: center;
+    line-height: 3;
 }
