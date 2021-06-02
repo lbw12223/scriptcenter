@@ -65,4 +65,12 @@
         <include refid="datadev_git_project_member_column"></include>
          from git_project_member where git_project_id = #{gitProjectId} and git_member_username = #{erp};
     </select>
+    <select id="findById" resultType="DataDevGitProjectMember">
+        SELECT
+        <include refid="datadev_git_project_member_column"></include>
+        FROM git_project_member where id = #{id}
+    </select>
+    <delete id="deleteById">
+        delete from git_project_member where id = #{id}
+    </delete>
 </mapper>

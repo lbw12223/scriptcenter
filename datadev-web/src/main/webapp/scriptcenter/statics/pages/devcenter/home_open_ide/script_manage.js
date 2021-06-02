@@ -200,7 +200,15 @@ function locationScriptPositon(selectNode) {
         }
     }
 }
-
+function getProjectType(id){
+    if(id * 1 > 1000000000){
+        return 3 ; //local
+    }
+    if(id * 1 > 900000000){
+        return 2 ; //coding
+    }
+    return 1 ; //git
+}
 function getSettingAsync(gitProjectId) {
     var async = {
         enable: true,
@@ -748,13 +756,17 @@ $(function () {
                     var menuLeft = offSet.left - $("#gitMenuDiv").width() + 16;
                     hiddenAllRightMeun();
                     var id = $("#appSelect").val();
-                    if(id > 900000000){
+                    var projectType = getProjectType(id);
+
+                    $(".codingOrGitShow").css("display","block");
+                    if(projectType == 2){
                         $("#gitOrCoding").html("跳转至coding");
-                        // $("#gitOrCodingSelect").html("Coding")
-                    }else{
+                    }if(projectType == 1){
                         $("#gitOrCoding").html("跳转至git");
-                        // $("#gitOrCodingSelect").html("Git")
+                    }else{
+                        $(".codingOrGitShow").css("display","none");
                     }
+
                     $("#gitMenuDiv").css({top: menuTop, left: menuLeft}).show();
                     event.stopPropagation();
                     event.preventDefault();

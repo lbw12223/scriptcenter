@@ -5,12 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.datadev.component.ImportScriptManager;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.domain.*;
+import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptGitStatusEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
+import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.jdgit.JDGitFiles;
 import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.util.MD5Util;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
+import com.jd.bdp.planing.domain.enums.ProjectTypeEnum;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -67,6 +70,14 @@ public class ScriptManageController {
                 DataDevApplication dataDevApplication = new DataDevApplication();
                 dataDevApplication.setAppgroupId(Integer.parseInt(temp.getGitProjectId() + ""));
                 dataDevApplication.setAppgroupName(temp.getGitProjectPath());
+                Long id = temp.getGitProjectId() ;
+                if(id >= GitHttpUtil._10YI){
+                    dataDevApplication.setProjectType(DataDevProjectTypeEnum.LOCAL.code);
+                }if(id > GitHttpUtil._9YI && id < GitHttpUtil._10YI){
+                    dataDevApplication.setProjectType(DataDevProjectTypeEnum.CODING.code);
+                }else{
+                    dataDevApplication.setProjectType(DataDevProjectTypeEnum.GIT.code);
+                }
                 list.add(dataDevApplication);
             }
         }

@@ -52,4 +52,15 @@ public interface DataDevGitProjectMemberService {
      */
     DataDevGitProjectMember findByErp(Long gitProjectId, String erp);
 
+    /**
+     * 根据id查询DataDevGitProjectMember的信息
+     * @param id
+     */
+    DataDevGitProjectMember findById(Long id);
+
+    /**
+     * 删除一个项目下面选中的人员
+     */
+    void deleteById(Long id);
+
 }

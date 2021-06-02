@@ -127,7 +127,7 @@ public class AppGroupUtil {
 
     public List<DataDevApplication> getAppsByErp(String erp) throws Exception {
         // return getAppsByErp(appId, appToken, domain, erp);
-        return appGroupProjectUtil.getAppsByErp(erp);
+         return appGroupProjectUtil.getAppsByErp(erp);
     }
 
     private DataDevApplication getAppInfo(String appId, String token, String domain, Long id) throws Exception {

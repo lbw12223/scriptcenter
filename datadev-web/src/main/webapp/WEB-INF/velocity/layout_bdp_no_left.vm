@@ -90,7 +90,7 @@
         div.projectSpace{
             width: 100px;
             height: 45px;
-            background: #171F2A;
+            background: white;
             position: relative;
             cursor: pointer;
         }
@@ -102,7 +102,7 @@
 </head>
 <body style="overflow: hidden">
 <div id="selectBack" class="selectBack"></div>
-<div style="width: 100%;height: 100%;position: relative;top:0px;background: #171F2A;">
+<div style="width: 100%;height: 100%;position: relative;top:0px;background: #white;">
 
     <template id="parentProjectSpace" >
         <div id="projectSpace" class="projectSpace" style="">

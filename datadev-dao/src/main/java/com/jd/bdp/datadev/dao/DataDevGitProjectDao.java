@@ -90,4 +90,7 @@ public interface DataDevGitProjectDao {
     List<String> getAllUserHaveSameProject(@Param("projects") List<DataDevGitProject> projects);
 
 
+    DataDevGitProject getctByPath(@Param("gitProjectPath") String gitProjectPath) ;
+    void updateDataDevGitProjectById(DataDevGitProject dataDevScriptProject);
+
 }
