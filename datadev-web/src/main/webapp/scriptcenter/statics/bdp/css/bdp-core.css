@@ -898,6 +898,19 @@ a.bdp-btn.disabled, a.bdp-btn.bdp-disabled, fieldset[disabled] a.bdp-btn {
     margin-right: 5px;
 }
 
+.bdp-form-group-new {
+    margin-bottom: 25px;
+}
+
+.bdp-form-group-new .bdp-control-label{
+    font-size: 14px;
+}
+.bdp-form-group-new .bdp-form-control{
+    font-size: 14px !important;
+    height: 32px;
+    line-height: 30px;
+}
+
 .bdp-form-horizontal .bdp-control-label b {
     color: red;
     margin-right: 5px;
@@ -1523,6 +1536,22 @@ a.bdp-label:hover, a.bdp-label:focus {
 
 .bdp-modal-footer .bdp-btn-block + .bdp-btn-block {
     margin-left: 0;
+}
+
+.bdp-modal-body-new{
+    padding: 24px;
+
+}
+.bdp-modal-footer-new{
+    height: 56px;
+    padding: 0 20px;
+    text-align: right !important;
+}
+
+.bdp-btn-big{
+    font-size: 14px;
+    padding: 5px 18px;
+
 }
 
 .bdp-modal-scrollbar-measure {

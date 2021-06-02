@@ -2217,6 +2217,7 @@ var datadevInit = {
         })
 
         $("#dependencyButton").click(function (event) {
+            console.log("99999")
             if ($(".ico-disabled", $(this)).length > 0) {
                 return;
             }
