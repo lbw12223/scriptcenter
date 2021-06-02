@@ -1877,12 +1877,11 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm: function (cb) {
+        closeConfirm:true,
+        beforeConfirm:function (cb) {
             var frameBus = new FrameBus();
-            console.log(cb)
-            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {
-                label: 1,
-                cb: cb
+            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {},function(f){
+                cb(f)
             })
         }
     }
