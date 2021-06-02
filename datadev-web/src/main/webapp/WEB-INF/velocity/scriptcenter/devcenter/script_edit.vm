@@ -444,7 +444,10 @@ display: none;
 
 
 #define($javascriptBlock)
+## 2021-06-01新增
 <script src="/scriptcenter/statics/config/frameBusConfig.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/bdp/plugins/jmd-util/jmd-util.min.js?_dc=$!{staticVersion}"></script>
+
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
@@ -468,10 +471,7 @@ display: none;
 <script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
 
 <script src="/scriptcenter/statics/spin/spin.js?_dc=$!{staticVersion}"></script>
-
 <script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
-
-
 
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_help.js?_dc=sssssss1111$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_editor.js?_dc=sssssss1111$!{staticVersion}"></script>
@@ -485,8 +485,11 @@ display: none;
 <script src="/scriptcenter/statics/autocompleter/jquery.autocompleter.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_manage.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_editor_qian_kun.js?_dc=$!{staticVersion}"></script>
+
 <script src="/scriptcenter/statics/sql/dataDevSql.js?_dc=$!{staticVersion}"></script>
 
+
+<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_commit.js?_dc=$!{staticVersion}"></script>
 #end
 
 
