@@ -1,22 +1,28 @@
 <link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_top/account.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_2563471_87zrqv1mh56.css?spm=a313x.7781069.1998910419.82&file=font_2563471_87zrqv1mh56.css" type="text/css">
 
 <div class="bdp-modal " id="codeModal" role="dialog" aria-hidden="true" style="overflow:hidden;z-index: 9990 !important;">
-    <div class="bdp-modal-dialog " style="width: 710px;">
+    <div class="bdp-modal-dialog">
         <div class="bdp-modal-content "> <!--这是弹出框的头部-->
             <div class="bdp-modal-header"
-                 style="height: 45px !important;padding: 15px 20px;margin: 0px;border-bottom: 1px solid #44494F">
+                 style="height: 56px !important;padding: 18px 20px;margin: 0px;border-bottom: 1px solid #44494F">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="bdp-modal-title">配置账号队列</h4>
+                <h4 class="bdp-modal-title">资源套餐66666</h4>
             </div> <!--这是弹出框的主要内容-->
-            <div class="bdp-modal-body account-body" style="width: 710px;height: 370px;position: relative;">
+            <div class="bdp-modal-body account-body bdp-modal-body-new" style="position: relative;">
                 <div class="leftBodyDiv noselect" style="height: 320px;">
                     <div class="account-tool">
-                        <span class="bdp-icon ide-xzmu pop-title" id="account-add" data-title="添加"></span>
-                        <span class="bdp-icon  pop-title" id="account-remove" data-title="删除"></span>
-                        <span class="bdp-icon ide-fz pop-title" id="account-copy" data-title="复制"></span>
-                        <span class="bdp-icon ide-pop-up pop-title" id="account-up" data-title="上移"></span>
-                        <span class="bdp-icon ide-pop-down pop-title" id="account-down" data-title="下移"></span>
+##                        <span class="bdp-icon ide-xzmu pop-title" id="account-add" data-title="添加"></span>
+##                        <span class="bdp-icon  pop-title" id="account-remove" data-title="删除"></span>
+##                        <span class="bdp-icon ide-fz pop-title" id="account-copy" data-title="复制"></span>
+##                        <span class="bdp-icon ide-pop-up pop-title" id="account-up" data-title="上移"></span>
+##                        <span class="bdp-icon ide-pop-down pop-title" id="account-down" data-title="下移"></span>
+
+                        <span class="pop-title iconfont icon-xinjianxiangmu" id="account-add" data-title="添加"></span>
+                        <span class="pop-title iconfont icon-xinjian" id="account-copy" data-title="复制"></span>
+                        <span class="pop-title iconfont icon-xia" id="account-up" data-title="上移"></span>
+                        <span class="pop-title iconfont icon-shang" id="account-down" data-title="下移"></span>
                     </div>
                     <div class="account-history">
                         <ul class="account-history-ul">
@@ -25,14 +31,14 @@
                 </div>
                 <div class="rightBodyDiv">
                     <form id="account-form">
-                        <div class="bdp-form-group dialog-group">
-                            <label class="bdp-control-label account-label">名称：</label>
+                        <div class="bdp-form-group dialog-group bdp-form-group-new">
+                            <label class="bdp-control-label account-label">配置名称：</label>
                             <div class="account-input">
                                 <input class="bdp-form-control" value="" id="accountName" name="name" placeholder="只支持中文、字母、数字、下划线、中划线" autocomplete="off"
                                        style="width: 100%">
                             </div>
                         </div>
-                        <div class="bdp-form-group dialog-group">
+                        <div class="bdp-form-group dialog-group bdp-form-group-new">
                             <label class="bdp-control-label account-label"> 集市：</label>
                             <div class="account-input">
                                 <select class="" value="" name="marketLinuxUser" id="marketSelect" placeholder="请选择集市"
@@ -41,8 +47,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="bdp-form-group dialog-group" id="accountDiv">
-                            <label class="bdp-control-label account-label">账号：</label>
+                        <div class="bdp-form-group dialog-group bdp-form-group-new" id="accountDiv">
+                            <label class="bdp-control-label account-label">开发账号：</label>
                             <div class="account-input">
                                 <select class="" value="" name="accountCode" id="accountCodeSelect"
                                         placeholder="请选择账号" autocomplete="off" style="width: 100%">
@@ -50,8 +56,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="bdp-form-group dialog-group">
-                            <label class="bdp-control-label account-label">队列：</label>
+                        <div class="bdp-form-group dialog-group bdp-form-group-new">
+                            <label class="bdp-control-label account-label">开发队列：</label>
                             <div class="account-input">
                                 <select class="queue-select" value="" name="queueCode" id="queueCodeSelect" placeholder="请选择队列"
                                         autocomplete="off" style="width: 100%">
@@ -59,8 +65,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="bdp-form-group dialog-group">
-                            <label class="bdp-control-label account-label">引擎：</label>
+                        <div class="bdp-form-group dialog-group bdp-form-group-new">
+                            <label class="bdp-control-label account-label">使用引擎：</label>
                             <div class="account-input">
                                 <select class="" value="" name="engineType" id="engineTypeSelect" placeholder="请选择引擎"
                                         autocomplete="off" style="width: 100%">
@@ -69,21 +75,22 @@
                             </div>
                         </div>
                     </form>
-                    <div class="bdp-form-group dialog-group" style="margin-bottom: 0px;margin-top: 60px;">
-                        <div class="queue-tip" style="width: 113%;position: relative;left: -23px;">
+                    <div class="bdp-form-group dialog-group bdp-form-group-new" style="margin-bottom: 0px;margin-top: 60px;">
+                        <div class="queue-tip">
                             <span style="line-height:27px;">提示：Presto引擎、Spark引擎仅支持SQL类型，如无所需账号和队列，请<a id="applyMarket">点击此处</a>申请。</span><br>
 ##                            <span style="line-height:27px;margin-left:40px;">如无所需账号和队列，请<a id="applyMarket">点击此处</a>申请。</span>
                         </div>
-                        <div class="apply-div" style="bottom:50px;">
+                        <div class="apply-div" style="bottom:70px;">
                             <a class="bdp-btn bdp-btn-primary " id="apply-account">应用</a>
                         </div>
                     </div>
                 </div>
 
             </div> <!--这是弹出框的底部内容-->
-            <div class="bdp-modal-footer" style="height: 52px">
-                <a class="bdp-btn bdp-btn-primary" id="account-ok">确定</a>
+            <div class="bdp-modal-footer bdp-modal-footer-new">
                 <a class="bdp-btn bdp-btn-default" data-dismiss="modal">取消</a>
+                <a class="bdp-btn bdp-btn-primary" id="account-ok">确定</a>
+
             </div>
         </div>
     </div>

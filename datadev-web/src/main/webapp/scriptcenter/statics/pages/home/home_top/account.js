@@ -26,7 +26,24 @@ $(function () {
         window.open(_bdpDomain+"/planning/project/detail/"+top.window.projectSpaceId);
         // applyBuffaloMarket();
     })
-    $("ul.account-history-ul").on("click", "li", function () {
+    $("ul.account-history-ul,ul.account-history-ul2").on("click", "li", function (e) {
+        if(e.delegateTarget.className == "account-history-ul2"){
+            console.log("公用的","99999")
+            $("#accountName").attr("disabled","disabled");
+            $("#marketSelect").attr("disabled","disabled");
+            $("#accountCodeSelect").attr("disabled","disabled");
+            $("#queueCodeSelect").attr("disabled","disabled");
+            $("#engineTypeSelect").attr("disabled","disabled");
+
+        }else{
+            console.log("私有的","99999");
+            $("#accountName").removeAttr("disabled");
+            $("#marketSelect").removeAttr("disabled");
+            $("#accountCodeSelect").removeAttr("disabled");
+            $("#queueCodeSelect").removeAttr("disabled");
+            $("#engineTypeSelect").removeAttr("disabled");
+        }
+        
         formValid.resetForm();
         if ($(this).attr("data-name")) {
             $("#accountName").val($(this).attr("data-name"));
@@ -114,6 +131,8 @@ $(function () {
 
     $('#codeModal').on('show.bs.modal', function () {
         $(".bdp-help-block").remove();
+
+
         var ul = $("ul.account-history-ul");
         ul.empty();
         maxShowOrder = 0;
@@ -129,6 +148,23 @@ $(function () {
             }
             ul.append(lis);
         }
+
+        var ul2 = $("ul.account-history-ul2");
+        ul2.empty();
+        if (configObj2 && configObj2.length > 0) {
+            tmpConfigArr2 = deepArray(configObj2);
+            var lis = "";
+            for (var index = 0; index < tmpConfigArr2.length; index++) {
+                var config = tmpConfigArr2[index];
+                // if (config.showOrder && config.showOrder > maxShowOrder) {
+                //     maxShowOrder = config.showOrder;
+                // }
+                lis += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+            }
+            ul2.append(lis);
+        }
+
+
         addIndex = -1;
         var isEmpty = !configObj || configObj.length == 0;
         changeMarket(function () {

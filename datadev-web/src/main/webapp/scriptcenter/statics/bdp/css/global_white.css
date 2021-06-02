@@ -3839,18 +3839,18 @@ ul.account-history-ul {
     color: #666 !important;;;
 }
 
-ul.account-history-ul li {
-}
+/*ul.account-history-ul li {*/
+/*}*/
 
-ul.account-history-ul li:hover {
-    color: #ffffff !important;
-    background: #3286e9 !important;
-}
+/*ul.account-history-ul li:hover {*/
+/*    color: #ffffff !important;*/
+/*    background: #3286e9 !important;*/
+/*}*/
 
-ul.account-history-ul li.active {
-    color: #ffffff;
-    background: #3286e9;
-}
+/*ul.account-history-ul li.active {*/
+/*    color: #ffffff;*/
+/*    background: #3286e9;*/
+/*}*/
 
 .noselect {
 }
