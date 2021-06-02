@@ -6,6 +6,7 @@
 
 
 <input type="hidden" id="gitProjectId" value="${gitProjectId}"/>
+<input type="hidden" id="isCodingOrGit" value="${isCodingOrGit}"/>
 <input type="hidden" id="hasAuthority" value="${hasAuthority}"/>
 <span style="display: none" id="projectDetail">${projectDetail}</span>
 <span style="display: none" id="members">${members}</span>
@@ -30,12 +31,13 @@
                 <tbody>
                 <tr class="commonTr">
                     <td>项目名称：</td>
-                    <td id="projectName"></td>
+                    <td id="projectName">$!{projectName}</td>
                 </tr>
                 <tr class="commonTr">
                     <td>项目Id：</td>
-                    <td id="projectId"></td>
+                    <td id="projectId">$!{gitProjectId}</td>
                 </tr>
+                #if($!{isCodingOrGit} == 1)
                 <tr class="commonTr">
                     <td>HTTP：</td>
                     <td><a href="" id="HTTP" target="_blank"></a></td>
@@ -44,13 +46,15 @@
                     <td>SSH：</td>
                     <td id="SSH"></td>
                 </tr>
+                #end
+
                 <tr class="commonTr">
                     <td>创建时间：</td>
-                    <td id="creatTime"></td>
+                    <td id="creatTime">$!{createDate}</td>
                 </tr>
                 <tr class="commonTr">
                     <td>项目描述：</td>
-                    <td id="description"></td>
+                    <td id="description">$!{description}</td>
                 </tr>
                 </tbody>
             </table>
@@ -60,37 +64,58 @@
     </div>
 #*成员信息*#
     <div id="user-detail-content" class="tab-content" style="margin-left: 20px; margin-right: 20px">
-        <div style="margin-bottom: 10px">
-            <label style="margin-left: 20px; margin-top: 10px; margin-bottom: -15px; font-size: 12px;height:30px;">可访问当前项目的组信息</label>
-            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:216px;" id="add-group">添加</a>
-            <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-group">删除</a>
-        </div>
-
-        <div class="jd-table-parent" id="group-jd-table-parent"
-             style="margin-left:20px; margin-bottom:10px;height:30%; overflow: hidden;">
-            <table class="jd-table table table-hover " id="group-grid-table">
-            </table>
-            <div id="group-grid-pager">
-
+        #if($!{isCodingOrGit} == 1)
+            <div style="margin-bottom: 10px">
+                <label style="margin-left: 20px; margin-top: 10px; margin-bottom: -15px; font-size: 12px;height:30px;">可访问当前项目的组信息</label>
+                <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:216px;" id="add-group">添加</a>
+                <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-group">删除</a>
             </div>
-        </div>
 
-        <div style="margin-bottom: 10px;">
-            <label style="margin-left: 20px; margin-bottom: -15px; font-size: 12px">当前项目的成员信息</label>
+            <div class="jd-table-parent" id="group-jd-table-parent"
+                 style="margin-left:20px; margin-bottom:10px;height:30%; overflow: hidden;">
+                <table class="jd-table table table-hover " id="group-grid-table">
+                </table>
+                <div id="group-grid-pager">
 
-
-            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:370px;" id="add-user">添加</a>
-            <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-user">删除</a>
-        </div>
-
-        <div class="jd-table-parent" id="member-jd-table-parent"
-             style="margin-left:20px; height:70%;overflow: hidden;">
-            <table class="jd-table table table-hover " id="member-grid-table">
-            </table>
-            <div id="member-grid-pager">
-
+                </div>
             </div>
-        </div>
+            <div style="margin-bottom: 10px;">
+                <label style="margin-left: 20px; margin-bottom: -15px; font-size: 12px">当前项目的成员信息</label>
+
+
+                <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:370px;" id="add-user">添加</a>
+                <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-user">删除</a>
+            </div>
+
+            <div class="jd-table-parent" id="member-jd-table-parent"
+                 style="margin-left:20px; height:70%;overflow: hidden;">
+                <table class="jd-table table table-hover " id="member-grid-table">
+                </table>
+                <div id="member-grid-pager">
+
+                </div>
+            </div>
+        #else
+            <div style="margin-bottom: 10px;">
+                <label style="margin-left: 20px; margin-bottom: -15px; font-size: 12px">当前项目的成员信息</label>
+
+
+                <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:370px;" id="add-user">添加</a>
+                <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-user">删除</a>
+            </div>
+
+            <div class="jd-table-parent" id="member-jd-table-parent"
+                 style="margin-left:20px; height:100%;overflow: hidden;">
+                <table class="jd-table table table-hover " id="member-grid-table">
+                </table>
+                <div id="member-grid-pager">
+
+                </div>
+            </div>
+        #end
+
+
+
 
     </div>
 #*操作记录*#

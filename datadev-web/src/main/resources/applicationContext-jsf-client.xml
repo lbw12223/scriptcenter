@@ -56,14 +56,14 @@
     </jsf:consumer>
 
 
-    <jsf:consumer id="projectInterface" interface="com.jd.bdp.planing.api.ProjectInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000" lazy="true">
-    </jsf:consumer>
+<!--    <jsf:consumer id="projectInterface" interface="com.jd.bdp.planing.api.ProjectInterface"-->
+<!--                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000" lazy="true">-->
+<!--    </jsf:consumer>-->
 
 
-    <jsf:consumer id="releaseInterface" interface="com.jd.bdp.rc.api.ReleaseInterface"
-                  protocol="jsf" alias="${jsf.alias.devcenter}"  timeout="100000" lazy="true">
-    </jsf:consumer>
+<!--    <jsf:consumer id="releaseInterface" interface="com.jd.bdp.rc.api.ReleaseInterface"-->
+<!--                  protocol="jsf" alias="${jsf.alias.devcenter}"  timeout="100000" lazy="true">-->
+<!--    </jsf:consumer>-->
 
 
 

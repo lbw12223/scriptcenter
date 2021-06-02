@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,15 @@ public class ProjectSpaceRightComponent implements InitializingBean {
      * @return
      */
     public List<ProjectBO> getProjectSpaces(String erp) {
+
+        if(true){
+            List<ProjectBO> results = new ArrayList<>();
+            ProjectBO temp1 = new ProjectBO();
+            temp1.setId(10001L);
+            temp1.setName("项目空间一");
+            results.add(temp1);
+            return results;
+        }
         ProjectInterface projectInterface = SpringContextUtil.getBean(ProjectInterface.class);
 
         ProjectBO projectBO = new ProjectBO();

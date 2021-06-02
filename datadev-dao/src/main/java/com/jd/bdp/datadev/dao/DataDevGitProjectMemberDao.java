@@ -23,4 +23,10 @@ public interface DataDevGitProjectMemberDao {
     Long findAllCount(Long gitProjectId);
 
     DataDevGitProjectMember findByErp(@Param("gitProjectId") Long gitProjectId, @Param("erp") String erp);
+
+    DataDevGitProjectMember findById(Long id);
+
+    void deleteById(@Param("id") Long id);
+
 }
+

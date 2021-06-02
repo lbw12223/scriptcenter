@@ -34,10 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by zhangrui25 on 2018/6/19.
@@ -137,7 +134,7 @@ public class ScriptProjectController {
     @RequestMapping("/createLocalProject.ajax")
     @ResponseBody
     public JSONObject createLocalProject(UrmUserHolder userHolder, String projectName, String description) throws Exception {
-        DataDevGitProject dataDevGitProject =  dataDevGitProjectDao.getLocalProjectByPath(projectName);
+        DataDevGitProject dataDevGitProject =  dataDevGitProjectDao.getGitProjectByPath(projectName);
 
         if(dataDevGitProject != null){
             throw new RuntimeException("项目【"+projectName+"】已经存在！");
@@ -148,6 +145,8 @@ public class ScriptProjectController {
         insertDataDevGitProject.setDescription(description);
         insertDataDevGitProject.setFinishProjectMemberFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
         insertDataDevGitProject.setFinishProjectTreeFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
+        insertDataDevGitProject.setRefreshTime(new Date());
+
         dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
         insertDataDevGitProject.setGitProjectId(insertDataDevGitProject.getId() + GitHttpUtil._10YI);
         dataDevGitProjectDao.updateDataDevGitProjectById(insertDataDevGitProject);
@@ -177,40 +176,68 @@ public class ScriptProjectController {
     @RequestMapping("/addProjectMember.ajax")
     @ResponseBody
     public JSONObject addProjectMember(UrmUserHolder userHolder, Long gitProjectId, String erps) throws Exception {
-
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
         List<JDGitMembers> jdGitMembersList = new ArrayList<JDGitMembers>();
         List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
+        if(isGitOrCoding){
 
-        if (StringUtils.isNotEmpty(erps)) {
-            for (String erp : erps.split(",")) {
-                JDGitUser jdGitUser = new JDGitUser();
-                jdGitUser.setName(erp);
-                jdGitUser.setGitProjectId(gitProjectId);
-                JDGitUser searchJdUser = jdGitUser.searchUser();
-                if (searchJdUser == null) {
-                    throw new RuntimeException("用户[" + erp + "在git未激活，请在<a href='http://git.jd.com'target='blank'>git.jd.com</a>登录一次进行激活！");
+
+            if (StringUtils.isNotEmpty(erps)) {
+                for (String erp : erps.split(",")) {
+                    JDGitUser jdGitUser = new JDGitUser();
+                    jdGitUser.setName(erp);
+                    jdGitUser.setGitProjectId(gitProjectId);
+                    JDGitUser searchJdUser = jdGitUser.searchUser();
+                    if (searchJdUser == null) {
+                        throw new RuntimeException("用户[" + erp + "在git未激活，请在<a href='http://git.jd.com'target='blank'>git.jd.com</a>登录一次进行激活！");
+                    }
+                    JDGitMembers member = new JDGitMembers();
+                    member.setAccessLevel(ImportScriptManager.DEVELOPER);
+                    member.setGitUserId(searchJdUser.getId());
+                    member.setName(erp);
+                    member.setUserName(erp);
+                    jdGitMembersList.add(member);
+
+                    DataDevGitProjectMember temp = new DataDevGitProjectMember();
+                    temp.setAccessLevel(ImportScriptManager.DEVELOPER);
+                    temp.setGitMemberId(searchJdUser.getId());
+                    temp.setGitMemberName(erp);
+                    temp.setGitMemberUserName(erp);
+                    temp.setGitProjectId(gitProjectId);
+
+                    dataDevGitProjectMemberList.add(temp);
                 }
-                JDGitMembers member = new JDGitMembers();
-                member.setAccessLevel(ImportScriptManager.DEVELOPER);
-                member.setGitUserId(searchJdUser.getId());
-                member.setName(erp);
-                member.setUserName(erp);
-                jdGitMembersList.add(member);
-
-                DataDevGitProjectMember temp = new DataDevGitProjectMember();
-                temp.setAccessLevel(ImportScriptManager.DEVELOPER);
-                temp.setGitMemberId(searchJdUser.getId());
-                temp.setGitMemberName(erp);
-                temp.setGitMemberUserName(erp);
-                temp.setGitProjectId(gitProjectId);
-
-                dataDevGitProjectMemberList.add(temp);
+                JDGitProjects jdGitProjects = new JDGitProjects();
+                jdGitProjects.setGitProjectId(gitProjectId);
+                jdGitProjects.setJdGitMembers(jdGitMembersList);
+                jdGitProjects.addProjectMember();
+                dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
             }
-            JDGitProjects jdGitProjects = new JDGitProjects();
-            jdGitProjects.setGitProjectId(gitProjectId);
-            jdGitProjects.setJdGitMembers(jdGitMembersList);
-            jdGitProjects.addProjectMember();
-            dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
+
+        }else{
+
+            if (StringUtils.isNotEmpty(erps)) {
+                for (String erp : erps.split(",")) {
+
+                    DataDevGitProjectMember temp = new DataDevGitProjectMember();
+                    temp.setAccessLevel(ImportScriptManager.DEVELOPER);
+                    DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findByErp(gitProjectId,erp);
+
+                    if(dataDevGitProjectMember != null){
+                        throw new RuntimeException("用户【"+erp+"】已经存在！");
+                    }
+                    temp.setGitMemberName(erp);
+                    temp.setGitMemberUserName(erp);
+                    temp.setGitProjectId(gitProjectId);
+
+                    dataDevGitProjectMemberList.add(temp);
+                }
+
+                dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
+            }
+
+
+
         }
 
         return JSONObjectUtil.getSuccessResult("添加人员成功");
@@ -263,16 +290,28 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "删除Git人员")
     @RequestMapping("/deleteProjectMember.ajax")
     @ResponseBody
-    public JSONObject deleteProjectMember(UrmUserHolder userHolder, Long gitProjectId, Long gitMemberId) throws Exception {
+    public JSONObject deleteProjectMember(UrmUserHolder userHolder, Long gitProjectId, Long gitMemberId , Long id) throws Exception {
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
 
-        JDGitMembers jdGitMembers = new JDGitMembers();//创建JDGitMembers
-        jdGitMembers.setGitUserId(gitMemberId);
+        if(isGitOrCoding){
+            JDGitMembers jdGitMembers = new JDGitMembers();//创建JDGitMembers
+            jdGitMembers.setGitUserId(gitMemberId);
 
-        JDGitProjects jdGitProjects = new JDGitProjects();//创建JDGitProjects
-        jdGitProjects.setGitProjectId(gitProjectId);
-        jdGitProjects.deleteProjectMember(jdGitMembers);//JDGitProjects执行删除操作
-        dataDevGitProjectMemberService.deleteGitProjectMemberById(gitProjectId, gitMemberId);
-        return JSONObjectUtil.getSuccessResult("删除人员成功");
+            JDGitProjects jdGitProjects = new JDGitProjects();//创建JDGitProjects
+            jdGitProjects.setGitProjectId(gitProjectId);
+            jdGitProjects.deleteProjectMember(jdGitMembers);//JDGitProjects执行删除操作
+            dataDevGitProjectMemberService.deleteGitProjectMemberById(gitProjectId, gitMemberId);
+            return JSONObjectUtil.getSuccessResult("删除人员成功");
+        }else{
+            DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findById(id);
+            if(dataDevGitProjectMember.getAccessLevel() ==  DataDevGitAccessLevelEnum.Owner.toCode()){
+                throw new RuntimeException("创建人不能删除！");
+            }
+            dataDevGitProjectMemberService.deleteById(id);
+
+            return JSONObjectUtil.getSuccessResult("删除人员成功");
+        }
+
 
     }
 
@@ -606,46 +645,78 @@ public class ScriptProjectController {
 
     @RequestMapping("projectDetail.html")
     public String projectDetail(UrmUserHolder urmUserHolder, Long gitProjectId, String gitProjectFilePath, Model model) throws Exception {
-        JDGitProjects jdGitProjects = new JDGitProjects();
-        jdGitProjects.setGitProjectId(gitProjectId);
-        JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
-        boolean isGroupMember = false;
-        boolean isProjectMember = false;
-        boolean hasAuthority = false;
-        String erp = urmUserHolder.getErp();
 
-        DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findByErp(gitProjectId, erp);
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
+        if(isGitOrCoding){
+            JDGitProjects jdGitProjects = new JDGitProjects();
+            jdGitProjects.setGitProjectId(gitProjectId);
+            JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
+            boolean isGroupMember = false;
+            boolean isProjectMember = false;
+            boolean hasAuthority = false;
+            String erp = urmUserHolder.getErp();
 
-        DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
-        Long groupId = dataDevGitProject.getGroupId();//找到项目所属组的id
+            DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findByErp(gitProjectId, erp);
 
-        List<DataDevGitGroupMember> list = dataDevGitGroupMemberService.queryFromGroupId(groupId);//找到这个组的所有成员
-        for(DataDevGitGroupMember dataDevGitGroupMember:list){
-            logger.error("projectDetail list="+dataDevGitGroupMember.toString() );
-        }
+            DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+            Long groupId = dataDevGitProject.getGroupId();//找到项目所属组的id
+
+            List<DataDevGitGroupMember> list = dataDevGitGroupMemberService.queryFromGroupId(groupId);//找到这个组的所有成员
+            for(DataDevGitGroupMember dataDevGitGroupMember:list){
+                logger.error("projectDetail list="+dataDevGitGroupMember.toString() );
+            }
 
 
-        if (list != null) {//检查操作人员是否组成员
-            for (DataDevGitGroupMember dataDevGitGroupMember : list) {
-                String gitUserName = dataDevGitGroupMember.getGitMemberUserName();
-                if (gitUserName.equals(erp) && dataDevGitGroupMember.getAccessLevel() >= 40) {
-                    isGroupMember = true;
-                    break;
+            if (list != null) {//检查操作人员是否组成员
+                for (DataDevGitGroupMember dataDevGitGroupMember : list) {
+                    String gitUserName = dataDevGitGroupMember.getGitMemberUserName();
+                    if (gitUserName.equals(erp) && dataDevGitGroupMember.getAccessLevel() >= 40) {
+                        isGroupMember = true;
+                        break;
+                    }
                 }
             }
-        }
 
-        isProjectMember = (dataDevGitProjectMember != null && dataDevGitProjectMember.getAccessLevel() >= 40);//检查操作人员是否项目成员
-        logger.error("projectDetail isProjectMember="+isProjectMember +";isGroupMember="+isGroupMember+";groupId="+groupId);
-        if (isProjectMember || isGroupMember) {
-            hasAuthority = true; //如果操作人权限不够，则无权限进行添加和删除操作
-        }
+            isProjectMember = (dataDevGitProjectMember != null && dataDevGitProjectMember.getAccessLevel() >= 40);//检查操作人员是否项目成员
+            logger.error("projectDetail isProjectMember="+isProjectMember +";isGroupMember="+isGroupMember+";groupId="+groupId);
+            if (isProjectMember || isGroupMember) {
+                hasAuthority = true; //如果操作人权限不够，则无权限进行添加和删除操作
+            }
 
-        model.addAttribute("projectDetail", JSONObject.toJSONString(projectDetail));
-        model.addAttribute("gitProjectId", gitProjectId);
-        model.addAttribute("gitProjectFilePath", gitProjectFilePath);
-        model.addAttribute("hasAuthority", hasAuthority);
-        return "scriptcenter/art/projectDetail";
+            model.addAttribute("projectDetail", JSONObject.toJSONString(projectDetail));
+            model.addAttribute("gitProjectId", gitProjectId);
+            model.addAttribute("gitProjectFilePath", gitProjectFilePath);
+            model.addAttribute("hasAuthority", hasAuthority);
+            model.addAttribute("isCodingOrGit", 1);
+
+            return "scriptcenter/art/projectDetail";
+
+        }else{
+            boolean hasAuthority = true;
+            String erp = urmUserHolder.getErp();
+            DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+
+            /**
+             *     $("#projectName").text(projectDetail.projectPath);
+             *     $("#projectId").text(projectDetail.gitProjectId);
+             *     $("#HTTP").text(projectDetail.webUrl);
+             *     $("#HTTP").attr("href",projectDetail.webUrl);
+             *     $("#SSH").text(projectDetail.sshUrl);
+             *     $("#creatTime").text(projectDetail.createDate);
+             *     $("#description").text(projectDetail.description);
+             */
+            dataDevGitProject.setGitProjectPath(dataDevGitProject.getGitProjectName());
+            model.addAttribute("projectDetail", JSONObject.toJSONString(dataDevGitProject) );
+            model.addAttribute("gitProjectId", gitProjectId);
+            model.addAttribute("gitProjectFilePath", gitProjectFilePath);
+            model.addAttribute("hasAuthority", hasAuthority);
+            model.addAttribute("isCodingOrGit", 0);
+            model.addAttribute("createDate",dataDevGitProject.getRefreshTime());
+            model.addAttribute("description",dataDevGitProject.getDescription());
+            model.addAttribute("projectName",dataDevGitProject.getGitProjectName());
+
+            return "scriptcenter/art/projectDetail";
+        }
     }
 
     @RequestMapping("addUser.html")
