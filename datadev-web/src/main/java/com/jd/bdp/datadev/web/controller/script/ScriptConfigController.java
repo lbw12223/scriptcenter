@@ -50,6 +50,8 @@ public class ScriptConfigController {
     private static final String MYSQL_CLUSTER = "rdbms"; //关系型数据库过滤掉
 
 
+    @Value("${datadev.env}")
+    private String env;
     @Value("${datadev.appId}")
     private String appId;
     @Value("${datadev.token}")
@@ -433,7 +435,13 @@ public class ScriptConfigController {
             }
             Long time = System.currentTimeMillis();
             String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
-            JSONObject apiResult = commonSearchService.search(xingtuAppId, sign, time, params.toJSONString());
+            JSONObject apiResult;
+            // 使用mock jsf接口
+            if (env.equals("dev") || env.equals("test")) {
+                apiResult = commonSearchService.search("", "", 0, "");
+            } else {
+                apiResult = commonSearchService.search(xingtuAppId, sign, time, params.toJSONString());
+            }
             logger.error("===============查询所有表结果：" + apiResult);
             if (apiResult != null && apiResult.getInteger("code") == 0) {
                 JSONObject data = apiResult.getJSONObject("data");
@@ -527,7 +535,13 @@ public class ScriptConfigController {
             Long time = System.currentTimeMillis();
             String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
             logger.error("===========data:" + params.toJSONString());
-            JSONObject apiResult = tableFieldsDataJsfInterface.queryTBFields(xingtuAppId, sign, time, params.toJSONString());
+            JSONObject apiResult;
+            // 测试开发环境 使用mock jsf接口
+            if (env.equals("dev") || env.equals("test")) {
+                apiResult = tableFieldsDataJsfInterface.queryTBFields("", "", 0, "");
+            } else {
+                apiResult = tableFieldsDataJsfInterface.queryTBFields(xingtuAppId, sign, time, params.toJSONString());
+            }
             logger.error("===============查询表字段：" + apiResult);
 
             JSONArray columns = new JSONArray();
