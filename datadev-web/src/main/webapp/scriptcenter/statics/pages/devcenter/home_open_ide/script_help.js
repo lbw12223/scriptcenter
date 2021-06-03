@@ -1,7 +1,7 @@
 // 此处编写用于script的一些辅助方法
 var scriptHelper = {
     // 校验代码是否变更
-    validIsChangeCode: function (editor, oMd5) {
+    validIsChangeCode: function (editor, oMd5,) {
         if (!editor) {
             return false;
         }
