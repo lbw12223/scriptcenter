@@ -59,6 +59,17 @@ $(function () {
                 shareGits: shareGits,
             }, $("#saveTemplateButton"), function (node, data) {
                 $.successMsg("保存成功");
+                $.dialog.data({
+                    id: templateId,
+                    name: name,
+                    desc: desc,
+                    shareErps: shareErps,
+                    shareGits: shareGits,
+                });
+                // console.log($.dialog.opener,"$.dialog.opener")
+                // $.dialog.opener.location.reload();
+                $.dialog.opener.init_template();
+                               
                 var shareTemplateArt = $.dialog.data("shareTemplateArt");
                 shareTemplateArt.close();
 

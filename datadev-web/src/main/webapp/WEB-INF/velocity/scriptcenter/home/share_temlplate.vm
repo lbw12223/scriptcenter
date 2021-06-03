@@ -45,10 +45,15 @@
                                                                                            type='radio'
                                                                                            id='templateShareGits'
                                                                                            name='shareGits'
+                                                                                           value=true
+                #if($!{dataDevScriptTemplate.shareGits}==true) checked  #end
+
                                                                                            placeholder=''
                                                                                            autocomplete='off' style=''/><span
                     class='template-select-title'>是</span> <input class='template-select-radio' type='radio'
-                                                                  checked='checked' name='shareGits' placeholder=''
+                                                                   name='shareGits' placeholder=''
+                                                                   value=false
+                #if($!{dataDevScriptTemplate.shareGits}==false) checked  #end
                                                                   autocomplete='off' style=''/><span
                     class='template-select-title'>否</span></div>
         </div>
