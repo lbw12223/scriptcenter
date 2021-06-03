@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Controller
@@ -224,7 +225,27 @@ public class DevCentorController {
         return "scriptcenter/devcenter/left/scripts/table_query_data_preview";
     }
 
+    @RequestMapping("shareTemplate.html")
+    public String shareTemplate(UrmUserHolder userHolder, Long templateId , Model model) throws Exception {
+        DataDevScriptTemplate dataDevScriptTemplate = templateService.getScriptTemplateById(templateId);
+        model.addAttribute("dataDevScriptTemplate", dataDevScriptTemplate); //当前版本号
+        model.addAttribute("scriptType", DataDevScriptTypeEnum.enumValueOf(dataDevScriptTemplate.getScriptType()).name()); //当前版本号
 
+        List<DataDevScriptTemplateShare> infos = templateService.getSharesInfos(templateId);
+        StringBuilder erpsBuilder = new StringBuilder();
+        boolean gitShares = false;
+        for (DataDevScriptTemplateShare share : infos) {
+            if (share.getShareType() == 1) {
+                erpsBuilder.append(",").append(share.getShareTarget());
+            } else if (share.getShareType() == 2) {
+                gitShares = true;
+            }
+        }
+
+        dataDevScriptTemplate.setShareErps(erpsBuilder.length() > 0 ? erpsBuilder.substring(1) : "");
+        dataDevScriptTemplate.setShareGits(gitShares);
+        return "scriptcenter/home/share_temlplate";
+    }
 
 
     @RequestMapping("saveMutilFile.html")

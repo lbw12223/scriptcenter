@@ -2124,7 +2124,7 @@ $(window).resize(function () {
 
 
 function saveTemplate(activeWindow, templateId, callBack) {
-    
+
     if (activeWindow) {
         saveArgs()
         datadevInit.directSave(function (data) {
@@ -2174,6 +2174,8 @@ function saveTemplate(activeWindow, templateId, callBack) {
 }
 
 function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, name, desc, callBack) {
+    alert("ssssss1111");
+    debugger
     var typeName = scriptObj.typeName || scriptObj.name;
     var type = scriptObj.scriptType;
     var pythonType = scriptObj.pythonType;
@@ -2216,7 +2218,8 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
         "    </div>" +
         "</form>";
 
-    top.$ && top.$.bdpMsg && top.$.bdpMsg({
+
+   top.Msg.bdpMsg({
         title: "保存模板",
         mainContent: html,
         width: "600px",
@@ -2254,7 +2257,7 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
                                 initInfo();
                                 // $("#codeEditContainer").JdDataDevTab("changeTabInfos", activeWindow.key, activeWindow.key, params);
                             }
-                            top.$.successMsg("保存成功");
+                            window.Msg.$.successMsg("保存成功");
                         })
                     }
                 },
@@ -2263,7 +2266,7 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
             {
                 text: "取消",
                 event: function () {
-                    $.removeMsg();
+                    window.Msg.removeMsg();
                 }
             }
         ]

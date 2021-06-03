@@ -129,6 +129,15 @@ public class ScriptTemplateController {
         return JSONObjectUtil.getSuccessResult(returnTemplate);
     }
 
+
+    @RequestMapping("shareTemplate.ajax")
+    @ExceptionMessageAnnotation(errorMessage = "分享模板报错")
+    @ResponseBody
+    public JSONObject shareTemplate(DataDevScriptTemplate template, UrmUserHolder holder) throws Exception {
+        templateService.shareTemplate(template, holder.getErp());
+        return JSONObjectUtil.getSuccessResult(template);
+    }
+
     @RequestMapping("checkTemplateNameExist.ajax")
     @ExceptionMessageAnnotation(errorMessage = "查看同名模板")
     @ResponseBody

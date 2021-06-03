@@ -227,8 +227,32 @@ public class DataDevScriptTemplateServiceImpl implements DataDevScriptTemplateSe
         return template != null;
     }
 
+
+    @Override
+    public void shareTemplate(DataDevScriptTemplate template , String operator){
+        boolean shareGits= template.getShareGits();
+        String shareErps = template.getShareErps();
+        List<DataDevScriptTemplateShare> templateShares = new ArrayList<>();
+        if (StringUtils.isNotBlank(shareErps)) {
+            String[] erpArray = shareErps.split(",");
+            for (String erp : erpArray) {
+                if (StringUtils.isNotBlank(erp) ) {
+                    templateShares.add(new DataDevScriptTemplateShare(template.getId(), 1L, erp, operator));
+                }
+            }
+        }
+        if (shareGits) {
+            templateShares.add(new DataDevScriptTemplateShare(template.getId(), 2L, null, operator));
+        }
+        dataDevScriptTemplateShareDao.deleteByTemplateId(template.getId());
+        if (templateShares != null && templateShares.size() > 0) {
+            dataDevScriptTemplateShareDao.insertTemplateShares(templateShares);
+        }
+        template.setStatus(0);
+        dataDevScriptTemplateDao.updateScriptTemplate(template.getId(), template);
+    }
     /**
-     * @param template template.shareGits {@link com.jd.bdp.datadev.domain.DataDevGitDto.value}
+     * @param template template.shareGits {@link com.jd.bdp.datadev.domain.DataDevGitDto}
      * @param operator
      * @return
      * @throws Exception

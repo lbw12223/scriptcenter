@@ -82,4 +82,6 @@ public interface DataDevScriptTemplateService {
      * @throws Exception
      */
     public void updateTemplate(Long templateId,DataDevScriptTemplate template)throws Exception;
+
+    public void shareTemplate(DataDevScriptTemplate template , String erp) ;
 }

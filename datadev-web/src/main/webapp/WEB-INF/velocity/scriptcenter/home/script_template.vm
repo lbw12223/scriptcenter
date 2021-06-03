@@ -1,5 +1,6 @@
 #set($layout="layout_blank.vm")
 #set($page_title="template")
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_index.css?_dc=$!{staticVersion}" type="text/css">
 <link rel="stylesheet" href="/scriptcenter/statics/pages/home/template.css?_dc=$!{staticVersion}" type="text/css">
 <input type="hidden" id="scriptType" value="${scriptType}">
 <input type="hidden" id="pythonType" value="${pythonType}">
@@ -21,6 +22,8 @@
     <a class="bdp-btn bdp-btn-default" data-dismiss="modal" id="closeDia">取消</a>
 </div>
 ##<script src="/scriptcenter/statics/bdp/plugins/jquery-ui/jquery-drag-drop-sort.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/js/dataDev.config.js?_dc=$!{staticVersion}"></script>
+
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
