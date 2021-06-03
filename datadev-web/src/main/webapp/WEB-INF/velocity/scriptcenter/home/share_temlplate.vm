@@ -9,6 +9,8 @@
      style="width: 100%;height:100%;position: relative;top: 0px;bottom: 80px;">
     <form class='datadev-form-inline' id='templateSaveContent'>
         <input type="hidden" id = "templateId" value="$!{dataDevScriptTemplate.id}">
+        <input type="hidden" id = "shareGits" value="$!{dataDevScriptTemplate.shareGits}">
+
         <h4 class='datadev-control-title'>基本信息</h4>
         <div class='datadev-form-group'>
             <label class='template-label datadev-control-label'><i class='bdp-note'>*</i>模板名称：</label>
