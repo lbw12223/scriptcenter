@@ -365,7 +365,7 @@ $(function () {
             "   <div class='table-item-name pop-title' data-title='" + data.tbName + "'>" + data.tbName + "</div>" +
             "   <div class='table-item-comment pop-title' data-title='" + data.memo + "'>" + data.memo + "</div>" +
             "   <div class='table-item-category'>" +
-            "       <div class='market-name pop-title' data-cluster='" + data.clusterCode + "' data-code='" + data.linuxUser + "' data-id='" + data.marketId + "' data-title='" + data.marketName + "'>集市：<span>" + data.marketName + "</span></div>" +
+            "       <div class='market-name pop-title' data-cluster='" + data.clusterCode + "' data-code='" + data.martCode + "' data-id='" + data.marketId + "' data-title='" + data.marketName + "'>集市：<span>" + data.marketName + "</span></div>" +
             "       <div class='db-name pop-title' data-title='" + data.dbName + "'>库：<span>" + data.dbName + "</span></div>" +
             "   </div>" +
             "   <div class='table-item-operate'>" +
@@ -662,12 +662,12 @@ $(function () {
         $("#allTableContainer").on("click", ".table-structure", function () {
             var group = $(this).closest(".table-detail-group");
             var tbName = group.find(".table-item-name").text();
-            var marketId = group.find(".market-name").attr("data-id");
+            var marketCode = group.find(".market-name").attr("data-code");
             var dbName = group.find(".db-name").attr("data-title");
             var info = {
                 group: group,
                 tbName: tbName,
-                marketId: marketId,
+                martCode: marketCode,
                 dbName: dbName
             };
             // $("#draggableColumnsContent").attr("data-market-id", marketId);

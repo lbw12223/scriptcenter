@@ -356,7 +356,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(new ArrayList<DataBaseDto>());
     }
 
-    @RequestMapping("/getAllTables.ajax")
+    @RequestMapping("/getAllTablesOld.ajax")
     @ResponseBody
     public JSONObject getAllTables(Long marketId, String dbName, String searchWord, @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         JSONObject result = new JSONObject();
@@ -411,7 +411,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(result);
     }
 
-    @RequestMapping("/getAllTablesNew.ajax")
+    @RequestMapping("/getAllTables.ajax")
     @ResponseBody
     public JSONObject getAllTablesNew(@RequestParam(value = "searchWord", defaultValue = "*") String searchWord,
                                       @RequestParam(value = "martCode", defaultValue = "") String martCode,
@@ -465,7 +465,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(result);
     }
 
-    @RequestMapping("/getAllColumns.ajax")
+    @RequestMapping("/getAllColumnsOld.ajax")
     @ResponseBody
     public net.sf.json.JSONObject getAllColumns(UrmUserHolder userHolder, Long marketId, String dbName, String tbName,
                                                 @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "rows", defaultValue = "20") Integer rows,
@@ -509,7 +509,7 @@ public class ScriptConfigController {
         return AjaxUtil.gridJson(pageResultDTO);
     }
 
-    @RequestMapping("/getAllColumnsNew.ajax")
+    @RequestMapping("/getAllColumns.ajax")
     @ResponseBody
     public net.sf.json.JSONObject getAllColumnsNew(UrmUserHolder userHolder, String martCode, String cluster, String dbName, String tbName,
                                                    @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "rows", defaultValue = "20") Integer rows,
@@ -533,13 +533,24 @@ public class ScriptConfigController {
             JSONArray columns = new JSONArray();
             if (apiResult != null && apiResult.getInteger("code") == 0) {
                 JSONObject data = apiResult.getJSONObject("data");
-                columns = data.getJSONArray("columns");
+                JSONArray tmp = data.getJSONArray("columns");
+                if (tmp != null) {
+                    for (Object o : tmp) {
+                        JSONObject json = (JSONObject) o;
+                        JSONObject object = new JSONObject();
+                        object.put("columnName", json.getString("name"));
+                        object.put("comment", json.getString("comment"));
+                        object.put("columnType", json.getString("type"));
+                        columns.add(object);
+                    }
+                }
             }
-            List<JSONObject> searchList = new ArrayList<JSONObject>();
+            List<JSONObject> searchList = columns.toJavaList(JSONObject.class);
             if (StringUtils.isNotBlank(searchWord)) {
+                searchList = new ArrayList<JSONObject>();
                 for (Object column : columns) {
                     JSONObject json = (JSONObject) column;
-                    String columnName = json.getString("name");
+                    String columnName = json.getString("columnName");
                     String columnComment = json.getString("comment");
                     if (StringUtils.isNotBlank(columnName) && columnName.indexOf(searchWord) != -1
                             || StringUtils.isNotBlank(columnComment) && columnComment.indexOf(searchWord) != -1) {

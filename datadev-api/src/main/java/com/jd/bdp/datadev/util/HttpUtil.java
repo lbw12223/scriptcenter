@@ -1,5 +1,6 @@
 package com.jd.bdp.datadev.util;
 
+import com.squareup.okhttp.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +48,39 @@ public class HttpUtil {
         HttpPost postMethod = new HttpPost(uri);
         postMethod.setEntity(uefEntity);
         return exctueRequest(postMethod);
+    }
+
+    public static String doGet(String uri, Map<String, String> params) {
+        String param = "?";
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            param += String.format("%s=%s&", entry.getKey(), entry.getValue());
+        }
+        param = param.substring(0, param.length() - 1);
+        param = param.replace("{", "%7B").replace("}", "%7D").replace("\"", "%22");
+        uri += param;
+        HttpGet getMethod = new HttpGet(uri);
+        return exctueRequest(getMethod);
+    }
+
+    public static String doPostWithParamAndBody(String uri, Map<String, String> params, com.alibaba.fastjson.JSONObject body) throws Exception {
+        // 将param拼接到uri
+        String param = "?";
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            param += String.format("%s=%s&", entry.getKey(), entry.getValue());
+        }
+        param = param.substring(0, param.length() - 1);
+        uri += param;
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody requestBody = RequestBody.create(mediaType, body.toJSONString());
+        Request request = new Request.Builder()
+                .url(uri)
+                .method("POST", requestBody)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 
     /**
