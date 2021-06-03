@@ -7,7 +7,7 @@ import com.jd.bdp.rc.domain.bo.ReleaseRecordBo;
 import com.jd.bdp.rc.domain.common.PageResult;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class ReleaseInterfaceImpl implements ReleaseInterface {
     @Override
     public ApiResult<ReleaseRecordBo> submitRelease(String s, String s1, Long aLong, ReleaseInfoFromDevDto releaseInfoFromDevDto) {
