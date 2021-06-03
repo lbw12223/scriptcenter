@@ -1015,13 +1015,14 @@ $(function () {
                     var menuLeft = offSet.left - $("#gitMenuDiv").width() + 16;
                     hiddenLeftRightMeun();
                     var id = $("#appSelect").val();
-                    if (id > 900000000) {
-                        $("#gitOrCoding").html("跳转至coding");
-                        // $("#gitOrCodingSelect").html("Coding")
-                    } else {
+                    if(id < 900000000){
                         $("#gitOrCoding").html("跳转至git");
-                        // $("#gitOrCodingSelect").html("Git")
+                    }else if(id < 1000000000 && id > 900000000){
+                        $("#gitOrCoding").html("跳转至coding");
+                    }else{
+                        $("#gitOrCoding").html("");
                     }
+
                     $("#gitMenuDiv").css({top: menuTop, left: menuLeft}).show();
                     showRightMenuBackground();
                     event.stopPropagation();
@@ -2088,7 +2089,7 @@ function templateModal(node, treeNode) {
             url += "&pythonType=" + pythonType;
         }
         var templateArt = $.dialog.open(url, {
-            title: "选择脚本模板11",
+            title: "选择脚本模板",
             lock: true,
             width: "908px",
             height: "524px",

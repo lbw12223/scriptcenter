@@ -6,6 +6,7 @@ import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevScriptGitStatusEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
+import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
@@ -141,6 +142,8 @@ public class DevCentorController {
         if (scriptFile != null && scriptFile.getArgs() != null) {
             model.addAttribute("args", scriptFile.getArgs());
         }
+        model.addAttribute("isGitOrCoding", file.getGitProjectId() < GitHttpUtil._10YI);
+
         model.addAttribute("templateId", template != null ? template.getId() : -1);
         model.addAttribute("scriptFileId", scriptFile.getId());
         model.addAttribute("gitProjectFilePath", scriptFile.getGitProjectFilePath());

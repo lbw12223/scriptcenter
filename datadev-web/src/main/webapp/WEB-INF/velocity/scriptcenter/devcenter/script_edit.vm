@@ -45,10 +45,12 @@
                     <span class="keyWord">保存</span>
                     <span class="keyMap" style="">Ctrl+S</span>
                 </li>
+                #if($!{isGitOrCoding} == "true")
                 <li id="scriptGit" envent-type="git" class="meun_split_border">
                     <span class="keyWord">Git</span>
                     <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
                 </li>
+                #end
             #end
         ##            <li envent-type="scriptUrl" class="meun_split_border"><span class="keyWord">复制脚本URL</span><span class="keyMap" style=""></span></li>
         ##            <li envent-type="position"><span class="keyWord">定位</span><span class="keyMap" style=""></span></li>

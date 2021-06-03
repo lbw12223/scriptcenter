@@ -576,24 +576,27 @@ public class ScriptProjectController {
     @RequestMapping("gitMembers.ajax")
     @ResponseBody
     public JSONObject listUser(Long gitProjectId) throws Exception {
-        JDGitProjects jdGitProjects = new JDGitProjects();
-        jdGitProjects.setGitProjectId(gitProjectId);
-        JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
-        List<JDGitProjectShareGroups> groups = projectDetail.getSharedWithGroups();
         List<DataDevGitProjectMember> projectMembers = dataDevGitProjectMemberService.findAll(gitProjectId);
-        List<DataDevGitGroupMember> groupMembers = new ArrayList<DataDevGitGroupMember>();
-        for (JDGitProjectShareGroups jdGitProjectShareGroup : groups) {
-            Long groupId = jdGitProjectShareGroup.getJdGroupId();
-            List<DataDevGitGroupMember> memberUsernames = dataDevGitGroupMemberService.queryFromGroupId(groupId);
-            groupMembers.addAll(memberUsernames);
+
+        if(gitProjectId < GitHttpUtil._10YI){
+            JDGitProjects jdGitProjects = new JDGitProjects();
+            jdGitProjects.setGitProjectId(gitProjectId);
+            JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
+            List<JDGitProjectShareGroups> groups = projectDetail.getSharedWithGroups();
+            List<DataDevGitGroupMember> groupMembers = new ArrayList<DataDevGitGroupMember>();
+            for (JDGitProjectShareGroups jdGitProjectShareGroup : groups) {
+                Long groupId = jdGitProjectShareGroup.getJdGroupId();
+                List<DataDevGitGroupMember> memberUsernames = dataDevGitGroupMemberService.queryFromGroupId(groupId);
+                groupMembers.addAll(memberUsernames);
+            }
+            for (DataDevGitGroupMember dataDevGitGroupMember : groupMembers) {
+                DataDevGitProjectMember dataDevGitProjectMember = new DataDevGitProjectMember();
+                String erp = dataDevGitGroupMember.getGitMemberUserName();
+                dataDevGitProjectMember.setGitMemberUserName(erp);
+                projectMembers.add(dataDevGitProjectMember);
+            }
         }
 
-        for (DataDevGitGroupMember dataDevGitGroupMember : groupMembers) {
-            DataDevGitProjectMember dataDevGitProjectMember = new DataDevGitProjectMember();
-            String erp = dataDevGitGroupMember.getGitMemberUserName();
-            dataDevGitProjectMember.setGitMemberUserName(erp);
-            projectMembers.add(dataDevGitProjectMember);
-        }
 
         //获取中文名
         urmUtil.covertUserErp2UserName(projectMembers, new ConvertErp2UserName<DataDevGitProjectMember>() {
