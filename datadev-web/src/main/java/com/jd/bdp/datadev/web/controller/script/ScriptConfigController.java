@@ -93,6 +93,7 @@ public class ScriptConfigController {
     public JSONObject getConfigByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
+
         return JSONObjectUtil.getSuccessResult(list);
     }
 

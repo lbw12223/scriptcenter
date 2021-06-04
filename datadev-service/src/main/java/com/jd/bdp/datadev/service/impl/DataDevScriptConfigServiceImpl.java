@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.api.common.JsfResultDto;
 import com.jd.bdp.api.think.cluster.ClusterJSFInterface;
 import com.jd.bdp.api.think.dto.ClusterHadoopMarketDto;
+import com.jd.bdp.datadev.component.ProjectSpaceRightComponent;
 import com.jd.bdp.datadev.dao.DataDevPlumberArgsDao;
 import com.jd.bdp.datadev.dao.DataDevScriptConfigDao;
 import com.jd.bdp.datadev.domain.DataDevPlumberArgs;
@@ -60,10 +61,16 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
     @Autowired
     private ClusterJSFInterface clusterJSFInterface;
 
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent ;
+
+
     @Override
     public List<DataDevScriptConfig> getConfigsByErp(String erp, Long projectSpaceId) throws Exception {
         List<DataDevScriptConfig> list = configDao.getConfigsByErp(erp, projectSpaceId);
         sortByOrder(list);
+        List<DataDevScriptConfig> defaultProjectpaceConfig = projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
+        list.addAll(defaultProjectpaceConfig);
         return list;
     }
 

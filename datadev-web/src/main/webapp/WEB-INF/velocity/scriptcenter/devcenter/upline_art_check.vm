@@ -1,0 +1,19 @@
+#set($layout="layout_blank.vm")
+#set($page_title="artCheck")
+
+<div>
+    <div style="">tip</div>
+    <div>TaskList</div>
+    <div>
+        <a class="bdp-btn bdp-btn-primary" id="submit">发布</a>
+    </div>
+</div>
+<script >
+
+</script>
+<script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace/ace118.js?_dc=$!{staticVersion}" type="text/javascript" charset="utf-8"></script>
+<script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/ace-diff/ace-diff.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/home/merge.js?_dc=$!{staticVersion}"></script>
