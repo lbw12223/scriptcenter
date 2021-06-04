@@ -12,7 +12,7 @@
                 <h4 class="bdp-modal-title">配置账号队列（注：配置的账号队列仅在当前项目空间有效）</h4>
             </div> <!--这是弹出框的主要内容-->
             <div class="bdp-modal-body account-body bdp-modal-body-new" style="position: relative;">
-                <div class="leftBodyDiv noselect" style="height: 320px;">
+                <div class="leftBodyDiv noselect" style="height: 398px;">
                     <div class="account-tool">
                         ##                        <span class="bdp-icon ide-xzmu pop-title" id="account-add" data-title="添加"></span>
 ##                        <span class="bdp-icon  pop-title" id="account-remove" data-title="删除"></span>

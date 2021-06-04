@@ -1539,7 +1539,8 @@ a.bdp-label:hover, a.bdp-label:focus {
 }
 
 .bdp-modal-body-new{
-    padding: 24px;
+    padding: 0;
+    
 
 }
 .bdp-modal-footer-new{
