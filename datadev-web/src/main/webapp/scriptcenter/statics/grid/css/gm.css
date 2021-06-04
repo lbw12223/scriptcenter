@@ -1,0 +1,1255 @@
+.table-wrap .table-div table[grid-manager] th .th-wrap .adjust-action {
+    display: block;
+    width: 6px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -4px;
+    cursor: col-resize
+}
+
+.table-wrap .footer-toolbar {
+    visibility: hidden;
+    width: 100%;
+    height: 40px;
+    position: relative;
+    padding: 5px 0;
+    color: #666;
+    /*background: repeat-x #f2f2f2;*/
+    /*background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+}
+
+.table-wrap .footer-toolbar .refresh-action {
+    display: inline-block;
+    height: 30px;
+    padding: 7px;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+    opacity: .7;
+    color: #1890ff
+}
+
+.table-wrap .footer-toolbar .refresh-action > i {
+    display: inline-block;
+    font-weight: 700;
+    line-height: 16px;
+    font-size: 14px;
+    vertical-align: text-bottom
+}
+
+.table-wrap .footer-toolbar .refresh-action:hover {
+    opacity: 1
+}
+
+.table-wrap .footer-toolbar .refresh-action.refreshing > i {
+    animation: rotationMedia 3s ease-in-out infinite
+}
+
+.table-wrap .footer-toolbar .goto-page {
+    float:right;
+    display: inline-block;
+    padding: 2.5px 15px;
+    vertical-align: middle
+}
+
+.table-wrap .footer-toolbar .goto-page .gp-input {
+    width: 50px;
+    height: 25px;
+    border: 1px solid #ddd;
+    padding: 0 5px;
+    margin: 0 5px;
+    text-align: center
+}
+
+.table-wrap .footer-toolbar .change-size {
+    float:right;
+    display: inline-block;
+    padding: 2.5px 5px;
+    vertical-align: middle
+}
+
+.table-wrap .footer-toolbar .change-size select[name=pSizeArea] {
+    width: auto;
+    height: 25px;
+    padding: 0 2px;
+    color: #333
+}
+
+.table-wrap .footer-toolbar .toolbar-info {
+    display: inline-block;
+    padding: 6px 5px;
+    vertical-align: middle
+}
+
+.table-wrap .footer-toolbar[no-totals-mode=true] .goto-page, .table-wrap .footer-toolbar[no-totals-mode=true] .page-info-totals {
+    display: none
+}
+
+.table-wrap .footer-toolbar .ajax-page {
+    display: flex;
+    position: absolute;
+    height: 30px;
+    right: 262px;
+    bottom: 5px
+}
+
+.table-wrap .footer-toolbar .ajax-page :after {
+    clear: both
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination {
+    display: block
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination[pagination-number] li:first-child {
+    border-left: none
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination[pagination-number] li:last-child {
+    border-right: none
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li {
+    display: block;
+    min-width: 30px;
+    height: 30px;
+    line-height: 18px;
+    float: left;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-left: none;
+    color: #000;
+    position: relative;
+    text-align: center;
+    cursor: pointer
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li:first-child {
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    border-left: 1px solid #ddd
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li.disabled {
+    background-color: #fff;
+    border-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+    pointer-events: none
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li.disabled:focus, .table-wrap .footer-toolbar .ajax-page .pagination > li.disabled:hover {
+    background-color: #fff;
+    border-color: #ddd;
+    color: #999
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li.active, .table-wrap .footer-toolbar .ajax-page .pagination > li.active:focus, .table-wrap .footer-toolbar .ajax-page .pagination > li.active:hover {
+    background-color: #1890ff;
+    color: #fff;
+    z-index: 2
+}
+
+.table-wrap .footer-toolbar .ajax-page .pagination > li:focus, .table-wrap .footer-toolbar .ajax-page .pagination > li:hover {
+    background-color: #eee;
+    border-color: #ddd;
+    color: #1890ff
+}
+
+@font-face {
+    font-family: gm-iconfont;
+    src: url(data:application/font-woff;base64,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) format("woff")
+}
+
+.grid-menu .iconfont, .table-wrap .config-area .iconfont, .table-wrap .dreamland-div .iconfont, .table-wrap .footer-toolbar .iconfont, .table-wrap tbody td[gm-create=true] .iconfont, .table-wrap thead .iconfont {
+    font-family: gm-iconfont !important;
+    font-size: 12px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.grid-menu .icon-help:before, .table-wrap .config-area .icon-help:before, .table-wrap .dreamland-div .icon-help:before, .table-wrap .footer-toolbar .icon-help:before, .table-wrap tbody td[gm-create=true] .icon-help:before, .table-wrap thead .icon-help:before {
+    content: "\e65d"
+}
+
+.grid-menu .icon-up:before, .table-wrap .config-area .icon-up:before, .table-wrap .dreamland-div .icon-up:before, .table-wrap .footer-toolbar .icon-up:before, .table-wrap tbody td[gm-create=true] .icon-up:before, .table-wrap thead .icon-up:before {
+    content: "\e640"
+}
+
+.grid-menu .icon-refresh:before, .table-wrap .config-area .icon-refresh:before, .table-wrap .dreamland-div .icon-refresh:before, .table-wrap .footer-toolbar .icon-refresh:before, .table-wrap tbody td[gm-create=true] .icon-refresh:before, .table-wrap thead .icon-refresh:before {
+    content: "\e602"
+}
+
+.grid-menu .icon-filter:before, .table-wrap .config-area .icon-filter:before, .table-wrap .dreamland-div .icon-filter:before, .table-wrap .footer-toolbar .icon-filter:before, .table-wrap tbody td[gm-create=true] .icon-filter:before, .table-wrap thead .icon-filter:before {
+    content: "\e6e2"
+}
+
+.grid-menu .icon-xls:before, .table-wrap .config-area .icon-xls:before, .table-wrap .dreamland-div .icon-xls:before, .table-wrap .footer-toolbar .icon-xls:before, .table-wrap tbody td[gm-create=true] .icon-xls:before, .table-wrap thead .icon-xls:before {
+    content: "\e675"
+}
+
+.grid-menu .icon-down:before, .table-wrap .config-area .icon-down:before, .table-wrap .dreamland-div .icon-down:before, .table-wrap .footer-toolbar .icon-down:before, .table-wrap tbody td[gm-create=true] .icon-down:before, .table-wrap thead .icon-down:before {
+    content: "\e637"
+}
+
+.grid-menu .icon-config:before, .table-wrap .config-area .icon-config:before, .table-wrap .dreamland-div .icon-config:before, .table-wrap .footer-toolbar .icon-config:before, .table-wrap tbody td[gm-create=true] .icon-config:before, .table-wrap thead .icon-config:before {
+    content: "\e63e"
+}
+
+.grid-menu .icon-close:before, .table-wrap .config-area .icon-close:before, .table-wrap .dreamland-div .icon-close:before, .table-wrap .footer-toolbar .icon-close:before, .table-wrap tbody td[gm-create=true] .icon-close:before, .table-wrap thead .icon-close:before {
+    content: "\e6ca"
+}
+
+.table-wrap .loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    background: #fff;
+    opacity: .7
+}
+
+.table-wrap .loading .kernel {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: calc(50% - 10px);
+    left: calc(50% - 10px);
+    border: 2px solid #4078c0;
+    background-color: #fff;
+    animation: gm_fill_color 5s linear infinite
+}
+
+.table-wrap .loading .kernel:after {
+    width: 4px;
+    height: 4px;
+    position: absolute;
+    content: "";
+    background-color: #4078c0;
+    top: -8px;
+    left: 0;
+    animation: gm_square_check 1s ease-in-out infinite
+}
+
+.grid-menu, .table-wrap {
+    font: 12px/1.5 Microsoft YaHei, Arial, Helvetica, sans-serif
+}
+
+.grid-menu, .grid-menu *, .grid-menu :after, .grid-menu :before, .table-wrap, .table-wrap *, .table-wrap :after, .table-wrap :before {
+    box-sizing: border-box !important
+}
+
+.grid-menu ::-webkit-scrollbar-track, .table-wrap ::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #f3f3f3
+}
+
+.grid-menu ::-webkit-scrollbar-track-piece, .table-wrap ::-webkit-scrollbar-track-piece {
+    display: none
+}
+
+.grid-menu ::-webkit-scrollbar, .table-wrap ::-webkit-scrollbar {
+    background: transparent;
+    width: 10px;
+    height: 10px
+}
+
+.grid-menu ::-webkit-scrollbar-thumb, .table-wrap ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #e1e1e1;
+    width: 6px;
+    height: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box
+}
+
+.grid-menu li, .grid-menu ul, .table-wrap li, .table-wrap ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+
+.no-select-text {
+    user-select: none
+}
+
+table[grid-manager] {
+    visibility: hidden
+}
+
+table[grid-manager].GridManager-ready {
+    visibility: inherit
+}
+
+.table-wrap {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    background-color: #fff
+}
+
+.table-wrap .table-header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /*background: repeat-x #f2f2f2;*/
+    /*background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+}
+
+.table-wrap .table-div {
+    overflow-x: hidden;
+    overflow-y: auto
+}
+
+.table-wrap .table-div.empty-data {
+    overflow-y: hidden
+}
+
+.table-wrap .table-div table[grid-manager] {
+    table-layout: fixed;
+    word-wrap: break-word;
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse
+}
+
+.table-wrap .table-div table[grid-manager] tr {
+    border-bottom: 1px solid #e8e8e8
+}
+
+.table-wrap .table-div table[grid-manager] tr [last-visible=true] {
+    border-right: none
+}
+
+.table-wrap .table-div table[grid-manager] th {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 18px;
+    font-weight: 400
+}
+
+.table-wrap .table-div table[grid-manager] th[th-visible=none] {
+    display: none
+}
+
+.table-wrap .table-div table[grid-manager] th[th-visible=visible] {
+    display: table-cell
+}
+
+.table-wrap .table-div table[grid-manager] th[remind] .th-wrap {
+    padding-left: 20px
+}
+
+.table-wrap .table-div table[grid-manager] th[filter] .th-wrap, .table-wrap .table-div table[grid-manager] th[sorting] .th-wrap {
+    padding-right: 20px
+}
+
+.table-wrap .table-div table[grid-manager] th[sorting][filter] .th-wrap {
+    padding-right: 45px
+}
+
+.table-wrap .table-div table[grid-manager] th[sorting][filter] .th-wrap .sorting-action {
+    right: 25px
+}
+
+.table-wrap .table-div table[grid-manager] th[gm-create=true] .th-wrap {
+    padding: 6px 4px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap {
+    width: calc(100% - 1px);
+    height: 100%;
+    position: relative;
+    padding: 6px 11px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .th-text {
+    display: block;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .iconfont {
+    opacity: .7;
+    cursor: pointer
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .iconfont:hover {
+    opacity: 1
+}
+
+.table-wrap .table-div table[grid-manager] td {
+    text-align: left
+}
+
+.table-wrap .table-div table[grid-manager] td, .table-wrap .table-div table[grid-manager] th {
+    border-right: 1px solid #e8e8e8
+}
+
+.table-wrap .table-div table[grid-manager] td[th-visible=none], .table-wrap .table-div table[grid-manager] th[th-visible=none] {
+    display: none
+}
+
+.table-wrap .table-div table[grid-manager] td[th-visible=visible], .table-wrap .table-div table[grid-manager] th[th-visible=visible] {
+    display: table-cell
+}
+
+.table-wrap .table-div table[grid-manager] td[align][align=left], .table-wrap .table-div table[grid-manager] th[align][align=left] {
+    text-align: left
+}
+
+.table-wrap .table-div table[grid-manager] td[align][align=center], .table-wrap .table-div table[grid-manager] th[align][align=center] {
+    text-align: center
+}
+
+.table-wrap .table-div table[grid-manager] td[align][align=right], .table-wrap .table-div table[grid-manager] th[align][align=right] {
+    text-align: right
+}
+
+.table-wrap .table-div table[grid-manager] td[gm-create=true], .table-wrap .table-div table[grid-manager] th[gm-create=true] {
+    text-align: center;
+    cursor: default
+}
+
+.table-wrap .table-div table[grid-manager] thead tr {
+    height: 40px;
+    border-bottom: none
+}
+
+.table-wrap .table-div table[grid-manager] thead[grid-manager-thead] {
+    visibility: hidden
+}
+
+.table-wrap .table-div table[grid-manager] thead[grid-manager-mock-thead] {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr:nth-child(odd) td {
+    background-color: #fafafa
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr:hover td {
+    background-color: #f1f8fb
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[empty-template] {
+    border-bottom: none
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[empty-template] td {
+    background-color: #fff;
+    padding: 0
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=true] {
+    border-bottom: none
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=true] td:first-child {
+    border-left: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    padding: 0
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=true] td:first-child .full-column-td {
+    border-top: 1px solid #e8e8e8;
+    background: repeat-x #f2f2f2;
+    background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column-interval=true] {
+    border: none
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column-interval=true] td {
+    background-color: #fff;
+    padding: 0
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column-interval=true] td > div {
+    height: 10px
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=false] {
+    border-bottom: 1px solid #e8e8e8
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=false] td:first-child {
+    border-left: 1px solid #e8e8e8
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr[top-full-column=false] td:last-child {
+    border-right: 1px solid #e8e8e8
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #fff;
+    color: #3d3d3d;
+    padding: 11px;
+    vertical-align: middle
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td[gm-create=true] {
+    padding: 0
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td[td-visible=none] {
+    display: none
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td[td-visible=visible] {
+    display: table-cell
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr tdtd[gm-create=true] {
+    background-color: #f8f8f8
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td:last-child {
+    border-right: none
+}
+
+.table-wrap .table-div table[grid-manager] tbody tr td .gm-empty-template {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 16px;
+    color: #ddd
+}
+
+.table-wrap .table-div table[grid-manager].disable-line td, .table-wrap .table-div table[grid-manager].disable-line th {
+    border-right: none
+}
+
+.table-wrap.disable-border {
+    border: none
+}
+
+.table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 5px;
+    padding-right: 5px
+}
+
+.table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .th-text {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle
+}
+
+.table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .filter-area, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .remind-action, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .sorting-action {
+    display: inline-block;
+    width: 18px;
+    position: relative;
+    top: 0;
+    left: 0;
+    vertical-align: middle;
+    text-align: center
+}
+
+.table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .filter-area .fa-icon, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .filter-area .sa-icon, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .remind-action .fa-icon, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .remind-action .sa-icon, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .sorting-action .fa-icon, .table-wrap.icon-follow-text .table-div table[grid-manager] thead th[th-name] .th-wrap .sorting-action .sa-icon {
+    right: 4px
+}
+
+.table-wrap .text-dreamland {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1
+}
+
+.grid-menu[grid-master] {
+    color: #000;
+    display: none;
+    width: 200px;
+    max-height: 200px;
+    position: absolute;
+    border: 1px solid #ccc;
+    padding: 5px 0;
+    background: #fff;
+    z-index: 3
+}
+
+.grid-menu[grid-master] [grid-action] {
+    display: block;
+    height: 28px;
+    position: relative;
+    padding: 5px 20px;
+    cursor: default;
+    line-height: 18px
+}
+
+.grid-menu[grid-master] [grid-action]:hover {
+    background: #777;
+    color: #fff
+}
+
+.grid-menu[grid-master] [grid-action].disabled {
+    color: #ccc;
+    background: #fff
+}
+
+.grid-menu[grid-master] [grid-action] .iconfont {
+    display: block;
+    font-size: 16px;
+    position: absolute;
+    top: 5px;
+    right: 10px
+}
+
+.grid-menu[grid-master] .grid-line {
+    display: block;
+    height: 3px;
+    background: #e8e8e8;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid #f8f8f8
+}
+
+.table-wrap .config-editing {
+    overflow-x: hidden
+}
+
+.table-wrap .config-area {
+    display: none;
+    width: 260px;
+    position: absolute;
+    top: 42px;
+    right: 0;
+    cursor: pointer;
+    z-index: 3;
+    padding: 8px 0;
+    border: 1px solid #ddd;
+    background-color: #fff
+}
+
+.table-wrap .config-area .config-action {
+    display: block;
+    width: 20px;
+    height: calc(100% + 2px);
+    position: absolute;
+    left: -20px;
+    top: -1px;
+    overflow: hidden;
+    text-align: center;
+    background-color: #09f
+}
+
+.table-wrap .config-area .config-action i {
+    display: inline-block;
+    position: absolute;
+    left: 2px;
+    top: calc(50% - 9px);
+    font-size: 16px;
+    color: #ddd
+}
+
+.table-wrap .config-area .config-action:hover i {
+    color: #fff
+}
+
+.table-wrap .config-area .config-info {
+    line-height: 20px;
+    padding: 0 18px;
+    color: #666
+}
+
+.table-wrap .config-area .config-list {
+    display: block;
+    width: 100%;
+    list-style-type: none;
+    font-size: 12px;
+    margin: 0;
+    padding: 0 8px;
+    user-select: none;
+    overflow-y: auto
+}
+
+.table-wrap .config-area .config-list > li {
+    display: inline-block;
+    width: calc(50% - 2px);
+    padding: 4px 10px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.table-wrap .config-area .config-list > li .gm-checkbox-input {
+    pointer-events: none
+}
+
+.table-wrap .config-area .config-list > li:hover {
+    color: #09f
+}
+
+.table-wrap .config-area .config-list > li.no-click, .table-wrap .config-area .config-list > li.no-click * {
+    cursor: not-allowed
+}
+
+.table-wrap .config-area .config-list > li.no-click:hover {
+    color: #666
+}
+
+@keyframes opacityChange {
+    0% {
+        opacity: .1
+    }
+    to {
+        opacity: .7
+    }
+}
+
+@keyframes rotationMedia {
+    0% {
+        transform: rotate(0deg)
+    }
+    to {
+        transform: rotate(1turn)
+    }
+}
+
+@keyframes gm_square_check {
+    25% {
+        left: 22px;
+        top: -8px
+    }
+    50% {
+        left: 22px;
+        top: 22px
+    }
+    75% {
+        left: -9px;
+        top: 22px
+    }
+    to {
+        left: -9px;
+        top: -7px
+    }
+}
+
+@keyframes gm_fill_color {
+    0% {
+        box-shadow: inset 0 0 0 0 rgba(64, 120, 192, .1)
+    }
+    to {
+        box-shadow: inset 0 -20px 0 0 #4078c0
+    }
+}
+
+@keyframes gmCheckboxEffect {
+    0% {
+        transform: scale(1);
+        opacity: .5
+    }
+    to {
+        transform: scale(1.5);
+        opacity: 0
+    }
+}
+
+@keyframes gmRadioEffect {
+    0% {
+        transform: scale(1);
+        opacity: .5
+    }
+    to {
+        transform: scale(1.5);
+        opacity: 0
+    }
+}
+
+.table-wrap table[grid-manager] td[gm-checkbox=true] input[type=checkbox], .table-wrap table[grid-manager] th[gm-checkbox=true] input[type=checkbox] {
+    vertical-align: middle
+}
+
+.table-wrap .disabled-radio-checkbox {
+    opacity: .7;
+    pointer-events: none
+}
+
+.table-wrap .disabled-radio-checkbox .gm-radio-checkbox-inner {
+    border-color: #ddd !important;
+    background-color: #e8e8e8 !important
+}
+
+.table-wrap .gm-checkbox-wrapper {
+    display: inline-block;
+    color: rgba(0, 0, 0, .65);
+    margin: 0;
+    padding: 0;
+    line-height: 12px;
+    cursor: pointer;
+    border-collapse: collapse
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox {
+    display: inline-block;
+    position: relative;
+    top: -.5px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, .65);
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    outline: none;
+    line-height: 1;
+    vertical-align: middle
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox .gm-checkbox-input {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    cursor: pointer;
+    opacity: 0;
+    margin: 0
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox .gm-checkbox-inner {
+    display: block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 0;
+    left: 0;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    background-color: #fff;
+    transition: all .3s
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox .gm-checkbox-inner:after {
+    display: table;
+    width: 5px;
+    height: 8px;
+    position: absolute;
+    left: 3px;
+    top: 1px;
+    -webkit-transform: rotate(45deg) scale(0);
+    transform: rotate(45deg) scale(0);
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+    content: " "
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox + span {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-top: -1px;
+    font-weight: 400
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox.gm-checkbox-checked:after {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    border: 1px solid #1890ff;
+    content: "";
+    animation: gmCheckboxEffect .36s ease-in-out;
+    animation-fill-mode: both;
+    visibility: hidden
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox.gm-checkbox-checked .gm-checkbox-inner:after {
+    display: table;
+    position: absolute;
+    transform: rotate(45deg) scale(1);
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+    content: " "
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox.gm-checkbox-indeterminate .gm-checkbox-inner:after {
+    width: 8px;
+    height: 1.2px;
+    position: absolute;
+    left: 2px;
+    top: 5px;
+    content: " ";
+    transform: scale(1)
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox.gm-checkbox-checked .gm-checkbox-inner, .table-wrap .gm-checkbox-wrapper .gm-checkbox.gm-checkbox-indeterminate .gm-checkbox-inner {
+    background-color: #1890ff;
+    border-color: #1890ff
+}
+
+.table-wrap .gm-checkbox-wrapper .gm-checkbox:hover:after, .table-wrap .gm-checkbox-wrapper:hover .gm-checkbox:after {
+    visibility: visible
+}
+
+.table-wrap .gm-radio-wrapper {
+    line-height: 12px;
+    cursor: pointer
+}
+
+.table-wrap .gm-radio-wrapper, .table-wrap .gm-radio-wrapper .gm-radio {
+    display: inline-block;
+    position: relative;
+    font-size: 12px;
+    color: rgba(0, 0, 0, .65);
+    padding: 0
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio {
+    margin: 0;
+    white-space: nowrap;
+    outline: none;
+    line-height: 1;
+    vertical-align: text-bottom
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio .gm-radio-input {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    z-index: 1;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio .gm-radio-inner {
+    display: block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 0;
+    left: 0;
+    border-radius: 100px;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    transition: all .3s
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio .gm-radio-inner:after {
+    display: table;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    border-radius: 4px;
+    border-top: 0;
+    border-left: 0;
+    content: " ";
+    background-color: #1890ff;
+    opacity: 0;
+    transform: scale(0)
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio.gm-radio-checked:after {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    border: 1px solid #1890ff;
+    content: "";
+    animation: gmRadioEffect .36s ease-in-out;
+    animation-fill-mode: both;
+    visibility: hidden
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio.gm-radio-checked .gm-radio-inner {
+    border-color: #1890ff
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio.gm-radio-checked .gm-radio-inner:after {
+    transform: scale(.875);
+    opacity: 1
+}
+
+.table-wrap .gm-radio-wrapper .gm-radio + span {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-weight: 400
+}
+
+.table-wrap .gm-checkbox-input:focus + .gm-checkbox-inner, .table-wrap .gm-checkbox-wrapper:hover .gm-checkbox-inner, .table-wrap .gm-checkbox:hover .gm-checkbox-inner, .table-wrap .gm-radio-focused .gm-radio-inner, .table-wrap .gm-radio-wrapper:hover .gm-radio .gm-radio-inner, .table-wrap .gm-radio:hover .gm-radio-inner {
+    border-color: #1890ff
+}
+
+.table-wrap .gm-radio-wrapper:hover .gm-radio:after, .table-wrap .gm-radio:hover:after {
+    visibility: visible
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action {
+    width: 16px;
+    height: 18px;
+    position: absolute;
+    top: calc(50% - 9px);
+    left: 4px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action .ra-area {
+    display: none;
+    width: 150px;
+    position: absolute;
+    top: 24px;
+    left: 0;
+    padding: 4px 8px;
+    z-index: 9999;
+    border-radius: 2px;
+    background-color: #666;
+    line-height: 18px;
+    color: #f8f8f8;
+    text-align: center
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action .ra-area:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 4px;
+    margin-top: -3px;
+    border: solid transparent;
+    border-bottom: solid #666;
+    border-width: 0 3px 3px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action .ra-area.right-model {
+    left: auto;
+    right: 0
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action .ra-area.right-model:after {
+    top: 0;
+    left: auto;
+    right: 4px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action .ra-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    line-height: 18px;
+    cursor: help;
+    color: #b9daf8
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action:hover .ra-icon {
+    opacity: .3;
+    color: #1890ff
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .remind-action:hover .ra-area {
+    display: block
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area {
+    display: block;
+    width: 14px;
+    height: 18px;
+    position: absolute;
+    top: calc(50% - 9px);
+    right: 5px;
+    cursor: default;
+    color: #444
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-icon {
+    display: block;
+    position: absolute;
+    font-size: 12px;
+    line-height: 18px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-icon.filter-selected {
+    color: #1890ff
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con {
+    display: none;
+    min-width: 100px;
+    position: absolute;
+    top: 100%;
+    background: #fff;
+    border: 1px solid #ccc
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con.direction-left {
+    left: 0
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con.direction-right {
+    right: 0
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-list {
+    overflow-y: auto
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-list li {
+    padding: 5px 12px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-list li > label {
+    cursor: pointer;
+    display: flex;
+    word-break: keep-all
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-list li:hover {
+    background: #e6f7ff
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-bottom {
+    border-top: 1px solid #e8e8e8;
+    padding: 7px 8px;
+    text-align: center
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-bottom .filter-button {
+    cursor: pointer;
+    color: #1890ff
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-bottom .filter-button:hover {
+    color: #40a9ff
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .filter-area .fa-con .filter-bottom .filter-button:first-child {
+    margin-right: 10px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action {
+    display: block;
+    width: 14px;
+    height: 18px;
+    position: absolute;
+    top: calc(50% - 9px);
+    right: 5px;
+    cursor: default;
+    color: #444
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action:hover {
+    color: #000
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action.sorting-up .sa-up {
+    opacity: 1
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action.sorting-down .sa-up, .table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action.sorting-up .sa-down {
+    opacity: .1
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action.sorting-down .sa-down {
+    opacity: 1
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action .sa-icon {
+    display: block;
+    height: 10px;
+    position: absolute;
+    font-size: 12px;
+    line-height: 10px
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action .sa-up {
+    top: 0;
+    right: 0
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .sorting-action .sa-down {
+    bottom: 0;
+    right: 0
+}
+
+.text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.table-wrap .table-div table[grid-manager] th .th-wrap .drag-action {
+    cursor: all-scroll
+}
+
+.table-wrap .table-div table[grid-manager] td.adjust-selected, .table-wrap .table-div table[grid-manager] th.adjust-selected {
+    border-right: 2px dashed #ccc
+}
+
+.table-wrap .table-div table[grid-manager] td.adjust-selected.drag-action, .table-wrap .table-div table[grid-manager] th.adjust-selected.drag-action {
+    cursor: col-resize
+}
+
+.table-wrap .table-div table[grid-manager] td.drag-ongoing, .table-wrap .table-div table[grid-manager] th.drag-ongoing {
+    cursor: all-scroll;
+    opacity: 1;
+    animation: opacityChange 1s ease-in-out infinite
+}
+
+.table-wrap .dreamland-div {
+    display: none;
+    position: absolute;
+    padding: 0;
+    background: #fff;
+    cursor: all-scroll;
+    z-index: 9
+}
+
+.table-wrap .dreamland-div .dreamland-table {
+    table-layout: fixed;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #d8d8d8;
+    border-collapse: separate;
+    border-spacing: 1px;
+    font-size: 12px !important
+}
+
+.table-wrap .dreamland-div .dreamland-table thead {
+    background: repeat-x #f2f2f2;
+    background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+}
+
+.table-wrap .dreamland-div .dreamland-table tbody tr td {
+    background-color: #fff;
+    padding: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.table-wrap .dreamland-div .dreamland-table tbody tr:nth-child(odd) td {
+    background-color: #fafafa
+}
+
+.table-wrap .dreamland-div .dreamland-table tbody tr:hover td {
+    background-color: #f1f8fb
+}

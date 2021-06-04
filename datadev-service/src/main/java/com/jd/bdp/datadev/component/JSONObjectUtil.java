@@ -4,6 +4,18 @@ package com.jd.bdp.datadev.component;
 import com.alibaba.fastjson.JSONObject;
 
 public class JSONObjectUtil {
+    public static JSONObject getSuccessResultTwoObj(Object object1 ,Object object2 ) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 0);
+        jsonObject.put("success", true);
+        jsonObject.put("message", "请求成功");
+        JSONObject temp = new JSONObject();
+        temp.put("obj", object1);
+        temp.put("obj2", object2);
+        jsonObject.put("data", temp);
+        return jsonObject;
+    }
+
     public static JSONObject getSuccessResult(Object object) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", 0);

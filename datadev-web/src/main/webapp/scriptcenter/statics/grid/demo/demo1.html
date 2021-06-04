@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<link rel="stylesheet" type="text/css" href="../css/gm.css">
+	<link rel="stylesheet" type="text/css" href="./css/common.css">
+	<script type="text/javascript" src="../js/gm.js"></script>
+    <title>GridManager:使用动态数据渲染</title>
+</head>
+
+<body>
+	<section class="search-area">
+		<div class="sa-ele">
+			<label class="se-title">标题:</label>
+			<input class="se-con" name="title"/>
+		</div>
+		<div class="sa-ele">
+			<label class="se-title">博文分类:</label>
+			<select class="se-con" name="type">
+				<option value="-1">请选择</option>
+				<!--通过js增加-->
+			</select>
+		</div>
+		<div class="sa-ele">
+			<label class="se-title">内容:</label>
+			<input class="se-con" name="content"/>
+		</div>
+		<div class="sa-ele">
+			<button class="search-action">搜索</button>
+			<button class="reset-action">重置</button>
+		</div>
+	</section>
+
+	<section class="grid-main">
+		<table></table>
+	</section>
+
+	<section class="bottom-bar">
+        <a href="https://github.com/baukh789/GridManager" target="_blank">查看源码</a>
+        <select class="fn-select"></select>
+        <input class="fn-code" placeholder="请通过选择方法生成所需要执行的代码"/>
+        <button class="fn-run">执行</button>
+        <span class="fn-run-info"></span>
+	</section>
+    <script type="text/javascript" src="./js/demo1.js"></script>
+</body>
+</html>
