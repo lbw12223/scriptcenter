@@ -85,6 +85,10 @@ div.queue-tip a:hover {
     cursor: pointer;
 }
 
+.account-tool span.icon-disabled{
+    pointer-events: none;
+}
+
 .account-tool span:hover {
     color: #3286E9;;
 }

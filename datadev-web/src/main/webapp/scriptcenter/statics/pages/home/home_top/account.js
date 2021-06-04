@@ -28,7 +28,12 @@ $(function () {
     })
     $("ul.account-history-ul,ul.account-history-ul2").on("click", "li", function (e) {
         if(e.delegateTarget.className == "account-history-ul2"){
-            console.log("公用的","99999")
+            $("#account-add").addClass("icon-disabled");
+            $("#account-remove").addClass("icon-disabled");
+            $("#account-copy").addClass("icon-disabled");
+            $("#account-up").addClass("icon-disabled");
+            $("#account-down").addClass("icon-disabled");
+
             $("#accountName").attr("disabled","disabled");
             $("#marketSelect").attr("disabled","disabled");
             $("#accountCodeSelect").attr("disabled","disabled");
@@ -36,7 +41,12 @@ $(function () {
             $("#engineTypeSelect").attr("disabled","disabled");
 
         }else{
-            console.log("私有的","99999");
+            $("#account-add").removeClass("icon-disabled");
+            $("#account-remove").removeClass("icon-disabled");
+            $("#account-copy").removeClass("icon-disabled");
+            $("#account-up").removeClass("icon-disabled");
+            $("#account-down").removeClass("icon-disabled");
+
             $("#accountName").removeAttr("disabled");
             $("#marketSelect").removeAttr("disabled");
             $("#accountCodeSelect").removeAttr("disabled");
