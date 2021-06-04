@@ -163,6 +163,19 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
 //        }
     }
 
+    /**
+     * 检测脚本是否正在发布
+     * @param submitInfoVo
+     */
+    private void checkIsInRelease(SubmitInfoVo submitInfoVo){
+        JsfResultDTO haveReleaseing = releaseSubmitInterface.isHaveReleaseing(JsfAuthDTO.newInstance(), submitInfoVo);
+        if(haveReleaseing.getCode().equals(-2)) {
+            throw new RuntimeException("当前脚本正在审批中，请在发布中心取消后，重新申请!");
+        }
+        if(haveReleaseing.getCode().equals(-1)){
+            throw new RuntimeException("检测脚本是否可以发布"+haveReleaseing.getMessage());
+        }
+    }
 
 
     @Override
@@ -172,6 +185,9 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         submitInfoVo.setDesc(desc);
         submitInfoVo.setSubmitErp(operator);
         submitInfoVo.setSubmitObj(Arrays.asList(submitObj));
+        // 检测脚本是否正在发布
+        checkIsInRelease(submitInfoVo);
+
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
         return submit != null && submit.getCode() == 0;
