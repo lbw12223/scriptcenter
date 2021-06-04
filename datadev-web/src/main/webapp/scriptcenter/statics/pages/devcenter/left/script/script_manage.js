@@ -2088,7 +2088,7 @@ function templateModal(node, treeNode) {
             url += "&pythonType=" + pythonType;
         }
         var templateArt = $.dialog.open(url, {
-            title: "选择脚本模板11",
+            title: "选择脚本模板",
             lock: true,
             width: "908px",
             height: "524px",

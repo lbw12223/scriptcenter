@@ -1034,13 +1034,15 @@ function command2disabled() {
         dbpValue.splice(dbpValue.indexOf(gitProjectId), 1);
     }
     storgeContent(dbpKey, JSON.stringify(dbpValue));
-    var windows = datadevInit.getAllWindow();
-    for (var index = 0; index < windows.length; index++) {
-        var window = windows[index];
-        if (window && window.win && window.win.debug) {
-            window.win.debug.changeBreakPointStatus(status);
-        }
-    }
+    
+    debug.changeBreakPointStatus(status);
+    // var windows = datadevInit.getAllWindow();
+    // for (var index = 0; index < windows.length; index++) {
+    //     var window = windows[index];
+    //     if (window && window.win && window.win.debug) {
+    //         window.win.debug.changeBreakPointStatus(status);
+    //     }
+    // }
 }
 
 function setRunMode(mode) {
