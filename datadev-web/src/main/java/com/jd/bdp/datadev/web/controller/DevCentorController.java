@@ -228,6 +228,18 @@ public class DevCentorController {
         return "scriptcenter/devcenter/left/scripts/table_query_data_preview";
     }
 
+
+
+    @RequestMapping({"uplineArtCheck.html"})
+    public String uplineCheck(Model model,UrmUserHolder urmUserHolder , Long gitProjectId , String scriptFilePath) throws Exception {
+        return "scriptcenter/devcenter/upline_art_check";
+    }
+
+
+
+
+
+
     @RequestMapping("shareTemplate.html")
     public String shareTemplate(UrmUserHolder userHolder, Long templateId , Model model) throws Exception {
         DataDevScriptTemplate dataDevScriptTemplate = templateService.getScriptTemplateById(templateId);
@@ -312,9 +324,7 @@ public class DevCentorController {
         /**
          * 检测发布中心是否已经有在流程中的数据
          */
-
         checkIsInRelease(old);
-
         //关联
         if (relaveScriptStatus == 1 && scriptId != null) {
             importScriptManager.callBackScript(scriptId, null, file.getGitProjectId(), file.getGitProjectFilePath(), holder.getErp(), file.getVersion());

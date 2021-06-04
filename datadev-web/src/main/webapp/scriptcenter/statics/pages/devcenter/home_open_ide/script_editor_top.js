@@ -671,18 +671,42 @@ var datadevInit = {
         })
     },
     uplineSaveScript: function (scriptWindow) {
-        if (scriptWindow.type == 4) {
-            //zip
-            datadevInit.uplinePushNumScript(scriptWindow);
-        } else {
-            datadevInit.directSave(function (data) {
-                scriptWindow.version = data.obj.serverVersion;
-                var canPush = datadevInit.uplineCheckContent(scriptWindow);
-                if (canPush) {
-                    datadevInit.uplinePushNumScript(scriptWindow);
-                }
-            }, null, scriptWindow.key);
+        if(true){
+            datadevInit.uplineDiffHtml(scriptWindow);
+            return;
         }
+
+        // if (scriptWindow.type == 4) {
+        //     //zip
+        //     datadevInit.uplinePushNumScript(scriptWindow);
+        // } else {
+        //     datadevInit.directSave(function (data) {
+        //         datadevInit.uplineDiffHtml(scriptWindow);
+        //         scriptWindow.version = data.obj.serverVersion;
+        //         var canPush = datadevInit.uplineCheckContent(scriptWindow);
+        //         if (canPush) {
+        //             datadevInit.uplinePushNumScript(scriptWindow);
+        //         }
+        //     }, null, scriptWindow.key);
+        // }
+    },
+
+    uplineDiffHtml:function (scriptWindow){
+        var gitProjectId = scriptWindow.getProjectId ;
+        var scriptPath = scriptWindow.getProjectId ;
+
+        var url = "/scriptcenter/devcenter/uplineArtDiff.html?templateId=" ;
+        var uplineDiff = $.dialog.open(url, {
+            title: "脚本对比",
+            lock: true,
+            width: "1380px",
+            height: "624px",
+            opacity: 0.5,
+            esc: false,
+            close: function () {
+            }
+        });
+        $.dialog.data("uplineDiff", uplineDiff);
     },
     //上线的时候对于SQL文件的内容检查
     uplineCheckContent: function (scriptWindow) {

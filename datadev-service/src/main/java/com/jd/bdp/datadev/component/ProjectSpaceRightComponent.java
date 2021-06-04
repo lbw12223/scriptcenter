@@ -2,10 +2,12 @@ package com.jd.bdp.datadev.component;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.jd.bdp.datadev.domain.DataDevScriptConfig;
 import com.jd.bdp.planing.api.ProjectInterface;
 import com.jd.bdp.planing.api.model.ApiResult;
 import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.planing.domain.bo.ProjectMemberBO;
+import com.jd.bdp.planing.domain.bo.ProjectResGroupBO;
 import com.jd.bdp.planing.domain.enums.RoleEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +31,6 @@ public class ProjectSpaceRightComponent implements InitializingBean {
     private String appId;
     @Value("${datadev.token}")
     private String appToken;
-
-
-
-
 
 
     /**
@@ -67,12 +65,42 @@ public class ProjectSpaceRightComponent implements InitializingBean {
         ProjectBO projectBO = new ProjectBO();
         projectBO.setErp(erp);
 
-        ApiResult<ProjectBO> grantAuthorityProject = projectInterface.getGrantAuthorityProject(appId, appToken, System.currentTimeMillis(), projectBO);
+        com.jd.bdp.planing.api.model.ApiResult<com.jd.bdp.planing.domain.bo.ProjectBO> grantAuthorityProject = projectInterface.getGrantAuthorityProject(appId, appToken, System.currentTimeMillis(), projectBO);
 
         if (grantAuthorityProject.getCode().equals(0)) {
             return grantAuthorityProject.getList();
         }
         return null;
+    }
+
+
+    public List<DataDevScriptConfig> getDefaultProjectpaceConfig(Long projectId) {
+        List<DataDevScriptConfig> defaultProjectSpace = new ArrayList<>();
+
+        try{
+            ProjectInterface projectInterface = SpringContextUtil.getBean(ProjectInterface.class);
+            ProjectResGroupBO projectResGroupBO = new ProjectResGroupBO();
+            projectResGroupBO.setProjectId(projectId);
+
+            ApiResult<ProjectResGroupBO> projectResGroup = projectInterface.getProjectResGroup(appId, appToken, System.currentTimeMillis(), projectResGroupBO);
+            if (projectResGroup.getCode().equals(0)) {
+                List<ProjectResGroupBO> projectResGroupList = projectResGroup.getList();
+                for(ProjectResGroupBO temp : projectResGroupList){
+                    DataDevScriptConfig scriptConfig = new DataDevScriptConfig() ;
+                    scriptConfig.setId(temp.getId());
+                    scriptConfig.setAccountCode(temp.getAccount());
+                    scriptConfig.setClusterCode(temp.getLogicComputeClusterCode());
+                    scriptConfig.setMarketLinuxUser(temp.getMarketCode());
+                    scriptConfig.setQueueCode(temp.getQueueCode());
+                    scriptConfig.setRunClusterCode(temp.getLogicComputeClusterCode());
+                    scriptConfig.setRunMarketLinuxUser(temp.getMarketCode());
+                    defaultProjectSpace.add(scriptConfig);
+                }
+            }
+        }catch (Exception e){
+            logger.error("getDefaultProjectpaceConfig",e);
+        }
+        return defaultProjectSpace;
     }
 
     /**
@@ -114,7 +142,7 @@ public class ProjectSpaceRightComponent implements InitializingBean {
                             (role.indexOf(RoleEnum.ADMIN.toValue()) != -1 ||
                                     role.indexOf(RoleEnum.BIZ_MNG.toValue()) != -1 ||
                                     role.indexOf(RoleEnum.PRJ_MNG.toValue()) != -1 ||
-                                    role.indexOf(RoleEnum.PRJ_DEV.toValue()) != -1 )) {
+                                    role.indexOf(RoleEnum.PRJ_DEV.toValue()) != -1)) {
                         hasRight = true;
                         if (hasRight) {
                             break;

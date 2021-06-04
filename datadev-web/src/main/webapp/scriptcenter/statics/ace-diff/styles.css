@@ -3,14 +3,14 @@
     display: -webkit-flex;
     flex-direction: row;
     position: absolute;
-    bottom: 40px;
+    bottom: 140px;
     width: 100%;
     top: 0px !important;
     left: 0px;
     /* these 3 lines are to prevents an unsightly scrolling bounce affect on Safari */
     width: 100%;
     overflow: auto;
-    height: 90%;
+
 }
 
 #flex-container > div {

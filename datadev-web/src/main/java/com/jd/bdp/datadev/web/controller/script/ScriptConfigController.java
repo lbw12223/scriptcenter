@@ -13,6 +13,7 @@ import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.data.assets.domain.MetaTableColumnBaseInfo;
 import com.jd.bdp.datadev.component.AllMarketComponent;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
+import com.jd.bdp.datadev.component.ProjectSpaceRightComponent;
 import com.jd.bdp.datadev.datapreview.domain.DataDevDataPreview;
 import com.jd.bdp.datadev.domain.DataDevScriptConfig;
 import com.jd.bdp.datadev.domain.HoldDoubleValue;
@@ -87,14 +88,19 @@ public class ScriptConfigController {
     @Value("${xingtu.token}")
     private String xingtuToken;
 
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent;
+
     @ExceptionMessageAnnotation(errorMessage = "获取运行配置信息")
     @RequestMapping("/getConfigByErp.ajax")
     @ResponseBody
     public JSONObject getConfigByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
-        return JSONObjectUtil.getSuccessResult(list);
+        List<DataDevScriptConfig> defaultProjectpaceConfig = projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
+        return JSONObjectUtil.getSuccessResultTwoObj(list,defaultProjectpaceConfig);
     }
+
 
     @ExceptionMessageAnnotation(errorMessage = "获取集市列表")
     @RequestMapping("/getMarketByErp.ajax")
