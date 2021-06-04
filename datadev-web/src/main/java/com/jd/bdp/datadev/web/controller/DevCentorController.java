@@ -260,6 +260,16 @@ public class DevCentorController {
         model.addAttribute("gitProjectDirPath", gitProjectDirPath);
         return "scriptcenter/devcenter/save_mutil_file";
     }
+    @RequestMapping("uplineArtDiff.html")
+    public String uplineArtDiff(UrmUserHolder userHolder, Long gitProjectId, String gitProjectDirPath, Model model) throws Exception {
+        projectService.verifyUserAuthority(userHolder.getErp(), gitProjectId);
+
+        model.addAttribute("dataDevGitProject", projectService.getGitProjectBy(gitProjectId));
+        model.addAttribute("gitProjectId", gitProjectId);
+        model.addAttribute("gitProjectDirPath", gitProjectDirPath);
+        return "scriptcenter/devcenter/upline_art_diff";
+    }
+
 
 
 

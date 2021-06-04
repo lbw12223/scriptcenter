@@ -5,7 +5,7 @@ import com.jd.bdp.planing.api.model.ApiResult;
 import com.jd.bdp.planing.domain.bo.*;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class ProjectInterfaceImpl implements ProjectInterface {
 
     @Override
