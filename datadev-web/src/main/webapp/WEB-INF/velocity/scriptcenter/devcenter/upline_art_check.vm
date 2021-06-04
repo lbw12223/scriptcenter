@@ -1,7 +1,7 @@
 #set($layout="layout_blank.vm")
 #set($page_title="artCheck")
 
-<link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css" />
+<link rel="stylesheet" href="scriptcenter/statics/zTree/gm/css/gm.css" />
 <div style="color: #666">
     <div>
         <h5 style="font-weight: bold">关联任务</h5>
@@ -9,10 +9,8 @@
         <div>脚本关联的线上任务：共$!{sss}个。其中L0任务：$!{taskL0Ttatal}个，L1任务：$!{taskL1Ttatal}个.</div>
         <div style="background: red;width: 100%;height: 300px">
 
-            <div class="jd-table-parent" id="upline-buffalo-list-jd-table-parent"
-                 style="height:135px;overflow: hidden;width: 100%">
-                <table id="gridTable"></table>
-            </div>
+            <table id="gridTable"></table>
+
 
 
         </div>
@@ -31,7 +29,7 @@
 <script >
 
 </script>
-<script src="/scriptcenter/statics/grid/js/gm.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/zTree/gm/js/gm.js?_dc=$!{staticVersion}"></script>
 
 <script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>

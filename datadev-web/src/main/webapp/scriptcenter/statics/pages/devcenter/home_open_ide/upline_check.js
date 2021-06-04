@@ -10,7 +10,7 @@ jQuery(function (){
         init  : function (){
 
             $('#gridTable').GM({
-                gridManagerName: 'gridDemo',
+                gridManagerName: 'gridTable',
                 supportAjaxPage: true,
                 ajaxData: '/scriptcenter/diff/scriptTaskList.ajax',
                 ajaxType: 'POST',
@@ -19,15 +19,16 @@ jQuery(function (){
                 supportAutoOrder: false,
                 height: "100%",
                 width: "100%",
-                query: {},
+                query: {
+                    projectSpaceId : top.projectSpaceId,
+                    scriptName:
+                },
                 supportMenu: false,
                 columnData: [
                     {
                         key: 'id',
                         text: 'id',
-
                     },
-
                     {
                         key: 'jobName',
                         text: '名称',
