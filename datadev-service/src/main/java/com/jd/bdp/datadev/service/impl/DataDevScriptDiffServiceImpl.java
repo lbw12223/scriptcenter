@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 //import com.jd.bdp.buffalo.devcenter.HiveTask;
 //import com.jd.bdp.buffalo.devcenter.ParseException;
 //import com.jd.bdp.buffalo.devcenter.SqlTableParser;
+import com.github.pagehelper.PageInfo;
 import com.jd.bdp.datadev.component.BuffaloComponent;
 import com.jd.bdp.datadev.domain.diff.DiffInfoVo;
 import com.jd.bdp.datadev.domain.diff.DiffPairVo;
@@ -13,10 +14,9 @@ import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.domain.dto.JsfAuthDTO;
 import com.jd.bdp.domain.dto.JsfResultDTO;
 import com.jd.bdp.planing.api.ProjectInterface;
-import com.jd.bdp.planing.api.model.ApiResult;
-import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.rc.domain.enums.ReleaseTypeEnum;
 import com.jd.jbdp.release.api.ReleaseSubmitInterface;
+import com.jd.jbdp.release.model.po.ReleaseObjInfo;
 import com.jd.jbdp.release.model.vo.SubmitInfoVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.commons.lang.StringUtils;
@@ -173,7 +173,25 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         submitInfoVo.setSubmitErp(operator);
         submitInfoVo.setSubmitObj(Arrays.asList(submitObj));
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+        logger.info("submit result:" + JSONObject.toJSONString(submit));
         return submit != null && submit.getCode() == 0;
+    }
+
+    @Override
+    public PageInfo<ReleaseObjInfo> releaseRecord(Long projectSpaceId, String scriptName, Integer page, Integer size) throws Exception {
+        SubmitInfoVo submitInfoVo = new SubmitInfoVo();
+        submitInfoVo.setProjectId(projectSpaceId);
+        submitInfoVo.setDevObjKey(scriptName);
+        submitInfoVo.setObjType("script");
+        submitInfoVo.setPageNum(page);
+        submitInfoVo.setPageSize(size);
+        JsfResultDTO<PageInfo> pageInfoJsfResultDTO = releaseSubmitInterface.releaseRecord(JsfAuthDTO.newInstance(), submitInfoVo);
+        logger.info("releaseRecord pageInfoJsfResultDTO:" + JSONObject.toJSONString(pageInfoJsfResultDTO));
+        if (pageInfoJsfResultDTO != null && pageInfoJsfResultDTO.getCode() == 0) {
+            return pageInfoJsfResultDTO.getObj();
+        }
+        throw new Exception("releaseSubmitInterface.releaseRecord failed");
+
     }
 
     private boolean isPython(String fileType) {

@@ -1,16 +1,19 @@
 package com.jd.bdp.datadev.web.controller.script;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.domain.diff.ReleaseCompareVo;
 import com.jd.bdp.datadev.service.DataDevScriptDiffService;
 import com.jd.bdp.urm.sso.UrmUserHolder;
+import com.jd.jbdp.release.model.po.ReleaseObjInfo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -136,6 +139,32 @@ public class ScriptDiffController {
             return JSONObjectUtil.getFailResult("提交失败", false);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult(e.getMessage(), false);
+        }
+    }
+
+    /**
+     * 发布上线历史
+     * @param userHolder
+     * @param projectSpaceId
+     * @param scriptName
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping("/releaseRecord.ajax")
+    @ResponseBody
+    public JSONObject releaseRecord(UrmUserHolder userHolder,
+                                    Long projectSpaceId,
+                                    String scriptName,
+                                    @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        String erp = userHolder.getErp();
+        try {
+            PageInfo<ReleaseObjInfo> releaseObjInfoPageInfo = dataDevScriptDiffService.releaseRecord(projectSpaceId, scriptName, page, size);
+            return JSONObjectUtil.getSuccessResult(releaseObjInfoPageInfo);
+        } catch (Exception e) {
+            logger.error("releaseRecord.ajax failed: ", e);
             return JSONObjectUtil.getFailResult(e.getMessage(), false);
         }
     }
