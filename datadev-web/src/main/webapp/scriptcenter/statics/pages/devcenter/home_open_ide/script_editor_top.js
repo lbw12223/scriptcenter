@@ -724,6 +724,7 @@ var datadevInit = {
     },
     uplineSaveScript: function (scriptWindow) {
         if (scriptWindow.type == 4) {
+            //zip
             datadevInit.uplinePushNumScript(scriptWindow);
         } else {
             datadevInit.directSave(function (data) {
@@ -983,17 +984,10 @@ var datadevInit = {
                 return;
             }
             if (window.type != 5) {
-                /* var name = window.name;
-                 var pattern = /^[0-9a-zA-z\-_]+\.(\w+)$/;
-                 if (pattern.test(name) && window.name.length < 256) {
-                     datadevInit.uplineSaveScript(window);
-                 } else {
-                     $.errorMsg("上线脚本名字只能是字母、数字、下划线、中线，且长度小于256，请先修改名称再上线！");
-                 }*/
                 datadevInit.uplineSaveScript(window);
             } else {
                 // $.errorMsg("只支持py、zip、sh、sql脚本上线！");
-                $.errorMsg("只支持sql、py、zip、sh脚本上线！");
+                $.errorMsg("只支持、py、zip、sh脚本上线！");
             }
         })
         $("#help").click(function () {
