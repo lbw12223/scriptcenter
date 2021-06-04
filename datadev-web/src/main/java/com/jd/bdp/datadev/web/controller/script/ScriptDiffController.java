@@ -107,6 +107,27 @@ public class ScriptDiffController {
     @ResponseBody
     public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String desc, @RequestBody SubmitObj submitObj) {
         String operator = userHolder.getErp();
+//        submitObj = JSONObject.parseObject("{\n" +
+//                "        \"devInfo\":{\n" +
+//                "            \"scriptId\":74666,\n" +
+//                "            \"fileSize\":\"1274\",\n" +
+//                "            \"scriptName\":\"python3_demo.py\",\n" +
+//                "            \"version\":\"1000\",\n" +
+//                "            \"fileType\":\"py\"\n" +
+//                "        },\n" +
+//                "        \"devObjKey\":\"python3_demo.py\",\n" +
+//                "        \"objType\":\"script\",\n" +
+//                "        \"onlineInfo\":{\n" +
+//                "            \"scriptId\":43020,\n" +
+//                "            \"fileSize\":\"2914\",\n" +
+//                "            \"scriptName\":\"python3_demo.py\",\n" +
+//                "            \"version\":\"20210526115738\",\n" +
+//                "            \"md5Code\":\"be701769805c1945adb816485555ec54\",\n" +
+//                "            \"fileType\":\"py\"\n" +
+//                "        },\n" +
+//                "        \"onlineObjKey\":\"python3_demo.py\",\n" +
+//                "        \"operatorType\":\"\"\n" +
+//                "    }", SubmitObj.class);
         try {
             boolean success = dataDevScriptDiffService.submit2RC(projectSpaceId, desc, operator, submitObj);
             if (success) {

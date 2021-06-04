@@ -64,9 +64,6 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         DiffInfoVo currentLay = new DiffInfoVo();
         DiffInfoVo remoteLay = new DiffInfoVo();
         DiffPairVo diffPairVo = new DiffPairVo();
-        currentLay.setName(scriptName);
-        remoteLay.setName(scriptName);
-
 
         //若脚本为zip，jar包，则对比zip，jar包的基本文件信息，否则比较内容
         //zip包名称
@@ -76,6 +73,7 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         //  有文件就比较文件，没有，就比较基本信息
         //注意开发环境和  线上环境获取到的脚本的信息字段不同，解析时候注意。。
         if(devDetail != null ){
+            currentLay.setName(devDetail.getString("name"));
             currentLay.setVersion(devDetail.getString("version"));
             currentLay.setFileType(devDetail.getString("type"));
 
@@ -93,6 +91,7 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
             }
         }
         if(onlineDetail != null){
+            remoteLay.setName(onlineDetail.getString("scriptName"));
             remoteLay.setVersion(onlineDetail.getString("version"));
             remoteLay.setFileType(onlineDetail.getString("scriptType"));
 

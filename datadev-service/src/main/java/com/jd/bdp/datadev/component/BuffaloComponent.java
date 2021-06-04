@@ -42,10 +42,12 @@ public class BuffaloComponent {
         params.put("appId", appId);
         long timeMillis = System.currentTimeMillis();
         params.put("time", Long.toString(timeMillis));
-        params.put("data", data.toJSONString());
+//        params.put("data", data.toJSONString());
+//        params.put("scriptName", scriptName);
+//        params.put("projectId", projectId.toString());
 
-        logger.info("-------调度中心-获取脚本内容接口参数：" + params);
-        String entity = HttpUtil.doPost(buffalo4Prefix + scriptGetFileContent, params);
+        logger.info("-------调度中心-获取脚本内容接口参数：" + params + "; body=" + data);
+        String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + scriptGetFileContent, params, data);
         logger.info("-------调度中心-获取脚本内容结果：" + entity);
         JSONObject jsonObject;
 
@@ -79,10 +81,10 @@ public class BuffaloComponent {
         params.put("appId", appId);
         long timeMillis = System.currentTimeMillis();
         params.put("time", Long.toString(timeMillis));
-        params.put("data", data.toJSONString());
+//        params.put("data", data.toJSONString());
 
-        logger.info("-------调度中心-获取脚本依赖线上任务列表接口参数：" + params);
-        String entity = HttpUtil.doPost(buffalo4Prefix + taskListUrl, params);
+        logger.info("-------调度中心-获取脚本依赖线上任务列表接口参数：" + params + "; body=" + data);
+        String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + taskListUrl, params, data);
         logger.info("-------调度中心-获取脚本依赖线上任务列表结果：" + entity);
 
         JSONObject jsonObject;
@@ -101,7 +103,7 @@ public class BuffaloComponent {
         }
         JSONObject res = new JSONObject();
         res.put("totalCount", jsonObject.getLong("totalCount"));
-        res.put("list", jsonObject.getJSONObject("list"));
+        res.put("list", jsonObject.getJSONArray("list"));
         return res;
     }
 

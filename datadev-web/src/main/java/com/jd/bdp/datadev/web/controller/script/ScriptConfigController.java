@@ -50,6 +50,8 @@ public class ScriptConfigController {
     private static final String MYSQL_CLUSTER = "rdbms"; //关系型数据库过滤掉
 
 
+    @Value("${datadev.env}")
+    private String env;
     @Value("${datadev.appId}")
     private String appId;
     @Value("${datadev.token}")
@@ -356,7 +358,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(new ArrayList<DataBaseDto>());
     }
 
-    @RequestMapping("/getAllTables.ajax")
+    @RequestMapping("/getAllTablesOld.ajax")
     @ResponseBody
     public JSONObject getAllTables(Long marketId, String dbName, String searchWord, @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         JSONObject result = new JSONObject();
@@ -411,7 +413,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(result);
     }
 
-    @RequestMapping("/getAllTablesNew.ajax")
+    @RequestMapping("/getAllTables.ajax")
     @ResponseBody
     public JSONObject getAllTablesNew(@RequestParam(value = "searchWord", defaultValue = "*") String searchWord,
                                       @RequestParam(value = "martCode", defaultValue = "") String martCode,
@@ -433,7 +435,13 @@ public class ScriptConfigController {
             }
             Long time = System.currentTimeMillis();
             String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
-            JSONObject apiResult = commonSearchService.search(xingtuAppId, sign, time, params.toJSONString());
+            JSONObject apiResult;
+            // 使用mock jsf接口
+            if (env.equals("dev") || env.equals("test")) {
+                apiResult = commonSearchService.search("", "", 0, "");
+            } else {
+                apiResult = commonSearchService.search(xingtuAppId, sign, time, params.toJSONString());
+            }
             logger.error("===============查询所有表结果：" + apiResult);
             if (apiResult != null && apiResult.getInteger("code") == 0) {
                 JSONObject data = apiResult.getJSONObject("data");
@@ -465,7 +473,7 @@ public class ScriptConfigController {
         return JSONObjectUtil.getSuccessResult(result);
     }
 
-    @RequestMapping("/getAllColumns.ajax")
+    @RequestMapping("/getAllColumnsOld.ajax")
     @ResponseBody
     public net.sf.json.JSONObject getAllColumns(UrmUserHolder userHolder, Long marketId, String dbName, String tbName,
                                                 @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "rows", defaultValue = "20") Integer rows,
@@ -509,7 +517,7 @@ public class ScriptConfigController {
         return AjaxUtil.gridJson(pageResultDTO);
     }
 
-    @RequestMapping("/getAllColumnsNew.ajax")
+    @RequestMapping("/getAllColumns.ajax")
     @ResponseBody
     public net.sf.json.JSONObject getAllColumnsNew(UrmUserHolder userHolder, String martCode, String cluster, String dbName, String tbName,
                                                    @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "rows", defaultValue = "20") Integer rows,
@@ -527,19 +535,36 @@ public class ScriptConfigController {
             Long time = System.currentTimeMillis();
             String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
             logger.error("===========data:" + params.toJSONString());
-            JSONObject apiResult = tableFieldsDataJsfInterface.queryTBFields(xingtuAppId, sign, time, params.toJSONString());
+            JSONObject apiResult;
+            // 测试开发环境 使用mock jsf接口
+            if (env.equals("dev") || env.equals("test")) {
+                apiResult = tableFieldsDataJsfInterface.queryTBFields("", "", 0, "");
+            } else {
+                apiResult = tableFieldsDataJsfInterface.queryTBFields(xingtuAppId, sign, time, params.toJSONString());
+            }
             logger.error("===============查询表字段：" + apiResult);
 
             JSONArray columns = new JSONArray();
             if (apiResult != null && apiResult.getInteger("code") == 0) {
                 JSONObject data = apiResult.getJSONObject("data");
-                columns = data.getJSONArray("columns");
+                JSONArray tmp = data.getJSONArray("columns");
+                if (tmp != null) {
+                    for (Object o : tmp) {
+                        JSONObject json = (JSONObject) o;
+                        JSONObject object = new JSONObject();
+                        object.put("columnName", json.getString("name"));
+                        object.put("comment", json.getString("comment"));
+                        object.put("columnType", json.getString("type"));
+                        columns.add(object);
+                    }
+                }
             }
-            List<JSONObject> searchList = new ArrayList<JSONObject>();
+            List<JSONObject> searchList = columns.toJavaList(JSONObject.class);
             if (StringUtils.isNotBlank(searchWord)) {
+                searchList = new ArrayList<JSONObject>();
                 for (Object column : columns) {
                     JSONObject json = (JSONObject) column;
-                    String columnName = json.getString("name");
+                    String columnName = json.getString("columnName");
                     String columnComment = json.getString("comment");
                     if (StringUtils.isNotBlank(columnName) && columnName.indexOf(searchWord) != -1
                             || StringUtils.isNotBlank(columnComment) && columnComment.indexOf(searchWord) != -1) {

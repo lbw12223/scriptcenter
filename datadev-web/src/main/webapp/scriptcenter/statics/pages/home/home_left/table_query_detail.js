@@ -20,15 +20,15 @@ $(function () {
     });
 
     function init() {
-        showAllTableColumns(info.marketId, info.dbName, info.tbName);
+        showAllTableColumns(info.martCode, info.dbName, info.tbName);
     }
 
-    function showAllTableColumns(marketId, dbName, tbName) {
+    function showAllTableColumns(martCode, dbName, tbName) {
         $("#columnsSearchInput").val("");
         if (allTableJqgrid) {
             $("#allGridColumn").jqGrid("setGridParam", {
                 postData: {
-                    marketId: marketId,
+                    martCode: martCode,
                     dbName: dbName,
                     tbName: tbName,
                     searchWord: ""
@@ -55,8 +55,8 @@ $(function () {
                 }
             ];
             var data = {};
-            if (marketId && dbName && tbName) {
-                data.marketId = marketId;
+            if (martCode && dbName && tbName) {
+                data.martCode = martCode;
                 data.dbName = dbName;
                 data.tbName = tbName;
             }
