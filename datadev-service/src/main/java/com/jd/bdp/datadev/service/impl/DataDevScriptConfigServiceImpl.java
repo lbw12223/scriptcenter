@@ -69,8 +69,6 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
     public List<DataDevScriptConfig> getConfigsByErp(String erp, Long projectSpaceId) throws Exception {
         List<DataDevScriptConfig> list = configDao.getConfigsByErp(erp, projectSpaceId);
         sortByOrder(list);
-        List<DataDevScriptConfig> defaultProjectpaceConfig = projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
-        list.addAll(defaultProjectpaceConfig);
         return list;
     }
 
