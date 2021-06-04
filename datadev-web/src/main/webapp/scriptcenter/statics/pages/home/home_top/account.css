@@ -1,21 +1,22 @@
 
 #codeModal .bdp-modal-dialog{
-    width: 840px;
+    width: 625px;
 }
 
 
 #codeModal div.leftBodyDiv {
-    width: 242px;
+    width: 208px;
     height: 280px;
     float: left;
     background: #272A2F;
-    border: 1px solid #44494F;
+    /* border: 1px solid #44494F; */
+    border-right: 1px solid rgba(0,0,0,0.09);
 }
 
 #codeModal div.rightBodyDiv {
     overflow: hidden;
     /*height: 270px;*/
-    padding-left: 40px;
+    padding: 24px 21px;
     line-height: 32px;
 }
 
@@ -24,8 +25,8 @@
 }
 
 #codeModal div.account-tool {
-    padding: 0 6px;
-    height: 40px;
+    padding: 0 16px;
+    height: 36px;
     background: rgba(255,255,255,1);
 }
 
@@ -42,7 +43,7 @@
 
 #codeModal div.account-input {
     float: left;
-    width: 433px;
+    width: 302px;
     position: relative;
 }
 
@@ -75,7 +76,7 @@ div.queue-tip a:hover {
 }
 
 .account-tool {
-    line-height: 40px;
+    line-height: 36px;
     font-size: 12px;
     border-bottom: 1px solid #44494F;
 }
@@ -111,7 +112,7 @@ ul.account-history-ul,ul.account-history-ul2 {
 ul.account-history-ul li, ul.account-history-ul2 li{
     height: 32px;
     line-height: 32px;
-    padding-left: 25px;
+    padding-left: 33px;
     font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -150,7 +151,7 @@ ul.account-history-ul li.active,ul.account-history-ul2 li.active {
 }
 
 #codeModal .account-part{
-    height: 280px;
+    height: 362px;
     overflow: auto;
 }
 
@@ -159,9 +160,11 @@ ul.account-history-ul li.active,ul.account-history-ul2 li.active {
     left: 0;
     top: 0;
     width: 60px; */
-    padding-left: 15px;
+    padding-left: 24px;
     font-size: 14px;
     color: rgba(0,0,0,1);
     text-align: left;
-    line-height: 3;
+    height: 32px;
+    line-height: 32px;
+    background-color: rgb(245,245,245);
 }
