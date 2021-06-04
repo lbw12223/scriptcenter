@@ -57,9 +57,19 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
     @Override
     public ReleaseCompareVo compareInfo(Long projectSpaceId, Long scriptId, String scriptName) throws Exception {
         // 开发脚本详情
-        JSONObject devDetail = scriptFileService.getScriptDetail(scriptId, null);
+        JSONObject devDetail = null;
+        try {
+            devDetail = scriptFileService.getScriptDetail(scriptId, null);
+        } catch (Exception e) {
+            logger.error("获取开发脚本失败", e);
+        }
         // 上线脚本详情
-        JSONObject onlineDetail = buffaloComponent.scriptGetFileContent(scriptName, projectSpaceId);
+        JSONObject onlineDetail = null;
+        try {
+            onlineDetail = buffaloComponent.scriptGetFileContent(scriptName, projectSpaceId);
+        } catch (Exception e) {
+            logger.error("获取生产脚本失败", e);
+        }
 
         DiffInfoVo currentLay = new DiffInfoVo();
         DiffInfoVo remoteLay = new DiffInfoVo();
