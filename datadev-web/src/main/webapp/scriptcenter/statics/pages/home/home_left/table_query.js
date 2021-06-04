@@ -364,7 +364,7 @@ $(function () {
             "   <div class='table-item-name pop-title' data-title='" + data.tbName + "'>" + data.tbName + "</div>" +
             "   <div class='table-item-comment pop-title' data-title='" + data.memo + "'>" + data.memo + "</div>" +
             "   <div class='table-item-category'>" +
-            "       <div class='market-name pop-title' data-cluster='" + data.clusterCode + "' data-code='" + data.linuxUser + "' data-id='" + data.marketId + "' data-title='" + data.marketName + "'>集市：<span>" + data.marketName + "</span></div>" +
+            "       <div class='market-name pop-title' data-cluster='" + data.clusterCode + "' data-code='" + data.martCode + "' data-id='" + data.marketId + "' data-title='" + data.marketName + "'>集市：<span>" + data.marketName + "</span></div>" +
             "       <div class='db-name pop-title' data-title='" + data.dbName + "'>库：<span>" + data.dbName + "</span></div>" +
             "   </div>" +
             "   <div class='table-item-operate'>" +
