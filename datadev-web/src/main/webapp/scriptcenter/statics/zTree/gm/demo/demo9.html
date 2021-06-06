@@ -4,10 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="../css/gm.css">
     <script type="text/javascript" src="../js/gm.js"></script>
-    <title>GridManager:点击行单选</title>
+    <title>GridManager:数据折叠</title>
     <style>
         html, body{
-            width: 100%;
             overflow-x:hidden;
             margin: 0;
             padding: 0;
@@ -74,15 +73,38 @@
             font-size: 12px;
             margin-right: 10px;
         }
-        .void-template{
-            height:300px;
-            line-height: 300px;
-            text-align: center;
-            font-size: 24px;
-            color: #ccc;
-        }
         .grid-main {
             height: calc(100vh - 64px - 57px);
+        }
+
+        .table-form{
+            display: flex;
+            padding: 14px 100px;
+        }
+        .tf-photo{
+            width: 60px;
+            height: 60px;
+            border: 1px solid #eee;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .tf-photo img{
+            width: 60px;;
+        }
+        .tf-text{
+            width: 240px;
+            padding-left: 10px
+        }
+        .tf-el{
+            line-height: 30px;
+        }
+        .tf-el label{
+            display: inline-block;
+            width: 50px;
+            color: #666;
+            margin-right: 10px;
+            text-align: right;
+            font-weight: 600;
         }
     </style>
     <script>
@@ -96,7 +118,6 @@
             '6': '前端框架',
             '7': '前端相关'
         };
-
     </script>
 </head>
 
@@ -117,18 +138,18 @@
 </section>
 
 <section class="grid-main">
-    <table></table>
+    <table id="test"></table>
 </section>
 
 <section class="bottom-bar">
     <button id="init-gm" disabled>init</button>
     <button id="destroy-gm" disabled>destroy</button>
-    <a href="https://github.com/baukh789/GridManager/blob/master/src/demo/demo5.html" target="_blank">查看源码</a>
+    <a href="https://github.com/baukh789/GridManager/blob/master/src/demo/demo4.html" target="_blank">查看源码</a>
 </section>
 
 <script type="text/javascript">
     // GridManager 渲染
-    var table = document.querySelector('table');
+    var table = document.querySelector('#test');
     function init() {
         table.GM({
             gridManagerName: 'test',
@@ -136,52 +157,45 @@
             height: '100%',
             supportAjaxPage:true,
             isCombSorting: true,
-            checkboxConfig: {
-                useRowCheck: true,
-                useRadio: true,
+            disableLine:true,
+            autoOrderConfig: {
+                fixed: 'left'
             },
-            // disableBorder: true,
-            disableLine: true,
-            disableHover: true,
+            checkboxConfig: {
+                fixed: 'left'
+            },
+            fullColumn: {
+                useFold: true,
+                // fixed: 'left', // 折叠事件列固定方向
+                // openState: true,
+                bottomTemplate: function(row, index){
+                    return `<div class="table-form">
+                                <div class="tf-photo">
+                                    <img src="https://www.lovejavascript.com/${row.photo}"/>
+                                </div>
+                                <div class="tf-text">
+                                    <div class="tf-el"><label>作者:</label>${row.username}</div>
+                                    <div class="tf-el"><label>github:</label>https://github.com/baukh789</div>
+                                </div>
+                                <div class="tf-text">
+                                    <div class="tf-el"><label>阅读量:</label>${row.readNumber}</div>
+                                    <div class="tf-el"><label>点赞量:</label>${row.praiseNumber}</div>
+                                    <div class="tf-el"><label>评论量:</label>${row.commentSum}</div>
+                                </div>
+                                <div class="tf-text">
+                                    <div class="tf-el"><label>创建时间:</label>${new Date(row.createDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                                    <div class="tf-el"><label>修改时间:</label>${new Date(row.lastDate).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                                </div>
+                           </div>`;
+                }
+            },
             ajaxData: function () {
                 return 'https://www.lovejavascript.com/blogManager/getBlogList';
             },
             ajaxType: 'POST',
-
-            // checkedBefore: function(checkedList, checked, row) {
-            //     console.log(checkedList, checked, row);
-            //     return row.id === 92;
-            // },
-            checkedAfter: function(checkedList) {
-                console.log('当前选中的行数据=>', checkedList);
-            },
+            supportMenu: true,
             columnData: [
                 {
-                    key: 'pic',
-                    remind: 'the pic',
-                    width: '110px',
-                    align: 'center',
-                    text: '缩略图',
-                    // 使用函数返回 dom node
-                    template: function(pic, rowObject) {
-                        var picNode = document.createElement('a');
-                        picNode.setAttribute('href', `https://www.lovejavascript.com/#!zone/blog/content.html?id=${rowObject.id}`);
-                        picNode.setAttribute('title', rowObject.title);
-                        picNode.setAttribute('target', '_blank');
-                        picNode.title = `点击阅读[${rowObject.title}]`;
-                        picNode.style.display = 'block';
-                        picNode.style.height = '58.5px';
-
-                        var imgNode = document.createElement('img');
-                        imgNode.style.width = '90px';
-                        imgNode.style.margin = '0 auto';
-                        imgNode.alt = rowObject.title;
-                        imgNode.src = `https://www.lovejavascript.com/${pic}`;
-
-                        picNode.appendChild(imgNode);
-                        return picNode;
-                    }
-                },{
                     key: 'title',
                     remind: 'the title',
                     align: 'left',
@@ -202,24 +216,40 @@
                     key: 'type',
                     remind: 'the type',
                     text: '博文分类',
-                    width: '120px',
+                    width: '130px',
                     align: 'center',
                     sorting: '',
+                    // 表头筛选条件, 该值由用户操作后会将选中的值以{key: value}的形式覆盖至query参数内。非必设项
+                    filter: {
+                        // 筛选条件列表, 数组对象。格式: [{value: '1', text: 'HTML/CSS'}],在使用filter时该参数为必设项。
+                        option: [
+                            {value: '1', text: 'HTML/CSS'},
+                            {value: '2', text: 'nodeJS'},
+                            {value: '3', text: 'javaScript'},
+                            {value: '4', text: '前端鸡汤'},
+                            {value: '5', text: 'PM Coffee'},
+                            {value: '6', text: '前端框架'},
+                            {value: '7', text: '前端相关'}
+                        ],
+                        // 筛选选中项，字符串, 默认为''。 非必设项，选中的过滤条件将会覆盖query
+                        selected: '3',
+                        // 否为多选, 布尔值, 默认为false。非必设项
+                        isMultiple: false
+                    },
                     template: function(type, rowObject){
                         return TYPE_MAP[type];
                     }
                 },{
                     key: 'info',
                     remind: 'the info',
-                    width: '100px',
                     text: '简介'
                 },{
                     key: 'username',
                     remind: 'the username',
                     align: 'center',
-                    width: '100px',
+                    width: '120px',
                     text: '作者',
-                    template: function(username){
+                    template: function(username, row, index){
                         return `<a class="plugin-action" href="https://github.com/baukh789" target="_blank" title="去看看${username}的github">${username}</a>`;
                     }
                 },{
@@ -240,27 +270,16 @@
                     template: function(lastDate, rowObject){
                         return new Date(lastDate).toLocaleDateString();
                     }
-                },{
-                    key: 'action',
-                    remind: 'the action',
-                    width: '100px',
-                    align: 'center',
-                    text: '<span style="color: red">操作</span>',
-                    template: function(action, rowObject){
-                        return `<span class="plugin-action" title="${rowObject.title}"onclick="delectRowData(this.title)">删除</span>`;
-                    }
                 }
             ]
+            // 排序后事件
+            ,sortingAfter: function (data) {
+                console.log('sortAfter', data);
+            }
+        }, function(query){
+            // 渲染完成后的回调函数
+            console.log('渲染完成后的回调函数:', query);
         });
-    }
-
-    // 删除功能
-    function delectRowData(title){
-        window.event.stopPropagation();
-        // 执行删除操作
-        if(window.confirm('确认要删除['+title+']?')){
-            window.alert('当然这只是个示例,并不会真实删除,要不然每天我每天就光填demo数据了.');
-        }
     }
 
     /**

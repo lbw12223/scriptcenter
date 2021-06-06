@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="../css/gm.css">
 	<script type="text/javascript" src="../js/gm.js"></script>
-    <title>GridManager: 复杂表头</title>
+    <title>GridManager: 延迟总页模式</title>
     <style>
 		html, body{
 			width: 100%;
@@ -12,9 +12,6 @@
 			margin: 0;
 			padding: 0;
 		}
-        p{
-            margin: 0;
-        }
 		.plugin-action{
 			display: inline-block;
 			color: steelblue;
@@ -110,13 +107,6 @@
 			<input class="se-con" name="title"/>
 		</div>
 		<div class="sa-ele">
-			<label class="se-title">博文分类:</label>
-			<select class="se-con" name="type">
-				<option value="-1">请选择</option>
-				<!--通过js增加-->
-			</select>
-		</div>
-		<div class="sa-ele">
 			<label class="se-title">内容:</label>
 			<input class="se-con" name="content"/>
 		</div>
@@ -138,13 +128,12 @@
 
 	<script type="text/javascript">
 		// GridManager 渲染
-		var table = document.querySelector('table');
+        var table = document.querySelector('table');
 		function init() {
 			table.GM({
-				gridManagerName: 'test7',
+				gridManagerName: 'test',
                 width: '100%',
 				height: '100%',
-                supportMenu: false,
 				supportAjaxPage:true,
 				isCombSorting: true,
 				ajaxData: function () {
@@ -152,10 +141,42 @@
 				},
 				ajaxType: 'POST',
 
-                disableCache: true,
+                // useNoTotalsMode: true,
 
-				emptyTemplate: '<div class="void-template">通过 emptyTemplate 配置的空数据提示</div>',
+                // 异步总页
+                asyncTotals: {
+				    text: '<span style="color: #999">加载中...</span>',
+                    handler: (settings, params) => {
+				        console.log(params);
+                        return new Promise(resolve => {
+                            jTool.ajax({
+                                url: 'https://www.lovejavascript.com/blogManager/getBlogList',
+                                type: 'POST',
+                                success: res => {
+                                    resolve(JSON.parse(res).totals);
+                                }
+                            });
+                        })
+                    }
+                },
 
+				dataKey: 'list',  // 注意: 这里是用来测试responseHandler 是否生效; 数据本身返回为data, 而在这里我把数据名模拟为list, 再通过responseHandler去更改
+
+				// 通过该方法修改全部的请求参数
+				requestHandler: function(request){
+					request.newParams = '这个参数是通过 requestHandler 函数新增的';
+					// 更改这个参数后, 将会强制createDate字段使用 降序排序.
+					// 'sort_' 通过 配置项 sortKey 进行配置
+					// 'DESC' 通过 配置项 sortDownText 进行配置
+					//			request.sort_createDate = 'DESC';
+					return request;
+				},
+				// 可以通过该方法修改返回的数据
+				responseHandler: function(response){
+					// 数据本身返回为data, 通过responseHandler更改为与dataKey匹配的值
+					response.list = response.data;
+					return response;
+				},
 				columnData: [
 					{
 						key: 'pic',
@@ -184,6 +205,7 @@
 						}
 					},{
 						key: 'title',
+						remind: 'the title',
 						align: 'left',
 						text: '标题',
 						sorting: '',
@@ -200,27 +222,11 @@
 						}
 					},{
 						key: 'type',
+						remind: 'the type',
 						text: '博文分类',
-						align: 'left',
+						align: 'center',
                         width: '150px',
                         sorting: '',
-                        // 表头筛选条件, 该值由用户操作后会将选中的值以{key: value}的形式覆盖至query参数内。非必设项
-                        filter: {
-                            // 筛选条件列表, 数组对象。格式: [{value: '1', text: 'HTML/CSS'}],在使用filter时该参数为必设项。
-                            option: [
-                                {value: '1', text: 'HTML/CSS'},
-                                {value: '2', text: 'nodeJS'},
-                                {value: '3', text: 'javaScript'},
-                                {value: '4', text: '前端鸡汤'},
-                                {value: '5', text: 'PM Coffee'},
-                                {value: '6', text: '前端框架'},
-                                {value: '7', text: '前端相关'}
-                            ],
-                            // 筛选选中项，字符串, 默认为''。 非必设项，选中的过滤条件将会覆盖query
-                            selected: '3',
-                            // 否为多选, 布尔值, 默认为false。非必设项
-                            isMultiple: true
-                        },
 						template: function(type, rowObject){
 							return TYPE_MAP[type];
 						}
@@ -231,6 +237,7 @@
 						text: '简介'
 					},{
 						key: 'username',
+						remind: 'the username',
 						align: 'center',
 						width: '100px',
 						text: '作者',
@@ -239,41 +246,38 @@
 						}
 					},{
 						key: 'createDate',
-						width: '140px',
-						text: '<div class="type"><p>创建时间</p><p>与</p><p>最后修改时间</p></div>',
+						width: '130px',
+						text: '创建时间',
 						sorting: 'DESC',
-                        remind: '排序时，使用创建时间进行排序',
 						// 使用函数返回 htmlString
 						template: function(createDate, rowObject){
-							return `创建于: ${new Date(createDate).toLocaleDateString()} <br/>修改于: ${new Date(rowObject.lastDate).toLocaleDateString()}`;
+							return new Date(createDate).toLocaleDateString();
+						}
+					},{
+						key: 'lastDate',
+						width: '130px',
+						text: '最后修改时间',
+						sorting: '',
+						// 使用函数返回 htmlString
+						template: function(lastDate, rowObject){
+							return new Date(lastDate).toLocaleDateString();
 						}
 					}
-				]
+				],
+				// 排序后事件
+				sortingAfter: function (data) {
+					console.log('sortAfter', data);
+				},
+
+                // 单个td的hover事件
+                // cellHover: function(row, rowIndex, colIndex){
+				 //    console.log(row, rowIndex, colIndex);
+                // }
+			}, function(query){
+				// 渲染完成后的回调函数
+				console.log('渲染完成后的回调函数:', query);
 			});
 		}
-
-		// 删除功能
-		function delectRowData(rowData){
-			// 执行删除操作
-			if(window.confirm('确认要删除['+rowData.title+']?')){
-				window.alert('当然这只是个示例,并不会真实删除,要不然每天我每天就光填demo数据了.');
-			}
-		}
-
-		/**
-		 * 渲染博文类型
-		 */
-		(function () {
-			// 渲染下拉框
-			var typeSelect = document.querySelector('.search-area select[name="type"]');
-
-			for(var key in TYPE_MAP){
-				var option = document.createElement('option');
-				option.value = key;
-				option.innerText = TYPE_MAP[key];
-				typeSelect.appendChild(option);
-			}
-		})();
 
 		 /**
 		 * 提供demo中的搜索, 重置

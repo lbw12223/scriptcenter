@@ -303,6 +303,7 @@ var datadevInit = {
         activeWindow.win = window;
         activeWindow.jq = window.jQuery;
         activeWindow.target = ""
+        activeWindow.scriptFileId = activeWindow.jq && activeWindow.jq("#scriptFileId").val();
         activeWindow.name = activeWindow.jq && activeWindow.jq("#fileName").val();
         activeWindow.desc = activeWindow.jq && activeWindow.jq("#script-detail-description").val();
         activeWindow.code = activeWindow.jq && activeWindow.jq("#code");
@@ -692,10 +693,11 @@ var datadevInit = {
     },
 
     uplineDiffHtml:function (scriptWindow){
-        var gitProjectId = scriptWindow.getProjectId ;
-        var scriptPath = scriptWindow.getProjectId ;
 
-        var url = "/scriptcenter/devcenter/uplineArtDiff.html?templateId=" ;
+        debugger
+        var scriptFileId = scriptWindow.scriptFileId ;
+
+        var url = "/scriptcenter/devcenter/uplineArtDiff.html?scriptFileId=" +scriptFileId  ;
         var uplineDiff = $.dialog.open(url, {
             title: "脚本对比",
             lock: true,

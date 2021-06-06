@@ -11,6 +11,7 @@ import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
 import com.jd.bdp.planing.api.ProjectInterface;
+import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.rc.api.ApiResult;
 import com.jd.bdp.rc.api.ReleaseInterface;
 import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
@@ -228,10 +229,36 @@ public class DevCentorController {
         return "scriptcenter/devcenter/left/scripts/table_query_data_preview";
     }
 
+    @Autowired
+    private DataDevScriptDiffService dataDevScriptDiffService;
+
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent ;
 
 
     @RequestMapping({"uplineArtCheck.html"})
-    public String uplineCheck(Model model,UrmUserHolder urmUserHolder , Long gitProjectId , String scriptFilePath) throws Exception {
+    public String uplineCheck(Model model,UrmUserHolder urmUserHolder ,
+                              Long projectSpaceId ,
+                              Long scriptId) throws Exception {
+
+
+        DataDevScriptFile dataDevScriptFile = fileService.findById(scriptId);
+
+
+        JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, dataDevScriptFile.getName(), urmUserHolder.getErp());
+        Long totalCount = result.getLong("totalCount");
+        Long totalL0 = result.getLong("totalL0");
+        Long totalL1 = result.getLong("totalL1");
+
+        ProjectBO projectB0 = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
+        model.addAttribute("totalL0",totalL0);
+        model.addAttribute("totalL1",totalL1);
+        model.addAttribute("totalCount",totalCount);
+        model.addAttribute("spaceProjectName",projectB0 != null ? projectB0.getName() : "");
+        model.addAttribute("dataDevScriptFile",dataDevScriptFile);
+
+
+
         return "scriptcenter/devcenter/upline_art_check";
     }
 
@@ -273,12 +300,9 @@ public class DevCentorController {
         return "scriptcenter/devcenter/save_mutil_file";
     }
     @RequestMapping("uplineArtDiff.html")
-    public String uplineArtDiff(UrmUserHolder userHolder, Long gitProjectId, String gitProjectDirPath, Model model) throws Exception {
-        projectService.verifyUserAuthority(userHolder.getErp(), gitProjectId);
-
-        model.addAttribute("dataDevGitProject", projectService.getGitProjectBy(gitProjectId));
-        model.addAttribute("gitProjectId", gitProjectId);
-        model.addAttribute("gitProjectDirPath", gitProjectDirPath);
+    public String uplineArtDiff(UrmUserHolder userHolder, String scriptFileId, Model model) throws Exception {
+        model.addAttribute("dataDevScriptFile", fileService.findById(Long.parseLong(scriptFileId)));
+        model.addAttribute("scriptFileId", scriptFileId);
         return "scriptcenter/devcenter/upline_art_diff";
     }
 
@@ -310,8 +334,6 @@ public class DevCentorController {
         projectService.verifyUserAuthority(holder.getErp(), file.getGitProjectId());
         DataDevScriptFile old = fileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath());
 
-
-
         if (old == null) {
             throw new RuntimeException("脚本不存在");
         }
@@ -340,7 +362,6 @@ public class DevCentorController {
         if (publish != null) {
             resJson.put("isFirst", "false");
         }
-
 
         res = dataDevCenterService.upLineScript(old, holder.getErp(), publish, runType);
 

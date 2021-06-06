@@ -2,9 +2,8 @@ package com.jd.bdp.datadev.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jd.bdp.datadev.component.AppGroupUtil;
-import com.jd.bdp.datadev.component.ProjectSpaceRightComponent;
-import com.jd.bdp.datadev.component.UrmUtil;
+import com.jd.bdp.common.utils.HttpRequestDTO;
+import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.dao.DataDevScriptPublishDao;
 import com.jd.bdp.datadev.domain.DataDevScriptFile;
 import com.jd.bdp.datadev.domain.DataDevScriptFilePublish;
@@ -15,6 +14,8 @@ import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.datadev.util.HttpUtil;
 import com.jd.bdp.datadev.util.MD5Util;
 import com.jd.bdp.domain.authorityCenter.MarketInfoDto;
+import com.jd.bdp.domain.dto.JsfAuthDTO;
+import com.jd.bdp.domain.dto.JsfResultDTO;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopAccount;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopQueue;
 import com.jd.bdp.domain.urm.right.ApiResultDTO;
@@ -26,6 +27,9 @@ import com.jd.bdp.rc.api.ApiResult;
 import com.jd.bdp.rc.api.ReleaseInterface;
 import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
 import com.jd.bdp.rc.domain.bo.ReleaseRecordBo;
+import com.jd.jbdp.release.api.ReleaseSubmitInterface;
+import com.jd.jbdp.release.model.vo.SubmitInfoVo;
+import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.HttpPost;
@@ -39,6 +43,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -77,13 +82,18 @@ public class DataDevCenterImpl implements DataDevCenterService {
     @Autowired
     private ProjectInterface projectInterface ;
 
+    @Autowired
+    private ReleaseSubmitInterface releaseSubmitInterface ;
+
+    @Autowired
+    private BuffaloComponent buffaloComponent ;
+
     public static final String SPLIT = "#-#" ;
     /**
      *
      * 提交到发布中心
      */
     private void uplineReleaseCenter( JSONObject resObject  , String erp , DataDevScriptFile file){
-
         ReleaseInfoFromDevDto releaseInfoFromDevDto = new ReleaseInfoFromDevDto();
         releaseInfoFromDevDto.setObjType("script");
         releaseInfoFromDevDto.setProjectId(file.getApplicationId());
@@ -112,6 +122,85 @@ public class DataDevCenterImpl implements DataDevCenterService {
         if(!releaseRecordBoApiResult.isSuccess()){
             throw new RuntimeException("提交发布中心失败," + releaseRecordBoApiResult.getMessage());
         }
+    }
+
+
+    /**
+     * 提交发布中心New
+     * @param resObject
+     * @param erp
+     * @param file
+     */
+    private void uplineReleaseCenterNew( JSONObject resObject  , String erp , DataDevScriptFile file , JSONObject preOnline) throws Exception{
+
+        String fileName = file.getName() ;
+        Long projectSpaceId = file.getApplicationId();
+
+//        JSONObject submitObj = JSONObject.parseObject("{\n" +
+//                "        \"devInfo\":{\n" +
+//                "            \"scriptId\":74666,\n" +
+//                "            \"fileSize\":\"1274\",\n" +
+//                "            \"scriptName\":\"python3_demo.py\",\n" +
+//                "            \"version\":\"1000\",\n" +
+//                "            \"fileType\":\"py\"\n" +
+//                "        },\n" +
+//                "        \"devObjKey\":\"python3_demo.py\",\n" +
+//                "        \"objType\":\"script\",\n" +
+//                "        \"onlineInfo\":{\n" +
+//                "            \"scriptId\":43020,\n" +
+//                "            \"fileSize\":\"2914\",\n" +
+//                "            \"scriptName\":\"python3_demo.py\",\n" +
+//                "            \"version\":\"20210526115738\",\n" +
+//                "            \"md5Code\":\"be701769805c1945adb816485555ec54\",\n" +
+//                "            \"fileType\":\"py\"\n" +
+//                "        },\n" +
+//                "        \"onlineObjKey\":\"python3_demo.py\",\n" +
+//                "        \"operatorType\":\"\"\n" +
+//                "    }", SubmitObj.class);
+
+
+        JSONObject currentOnlineInfo = buffaloComponent.getCurrentOnlineInfo(fileName, projectSpaceId);
+
+        String fileType= DataDevScriptTypeEnum.enumValueOf(file.getType()).toName();
+        SubmitObj tempSubmitObj = new SubmitObj();
+        JSONObject currentTempOnlineInfo = new JSONObject();
+        if(currentOnlineInfo != null){
+            currentTempOnlineInfo.put("scriptId",currentTempOnlineInfo.getLong("fileId"));
+            currentTempOnlineInfo.put("fileSize",currentTempOnlineInfo.getLong("fileSize"));
+            currentTempOnlineInfo.put("scriptName",currentTempOnlineInfo.getString("fileName"));
+            currentTempOnlineInfo.put("version",currentTempOnlineInfo.getString("curVersion"));
+            currentTempOnlineInfo.put("md5Code",currentTempOnlineInfo.getString("md5Code"));
+            currentTempOnlineInfo.put("fileType",currentTempOnlineInfo.getString("fileType"));
+        }
+        JSONObject devInfo = new JSONObject();
+        devInfo.put("scriptId",file.getId());
+        devInfo.put("fileSize",file.getSize());
+        devInfo.put("scriptName",file.getName());
+        devInfo.put("version",file.getVersion());
+        devInfo.put("fileType",fileType);
+        devInfo.put("preOnline",preOnline);
+
+        String devObjKey = file.getName() + SPLIT + file.getVersion() ;
+
+        tempSubmitObj.setDevInfo(devInfo);
+        tempSubmitObj.setDevObjKey(devObjKey);
+        tempSubmitObj.setOnlineInfo(currentTempOnlineInfo);
+        tempSubmitObj.setObjType("script");
+        String commitMsg = file.getVerDescription();
+        SubmitInfoVo submitInfoVo = new SubmitInfoVo();
+        submitInfoVo.setProjectId(projectSpaceId);
+        submitInfoVo.setDesc(commitMsg);
+        submitInfoVo.setSubmitErp(erp);
+        submitInfoVo.setSubmitObj(Arrays.asList(tempSubmitObj));
+        // 检测脚本是否正在发布
+       // checkIsInRelease(submitInfoVo);
+
+        JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+        logger.info("submit result:" + JSONObject.toJSONString(submit));
+       // return submit != null && submit.getCode() == 0;
+
+
+
     }
 
 
@@ -198,6 +287,118 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 insertPublish.setStatus(StringUtils.isNotBlank(bdpRequestId) ? DataDevScriptPublishStatusEnum.Auditing.toCode() : DataDevScriptPublishStatusEnum.Success.toCode());
                 publishDao.updateStatus(insertPublish);
                 uplineReleaseCenter(obj,erp,file);
+                return insertPublish;
+            } else if (resObject.getInteger("code") == 206) {
+                throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");
+            } else {
+                throw new RuntimeException(resObject.getString("message"));
+            }
+        } catch (Exception e) {
+            logger.error("buffalo=====================" + e.getMessage());
+            insertPublish.setStatus(DataDevScriptPublishStatusEnum.Failure.toCode());
+            publishDao.updateStatus(insertPublish);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    public DataDevScriptFilePublish upLineScriptNew(DataDevScriptFile file, String erp)  throws Exception{
+
+        String userToken = urmUtil.UserTokenByErp(null, erp);
+        DataDevScriptFilePublish insertPublish = new DataDevScriptFilePublish();
+        insertPublish.setGitProjectId(file.getGitProjectId());
+        insertPublish.setGitProjectFilePath(file.getGitProjectFilePath());
+        insertPublish.setStatus(DataDevScriptPublishStatusEnum.Publishing.toCode());
+        insertPublish.setApplicationId(file.getApplicationId());
+        insertPublish.setVersion(file.getVersion());
+        insertPublish.setComment(file.getVerDescription());
+        insertPublish.setPublisher(erp);
+        insertPublish.setPublishSys("buffalo");
+        insertPublish.setCreator(erp);
+        insertPublish.setMender(erp);
+        insertPublish.setCheckMd5(file.getFileMd5());
+        publishDao.insert(insertPublish);
+
+        try {
+            /**
+             * private Integer projectId;//项目空间ID
+             * private String model;//001
+             * private String description;//文件描述
+             * private String scriptName;
+             * private String scriptPackagePath;
+             * private String managers;
+             * // 数据开发id
+             * private Integer dataDevScriptId;
+             * private String dataDevScriptVersion;
+             * private String erp;//操作人ERP
+             *
+             */
+            file.setBytes("sss".getBytes());
+            //file.setBytes(fileService.getScriptBytes(file.getGitProjectId(), file.getGitProjectFilePath(), file.getVersion(), erp));
+            String fileName = file.getName();
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setCharset(Charset.forName("UTF-8"));// 设置请求的编码格式
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);// 设置浏览器兼容模式
+            ContentType contentType = ContentType.create("text/plain", Charset.forName("utf-8"));
+            builder.addBinaryBody("file", file.getBytes(), ContentType.MULTIPART_FORM_DATA, fileName);
+            Date date = new Date();
+            builder.addTextBody("appId", smpAppId, contentType);
+            builder.addTextBody("userToken", userToken, contentType);
+            builder.addTextBody("time", String.valueOf(date.getTime()), contentType);
+            builder.addTextBody("sign", MD5Util.getMD5Str(smpAppToken + userToken + date.getTime()), contentType);
+            String url = buffaloDomain + "/api/v2/buffalo4/script/syncScriptFileFromDevForPublish";
+            url = buffaloDomain  + "/api/v2/buffalo4/script/uploadFileForDevCenter";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("erp", file.getApplicationId());
+            if (file.getType() == DataDevScriptTypeEnum.Zip.toCode()) {
+                jsonObject.put("scriptPackagePath", file.getStartShellPath());
+            }
+            jsonObject.put("projectId", file.getApplicationId());
+            jsonObject.put("scriptName", file.getName());
+            jsonObject.put("description", file.getDescription());
+            jsonObject.put("dataDevScriptId", file.getId());
+            jsonObject.put("dataDevScriptVersion", file.getVersion());
+            jsonObject.put("model", "001");
+
+            builder.addTextBody("data", jsonObject.toJSONString(), contentType);
+
+            HttpPost postMethod = new HttpPost(url);
+            postMethod.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+            postMethod.setEntity(builder.build());
+            String response = HttpUtil.exctueRequest(postMethod);
+
+            JSONObject resObject = JSONObject.parseObject(response);
+
+
+            logger.info("==================syncScriptFileFromDevForPublish" +  JSONObject.toJSONString(resObject) );
+            if (resObject != null && resObject.getInteger("code") != null && resObject.getInteger("code") == 0) {
+                JSONObject obj = resObject.getJSONObject("obj");
+                String bdpRequestId = obj.get("bpmRequestId") != null ? obj.get("bpmRequestId").toString() : null;
+                String fileId = obj.get("fileId") != null ? obj.get("fileId").toString() : null;
+                insertPublish.setBuffaloScriptId(Long.valueOf(fileId));
+                insertPublish.setRequestId(bdpRequestId != null ? Long.valueOf(bdpRequestId) : null);
+                insertPublish.setStatus(StringUtils.isNotBlank(bdpRequestId) ? DataDevScriptPublishStatusEnum.Auditing.toCode() : DataDevScriptPublishStatusEnum.Success.toCode());
+
+                /**
+                 *                     "scriptId":43040,
+                 *                     "fileSize":"3",
+                 *                     "scriptName":"helloworld.py",
+                 *                     "version":"20210604224229",
+                 *                     "md5Code":"9f6e6800cfae7749eb6c486619254b9c",
+                 *                     "fileType":"py"
+                 */
+                JSONObject preOnline = new JSONObject();
+
+                preOnline.put("scriptId",obj.getLong("fileId"));
+                preOnline.put("fileSize",obj.getLong("fileSize"));
+                preOnline.put("scriptName",obj.getString("fileName"));
+                preOnline.put("version",obj.getString("version"));
+                preOnline.put("md5Code",obj.getString("md5Code"));
+                preOnline.put("fileType",obj.getString("fileType"));
+
+
+                publishDao.updateStatus(insertPublish);
+                uplineReleaseCenterNew(obj,erp,file,preOnline);
                 return insertPublish;
             } else if (resObject.getInteger("code") == 206) {
                 throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");

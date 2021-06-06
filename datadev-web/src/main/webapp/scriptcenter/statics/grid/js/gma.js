@@ -1238,21 +1238,21 @@
                 "zh-tw": '<i class="iconfont icon-refresh"></i>',
                 "en-us": '<i class="iconfont icon-refresh"></i>'
             }, this["first-page"] = {
-                "zh-cn": '<i class="bdp-icon bdp-pagination-first"></i>',
-                "zh-tw": '<i class="bdp-icon bdp-pagination-first"></i>',
-                "en-us": '<i class="bdp-icon bdp-pagination-first"></i>'
+                "zh-cn": '首页',
+                "zh-tw": '首页',
+                "en-us": '首页'
             }, this["previous-page"] = {
-                "zh-cn": '<i class="bdp-icon bdp-pagination-left"></i>',
-                "zh-tw": '<i class="bdp-icon bdp-pagination-left"></i>',
-                "en-us": '<i class="bdp-icon bdp-pagination-left"></i>'
+                "zh-cn": '<i class="bdp-icon ssjspt-arrow-left"></i>',
+                "zh-tw": '<i class="bdp-icon ssjspt-arrow-left"></i>',
+                "en-us": '<i class="bdp-icon ssjspt-arrow-left"></i>'
             }, this["next-page"] = {
-                "zh-cn": '<i class="bdp-icon bdp-pagination-right"></i>',
-                "zh-tw": '<i class="bdp-icon bdp-pagination-right"></i>',
-                "en-us": '<i class="bdp-icon bdp-pagination-right"></i>'
+                "zh-cn": '<i class="bdp-icon ssjspt-arrow-right"></i>',
+                "zh-tw": '<i class="bdp-icon ssjspt-arrow-right"></i>',
+                "en-us": '<i class="bdp-icon ssjspt-arrow-right"></i>'
             }, this["last-page"] = {
-                "zh-cn": '<i class="bdp-icon bdp-pagination-last"></i>',
-                "zh-tw": '<i class="bdp-icon bdp-pagination-last"></i>',
-                "en-us": '<i class="bdp-icon bdp-pagination-last"></i>'
+                "zh-cn": '尾页',
+                "zh-tw": '尾页',
+                "en-us": '尾页'
             }, this["page-info"] = {
                 // "zh-cn": '此页显示 {0}-{1}<span class="page-info-totals"> 共{2}条</span>',
                 "zh-cn": '<span class="page-info-totals"> 共{2}条</span>',

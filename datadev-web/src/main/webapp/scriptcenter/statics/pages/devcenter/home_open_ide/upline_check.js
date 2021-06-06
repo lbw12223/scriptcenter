@@ -1,14 +1,8 @@
+jQuery(function () {
 
 
-
-
-jQuery(function (){
-
-
-    var page  = {
-
-        init  : function (){
-
+    var page = {
+        init: function () {
             $('#gridTable').GM({
                 gridManagerName: 'gridTable',
                 supportAjaxPage: true,
@@ -20,25 +14,54 @@ jQuery(function (){
                 height: "100%",
                 width: "100%",
                 query: {
-                    projectSpaceId : top.projectSpaceId,
-                    scriptName:""
+                    projectSpaceId: top.projectSpaceId,
+                    scriptName: ""
                 },
                 supportMenu: false,
                 columnData: [
                     {
-                        key: 'creator',
-                        text: 'creator',
+                        key: 'creatorName',
+                        text: '创建人',
                     },
                     {
-                        key: 'appGroupId',
-                        text: 'appGroupId',
-
+                        key: 'taskName',
+                        text: '任务名称',
+                    },
+                    {
+                        key: 'priorityDesc',
+                        text: '任务等级',
                     }
                 ]
             });
+        },
+        initEvent: function () {
+            $("#submit").click(function () {
+                //1.提交内容到Git或者Coding ,(  直接覆盖)
+                //2.调用调度接口push到生产
+                //3.提交发布中心
+
+                debugger
+                var commitMsg = $("#commitMsg").val();
+                var scriptFileId = $("#scriptFileId").val();
+                var _projectSpaceId = top.projectSpaceId == undefined ? 0 : top.projectSpaceId;
+                commonAjaxEvents.commonPostAjax("/scriptcenter/diff/submit.ajax", {
+                    projectSpaceId: _projectSpaceId,
+                    commitMsg: commitMsg,
+                    scriptFileId: scriptFileId
+                }, null, function (node, data) {
+
+                })
+
+
+            });
+            $("#cancelButton").click(function (){
+                this.artDialog.close()
+            });
         }
+
     }
 
     page.init();
+    page.initEvent();
 
 });

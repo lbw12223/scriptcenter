@@ -336,6 +336,19 @@ public interface DataDevScriptFileService {
     DataDevScriptFile pushFile(Long gitProjectId, String gitProjectFilePath, String commitMessage, String erp) throws Exception;
 
     /**
+     * 直接push
+     * @param gitProjectId
+     * @param gitProjectFilePath
+     * @param commitMessage
+     * @param erp
+     * @return
+     * @throws Exception
+     */
+    DataDevScriptFile pushFileDirect(Long gitProjectId, String gitProjectFilePath, String commitMessage, String erp) throws Exception;
+
+
+
+    /**
      * 在Git上创建文件
      *
      * @param dataDevGitProject

@@ -18,6 +18,9 @@ public interface DataDevCenterService {
      */
     DataDevScriptFilePublish upLineScript(DataDevScriptFile file, String erp, DataDevScriptFilePublish oldPublish, Integer runType) throws Exception;
 
+    DataDevScriptFilePublish upLineScriptNew(DataDevScriptFile file, String erp) throws Exception;
+
+
     ApiResultDTO getGrantAuthorityMarketForBuffalo(String erp , Long spaceProjectId);
 
     ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(ClusterHadoopAccount account ,String erp ,Long spaceProjectId) ;

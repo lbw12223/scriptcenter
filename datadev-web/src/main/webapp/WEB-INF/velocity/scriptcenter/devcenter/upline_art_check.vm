@@ -1,32 +1,34 @@
 #set($layout="layout_blank.vm")
 #set($page_title="artCheck")
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
 
-<link rel="stylesheet" href="/scriptcenter/statics/zTree/gm/css/gm.css" />
+<link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css" />
 <div style="color: #666">
+    <input type="hidden" id="scriptFileId" value="$!{dataDevScriptFile.id}">
     <div>
         <h5 style="font-weight: bold">关联任务</h5>
 
-        <div>脚本关联的线上任务：共$!{sss}个。其中L0任务：$!{taskL0Ttatal}个，L1任务：$!{taskL1Ttatal}个.</div>
-        <div style="background: red;width: 100%;height: 300px">
+        <div>脚本关联的线上任务：共 <span style="font-weight: bold">$!{totalCount}</span>个。 其中L0任务：<span style="font-weight: bold">$!{totalL0}</span>个，L1任务：<span style="font-weight: bold">$!{totalL1}</span>个.</div>
+        <div style="width: 100%;height: 300px">
             <table id="gridTable"></table>
         </div>
     </div>
     <div style="height: 220px;">
-        <h5 style="float: left;font-weight: bold;width: 250px;">项目空间: $!{}</h5>
-        <p>$!{commitInfo}</p>
+        <h5 style="float: left;font-weight: bold;width: 250px;">项目空间: $!{spaceProjectName}</h5>
         <div style="float: left;width: 300px;">
             <h5 style="font-weight: bold">变更描述</h5>
-            <textarea style="width: 400px;height: 150px"></textarea>
+            <textarea id="commitMsg" style="width: 400px;height: 150px"></textarea>
         </div>
     </div>
-    <div style="clear: both;background: #ebebeb !important;height: 40px;line-height: 40px;padding: 5px;">
-        <a class="bdp-btn bdp-btn-primary" id="submit">发布</a>
+    <div class="acediff-bottom" style="padding: 4px;">
+        <a class="bdp-btn bdp-btn-primary" style="float: right;" id="submit">发布</a>
+        <a class="bdp-btn bdp-btn-default" style="float: right;" id="cancelButton">取消</a>
     </div>
 </div>
 <script >
 
 </script>
-<script src="/scriptcenter/statics/zTree/gm/js/gm.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/grid/js/gma.js?_dc=$!{staticVersion}"></script>
 
 <script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>

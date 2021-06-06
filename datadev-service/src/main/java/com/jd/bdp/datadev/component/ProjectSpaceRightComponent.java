@@ -195,8 +195,18 @@ public class ProjectSpaceRightComponent implements InitializingBean {
             logger.error("setOneProjectSpaceMember", e);
         }
 
-
     }
 
+    public ProjectBO getProjectSpaceById(Long projectSpaceId){
+        com.jd.bdp.planing.domain.bo.ProjectBO projectBO  = new ProjectBO();
+        projectBO.setId(projectSpaceId);
+        ProjectInterface projectInterface = SpringContextUtil.getBean(ProjectInterface.class);
+        ApiResult<ProjectBO> result = projectInterface.getProjectById(appId, appToken, System.currentTimeMillis(), projectBO);
+
+        if(result != null && result.getObj() != null){
+            return result.getObj();
+        }
+        return null ;
+    }
 
 }

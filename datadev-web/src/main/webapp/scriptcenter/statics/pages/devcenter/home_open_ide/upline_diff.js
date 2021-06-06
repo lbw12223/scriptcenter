@@ -27,7 +27,7 @@ $(function () {
         }
     });
     var leftTips=$.dialog.data("leftTips") ||"本地代码";
-    var rightTips=$.dialog.data("rightTips")||"远程代码";
+    var rightTips=$.dialog.data("rightTips")||"线上代码";
     $("#leftTips").text(leftTips)
     $("#rightTips").text(rightTips)
 
@@ -36,6 +36,13 @@ $(function () {
     //     scriptId: scriptId,
     //     scriptName: scriptName
     // };
+
+    //dataDevScriptFile
+    /**
+     * projectSpaceId:top.projectSpaceId
+     * scriptId:$("#scriptId").val();
+     * @type {{scriptId: number, projectSpaceId: number, scriptName: string}}
+     */
     var data = {
         projectSpaceId: 10109,
         scriptId: 82286,
@@ -77,9 +84,17 @@ $(function () {
         // window.location.href = "/scriptcenter/devcenter/uplineArtCheck.html?templateId="
         // $.dialog.data("uplineDiff").size(880,624)
 
+
+        /**
+         * Long projectSpaceId ,
+         Long scriptId
+         * @type {string}
+         */
         //这个界面只是显示一下两边的差异 ,
         //跳转下一个界面，显示任务的
-        var url = "" ;
+        var projectSpaceId =  (top.projectSpaceId == undefined) ? 0 : top.projectSpaceId * 1;
+
+        var url = "/scriptcenter/devcenter/uplineArtCheck.html?projectSpaceId=" + projectSpaceId+ "&scriptId=" + $("#scriptId").val() ;
         var uplineCheck = $.dialog.open(url, {
             title: "脚本上线卡点",
             lock: true,

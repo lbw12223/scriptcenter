@@ -12,7 +12,7 @@
             padding: 0;
         }
         body{
-            padding: 40px;
+            padding: 0;
         }
         .plugin-action{
             display: inline-block;
@@ -108,13 +108,6 @@
         <input class="se-con" name="title"/>
     </div>
     <div class="sa-ele">
-        <label class="se-title">博文分类:</label>
-        <select class="se-con" name="type">
-            <option value="-1">请选择</option>
-            <!--通过js增加-->
-        </select>
-    </div>
-    <div class="sa-ele">
         <label class="se-title">内容:</label>
         <input class="se-con" name="content"/>
     </div>
@@ -145,17 +138,24 @@
             supportAjaxPage:true,
             isCombSorting: true,
             disableLine:true,
-            // disableHover:true,
             disableBorder: true,
-            supportMenu: false,
-            topFullColumn: {
-                template: function(){
+            supportMoveRow: true,
+            fullColumn: {
+                interval: 6,
+                topTemplate: function(row, index){
                     return `<div style="padding: 12px; text-align: center;">
                                 快速、灵活的对Table标签进行实例化，让Table标签充满活力。该项目已开源,
                                 <a target="_blank" href="https://github.com/baukh789/GridManager">点击进入</a>
                                 github
                            </div>`;
-                }
+                },
+                // bottomTemplate: function(row, index){
+                //     return `<div style="padding: 12px; text-align: center;">
+                //                 如果觉着还不错，就
+                //                 <a target="_blank" href="https://github.com/baukh789/GridManager">点个star</a>
+                //                 吧
+                //            </div>`;
+                // }
             },
             // supportAutoOrder: false,
             // supportCheckbox: false,
@@ -165,6 +165,7 @@
             },
             // ,firstLoading: false // 初始渲染时是否加载数据
             ajaxType: 'POST',
+            supportMenu: true,
             columnData: [
                 {
                     key: 'pic',
@@ -243,7 +244,7 @@
                     key: 'username',
                     remind: 'the username',
                     align: 'center',
-                    width: '100px',
+                    width: '120px',
                     text: '作者',
                     template: function(username, row, index){
                         return `<a class="plugin-action" href="https://github.com/baukh789" target="_blank" title="去看看${username}的github">${username}</a>`;
@@ -279,21 +280,6 @@
     }
 
     /**
-     * 渲染博文类型
-     */
-    (function () {
-        // 渲染下拉框
-        var typeSelect = document.querySelector('.search-area select[name="type"]');
-
-        for(var key in TYPE_MAP){
-            var option = document.createElement('option');
-            option.value = key;
-            option.innerText = TYPE_MAP[key];
-            typeSelect.appendChild(option);
-        }
-    })();
-
-    /**
      * 提供demo中的搜索, 重置
      */
     (function(){
@@ -302,7 +288,6 @@
         document.querySelector('.search-action').addEventListener('click', function () {
             var _query = {
                 title: document.querySelector('[name="title"]').value,
-                type: document.querySelector('[name="type"]').value,
                 content: document.querySelector('[name="content"]').value,
                 cPage: 1
             };
@@ -314,7 +299,6 @@
         // 绑定重置
         document.querySelector('.reset-action').addEventListener('click', function () {
             document.querySelector('[name="title"]').value = '';
-            document.querySelector('[name="type"]').value = '-1';
             document.querySelector('[name="content"]').value = '';
         });
     })();

@@ -15,9 +15,7 @@
     position: relative;
     padding: 5px 0;
     color: #666;
-    /*background: repeat-x #f2f2f2;*/
-    /*background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+    background: repeat-x #f2f2f2 !important;
 }
 
 .table-wrap .footer-toolbar .refresh-action {
@@ -299,9 +297,7 @@ table[grid-manager].GridManager-ready {
     position: absolute;
     top: 0;
     left: 0;
-    /*background: repeat-x #f2f2f2;*/
-    /*background-image: linear-gradient(180deg, #f8f8f8 0, #ececec);*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fff8f8f8", endColorstr="#ffececec", GradientType=0)
+    background: repeat-x #f2f2f2 !important;
 }
 
 .table-wrap .table-div {
@@ -322,7 +318,7 @@ table[grid-manager].GridManager-ready {
 }
 
 .table-wrap .table-div table[grid-manager] tr {
-    border-bottom: 1px solid #e8e8e8
+    border-bottom: 1px solid #e8e8e8 !important;
 }
 
 .table-wrap .table-div table[grid-manager] tr [last-visible=true] {
@@ -378,7 +374,10 @@ table[grid-manager].GridManager-ready {
     height: 100%;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    font-size: 12px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    color:#666
 }
 
 .table-wrap .table-div table[grid-manager] th .th-wrap .iconfont {
@@ -439,11 +438,11 @@ table[grid-manager].GridManager-ready {
 }
 
 .table-wrap .table-div table[grid-manager] tbody tr:nth-child(odd) td {
-    background-color: #fafafa
+    background-color: #fafafa;
 }
 
 .table-wrap .table-div table[grid-manager] tbody tr:hover td {
-    background-color: #f1f8fb
+    background-color: #f1f8fb;
 }
 
 .table-wrap .table-div table[grid-manager] tbody tr[empty-template] {
@@ -516,7 +515,8 @@ table[grid-manager].GridManager-ready {
 }
 
 .table-wrap .table-div table[grid-manager] tbody tr td[td-visible=visible] {
-    display: table-cell
+    display: table-cell;
+    font-size:12px;
 }
 
 .table-wrap .table-div table[grid-manager] tbody tr tdtd[gm-create=true] {

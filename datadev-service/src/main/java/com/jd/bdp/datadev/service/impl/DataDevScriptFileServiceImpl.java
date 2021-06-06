@@ -1339,7 +1339,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
         List<DataDevScriptFile> allDataBaseDataDevScriptFile = dataDevScriptFileDao.queryDirAll(gitProjectId, gitProjectDirPath);
 
-        return handPush(dataDevGitProject, erp, allDataBaseDataDevScriptFile, commitMessage, gitProjectDirPath, true);
+        return handPush(dataDevGitProject, erp, allDataBaseDataDevScriptFile, commitMessage, gitProjectDirPath, true,false);
 
     }
 
@@ -1360,7 +1360,31 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
 
         DataDevScriptFile dataDevScriptFile = dataDevScriptFileDao.getSingleScriptFileIgnoreDeleted(gitProjectId, gitProjectFilePath);
-        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false);
+        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false,false);
+        if (result != null && result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * 直接push文件
+     * @param gitProjectId
+     * @param gitProjectFilePath
+     * @param commitMessage
+     * @param erp
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public DataDevScriptFile pushFileDirect(Long gitProjectId, String gitProjectFilePath, String commitMessage, String erp) throws Exception {
+        DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+        if (dataDevGitProject == null) {
+            throw new RuntimeException("项目不存在!");
+        }
+
+        DataDevScriptFile dataDevScriptFile = dataDevScriptFileDao.getSingleScriptFileIgnoreDeleted(gitProjectId, gitProjectFilePath);
+        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false,true);
         if (result != null && result.size() > 0) {
             return result.get(0);
         }
@@ -1375,7 +1399,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
      * @return
      * @throws Exception
      */
-    private List<DataDevScriptFile> handPush(DataDevGitProject dataDevGitProject, String erp, List<DataDevScriptFile> allDataBaseDataDevScriptFile, String commitMessage, String commitPath, boolean isDir) throws Exception {
+    private List<DataDevScriptFile> handPush(DataDevGitProject dataDevGitProject, String erp, List<DataDevScriptFile> allDataBaseDataDevScriptFile, String commitMessage, String commitPath, boolean isDir , boolean isDirectPush) throws Exception {
 
         /**
          * 2018-12-11 发现Git PUSH 接口对于大于10M的也可以push 上去但是Push的结果不对
@@ -1435,8 +1459,12 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
                 continue;
             }
             if (!dataBaseTemp.getGitVersion().equals(dataBaseTemp.getLastGitVersion())) {
-                dataBaseTemp.setNewGitVersion(dataBaseTemp.getLastGitVersion());
-                maryMerge.add(dataBaseTemp);
+                if(isDirectPush){
+                    updateDataDevScriptFile.add(dataBaseTemp);
+                }else{
+                    dataBaseTemp.setNewGitVersion(dataBaseTemp.getLastGitVersion());
+                    maryMerge.add(dataBaseTemp);
+                }
                 continue;
             }
             if (dataBaseTemp.getGitVersion().equals(dataBaseTemp.getLastGitVersion())) {

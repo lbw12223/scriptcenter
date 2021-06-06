@@ -86,41 +86,71 @@ public class BuffaloComponent {
         logger.info("-------调度中心-获取脚本依赖线上任务列表接口参数：" + params + "; body=" + data);
         String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + taskListUrl, params, data);
         logger.info("-------调度中心-获取脚本依赖线上任务列表结果：" + entity);
-
-        JSONObject jsonObject;
-
-        try {
-            jsonObject = JSON.parseObject(entity);
-        }
-        catch(Exception e) {
-            logger.error("调度中心-获取脚本依赖线上任务列表接口 返回异常");
-            throw new Exception("调度中心-获取脚本依赖线上任务列表接口 返回异常");
-        }
-
-        if(jsonObject.getInteger("code") != 0) {
-            logger.error("调度中心-获取脚本依赖线上任务列表接口 失败");
-            throw new Exception(jsonObject.getString("message"));
-        }
+        JSONObject jsonObject = JSON.parseObject(entity);
         JSONObject res = new JSONObject();
-        JSONArray list = jsonObject.getJSONArray("list");
+        JSONArray list = jsonObject.containsKey("list") ? jsonObject.getJSONArray("list") : new JSONArray();
         list = list == null ? new JSONArray() : list;
+        int totalCount = 0;
         int L0 = 0;
         int L1 = 0;
-        for (Object o : list) {
-            JSONObject json = (JSONObject) o;
-            if (json != null) {
-                if ("L0".equals(json.getString("priorityDesc"))) {
-                    L0++;
-                } else if ("L1".equals(json.getString("priorityDesc"))) {
-                    L1++;
+        if(list != null && list.size() > 0){
+            for (Object o : list) {
+                JSONObject json = (JSONObject) o;
+                if (json != null) {
+                    if ("L0".equals(json.getString("priorityDesc"))) {
+                        L0++;
+                    } else if ("L1".equals(json.getString("priorityDesc"))) {
+                        L1++;
+                    }
                 }
             }
+            totalCount = jsonObject.getInteger("totalCount");
         }
-        res.put("totalCount", jsonObject.getLong("totalCount"));
+
+        res.put("totalCount",totalCount);
         res.put("totalL0", L0);
         res.put("totalL1", L1);
         res.put("list", list);
         return res;
     }
 
+    public JSONObject getCurrentOnlineInfo(String scriptName, Long projectId) throws Exception {
+        try {
+            JSONObject data = new JSONObject();
+
+            /**
+             * https://cf.jd.com/pages/viewpage.action?pageId=511882696
+             *
+             * projectId	Integer	项目空间ID	是
+             * scriptName	String	脚本名称	是
+             * model	S
+             */
+            data.put("scriptName", scriptName);
+            data.put("projectId", projectId);
+            data.put("model", "001");
+
+
+            Map<String, String> params = new HashMap<>();
+            params.put("token", token);
+            params.put("appId", appId);
+            long timeMillis = System.currentTimeMillis();
+            params.put("time", Long.toString(timeMillis));
+            logger.info("-------调度中心-获取getCurrentOnlineInfo容接口参数：" + params + "; body=" + data);
+            String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + "/api/v2/buffalo4/script/findCurrentVersionByParam", params, data);
+            logger.info("-------调度中心-获取getCurrentOnlineInfo容结果：" + entity);
+            JSONObject jsonObject = JSON.parseObject(entity);
+
+            if (jsonObject.getInteger("code") != 0) {
+                throw new RuntimeException(jsonObject.getString("errorMsg"));
+            }
+
+            JSONObject obj = jsonObject.getJSONObject("obj");
+            return obj;
+
+        } catch (Exception e) {
+            //throw new Exception(e.getMessage());
+        }
+        return new JSONObject();
+
+    }
 }

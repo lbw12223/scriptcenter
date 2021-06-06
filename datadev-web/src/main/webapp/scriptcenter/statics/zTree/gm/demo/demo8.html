@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="../css/gm.css">
+	<script type="text/javascript" src="../js/gm.js"></script>
+    <title>GridManager: 嵌套表头</title>
+    <style>
+		html, body{
+			width: 100%;
+			overflow-x:hidden;
+			margin: 0;
+			padding: 0;
+		}
+        p{
+            margin: 0;
+        }
+		.plugin-action{
+			display: inline-block;
+			color: steelblue;
+			margin-right: 10px;
+			cursor: pointer;
+			text-decoration: none;
+        }
+        .plugin-action:hover{
+            text-decoration: underline;
+        }
+		.search-area{
+			padding: 10px 20px;
+			border: 1px solid #ccc;
+			background: #efefef;
+			margin-bottom: 15px;
+		}
+		.search-area .sa-ele{
+			display: inline-block;
+			margin-right: 20px;
+			font-size: 12px;
+		}
+		.search-area .sa-ele .se-title{
+			display: inline-block;
+			margin-right: 10px;
+		}
+		.search-area .sa-ele .se-con{
+			display: inline-block;
+			width:180px;
+			height: 24px;
+			border: 1px solid #ccc;
+			padding: 0 4px;
+			line-height: 24px;
+		}
+		.search-area .sa-ele .search-action, .search-area .sa-ele .reset-action{
+			display: inline-block;
+			width:80px;
+			height: 26px;
+			border: 1px solid #ccc;
+			background: #e8e8e8;
+			padding: 0 4px;
+			line-height: 26px;
+			text-align: center;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+		.search-area .sa-ele .search-action:hover, .search-area .sa-ele .reset-action:hover{
+			opacity: 0.7;
+		}
+
+		.bottom-bar{
+			background: #f8f8f8;
+			padding: 10px;
+			margin-top: 10px;
+		}
+		.bottom-bar button{
+			padding: 5px 20px;
+			margin-right: 10px;
+		}
+		.bottom-bar a{
+			font-size: 12px;
+			margin-right: 10px;
+		}
+		.void-template{
+			text-align: center;
+			font-size: 24px;
+			color: #ccc;
+		}
+        .grid-main {
+            height: calc(100vh - 64px - 57px);
+        }
+        .gm-child{
+            display:inline-block;
+            width: 50%;
+        }
+    </style>
+	<script>
+		// 博文类型
+		const TYPE_MAP = {
+			'1': 'HTML/CSS',
+			'2': 'nodeJS',
+			'3': 'javaScript',
+			'4': '前端鸡汤',
+			'5': 'PM Coffee',
+			'6': '前端框架',
+			'7': '前端相关'
+		};
+
+	</script>
+</head>
+
+<body>
+	<section class="search-area">
+		<div class="sa-ele">
+			<label class="se-title">标题:</label>
+			<input class="se-con" name="title"/>
+		</div>
+		<div class="sa-ele">
+			<label class="se-title">内容:</label>
+			<input class="se-con" name="content"/>
+		</div>
+		<div class="sa-ele">
+			<button class="search-action">搜索</button>
+			<button class="reset-action">重置</button>
+		</div>
+	</section>
+
+	<section class="grid-main">
+		<table></table>
+	</section>
+
+	<section class="bottom-bar">
+		<button id="init-gm" disabled>init</button>
+		<button id="destroy-gm" disabled>destroy</button>
+		<a href="https://github.com/baukh789/GridManager/blob/master/src/demo/demo1.html" target="_blank">查看源码</a>
+	</section>
+
+	<script type="text/javascript">
+		// GridManager 渲染
+		var table = document.querySelector('table');
+		function init() {
+			table.GM({
+				gridManagerName: 'test',
+                width: '100%',
+				height: '100%',
+				supportAjaxPage:true,
+                // supportCheckbox: false,
+                // supportAutoOrder: false,
+				isCombSorting: true,
+                checkboxConfig: {
+				    fixed: 'left'
+                },
+                autoOrderConfig: {
+                    fixed: 'left'
+                },
+				ajaxData: function () {
+					return 'https://www.lovejavascript.com/blogManager/getBlogList';
+				},
+				ajaxType: 'POST',
+
+                summaryHandler: data => {
+				    let praiseNumber = 0;
+				    let readNumber = 0;
+				    let commentSum = 0;
+				    data.forEach(item => {
+                        praiseNumber += parseInt(item.praiseNumber, 10);
+                        readNumber += item.readNumber;
+                        commentSum += item.commentSum;
+                    });
+				    return {
+				        pic: '共计',
+                        praiseNumber,
+                        readNumber,
+                        commentSum
+                    };
+                },
+                exportConfig: {
+				    mode: 'static',
+                    handler: (fileName, query, pageData, sortData, selectedList, tableData) => {
+				        const array = [];
+                        array.push(['标题', '博文分类', '简介', '作者', '创建时间', '修改时间']);
+                        tableData.forEach(item => {
+                            array.push([
+                                `"${item.title}"`,
+                                `"${TYPE_MAP[item.type]}"`,
+                                `"${item.info}"`,
+                                `"${item.username}"`,
+                                `"${new Date(item.createDate).toLocaleDateString()}"`,
+                                `"${new Date(item.lastDate).toLocaleDateString()}"`
+                            ]);
+                        });
+				        return array;
+                    }
+                },
+				emptyTemplate: '<div class="void-template">通过 emptyTemplate 配置的空数据提示</div>',
+                disableCache: false,
+				columnData: [
+					{
+						key: 'pic',
+						remind: 'the pic',
+						width: '110px',
+						align: 'center',
+						text: '缩略图',
+						// 使用函数返回 dom node
+						template: function(pic, rowObject) {
+							var picNode = document.createElement('a');
+							picNode.setAttribute('href', `https://www.lovejavascript.com/#!zone/blog/content.html?id=${rowObject.id}`);
+							picNode.setAttribute('title', rowObject.title);
+							picNode.setAttribute('target', '_blank');
+							picNode.title = `点击阅读[${rowObject.title}]`;
+							picNode.style.display = 'block';
+							picNode.style.height = '58.5px';
+
+							var imgNode = document.createElement('img');
+							imgNode.style.width = '90px';
+							imgNode.style.margin = '0 auto';
+							imgNode.alt = rowObject.title;
+							imgNode.src = `https://www.lovejavascript.com/${pic}`;
+
+							picNode.appendChild(imgNode);
+							return picNode;
+						}
+					},{
+						key: 'title',
+						align: 'left',
+                        // width: '300px',
+						text: '标题',
+						sorting: '',
+						// 使用函数返回 dom node
+						template: function(title, rowObject) {
+							var titleNode = document.createElement('a');
+							titleNode.setAttribute('href', `https://www.lovejavascript.com/#!zone/blog/content.html?id=${rowObject.id}`);
+							titleNode.setAttribute('title', title);
+							titleNode.setAttribute('target', '_blank');
+							titleNode.innerText = title;
+							titleNode.title = `点击阅读[${rowObject.title}]`;
+							titleNode.classList.add('plugin-action');
+							return titleNode;
+						}
+					},{
+                        key: 'info',
+                        remind: 'the info',
+                        text: '简介'
+                    },{
+						key: 'blogData',
+						text: '博文数据',
+						align: 'left',
+                        // width: '200px',
+                        children: [
+                            {
+                                key: 'type',
+                                text: '博文分类',
+                                align: 'left',
+                                template: function(type, rowObject){
+                                    return TYPE_MAP[type];
+                                }
+                            },
+                            {
+                                key: 'blogInteractive',
+                                text: '博文互动',
+                                align: 'left',
+                                children: [
+                                    {
+                                        key: 'commentSum',
+                                        text: '评论评论评论评论评论',
+                                        align: 'left'
+                                    },
+                                    {
+                                        key: 'praiseNumber',
+                                        text: '点赞',
+                                        align: 'left'
+                                    },
+                                    {
+                                        key: 'readNumber',
+                                        text: '阅读',
+                                        align: 'left'
+                                    }
+                                ]
+                            }
+                        ]
+					},{
+                        key: 'author',
+                        align: 'center',
+                        width: '391px',
+                        text: '作者',
+                        children: [
+                            {
+                                key: 'photo',
+                                align: 'center',
+                                // width: '130px',
+                                text: '头像',
+                                template: photo => {
+                                    return `<img width="50" src="https://www.lovejavascript.com/${photo}"/>`;
+                                }
+                            },
+                            {
+                                key: 'username',
+                                align: 'center',
+                                // width: '130px',
+                                text: '昵称'
+                            },
+                            {
+                                key: 'github',
+                                align: 'center',
+                                width: 110,
+                                text: 'github',
+                                template: () => {
+                                    return `<a class="plugin-action" href="https://github.com/baukh789" target="_blank">github</a>`
+                                }
+                            }
+                        ]
+                    },{
+                        key: 'actionDate',
+                        text: '操作时间',
+                        sorting: 'DESC',
+                        align: "center",
+                        width: '280px',
+                        // fixed: 'right',
+                        children: [
+                            {
+                                key: 'createDate',
+                                text: '创建时间',
+                                sorting: 'DESC',
+                                align: "center",
+                                width: '140px',
+                                template: function(createDate){
+                                    return new Date(createDate).toLocaleDateString();
+                                }
+                            },
+                            {
+                                key: 'lastDate',
+                                text: '修改时间',
+                                sorting: 'DESC',
+                                align: "center",
+                                width: '140px',
+                                template: function(lastDate){
+                                    return new Date(lastDate).toLocaleDateString();
+                                }
+                            }
+                        ]
+                    }
+				]
+			});
+		}
+
+		// 删除功能
+		function delectRowData(rowData){
+			// 执行删除操作
+			if(window.confirm('确认要删除['+rowData.title+']?')){
+				window.alert('当然这只是个示例,并不会真实删除,要不然每天我每天就光填demo数据了.');
+			}
+		}
+
+		 /**
+		 * 提供demo中的搜索, 重置
+		 */
+		(function(){
+
+			// 绑定搜索事件
+			document.querySelector('.search-action').addEventListener('click', function () {
+				var _query = {
+					title: document.querySelector('[name="title"]').value,
+					content: document.querySelector('[name="content"]').value,
+					cPage: 1
+				};
+				table.GM('setQuery', _query, function(){
+					console.log('setQuery执行成功');
+				});
+			});
+
+			// 绑定重置
+			document.querySelector('.reset-action').addEventListener('click', function () {
+				document.querySelector('[name="title"]').value = '';
+				document.querySelector('[name="type"]').value = '-1';
+				document.querySelector('[name="content"]').value = '';
+			});
+		})();
+
+		/**
+		 * 绑定 实例化, 消毁事件
+		 */
+		(function () {
+			var initDOM = document.getElementById('init-gm');
+			var destroyDOM = document.getElementById('destroy-gm');
+			var codeShowDOM = document.querySelector('.code-show');
+			// 绑定初始化事件
+			initDOM.onclick = function(){
+				init();
+				initDOM.setAttribute('disabled', '');
+				destroyDOM.removeAttribute('disabled');
+			};
+
+			// 绑定消毁事件
+			destroyDOM.onclick = function(){
+				table.GM('destroy');
+				initDOM.removeAttribute('disabled');
+				destroyDOM.setAttribute('disabled', '');
+			};
+
+		})();
+
+		/**
+		 * 初始进入时, 执行init 方法
+		 */
+		(function(){
+			init();
+			var initDOM = document.getElementById('init-gm');
+			var destroyDOM = document.getElementById('destroy-gm');
+			initDOM.setAttribute('disabled', '');
+			destroyDOM.removeAttribute('disabled');
+		})();
+	</script>
+</body>
+</html>
