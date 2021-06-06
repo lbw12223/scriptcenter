@@ -151,9 +151,7 @@ public class ScriptDiffController {
     @RequestMapping("/submit.ajax")
     @ResponseBody
     public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String commitMsg,Long scriptFileId ) throws Exception {
-        String operator = userHolder.getErp();
 
-        preSumit(projectSpaceId,scriptFileId,commitMsg,userHolder.getErp());
 //        submitObj = JSONObject.parseObject("{\n" +
 //                "        \"devInfo\":{\n" +
 //                "            \"scriptId\":74666,\n" +
@@ -176,14 +174,13 @@ public class ScriptDiffController {
 //                "        \"operatorType\":\"\"\n" +
 //                "    }", SubmitObj.class);
         try {
-            boolean success = dataDevScriptDiffService.submit2RC(projectSpaceId, commitMsg, operator, null);
-            if (success) {
-                return JSONObjectUtil.getSuccessResult("提交成功", true);
-            }
-            return JSONObjectUtil.getFailResult("提交失败", false);
+            String operator = userHolder.getErp();
+            preSumit(projectSpaceId,scriptFileId,commitMsg,operator);
+            return JSONObjectUtil.getSuccessResult("提交成功", true);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
-            return JSONObjectUtil.getFailResult(e.getMessage(), false);
+            return JSONObjectUtil.getFailResult("提交发布失败!", false);
+
         }
     }
 

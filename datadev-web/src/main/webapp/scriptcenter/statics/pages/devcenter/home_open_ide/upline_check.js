@@ -40,7 +40,11 @@ jQuery(function () {
                 //2.调用调度接口push到生产
                 //3.提交发布中心
 
-                debugger
+                var msgRef = top.msg ? top.msg : window.$;
+
+                msgRef.loadingMsg("正在提交发布!");
+
+
                 var commitMsg = $("#commitMsg").val();
                 var scriptFileId = $("#scriptFileId").val();
                 var _projectSpaceId = top.projectSpaceId == undefined ? 0 : top.projectSpaceId;
@@ -49,13 +53,13 @@ jQuery(function () {
                     commitMsg: commitMsg,
                     scriptFileId: scriptFileId
                 }, null, function (node, data) {
-
+                    window.artDialog.close();
                 })
 
 
             });
             $("#cancelButton").click(function (){
-                this.artDialog.close()
+                window.artDialog.close();
             });
         }
 
