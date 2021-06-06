@@ -2,6 +2,9 @@ package com.jd.bdp.datadev.component;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.jd.bdp.common.utils.PageResultDTO;
+
+import java.util.ArrayList;
 
 public class JSONObjectUtil {
     public static JSONObject getSuccessResultTwoObj(Object object1 ,Object object2 ) {
@@ -67,5 +70,18 @@ public class JSONObjectUtil {
         jsonObject.put("message", messsage);
         jsonObject.put("obj", object);
         return jsonObject;
+    }
+
+    public static JSONObject sucessGrid(PageResultDTO pageResultDTO) {
+
+        JSONObject grid = new JSONObject();
+        grid.put("totals", pageResultDTO.getRecords());
+        grid.put("page", pageResultDTO.getPage());
+        grid.put("pageSize", pageResultDTO.getLimit());
+        grid.put("status","success");
+        grid.put("code",0);
+        grid.put("data", pageResultDTO.getRows() == null || pageResultDTO.getRows().size() < 1 ? new ArrayList<Object>() : pageResultDTO.getRows());
+        grid.put("message",pageResultDTO.getMessage());
+        return grid;
     }
 }

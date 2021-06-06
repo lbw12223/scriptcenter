@@ -83,7 +83,6 @@ public class BuffaloComponent {
         params.put("appId", appId);
         long timeMillis = System.currentTimeMillis();
         params.put("time", Long.toString(timeMillis));
-//        params.put("data", data.toJSONString());
 
         logger.info("-------调度中心-获取脚本依赖线上任务列表接口参数：" + params + "; body=" + data);
         buffalo4Prefix = "http://11.91.157.254";

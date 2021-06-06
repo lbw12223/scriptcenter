@@ -21,17 +21,17 @@ jQuery(function (){
                 width: "100%",
                 query: {
                     projectSpaceId : top.projectSpaceId,
-                    scriptName:
+                    scriptName:""
                 },
                 supportMenu: false,
                 columnData: [
                     {
-                        key: 'id',
-                        text: 'id',
+                        key: 'creator',
+                        text: 'creator',
                     },
                     {
-                        key: 'jobName',
-                        text: '名称',
+                        key: 'appGroupId',
+                        text: 'appGroupId',
 
                     }
                 ]

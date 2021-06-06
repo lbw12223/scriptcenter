@@ -1,7 +1,9 @@
 package com.jd.bdp.datadev.web.controller.script;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
 import com.jd.bdp.datadev.domain.diff.ReleaseCompareVo;
 import com.jd.bdp.datadev.service.DataDevScriptDiffService;
@@ -57,8 +59,22 @@ public class ScriptDiffController {
     public JSONObject scriptTaskList(UrmUserHolder userHolder, Long projectSpaceId, String scriptName) {
         String operator = userHolder.getErp();
         try {
+            projectSpaceId = 10109L ;
+            scriptName = "python3_demo.py" ;
             JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, scriptName, operator);
-            return JSONObjectUtil.getSuccessResult(result);
+            Long totalCount = result.getLong("totalCount");
+            Long totalL0 = result.getLong("totalL0");
+            Long totalL1 = result.getLong("totalL1");
+
+            JSONArray datas = result.getJSONArray("list");
+            PageResultDTO pageResultDTO = new PageResultDTO();
+            pageResultDTO.setLimit(1000);
+            pageResultDTO.setCode(0);
+            pageResultDTO.setPage(1);
+            pageResultDTO.setRows(datas);
+            pageResultDTO.setRecords(totalCount);
+            pageResultDTO.setCode(0);
+            return JSONObjectUtil.sucessGrid(pageResultDTO);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
             return JSONObjectUtil.getFailResult(e.getMessage(), null);

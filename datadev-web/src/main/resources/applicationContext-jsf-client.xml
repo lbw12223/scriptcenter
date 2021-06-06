@@ -57,7 +57,7 @@
 
 
     <jsf:consumer id="projectInterface" interface="com.jd.bdp.planing.api.ProjectInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000" lazy="true">
+                  protocol="jsf" alias="${bdp.jsf.planning.alias}"  timeout="100000" lazy="true">
     </jsf:consumer>
 
 
