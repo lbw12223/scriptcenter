@@ -672,29 +672,23 @@ var datadevInit = {
         })
     },
     uplineSaveScript: function (scriptWindow) {
-        if(true){
-            datadevInit.uplineDiffHtml(scriptWindow);
-            return;
-        }
-
-        // if (scriptWindow.type == 4) {
-        //     //zip
-        //     datadevInit.uplinePushNumScript(scriptWindow);
-        // } else {
-        //     datadevInit.directSave(function (data) {
-        //         datadevInit.uplineDiffHtml(scriptWindow);
-        //         scriptWindow.version = data.obj.serverVersion;
-        //         var canPush = datadevInit.uplineCheckContent(scriptWindow);
-        //         if (canPush) {
-        //             datadevInit.uplinePushNumScript(scriptWindow);
-        //         }
-        //     }, null, scriptWindow.key);
+        // if(true){
+        //     datadevInit.uplineDiffHtml(scriptWindow);
+        //     return;
         // }
+
+        if (scriptWindow.type == 4) {
+            //zip
+        } else {
+            datadevInit.directSave(function (data) {
+                datadevInit.uplineDiffHtml(scriptWindow);
+            }, null, scriptWindow.key);
+        }
     },
 
     uplineDiffHtml:function (scriptWindow){
 
-        debugger
+
         var scriptFileId = scriptWindow.scriptFileId ;
 
         var url = "/scriptcenter/devcenter/uplineArtDiff.html?scriptFileId=" +scriptFileId  ;

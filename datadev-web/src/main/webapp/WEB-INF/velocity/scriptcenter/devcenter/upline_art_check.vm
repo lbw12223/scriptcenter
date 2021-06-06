@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css" />
 <div style="color: #666">
     <input type="hidden" id="scriptFileId" value="$!{dataDevScriptFile.id}">
+    <input type="hidden" id="scriptFileName" value="$!{dataDevScriptFile.name}">
+
     <div>
         <h5 style="font-weight: bold">关联任务</h5>
 

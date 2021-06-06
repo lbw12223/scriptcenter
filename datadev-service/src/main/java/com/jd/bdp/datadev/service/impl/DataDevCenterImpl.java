@@ -180,7 +180,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         devInfo.put("fileType",fileType);
         devInfo.put("preOnline",preOnline);
 
-        String devObjKey = file.getName() + SPLIT + file.getVersion() ;
+        String devObjKey = file.getId() + SPLIT + file.getVersion() ;
 
         tempSubmitObj.setDevInfo(devInfo);
         tempSubmitObj.setDevObjKey(devObjKey);
@@ -198,7 +198,9 @@ public class DataDevCenterImpl implements DataDevCenterService {
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
        // return submit != null && submit.getCode() == 0;
-
+       if(submit.getCode() != 0) {
+           throw new RuntimeException("发布失败!");
+       }
 
 
     }
@@ -333,8 +335,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
              * private String erp;//操作人ERP
              *
              */
-            file.setBytes("sss".getBytes());
-            //file.setBytes(fileService.getScriptBytes(file.getGitProjectId(), file.getGitProjectFilePath(), file.getVersion(), erp));
+            //file.setBytes("sss".getBytes());
+           file.setBytes(fileService.getScriptBytes(file.getGitProjectId(), file.getGitProjectFilePath(), file.getVersion(), erp));
             String fileName = file.getName();
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
             builder.setCharset(Charset.forName("UTF-8"));// 设置请求的编码格式

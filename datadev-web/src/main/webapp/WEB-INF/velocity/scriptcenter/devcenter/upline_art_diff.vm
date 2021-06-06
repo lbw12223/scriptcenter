@@ -25,6 +25,7 @@
 ##    <textarea name='gitCommitMessage' class='bdp-form-control' id='gitCommitMessage' style='color:#A3A9B2;resize: none;width: 300px;height: 200px;padding: 10px;float: left;' placeholder='请输入提交信息，该信息将同步至git中'></textarea>
 ##</div>
 <input type="hidden" id="scriptId" value="$!{dataDevScriptFile.id}"/>
+<input type="hidden" id="scriptFileName" value="$!{dataDevScriptFile.name}"/>
 
 <div class="acediff-bottom" style="padding: 4px;">
     <a class="bdp-btn bdp-btn-primary" style="float: right;" id="nextButton">下一步</a>

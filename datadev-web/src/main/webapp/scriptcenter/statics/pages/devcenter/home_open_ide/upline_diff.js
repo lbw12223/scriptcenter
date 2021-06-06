@@ -44,9 +44,9 @@ $(function () {
      * @type {{scriptId: number, projectSpaceId: number, scriptName: string}}
      */
     var data = {
-        projectSpaceId: 10109,
-        scriptId: 82286,
-        scriptName: "python3_demo.py"
+        projectSpaceId: top.projectSpaceId,
+        scriptId: $("#scriptId").val(),
+        scriptName: $("#scriptFileName").val()
     };
     console.log("diff/scriptCompare data:", data);
     commonAjaxEvents.commonPostAjax("/scriptcenter/diff/scriptCompare.ajax", data, null, function (node, data) {

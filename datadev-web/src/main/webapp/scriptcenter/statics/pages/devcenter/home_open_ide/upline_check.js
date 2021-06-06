@@ -15,7 +15,7 @@ jQuery(function () {
                 width: "100%",
                 query: {
                     projectSpaceId: top.projectSpaceId,
-                    scriptName: ""
+                    scriptName: $("#scriptFileName").val()
                 },
                 supportMenu: false,
                 columnData: [
@@ -40,9 +40,9 @@ jQuery(function () {
                 //2.调用调度接口push到生产
                 //3.提交发布中心
 
-                var msgRef = top.msg ? top.msg : window.$;
+                var msgRef = top.Msg ? top.Msg : window.$;
 
-                msgRef.loadingMsg("正在提交发布!");
+                msgRef.loadingMsg("正在提交发布！");
 
 
                 var commitMsg = $("#commitMsg").val();
@@ -53,10 +53,9 @@ jQuery(function () {
                     commitMsg: commitMsg,
                     scriptFileId: scriptFileId
                 }, null, function (node, data) {
+                    msgRef.successMsg("发布成功！")
                     window.artDialog.close();
                 })
-
-
             });
             $("#cancelButton").click(function (){
                 window.artDialog.close();

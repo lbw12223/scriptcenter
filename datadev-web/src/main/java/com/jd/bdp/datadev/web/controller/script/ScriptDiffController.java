@@ -87,8 +87,7 @@ public class ScriptDiffController {
     public JSONObject scriptTaskList(UrmUserHolder userHolder, Long projectSpaceId, String scriptName) {
         String operator = userHolder.getErp();
         try {
-            projectSpaceId = 10109L ;
-            scriptName = "python3_demo.py" ;
+
             JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, scriptName, operator);
             Long totalCount = result.getLong("totalCount");
             Long totalL0 = result.getLong("totalL0");
@@ -100,7 +99,7 @@ public class ScriptDiffController {
             pageResultDTO.setCode(0);
             pageResultDTO.setPage(1);
             pageResultDTO.setRows(datas);
-            pageResultDTO.setRecords(totalCount + 10000000);
+            pageResultDTO.setRecords(totalCount);
             pageResultDTO.setCode(0);
             return JSONObjectUtil.sucessGrid(pageResultDTO);
         } catch (Exception e) {
@@ -197,7 +196,6 @@ public class ScriptDiffController {
      */
     private void preSumit(Long projectSpaceId , Long scriptFileId , String commitMsg , String erp) throws Exception{
         DataDevScriptFile old = fileService.findById(scriptFileId);
-        old.setName(System.currentTimeMillis() + ".sh");
         old.setVerDescription(commitMsg);
         old.setApplicationId(projectSpaceId);
         if (old == null) {
