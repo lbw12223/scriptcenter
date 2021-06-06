@@ -14,59 +14,7 @@ var saveContentUrl = "/scriptcenter/script/saveContent.ajax";
 var getScriptBaseUrl = "/scriptcenter/scriptFile/getInfo.ajax";
 var getTemplateHtml = "/scriptcenter/scriptTemplate/templates.html";
 var configObj = [];
-var configObj2 = [{
-    "id" : 1,
-    "name" : "ceshide",
-    "type" : null,
-    "clusterCode" : "jdw",
-    "marketLinuxUser" : "dd_edw",
-    "queueCode" : null,
-    "accountCode" : null,
-    "used" : null,
-    "owner" : "zhangrui156",
-    "creator" : "zhangrui156",
-    "created" : 1620871946000,
-    "mender" : "zhangrui156",
-    "modified" : 1621205933000,
-    "deleted" : 0,
-    "showOrder" : 20,
-    "status" : null,
-    "oriId" : null,
-    "marketId" : 130,
-    "accountId" : null,
-    "queueId" : null,
-    "engineType" : "",
-    "runClusterCode" : null,
-    "runMarketLinuxUser" : null,
-    "projectSpaceId" : 0
-  },
-    {
-        "id" : 1,
-        "name" : "ceshide2",
-        "type" : null,
-        "clusterCode" : "jdw",
-        "marketLinuxUser" : "dd_edw",
-        "queueCode" : null,
-        "accountCode" : null,
-        "used" : null,
-        "owner" : "zhangrui156",
-        "creator" : "zhangrui156",
-        "created" : 1620871946000,
-        "mender" : "zhangrui156",
-        "modified" : 1621205933000,
-        "deleted" : 0,
-        "showOrder" : 20,
-        "status" : null,
-        "oriId" : null,
-        "marketId" : 130,
-        "accountId" : null,
-        "queueId" : null,
-        "engineType" : "",
-        "runClusterCode" : null,
-        "runMarketLinuxUser" : null,
-        "projectSpaceId" : 0
-    },
-];
+var configObj2 = [];
 var runStatusMap = new Map();//key:运行id value:0表示没完成 1表示完成 2停止
 var lazyLocation = new Array();
 var initFunctionMap = new Map();//打开脚本需要初始化的操作 ，key 脚本key  value 需要的操作function
@@ -1073,9 +1021,9 @@ var datadevInit = {
         commonAjaxEvents.commonPostAjax(getConfigUrl, {}, $("#queueCode"), function (node, data) {
             console.log("8888")
             var lis = "<li class='defaultDropLi queueCodeDropLi active' data-index='-1'><span class='name'>不使用集市资源</span></li>";
-            if (data && data.obj && data.obj.length > 0) {
-                for (var index = 0; index < data.obj.length; index++) {
-                    var cinfig = data.obj[index];
+            if (data && data.data && data.data.obj && data.data.obj.length > 0) {
+                for (var index = 0; index < data.data.obj.length; index++) {
+                    var cinfig = data.data.obj[index];
                     if (cinfig.engineType == null) {
                         cinfig.engineType = "";
                     }
@@ -1087,6 +1035,10 @@ var datadevInit = {
                 $("#queueName").text("配置账号队列");
             }
             $("#queueCodeDropDiv ul.queueCodeDropUl").prepend(lis);
+            if(data && data.data && data.data.obj && data.data.obj2.length > 0){
+                configObj2 = data.data.obj2;
+
+            }
         })
         $("#queueCodeDropDiv").appendTo("body");
 

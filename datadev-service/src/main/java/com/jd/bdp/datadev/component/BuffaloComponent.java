@@ -48,7 +48,6 @@ public class BuffaloComponent {
 //        params.put("projectId", projectId.toString());
 
         logger.info("-------调度中心-获取脚本内容接口参数：" + params + "; body=" + data);
-        buffalo4Prefix = "http://11.91.157.254";
         String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + scriptGetFileContent, params, data);
         logger.info("-------调度中心-获取脚本内容结果：" + entity);
         JSONObject jsonObject;
@@ -85,7 +84,6 @@ public class BuffaloComponent {
         params.put("time", Long.toString(timeMillis));
 
         logger.info("-------调度中心-获取脚本依赖线上任务列表接口参数：" + params + "; body=" + data);
-        buffalo4Prefix = "http://11.91.157.254";
         String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + taskListUrl, params, data);
         logger.info("-------调度中心-获取脚本依赖线上任务列表结果：" + entity);
 

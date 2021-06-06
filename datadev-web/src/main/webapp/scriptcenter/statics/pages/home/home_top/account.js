@@ -172,6 +172,8 @@ $(function () {
                 lis2 += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
             }
             ul2.append(lis2);
+        }else{
+            ul2.parent().prev(".account-part-name").hide()
         }
 
 

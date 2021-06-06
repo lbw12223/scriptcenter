@@ -20,11 +20,13 @@
     </div>
 </div>
 
-<div style="background: red;height: 100px;width: 300px; position: absolute; top:484px;width: 100%;">
+<div style="background: gray; height: 100%;width: 100%; position: absolute; top:484px;">
+    <textarea name='gitCommitMessage' class='bdp-form-control' id='gitCommitMessage' style='color:#A3A9B2;resize: none;width: 100%;height: 200px;padding: 10px' placeholder='请输入提交信息，该信息将同步至git中'></textarea>
 </div>
 
 <div class="acediff-bottom">
-    <a class="bdp-btn bdp-btn-primary" id="leftButton">提交</a>
+    <a class="bdp-btn bdp-btn-primary" style="float: right;" id="nextButton">下一步</a>
+    <a class="bdp-btn bdp-btn-default" style="float: right;" id="cancelButton">取消</a>
 </div>
 
 <script >
@@ -36,6 +38,6 @@
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/ace-diff/ace-diff.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
-<script src="/scriptcenter/statics/pages/home/merge.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/pages/home/merge.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/upline_diff.js?_dc=$!{staticVersion}"></script>
 

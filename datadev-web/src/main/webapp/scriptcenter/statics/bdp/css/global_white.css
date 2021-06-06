@@ -3793,7 +3793,7 @@ body {
 /*********************account.css*********************/
 #codemodal div.leftbodydiv {
     background: #fff !important;
-    border: 1px solid silver !important;;
+    /* border: 1px solid silver !important;; */
 }
 
 #codemodal div.account-body {
