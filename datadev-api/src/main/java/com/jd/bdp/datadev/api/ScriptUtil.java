@@ -24,9 +24,9 @@ import java.util.Map;
  * Created by zhangrui25 on 2018/3/5.
  */
 public class ScriptUtil {
-    private static final String UPLOAD_URL = "datadev/api/uploadScript";
+    private static final String UPLOAD_URL = "scriptcenter/api/uploadScript";
 
-    private static final String DOWNLOAD_URL = "datadev/api/downloadScript";
+    private static final String DOWNLOAD_URL = "scriptcenter/api/downloadScript";
 
     /**
      * 上传脚本文件
