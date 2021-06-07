@@ -156,7 +156,7 @@ public class ScriptDiffController {
         try {
             String operator = userHolder.getErp();
             preSumit(projectSpaceId,scriptFileId,commitMsg,operator);
-            return JSONObjectUtil.getSuccessResult("提交成功", true);
+            return JSONObjectUtil.getSuccessResult(true);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
             return JSONObjectUtil.getFailResult("提交发布失败!" + e.getMessage(), false);
