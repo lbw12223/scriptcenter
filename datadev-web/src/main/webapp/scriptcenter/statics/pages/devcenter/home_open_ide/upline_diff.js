@@ -96,7 +96,7 @@ $(function () {
 
         var url = "/scriptcenter/devcenter/uplineArtCheck.html?projectSpaceId=" + projectSpaceId+ "&scriptId=" + $("#scriptId").val() ;
         var uplineCheck = $.dialog.open(url, {
-            title: "脚本上线卡点",
+            title: "脚本发布",
             lock: true,
             width: "880px",
             height: "624px",

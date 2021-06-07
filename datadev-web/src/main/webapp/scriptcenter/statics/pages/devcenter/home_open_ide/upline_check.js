@@ -40,9 +40,8 @@ jQuery(function () {
                 //2.调用调度接口push到生产
                 //3.提交发布中心
 
-                var msgRef = top.Msg ? top.Msg : window.$;
 
-                msgRef.loadingMsg("正在提交发布！");
+                $.loadingMsg("正在提交发布！");
 
 
                 var commitMsg = $("#commitMsg").val();
@@ -53,7 +52,7 @@ jQuery(function () {
                     commitMsg: commitMsg,
                     scriptFileId: scriptFileId
                 }, null, function (node, data) {
-                    msgRef.successMsg("发布成功！")
+                    $.successMsg("发布成功！")
                     window.artDialog.close();
                 })
             });

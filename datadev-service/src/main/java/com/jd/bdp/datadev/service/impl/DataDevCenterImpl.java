@@ -192,8 +192,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         submitInfoVo.setDesc(commitMsg);
         submitInfoVo.setSubmitErp(erp);
         submitInfoVo.setSubmitObj(Arrays.asList(tempSubmitObj));
-        // 检测脚本是否正在发布
-       // checkIsInRelease(submitInfoVo);
+
 
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
@@ -408,7 +407,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 throw new RuntimeException(resObject.getString("message"));
             }
         } catch (Exception e) {
-            logger.error("buffalo=====================" + e.getMessage());
+            logger.error("buffalo=====================" + e.getMessage(),e);
             insertPublish.setStatus(DataDevScriptPublishStatusEnum.Failure.toCode());
             publishDao.updateStatus(insertPublish);
             throw new RuntimeException(e.getMessage());
