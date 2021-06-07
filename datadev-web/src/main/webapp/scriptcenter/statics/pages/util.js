@@ -27,7 +27,7 @@ var commonAjaxEvents = {
         }else{
             _data['projectSpaceId'] = 0 ;
         }
-        _data['projectSpaceId'] = 10109;
+        //_data['projectSpaceId'] = 10109;
         $.ajax({
             url: _url,
             data: _data,
