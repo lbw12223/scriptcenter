@@ -23,7 +23,7 @@ var commonAjaxEvents = {
 
     commonPostAjax: function (_url, _data, node, succssCallback, complete, parentModal,isJson,spinner,beforeEvent) {
         if(top && top.window && top.window.projectSpaceId){
-            _data['projectSpaceId'] = top.window.projectSpaceId
+            _data['projectSpaceId'] = top.window.projectSpaceId < 0 ? 10109 : top.window.projectSpaceId
         }else{
             _data['projectSpaceId'] = 0 ;
         }

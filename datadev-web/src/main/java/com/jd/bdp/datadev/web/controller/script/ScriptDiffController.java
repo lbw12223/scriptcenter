@@ -15,6 +15,8 @@ import com.jd.bdp.datadev.service.DataDevCenterService;
 import com.jd.bdp.datadev.service.DataDevScriptDiffService;
 import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
+import com.jd.bdp.domain.dto.JsfAuthDTO;
+import com.jd.bdp.domain.dto.JsfResultDTO;
 import com.jd.bdp.rc.api.ApiResult;
 import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
 import com.jd.bdp.urm.sso.UrmUserHolder;
@@ -151,37 +153,29 @@ public class ScriptDiffController {
     @ResponseBody
     public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String commitMsg,Long scriptFileId ) throws Exception {
 
-//        submitObj = JSONObject.parseObject("{\n" +
-//                "        \"devInfo\":{\n" +
-//                "            \"scriptId\":74666,\n" +
-//                "            \"fileSize\":\"1274\",\n" +
-//                "            \"scriptName\":\"python3_demo.py\",\n" +
-//                "            \"version\":\"1000\",\n" +
-//                "            \"fileType\":\"py\"\n" +
-//                "        },\n" +
-//                "        \"devObjKey\":\"python3_demo.py\",\n" +
-//                "        \"objType\":\"script\",\n" +
-//                "        \"onlineInfo\":{\n" +
-//                "            \"scriptId\":43020,\n" +
-//                "            \"fileSize\":\"2914\",\n" +
-//                "            \"scriptName\":\"python3_demo.py\",\n" +
-//                "            \"version\":\"20210526115738\",\n" +
-//                "            \"md5Code\":\"be701769805c1945adb816485555ec54\",\n" +
-//                "            \"fileType\":\"py\"\n" +
-//                "        },\n" +
-//                "        \"onlineObjKey\":\"python3_demo.py\",\n" +
-//                "        \"operatorType\":\"\"\n" +
-//                "    }", SubmitObj.class);
         try {
             String operator = userHolder.getErp();
             preSumit(projectSpaceId,scriptFileId,commitMsg,operator);
             return JSONObjectUtil.getSuccessResult("提交成功", true);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
-            return JSONObjectUtil.getFailResult("提交发布失败!", false);
-
+            return JSONObjectUtil.getFailResult("提交发布失败!" + e.getMessage(), false);
         }
     }
+
+
+    @RequestMapping("/submit1.ajax")
+    @ResponseBody
+    public JSONObject submit1(UrmUserHolder userHolder) throws Exception {
+        try {
+            return JSONObjectUtil.getSuccessResult("提交成功", true);
+        } catch (Exception e) {
+            logger.error("scriptCompare.ajax failed: ", e);
+            return JSONObjectUtil.getFailResult("提交发布失败!", false);
+        }
+    }
+
+
 
 
     /**
@@ -213,6 +207,8 @@ public class ScriptDiffController {
         if(gitProjectId < GitHttpUtil._10YI){
             fileService.pushFileDirect(gitProjectId,gitProjectFilePath,commitMsg,erp);
         }
+        checkIsInReleaseNew(old);
+
         //关联
         importScriptManager.callBackScript(old.getId(), null, old.getGitProjectId(), old.getGitProjectFilePath(), erp, old.getVersion());
 
@@ -237,6 +233,24 @@ public class ScriptDiffController {
 //            throw new RuntimeException("检测脚本是否可以发布"+haveReleaseing.getMessage());
 //        }
 
+    }
+
+    private void checkIsInReleaseNew(DataDevScriptFile file){
+        String devObjKey = file.getId() + DataDevCenterImpl.SPLIT + file.getVersion() ;
+
+        SubmitObj submitObj = new SubmitObj();
+        submitObj.setDevObjKey(devObjKey);
+        submitObj.setObjType("script");
+        JsfResultDTO haveReleaseingByObjKey = releaseSubmitInterface.isHaveReleaseingByObjKey(JsfAuthDTO.newInstance(), submitObj);
+
+        if(haveReleaseingByObjKey.getCode() != 0){
+            throw new RuntimeException("发布校验失败!");
+        }
+        if(haveReleaseingByObjKey.getObj() != null){
+            throw new RuntimeException(haveReleaseingByObjKey.getMessage());
+        }
+
+        System.out.println(haveReleaseingByObjKey);
     }
 
     /**
