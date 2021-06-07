@@ -52,8 +52,9 @@ jQuery(function () {
                     commitMsg: commitMsg,
                     scriptFileId: scriptFileId
                 }, null, function (node, data) {
-                    $.successMsg("发布成功！")
+                    top.$.successMsg("发布成功！");
                     window.artDialog.close();
+                    $.dialog.data("uplineDiff").close();
                 })
             });
             $("#cancelButton").click(function (){
