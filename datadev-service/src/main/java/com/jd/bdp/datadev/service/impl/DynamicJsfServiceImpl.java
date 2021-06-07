@@ -51,8 +51,8 @@ public class DynamicJsfServiceImpl implements DynamicJsfService,InitializingBean
             throw new RuntimeException("注册ip不能为空");
         }
         String beanName = AgentScriptInterface.class.getName();
-        String beanId   = beanName+"-"+"-center"+ip;
-        String alias    = jsfAlias+"-"+"-center"+ip;
+        String beanId   = beanName+"-center-"+ip;
+        String alias    = jsfAlias+"-center-"+ip;
         registerJsf(new ConsumerConfig<AgentScriptInterface>(),AgentScriptInterface.class,beanId,alias);
     }
 
@@ -63,7 +63,7 @@ public class DynamicJsfServiceImpl implements DynamicJsfService,InitializingBean
      */
     @Override
     public AgentScriptInterface getScriptInterfaceJsfClient(String ip) throws Exception {
-        String beanId=AgentScriptInterface.class.getName()+"-center"+"-"+ip;
+        String beanId=AgentScriptInterface.class.getName()+"-center-"+ip;
         AgentScriptInterface scriptInterface=stringScriptInterfaceMap.get(beanId);
         if(scriptInterface==null){
             synchronized(this){
