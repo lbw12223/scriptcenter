@@ -365,6 +365,9 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
                 dataDevScriptFile.setFileMd5(his.getFileMd5());
                 dataDevScriptFile.setDescription(his.getCommitMessage());
                 dataDevScriptFile.setRelationDependencyId(his.getRelationDependencyId());
+                //修改时间、修改人
+                dataDevScriptFile.setMender(his.getCreator());
+                dataDevScriptFile.setModified(his.getCreated());
             } else {
                 return null;
             }
@@ -1955,6 +1958,8 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         result.put("name", scriptFile.getName());
         result.put("content", content);
         result.put("version", scriptFile.getVersion());
+        result.put("mender", scriptFile.getMender());
+        result.put("modified", scriptFile.getModified());
         return result;
     }
 }
