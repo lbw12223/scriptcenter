@@ -20,7 +20,7 @@
 
     <bean id="agentScriptCallBackImpl" class="com.jd.bdp.datadev.service.impl.AgentScriptCallBackImpl" />
 
-    <jsf:provider id="agentScriptCallBackInterface" interface="com.jd.bdp.datadev.agent.api.AgentScriptCallBackInterface" alias="${bdp.jsf.alias}"  ref="agentScriptCallBackImpl" server="jsf"  />
+    <jsf:provider id="agentScriptCallBackInterface" interface="com.jd.bdp.datadev.agent.api.AgentScriptCallBackInterface" alias="${bdp.jsf.alias}-center"  ref="agentScriptCallBackImpl" server="jsf"  />
 
     <bean id="scriptBuffaloServiceImpl" class="com.jd.bdp.datadev.service.impl.ScriptBuffaloServiceImpl" />
 

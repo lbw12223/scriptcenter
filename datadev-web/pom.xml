@@ -356,7 +356,7 @@
         <dependency>
             <groupId>com.jd.bdp</groupId>
             <artifactId>bdp-commons</artifactId>
-            <version>2.5.1-hbase-SNAPSHOT</version>
+            <version>2.5.6-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.mail</groupId>
