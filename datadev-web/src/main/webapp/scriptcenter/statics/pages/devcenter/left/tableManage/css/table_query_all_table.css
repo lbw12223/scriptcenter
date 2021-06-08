@@ -38,6 +38,10 @@
     display: none;
 }
 
+.all-table-container {
+    top: 160px;
+}
+
 .all-table-container.all-table-container--top {
     top: 80px;
 }

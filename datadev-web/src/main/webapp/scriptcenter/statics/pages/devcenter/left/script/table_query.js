@@ -369,7 +369,7 @@ $(function () {
             "       <div class='db-name pop-title' data-title='" + data.dbName + "'>库：<span>" + data.dbName + "</span></div>" +
             "   </div>" +
             "   <div class='table-item-operate'>" +
-            "       <div class='table-preview'>数据预览</div>" +
+            // "       <div class='table-preview'>数据预览</div>" +
             "       <div class='table-structure'>表结构</div>" +
             "   </div>" +
             "</div>";

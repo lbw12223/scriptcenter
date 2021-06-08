@@ -28,20 +28,11 @@ var TableQueryForm = /** @class */ (function () {
     };
     // 绑定事件
     TableQueryForm.prototype.bindEvent = function () {
-        var _this = this;
-        console.log($('#contentWrap'))
-        console.log($('#pushOnline'))
-        $('#contentWrap').on('click', '#pushOnline', function () {
-            if (_this.isChangeAndNotSave(editor)) {
-                _this.tipNotSave();
-            } else {
-                _this.showDiff();
-            }
-        })
+        this._bindChangeAdvanceSearchVisible();
     };
 
     // 切换高级搜索部分展示状态
-    TableQueryForm.prototype._bindChangeAdvanceSearchVisible = function(){
+    TableQueryForm.prototype._bindChangeAdvanceSearchVisible = function () {
         $('#AllTablesContent').on('click', '#allTableSearchBaseContentButton', function () {
             $('#tableManageSearchAdvanced').toggleClass('none')
             $('#allTableContainer').toggleClass('all-table-container--top')
