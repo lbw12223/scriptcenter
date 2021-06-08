@@ -3,20 +3,26 @@
 
 
 <link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/ace-diff/diff_index.css?_dc=$!{staticVersion}">
 <input type="hidden" id="gitProjectId" value="$!{gitProjectId}">
 <input type="hidden" id="gitProjectFilePath" value="$!{gitProjectFilePath}">
 
 <div id="flex-container" >
+##    <div>
+##        <p class="diff-title" id="leftTips"></p>
+##        <div id="acediff-left-editor" class="acediff-editor">
+##        </div>
+##    </div>
+##    <div id="acediff-gutter" onmousewheel="return false;"></div>
+##    <div>
+##        <p class="diff-title" id="rightTips"></p>
+##        <div id="acediff-right-editor" class="acediff-editor">
+##        </div>
+##    </div>
     <div>
-        <p class="diff-title" id="leftTips"></p>
-        <div id="acediff-left-editor" class="acediff-editor">
-        </div>
-    </div>
-    <div id="acediff-gutter" onmousewheel="return false;"></div>
-    <div>
-        <p class="diff-title" id="rightTips"></p>
-        <div id="acediff-right-editor" class="acediff-editor">
-        </div>
+        <div style="width: 50%; float:left; padding-left: 55px;font-size: 15px;">线上代码</div>
+        <div style="width: 50%; float:left; padding-left: 55px;font-size: 15px;">本地代码</div>
+        <div id="codeDiff"></div>
     </div>
 </div>
 
@@ -36,6 +42,7 @@
 
 
 </script>
+<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/diff.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/ace-diff/diff_match_patch.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/ace/ace118.js?_dc=$!{staticVersion}" type="text/javascript" charset="utf-8"></script>
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
