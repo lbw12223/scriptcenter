@@ -37,3 +37,7 @@
 .table-query-content .table-manage-search-advanced.none {
     display: none;
 }
+
+.all-table-container.all-table-container--top {
+    top: 80px;
+}
