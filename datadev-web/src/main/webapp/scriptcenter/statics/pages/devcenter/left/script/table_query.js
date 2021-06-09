@@ -469,11 +469,13 @@ $(function () {
                     searchWord: $.trim(searchWord || ""),
                 }
             },
+            formatAjaxError: function (jqXHR, textStatus, errorThrown) {
+                showTableDetail([]);
+                hiddenSpinner(allTableColSpiner, $("#searchAllTabOrColSpinner"));
+            },
             callback: function (data, pagination) {
                 showTableDetail(data);
                 hiddenSpinner(allTableColSpiner, $("#searchAllTabOrColSpinner"));
-                console.log(data);
-                console.log(pagination);
             }
         })
     }
@@ -625,8 +627,6 @@ $(function () {
             hwaccel: false, //spinner 是否启用硬件加速及高速旋转
             className: 'spinner', // spinner css 样式名称
             zIndex: 2e9, // spinner的z轴 (默认是2000000000)
-            top: "auto", // spinner 相对父容器Top定位 单位 px
-            left: "auto"// spinner 相对父容器Left定位 单位 px
         };
         var spinner = new Spinner(opts);
         spinner.spin($(element)[0]);

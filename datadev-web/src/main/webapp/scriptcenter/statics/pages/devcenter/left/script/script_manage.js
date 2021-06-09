@@ -949,6 +949,12 @@ $(function () {
 
             })
 
+            $("#rightMenuBackground").contextmenu(function (e) {
+                e.preventDefault() // 阻止右键菜单默认行为
+                $("#rightMenuBackground").click();
+            })
+
+
             //左侧触发创建git
             $("#createLeftGitBtn").click(function () {
                 var projectArt = $.dialog.open("/scriptcenter/project/newGitProject.html", {
@@ -1015,11 +1021,11 @@ $(function () {
                     var menuLeft = offSet.left - $("#gitMenuDiv").width() + 16;
                     hiddenLeftRightMeun();
                     var id = $("#appSelect").val();
-                    if(id < 900000000){
+                    if (id < 900000000) {
                         $("#gitOrCoding").html("跳转至git");
-                    }else if(id < 1000000000 && id > 900000000){
+                    } else if (id < 1000000000 && id > 900000000) {
                         $("#gitOrCoding").html("跳转至coding");
-                    }else{
+                    } else {
                         $("#gitOrCoding").html("");
                     }
 
@@ -1349,8 +1355,6 @@ $(function () {
         }
 
         function showRightDirMenu(event, menu) {
-
-            debugger
             var windowHeight = window.innerHeight || ((document.body) && (document.body.clientHeight));
             var menuTop = event.clientY + 5;
             var menuLeft = (window.innerWidth - $(menu).width()) / 2;
@@ -1878,10 +1882,10 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm:true,
-        beforeConfirm:function (cb) {
+        closeConfirm: true,
+        beforeConfirm: function (cb) {
             var frameBus = new FrameBus();
-            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {},function(f){
+            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {}, function (f) {
                 cb(f)
             })
         }
