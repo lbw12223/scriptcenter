@@ -660,7 +660,15 @@ $(function () {
                     return item.appgroupId
                 },
                 formatResult: function (item) {
-                    return item.appgroupName;
+                    var type = "G" ;
+                    if(item.appgroupId < 900000000){
+                        type = "G" ;
+                    }else if(item.appgroupId > 900000000 &&  item.appgroupId < 1000000000){
+                        type = "C" ;
+                    }else{
+                        type = "L" ;
+                    }
+                    return  "<span class='projectType'>"+type+"</span>" + "<span class='projectName'>"+item.appgroupName+"</span>";
                 },
                 formatSelection: function (item) {
                     return item.appgroupName;
