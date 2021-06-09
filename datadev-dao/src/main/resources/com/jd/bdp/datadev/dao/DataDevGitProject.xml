@@ -26,7 +26,8 @@
         deleted,
         finish_project_tree_flag,
         finish_project_member_flag,
-        group_id
+        group_id,
+        description
         )
         VALUES(
         #{gitProjectId},
@@ -37,7 +38,8 @@
         0,
         #{finishProjectTreeFlag},
         #{finishProjectMemberFlag},
-        #{groupId}
+        #{groupId},
+        #{description}
         )
     </insert>
 

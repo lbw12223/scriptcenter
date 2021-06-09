@@ -302,6 +302,14 @@ function renameScript(gitProjectId, gitProjectFilePath) {
 
 function updateNode(newNode) {
 
+  if(newNode.runType * 1 == 1){
+      $("#runType").val(1);
+      $("#cheDepDiv").css("display","block");
+  }
+  if(newNode.runType * 1 == 0){
+      $("#runType").val(0);
+      $("#cheDepDiv").css("display","none");
+  }
 
 }
 

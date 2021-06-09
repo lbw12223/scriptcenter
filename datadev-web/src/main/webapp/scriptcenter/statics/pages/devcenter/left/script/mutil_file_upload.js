@@ -6,7 +6,7 @@ function closeWindowBefore() {
         var runData = $("#process").MutiFile("runResult");
         console.log(runData);
         if (runData.NEED_UP > 0 || runData.UP_ING > 0) {
-            parent.$.bdpMsg({
+            $.bdpMsg({
                 title: "提示",
                 width: "350px",
                 mainContent: "<p style='margin-top: 30px;margin-bottom: 30px;'>关闭页面，将终止脚本上传操作，请确定是否关闭？ </p>",
@@ -14,7 +14,7 @@ function closeWindowBefore() {
                     {
                         text: "继续关闭",
                         event: function () {
-                            parent.$.removeMsg();
+                            $.removeMsg();
                             if (runData.UP_FINISH_SUCCESS > 0) {
                                 $.artDialog.opener.initZtree && $.artDialog.opener.initZtree(true);
                             }
@@ -29,7 +29,7 @@ function closeWindowBefore() {
                             if (runData.UP_FINISH_SUCCESS > 0) {
                                 $.artDialog.opener.initZtree && $.artDialog.opener.initZtree(true);
                             }
-                            parent.$.removeMsg();
+                            $.removeMsg();
                         },
                         btnClass: 'bdp-btn-primary'
                     }
@@ -39,7 +39,7 @@ function closeWindowBefore() {
         }
 
         if (runData.UP_CANCEL > 0 || runData.UP_FINISH_FAILED > 0) {
-            parent.$.bdpMsg({
+            $.bdpMsg({
                 title: "提示",
                 width: "350px",
                 mainContent: "<p style='margin-top: 30px;margin-bottom: 30px;'>本次上传有未处理脚本，请确定是否关闭？ </p>",
@@ -47,7 +47,7 @@ function closeWindowBefore() {
                     {
                         text: "继续关闭",
                         event: function () {
-                            parent.$.removeMsg();
+                            $.removeMsg();
                             if (runData.UP_FINISH_SUCCESS > 0) {
                                 $.artDialog.opener.initZtree && $.artDialog.opener.initZtree(true);
                             }
@@ -61,7 +61,7 @@ function closeWindowBefore() {
                             if (runData.UP_FINISH_SUCCESS > 0) {
                                 $.artDialog.opener.initZtree && $.artDialog.opener.initZtree(true);
                             }
-                            parent.$.removeMsg();
+                            $.removeMsg();
                         },
                         btnClass: 'bdp-btn-primary'
                     }

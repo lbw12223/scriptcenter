@@ -417,7 +417,7 @@ function choDep(gitProjectId, gitProjectFilePath) {
     gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
     var url = "/scriptcenter/script/dependency.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
     var dependencyArt = $.dialog.open(url, {
-        title: "设置依赖关系",
+        title: "设置依赖关系3",
         lock: true,
         width: "55%",
         height: "70%",

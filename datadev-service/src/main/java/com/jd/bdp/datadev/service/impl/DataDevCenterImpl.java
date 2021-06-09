@@ -136,29 +136,6 @@ public class DataDevCenterImpl implements DataDevCenterService {
         String fileName = file.getName() ;
         Long projectSpaceId = file.getApplicationId();
 
-//        JSONObject submitObj = JSONObject.parseObject("{\n" +
-//                "        \"devInfo\":{\n" +
-//                "            \"scriptId\":74666,\n" +
-//                "            \"fileSize\":\"1274\",\n" +
-//                "            \"scriptName\":\"python3_demo.py\",\n" +
-//                "            \"version\":\"1000\",\n" +
-//                "            \"fileType\":\"py\"\n" +
-//                "        },\n" +
-//                "        \"devObjKey\":\"python3_demo.py\",\n" +
-//                "        \"objType\":\"script\",\n" +
-//                "        \"onlineInfo\":{\n" +
-//                "            \"scriptId\":43020,\n" +
-//                "            \"fileSize\":\"2914\",\n" +
-//                "            \"scriptName\":\"python3_demo.py\",\n" +
-//                "            \"version\":\"20210526115738\",\n" +
-//                "            \"md5Code\":\"be701769805c1945adb816485555ec54\",\n" +
-//                "            \"fileType\":\"py\"\n" +
-//                "        },\n" +
-//                "        \"onlineObjKey\":\"python3_demo.py\",\n" +
-//                "        \"operatorType\":\"\"\n" +
-//                "    }", SubmitObj.class);
-
-
         JSONObject currentOnlineInfo = buffaloComponent.getCurrentOnlineInfo(fileName, projectSpaceId);
 
         String fileType= DataDevScriptTypeEnum.enumValueOf(file.getType()).toName();
@@ -180,7 +157,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         devInfo.put("fileType",fileType);
         devInfo.put("preOnline",preOnline);
 
-        String devObjKey = file.getId() + SPLIT + file.getVersion() ;
+        String devObjKey = projectSpaceId + SPLIT + file.getName() ;
 
         tempSubmitObj.setDevInfo(devInfo);
         tempSubmitObj.setDevObjKey(devObjKey);

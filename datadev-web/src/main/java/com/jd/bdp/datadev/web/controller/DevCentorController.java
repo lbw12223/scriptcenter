@@ -272,7 +272,9 @@ public class DevCentorController {
         DataDevScriptTemplate dataDevScriptTemplate = templateService.getScriptTemplateById(templateId);
         model.addAttribute("dataDevScriptTemplate", dataDevScriptTemplate); //当前版本号
         model.addAttribute("scriptType", DataDevScriptTypeEnum.enumValueOf(dataDevScriptTemplate.getScriptType()).name()); //当前版本号
-
+        DataDevScriptFile scriptFile = fileService.findById(dataDevScriptTemplate.getScriptFileId());
+        dataDevScriptTemplate.setGitProjectFilePath(scriptFile.getGitProjectFilePath());
+        dataDevScriptTemplate.setGitProjectId(scriptFile.getGitProjectId());
         List<DataDevScriptTemplateShare> infos = templateService.getSharesInfos(templateId);
         StringBuilder erpsBuilder = new StringBuilder();
         boolean gitShares = false;

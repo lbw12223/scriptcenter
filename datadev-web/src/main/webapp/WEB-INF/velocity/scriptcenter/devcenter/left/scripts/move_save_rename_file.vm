@@ -85,11 +85,10 @@
     </div>
 
 </div>
+<script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
+
 <script src="/scriptcenter/statics/zTree/js/jquery.ztree.all.js?_dc=$!{staticVersion}"></script>
-
 <script src="/scriptcenter/statics/zTree/js/dataDev.config.js?_dc=$!{staticVersion}"></script>
-
-
 <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/home_index_cookie.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_content_right.js?_dc=$!{staticVersion}"></script>

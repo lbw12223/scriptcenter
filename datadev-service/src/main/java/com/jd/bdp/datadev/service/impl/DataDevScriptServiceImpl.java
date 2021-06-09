@@ -482,6 +482,13 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
     }
 
     private DataDevScriptRunDetail fillScriptRunDetail(DataDevScriptRunDetail scriptRunDetail, DataDevScriptFile scriptFile, boolean isMergeMarket) throws Exception {
+
+       //insert envs ;//
+
+
+
+
+
         scriptRunDetail.setType(scriptFile.getType());
         if (!ScriptTypeEnum.SQL.toCode().equals(scriptRunDetail.getType()) || StringUtils.isBlank(scriptRunDetail.getEngineType())) {
             scriptRunDetail.setEngineType(DataDevScriptEngineTypeEnum.Hive.getValue());

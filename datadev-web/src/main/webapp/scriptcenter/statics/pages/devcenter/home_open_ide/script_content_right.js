@@ -207,7 +207,7 @@ var uploadRequest = undefined;
                     gitProjectFilePath: scriptPath,
                     name: name,
                     description: $(".file-text", $("#saveModal")).val() || "",
-                    content: el && el.getValue() ? el.getValue : "",
+                    content: el && el.getValue() ? el.getValue() : "",
                     type: type
                 };
                 break;
@@ -668,13 +668,7 @@ var uploadRequest = undefined;
                                 while (zNode.children && zNode.children.length > 0) {
                                     zNode = zNode.children[0];
                                 }
-
-
-                                //locationScript(zNode.gitProjectId, zNode.path);
-
-                                // if (modeCode != MOVE_MODE) {
-                                //     HOME_COOKIE.setActiveLiCookie(newKey)
-                                // }
+                                new FrameBus().emit("leftManager:refresh");
                                 break;
                             case DIR_MODE:
                                 if (treeSource === 0) {

@@ -1034,7 +1034,7 @@ function command2disabled() {
         dbpValue.splice(dbpValue.indexOf(gitProjectId), 1);
     }
     storgeContent(dbpKey, JSON.stringify(dbpValue));
-    
+
     debug.changeBreakPointStatus(status);
     // var windows = datadevInit.getAllWindow();
     // for (var index = 0; index < windows.length; index++) {
@@ -1486,8 +1486,9 @@ function initCallBack() {
     afterInitCallBackMap && afterInitCallBackMap.put(key, undefined)
     callBack && callBack();
 }
-
+// 设置顶部按钮
 function initTopButton() {
+
     var key = getKey();
     var scriptType = $("#scriptType").val();
     var canRun = ($("#canRun").val() && $("#canRun").val() == "true") ? true : false
@@ -1506,7 +1507,7 @@ function initTopButton() {
         run: canRun,
         dependencyButton: hasDependencyButton,
         stop: false,
-        upLine: $("#isShow").val() != 1 && !isTemplate() && (scriptType == 1 || scriptType == 2 || scriptType == 3 || scriptType == 4),
+        upLine: $("#isShow").val() != 1 && !isTemplate() && ( scriptType == 2 || scriptType == 3 || scriptType == 4),
         debug: canDebug,
         git: $("#isShow").val() != 1 && $("#filePosition").val() == "general" && !isTemplate()
     }
@@ -1952,7 +1953,7 @@ $(function () {
         $("#update2NewVersion").click(function () {
             var checkBoxs = $("#packTreeUl input:checkbox:checked");
             if (checkBoxs.length == 0) {
-                top.$.errorMsg("请勾选至少一个脚本进行更新");
+               $.errorMsg("请勾选至少一个脚本进行更新");
                 return;
             }
             var array = [];
@@ -1992,10 +1993,13 @@ $(function () {
                         removeVersionChange();
                     }
                 }
-                top.$.successMsg("更新成功");
+               $.successMsg("更新成功");
             }, null, null, null, null, function () {
-                top.$.loadingMsg("更新打包中...")
+               $.loadingMsg("更新打包中...")
             })
+        })
+        $("#updateRefresh").click(function (){
+            packDetail($("#currentRelationDependencyId").val());
         })
         $("#packTreeUl").on("click", "li.file-li span.script-name", function () {
             var li = $(this).closest("li");

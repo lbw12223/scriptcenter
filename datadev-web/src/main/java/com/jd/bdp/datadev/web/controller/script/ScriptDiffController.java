@@ -22,6 +22,7 @@ import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import com.jd.jbdp.release.api.ReleaseSubmitInterface;
 import com.jd.jbdp.release.model.po.ReleaseObjInfo;
+import com.jd.jbdp.release.model.vo.ReleaseObjRecordVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -265,13 +266,15 @@ public class ScriptDiffController {
     @RequestMapping("/releaseRecord.ajax")
     @ResponseBody
     public JSONObject releaseRecord(UrmUserHolder userHolder,
-                                    Long projectSpaceId,
-                                    String scriptName,
+                                    @RequestParam(value = "projectId", required = false) Long projectId,
+                                    @RequestParam(value = "scriptName") String scriptName,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "size", defaultValue = "10") Integer size) {
+                                    @RequestParam(value = "rows", defaultValue = "10") Integer size) {
         String erp = userHolder.getErp();
         try {
-            PageInfo<ReleaseObjInfo> releaseObjInfoPageInfo = dataDevScriptDiffService.releaseRecord(projectSpaceId, scriptName, page, size);
+            String SPLIT = "#-#" ;
+            scriptName = "test.sh" + SPLIT + "1005";
+            PageInfo<ReleaseObjRecordVo> releaseObjInfoPageInfo = dataDevScriptDiffService.releaseRecord(projectId, scriptName, page, size);
             return JSONObjectUtil.getSuccessResult(releaseObjInfoPageInfo);
         } catch (Exception e) {
             logger.error("releaseRecord.ajax failed: ", e);
