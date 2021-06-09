@@ -3442,7 +3442,7 @@ div#script-manage .left_manage {
 }
 
 #template-body .templatetype-tips span.newtemplatetips {
-    color: #ee6723;
+    color: white !important;
 }
 
 

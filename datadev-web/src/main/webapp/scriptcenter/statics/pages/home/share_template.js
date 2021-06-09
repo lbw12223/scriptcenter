@@ -59,17 +59,20 @@ $(function () {
                 shareGits: shareGits,
             }, $("#saveTemplateButton"), function (node, data) {
                 $.successMsg("保存成功");
-                $.dialog.data({
+                var callBackData = {
                     id: templateId,
                     name: name,
                     desc: desc,
                     shareErps: shareErps,
                     shareGits: shareGits,
-                });
+                    gitProjectId: $("#gitProjectId").val(),
+                    gitProjectFilePath : $("#gitProjectFilePath").val()
+                }
+                $.dialog.data(callBackData);
                 // console.log($.dialog.opener,"$.dialog.opener")
                 // $.dialog.opener.location.reload();
-                $.dialog.opener.init_template();
-                               
+                $.dialog.opener && $.dialog.opener.init_template && $.dialog.opener.init_template();
+                $.dialog.data("callBackFunction") && $.dialog.data("callBackFunction")(callBackData);
                 var shareTemplateArt = $.dialog.data("shareTemplateArt");
                 shareTemplateArt.close();
 
