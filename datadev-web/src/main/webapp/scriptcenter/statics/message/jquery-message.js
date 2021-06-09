@@ -1,5 +1,8 @@
 $.extend({
     htmlTemplet: function (params) {
+        if(top.Msg){
+            return top.Msg.htmlTemplet(params);
+        }
         var type = params.type;
         if (type === "success") {
             var SUCCESS_HTML =
@@ -204,6 +207,10 @@ $.extend({
         return HTML;
     },
     successMsg: function (_content, delay, callback) {
+        if(top.Msg){
+            top.Msg.successMsg(_content,delay,callback);
+            return ;
+        }
         this.removeMsg();
         var params = {
             content: _content,
@@ -217,6 +224,10 @@ $.extend({
         $("body").append(html);
     },
     confirmMsg: function (_params) {
+        if(top.Msg){
+            top.Msg.confirmMsg(params);
+            return ;
+        }
         this.removeMsg();
         var params = {
             content: _params.content,
@@ -237,6 +248,10 @@ $.extend({
         })
     },
     confirmNoBackMsg: function (_params) {
+        if(top.Msg){
+            top.Msg.confirmNoBackMsg(_params);
+            return ;
+        }
         this.removeMsg();
         var params = {
             content: _params.content,
@@ -258,6 +273,10 @@ $.extend({
     },
 
     errorMsg: function (_content) {
+        if(top.Msg){
+            top.Msg.errorMsg(_content);
+            return ;
+        }
         this.removeMsg();
         var params = {
             content: _content,
@@ -271,6 +290,10 @@ $.extend({
         });
     },
     errorMsg2: function (_content, delay, callback) {
+        if(top.Msg){
+            top.Msg.errorMsg2(_content, delay, callback);
+            return ;
+        }
         this.removeMsg();
         var params = {
             content: _content,
@@ -285,6 +308,11 @@ $.extend({
         }, delay || 2000);
     },
     loadingMsg: function (_content) {
+        if(top.Msg){
+            top.Msg.loadingMsg(_content);
+            return ;
+        }
+
         this.removeMsg();
         var params = {
             content: _content,
@@ -305,6 +333,10 @@ $.extend({
      * @param params
      */
     bdpMsg: function (params, init) {
+        if(top.Msg && params.topWindow === true){
+            top.Msg.bdpMsg(params,init);
+            return ;
+        }
         this.removeMsg();
         params.type = "bdpMsg";
         var html = this.htmlTemplet(params);
@@ -331,6 +363,11 @@ $.extend({
      * @param params
      */
     newBdpMsg: function (params, init) {
+        if(top.Msg){
+            top.Msg.newBdpMsg(params,init);
+            return ;
+        }
+
         this.removeMsg();
         params.type = "newBdpMsg";
         var html = this.htmlTemplet(params);
@@ -349,11 +386,19 @@ $.extend({
         })
     },
     removeMsg: function () {
+        if(top.Msg){
+            top.Msg.removeMsg();
+            return ;
+        }
         $(".messageBack").remove();
         $(".successMessageBack").remove();
         $(".noBackConfirm").remove();
     },
     removeNewMsg(){
+        if(top.Msg){
+            top.Msg.removeNewMsg();
+            return ;
+        }
         $(".newMessageBack").remove();
     }
 });

@@ -29,7 +29,7 @@ function openScript(nowGitProjectId, path, name) {
 }
 
 function updateQianKunTab(dataObj){
-    debugger
+
     var obj = dataObj.obj ;
 
     while(obj.children && obj.children.length > 0){

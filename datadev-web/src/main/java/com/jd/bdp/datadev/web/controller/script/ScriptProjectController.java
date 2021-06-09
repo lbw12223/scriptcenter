@@ -148,6 +148,7 @@ public class ScriptProjectController {
         insertDataDevGitProject.setRefreshTime(new Date());
 
         dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
+
         insertDataDevGitProject.setGitProjectId(insertDataDevGitProject.getId() + GitHttpUtil._10YI);
         dataDevGitProjectDao.updateDataDevGitProjectById(insertDataDevGitProject);
 
@@ -402,6 +403,22 @@ public class ScriptProjectController {
             }
             temp.setGitUserId(searchJdUser.getId());
             jdGitMembers.add(temp);
+            if(gitOrCodingCode == DataDevGitOrCodingEnum.GIT.tocode() ){
+                //git
+                if (erp.equals(userHolder.getErp())) {
+                    temp.setAccessLevel(ImportScriptManager.OWNER);
+                } else {
+                    temp.setAccessLevel(ImportScriptManager.DEVELOPER);
+                }
+            }else{
+                //coding
+                if (erp.equals(userHolder.getErp())) {
+                    temp.setAccessLevel(ImportScriptManager.MASTER);
+                } else {
+                    temp.setAccessLevel(ImportScriptManager.DEVELOPER);
+                }
+            }
+
         }
 
         //create group
@@ -766,10 +783,17 @@ public class ScriptProjectController {
     @RequestMapping("sharedWithGroups.ajax")
     @ResponseBody
     public net.sf.json.JSONObject sharedWithGroupsAjax(Long gitProjectId) throws Exception {
+        boolean isCoding = GitHttpUtil.isCoding(gitProjectId);
         JDGitProjects jdGitProjects = new JDGitProjects();
         jdGitProjects.setGitProjectId(gitProjectId);
         JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
         List<JDGitProjectShareGroups> sharedWithGroups = projectDetail.getSharedWithGroups();
+        if(isCoding && sharedWithGroups != null && sharedWithGroups.size() > 0){
+            for(JDGitProjectShareGroups jdGitProjectShareGroups :sharedWithGroups){
+                jdGitProjectShareGroups.setGitProjectId(gitProjectId);
+                jdGitProjectShareGroups.setJdGroupId(jdGitProjectShareGroups.getJdGroupId() + GitHttpUtil._9YI);
+            }
+        }
         Page<JDGitProjectShareGroups> page = new PageImpl<JDGitProjectShareGroups>(sharedWithGroups);
         return AjaxUtil.jqGridJson(page);
     }

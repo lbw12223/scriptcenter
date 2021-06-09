@@ -126,7 +126,7 @@ $(function () {
                     label: "名称",
                     sortable: false,
                     formatter: function (cellvalue, options, record) {
-                        return "<a href='javascript:openGroupDetail(" + record.jdGroupId + ")' target='_blank'>" + cellvalue + "</a>"
+                        return "<a href='javascript:openGroupDetail(" + record.jdGroupId + ")' target='_self'>" + cellvalue + "</a>"
                     },
                 },
                 {

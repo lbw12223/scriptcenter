@@ -36,22 +36,17 @@ public class BuffaloComponent {
 
         data.put("scriptName", scriptName);
         data.put("projectId", projectId);
-//        data.put("version", version);
 
         Map<String, String> params = new HashMap<>();
         params.put("token", token);
         params.put("appId", appId);
         long timeMillis = System.currentTimeMillis();
         params.put("time", Long.toString(timeMillis));
-//        params.put("data", data.toJSONString());
-//        params.put("scriptName", scriptName);
-//        params.put("projectId", projectId.toString());
 
         logger.info("-------调度中心-获取脚本内容接口参数：" + params + "; body=" + data);
         String entity = HttpUtil.doPostWithParamAndBody(buffalo4Prefix + scriptGetFileContent, params, data);
         logger.info("-------调度中心-获取脚本内容结果：" + entity);
         JSONObject jsonObject;
-
         try {
             jsonObject = JSON.parseObject(entity);
         }
@@ -64,7 +59,6 @@ public class BuffaloComponent {
             logger.error("调度中心-获取脚本内容接口 失败");
             throw new Exception(jsonObject.getString("message"));
         }
-
         JSONObject obj = jsonObject.getJSONObject("obj");
         //JSONObject fileContent = obj.getJSONObject("fileContent");
         return obj;

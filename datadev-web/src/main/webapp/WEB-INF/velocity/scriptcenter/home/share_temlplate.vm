@@ -10,6 +10,8 @@
     <form class='datadev-form-inline' id='templateSaveContent'>
         <input type="hidden" id = "templateId" value="$!{dataDevScriptTemplate.id}">
         <input type="hidden" id = "shareGits" value="$!{dataDevScriptTemplate.shareGits}">
+        <input type="hidden" id = "gitProjectId" value="$!{dataDevScriptTemplate.gitProjectId}">
+        <input type="hidden" id = "gitProjectFilePath" value="$!{dataDevScriptTemplate.gitProjectFilePath}">
 
         <h4 class='datadev-control-title'>基本信息</h4>
         <div class='datadev-form-group'>

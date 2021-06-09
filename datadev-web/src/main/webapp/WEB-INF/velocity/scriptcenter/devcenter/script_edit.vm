@@ -171,7 +171,7 @@
                             </div>
 
                         ##
-                            #if(($!{scriptType} == "2" || $!{scriptType} == "3" || $!{scriptType} == "1" || $!{scriptType} == "4") && $!{isShow} == "0")
+                            #if(($!{scriptType} == "2" || $!{scriptType} == "3" || $!{scriptType} == "4") && $!{isShow} == "0")
 
                                 <div id="upLineButtonDiv" class="buttonDiv">
                                     <a href="javascript:void(0)" id="upLine" class="toolButton pop-title"
@@ -225,6 +225,8 @@
                     <div id="packZipDetail" style="display: none">
                         <div class="buttonWrap" style="">
                             <a class="bdp-btn bdp-btn-primary" id="update2NewVersion">更新压缩包</a>
+                            <a class="bdp-btn bdp-btn-default" id="updateRefresh">刷新</a>
+
                         </div>
                         <div class="ztreeWrap" id="ztreeWrapDiv">
                             <div class="treeTable" id="treeTable">
@@ -264,8 +266,7 @@
                                                                                id="lastVersionInfo">$!{lastVersion}</a></span>
                 </div>
                 <div style="float: left;margin-left: 30px" id="gitVersionStatusTip"><span></span></div>
-                <div style="float: left;margin-left: 30px;display: none;" id="cheDepDiv"><a href="javascript:;" class=""
-                                                                                            id="cheDep">查看依赖</a></div>
+                <div style="float: left;margin-left: 30px;display: none;" id="cheDepDiv"><a href="javascript:;" class="" id="cheDep">查看依赖</a></div>
                 <div style="clear: both;"></div>
             </div>
             <div class="logOrDataParent"

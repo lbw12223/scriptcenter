@@ -183,44 +183,44 @@ function setScriptLocation(gitProjectId, gitProjectFilePath) {
 function resetLocation() {
     locationScriptObj = {};
 }
-
-function loadScript(gitProjectId, gitProjectFilePath) {
-    if (getSelectedProjectId() == gitProjectId) {
-        var tmpPath = gitProjectFilePath;
-        var selectNode = zTree.getNodeByParam("path", tmpPath);
-        if (selectNode == null) {
-            while (selectNode == null && tmpPath != "") {
-                var index = tmpPath.lastIndexOf("/");
-                tmpPath = tmpPath.substring(0, index);
-                selectNode = zTree.getNodeByParam("path", tmpPath);
-            }
-            if (selectNode != null || tmpPath == "") {
-                zTree.removeChildNodes(selectNode);
-                commonAjaxEvents.commonPostAjax("/scriptcenter/script/getScripsByDirId.ajax", {
-                    path: tmpPath,
-                    gitProjectId: gitProjectId,
-                    selectFilePath: gitProjectFilePath,
-                    isSelectRoot: tmpPath != "",
-                    targetRange: 1
-                }, null, function (node, data) {
-                    if (data.obj) {
-                        for (var index = 0; index < data.obj.length; index++) {
-                            var scriptObj = getZtreeNode(data.obj[index]);
-                            var parentPath = scriptObj.parentPath;
-                            var parNode = zTree.getNodeByParam("path", parentPath);
-                            if (parNode) {
-                                parNode.zAsync = true;
-                                zTree.addNodes(parNode, scriptObj, true);
-                            } else if (parentPath == "") {
-                                zTree.addNodes(null, scriptObj, true);
-                            }
-                        }
-                    }
-                })
-            }
-        }
-    }
-}
+//deleted 06--8
+// function loadScript(gitProjectId, gitProjectFilePath) {
+//     if (getSelectedProjectId() == gitProjectId) {
+//         var tmpPath = gitProjectFilePath;
+//         var selectNode = zTree.getNodeByParam("path", tmpPath);
+//         if (selectNode == null) {
+//             while (selectNode == null && tmpPath != "") {
+//                 var index = tmpPath.lastIndexOf("/");
+//                 tmpPath = tmpPath.substring(0, index);
+//                 selectNode = zTree.getNodeByParam("path", tmpPath);
+//             }
+//             if (selectNode != null || tmpPath == "") {
+//                 zTree.removeChildNodes(selectNode);
+//                 commonAjaxEvents.commonPostAjax("/scriptcenter/script/getScripsByDirId.ajax", {
+//                     path: tmpPath,
+//                     gitProjectId: gitProjectId,
+//                     selectFilePath: gitProjectFilePath,
+//                     isSelectRoot: tmpPath != "",
+//                     targetRange: 1
+//                 }, null, function (node, data) {
+//                     if (data.obj) {
+//                         for (var index = 0; index < data.obj.length; index++) {
+//                             var scriptObj = getZtreeNode(data.obj[index]);
+//                             var parentPath = scriptObj.parentPath;
+//                             var parNode = zTree.getNodeByParam("path", parentPath);
+//                             if (parNode) {
+//                                 parNode.zAsync = true;
+//                                 zTree.addNodes(parNode, scriptObj, true);
+//                             } else if (parentPath == "") {
+//                                 zTree.addNodes(null, scriptObj, true);
+//                             }
+//                         }
+//                     }
+//                 })
+//             }
+//         }
+//     }
+// }
 
 function locationScript(gitProjectId, gitProjectFilePath, scriptId) {
     if (!(gitProjectId && gitProjectFilePath)) {
@@ -423,60 +423,61 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
         preSelectedId = node.tId;
     }
 }
+//deleleted 2021-06-08
+// function updateNode(newNode) {
+//     if (getSelectedProjectId() == newNode.gitProjectId && newNode.path) {
+//         var node = zTree.getNodeByParam("path", newNode.path);
+//         if (node != null) {
+//             if (newNode.gitStatus) {
+//                 newNode.name = "<span class='" + newNode.gitStatus + "'>" + node.oriName + "</span>";
+//             }
+//             $.extend(node, newNode);
+//             zTree.updateNode(node);
+//         }
+//         if (newNode.runType != undefined) {
+//             var activeWindow = datadevInit.getActiveWindow(getKey(newNode.gitProjectId, newNode.path));
+//             activeWindow && activeWindow.win && activeWindow.win.changeDep(newNode.runType == 1);
+//         }
+//     }
+// }
 
-function updateNode(newNode) {
-    if (getSelectedProjectId() == newNode.gitProjectId && newNode.path) {
-        var node = zTree.getNodeByParam("path", newNode.path);
-        if (node != null) {
-            if (newNode.gitStatus) {
-                newNode.name = "<span class='" + newNode.gitStatus + "'>" + node.oriName + "</span>";
-            }
-            $.extend(node, newNode);
-            zTree.updateNode(node);
-        }
-        if (newNode.runType != undefined) {
-            var activeWindow = datadevInit.getActiveWindow(getKey(newNode.gitProjectId, newNode.path));
-            activeWindow && activeWindow.win && activeWindow.win.changeDep(newNode.runType == 1);
-        }
-    }
-}
 
-
-function choDep(gitProjectId, gitProjectFilePath) {
-    gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
-    var url = "/scriptcenter/script/dependency.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
-    var dependencyArt = $.dialog.open(url, {
-        title: "设置依赖关系",
-        lock: true,
-        width: "55%",
-        height: "70%",
-        opacity: 0.5,
-        esc: false,
-        close: function () {
-        }
-    });
-    $.dialog.data("dependencyArt", dependencyArt);
-    $.dialog.data("updateNode", updateNode);
-    $.dialog.data("pack2Zip", pack2Zip);
-}
-
-function pack2Zip(gitProjectId, gitProjectFilePath) {
-    gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
-    var url = "/scriptcenter/script/packZip.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
-    var packZipArt = $.dialog.open(url, {
-        title: "打包zip文件",
-        lock: true,
-        width: "700px",
-        height: "520px",
-        opacity: 0.5,
-        esc: false,
-        close: function () {
-        }
-    });
-    $.dialog.data("packZipArt", packZipArt);
-    $.dialog.data("loadScript", loadScript);
-    $.dialog.data("updateNode", updateNode);
-}
+//deleleted 2021-06-08
+// function choDep(gitProjectId, gitProjectFilePath) {
+//     gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
+//     var url = "/scriptcenter/script/dependency.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
+//     var dependencyArt = $.dialog.open(url, {
+//         title: "设置依赖关系2",
+//         lock: true,
+//         width: "55%",
+//         height: "70%",
+//         opacity: 0.5,
+//         esc: false,
+//         close: function () {
+//         }
+//     });
+//     $.dialog.data("dependencyArt", dependencyArt);
+//     $.dialog.data("updateNode", updateNode);
+//     $.dialog.data("pack2Zip", pack2Zip);
+// }
+//deleleted 2021-06-08
+// function pack2Zip(gitProjectId, gitProjectFilePath) {
+//     gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
+//     var url = "/scriptcenter/script/packZip.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
+//     var packZipArt = $.dialog.open(url, {
+//         title: "打包zip文件",
+//         lock: true,
+//         width: "700px",
+//         height: "520px",
+//         opacity: 0.5,
+//         esc: false,
+//         close: function () {
+//         }
+//     });
+//     $.dialog.data("packZipArt", packZipArt);
+//     $.dialog.data("loadScript", loadScript);
+//     $.dialog.data("updateNode", updateNode);
+// }
 
 function showRightMenuBackground() {
     $("#rightMenuBackground").show();
@@ -1679,6 +1680,7 @@ $(function () {
             info.gitProjectId = rightClickNode ? rightClickNode.gitProjectId : getSelectedProjectId();
             // $("#saveModal").FileMode("upFile", info);
 
+
             var mutilFileWindow = $.dialog.open("/scriptcenter/devcenter/saveMutilFile.html?gitProjectId=" + info.gitProjectId + "&gitProjectDirPath=" + info.gitProjectDirPath, {
                 title: "上传脚本",
                 lock: true,
@@ -1689,7 +1691,7 @@ $(function () {
                 cancel: false
             });
             $.dialog.data("mutilFileWindow", mutilFileWindow);
-
+            //$.artDialog.opener.initZtree
 
         }
 
@@ -2119,8 +2121,15 @@ $(".addFile").click(function (event) {
 })
 /*新建脚本 end */
 
+var leftManagerFrameBus = new FrameBus();
+//注册刷新事件
+leftManagerFrameBus.on("leftManager:refresh", function (data) {
+    initZtree()
+})
+
 $(window).resize(function () {
     hiddenLeftRightMeun()
+
 });
 
 
