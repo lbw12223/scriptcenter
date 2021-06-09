@@ -951,7 +951,7 @@ $(function () {
 
             $("#rightMenuBackground").contextmenu(function (e) {
                 e.preventDefault() // 阻止右键菜单默认行为
-                $("#rightMenuBackground").click();
+                // $("#rightMenuBackground").click();
             })
 
 

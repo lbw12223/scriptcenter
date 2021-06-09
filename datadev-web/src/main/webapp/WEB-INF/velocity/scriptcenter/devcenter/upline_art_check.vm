@@ -2,32 +2,51 @@
 #set($page_title="artCheck")
 <link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
 
-<link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css" />
+<link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css"/>
+<link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/upline_dialog/check.css"/>
 <div style="color: #666">
     <input type="hidden" id="scriptFileId" value="$!{dataDevScriptFile.id}">
     <input type="hidden" id="scriptFileName" value="$!{dataDevScriptFile.name}">
 
     <div>
-        <h5 style="font-weight: bold">关联任务</h5>
+        <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
+            <span class="jmd-title-text">关联任务</span>
+        </div>
 
-        <div>脚本关联的线上任务：共 <span style="font-weight: bold">$!{totalCount}</span>个。 其中L0任务：<span style="font-weight: bold">$!{totalL0}</span>个，L1任务：<span style="font-weight: bold">$!{totalL1}</span>个.</div>
-        <div style="width: 100%;height: 300px">
+        <div class="bdp-upline-dialog-check-desc">
+            <span>脚本关联的线上任务：共</span>
+            <span class="bdp-upline-dialog-check-desc-num">$!{totalCount}</span>
+            <span>个。 其中L0任务：</span>
+            <span class="bdp-upline-dialog-check-desc-num">$!{totalL0}</span>
+            <span>个，L1任务：</span>
+            <span class="bdp-upline-dialog-check-desc-num">$!{totalL1}</span>
+            <span>个.</span>
+        </div>
+
+        <div class="bdp-upline-dialog-check-table">
             <table id="gridTable"></table>
         </div>
     </div>
-    <div style="height: 220px;">
-        <h5 style="float: left;font-weight: bold;width: 250px;">项目空间: $!{spaceProjectName}</h5>
-        <div style="float: left;width: 300px;">
-            <h5 style="font-weight: bold">变更描述</h5>
+    <div class="bdp-upline-dialog-check-form clearfix">
+        <div class="bdp-upline-dialog-check-form-left">
+            <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
+                <span class="jmd-title-text">项目空间</span>
+            </div>
+            <p class="bdp-upline-dialog-check-form-left-content">$!{spaceProjectName}</p>
+        </div>
+        <div class="bdp-upline-dialog-check-form-right">
+            <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
+                <span class="jmd-title-text">变更描述</span>
+            </div>
             <textarea id="commitMsg" style="width: 400px;height: 150px"></textarea>
         </div>
     </div>
-    <div class="acediff-bottom" style="padding: 4px;">
+    <div class="acediff-bottom bdp-upline-dialog-check-footer" style="padding: 4px;">
         <a class="bdp-btn bdp-btn-primary" style="float: right;" id="submit">发布</a>
         <a class="bdp-btn bdp-btn-default" style="float: right;" id="cancelButton">取消</a>
     </div>
 </div>
-<script >
+<script>
 
 </script>
 <script src="/scriptcenter/statics/grid/js/gma.js?_dc=$!{staticVersion}"></script>
