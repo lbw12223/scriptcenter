@@ -165,12 +165,12 @@ public class DataDevCenterImpl implements DataDevCenterService {
         SubmitObj tempSubmitObj = new SubmitObj();
         JSONObject currentTempOnlineInfo = new JSONObject();
         if(currentOnlineInfo != null){
-            currentTempOnlineInfo.put("scriptId",currentTempOnlineInfo.getLong("fileId"));
-            currentTempOnlineInfo.put("fileSize",currentTempOnlineInfo.getLong("fileSize"));
-            currentTempOnlineInfo.put("scriptName",currentTempOnlineInfo.getString("fileName"));
-            currentTempOnlineInfo.put("version",currentTempOnlineInfo.getString("curVersion"));
-            currentTempOnlineInfo.put("md5Code",currentTempOnlineInfo.getString("md5Code"));
-            currentTempOnlineInfo.put("fileType",currentTempOnlineInfo.getString("fileType"));
+            currentTempOnlineInfo.put("scriptId",currentOnlineInfo.getLong("fileId"));
+            currentTempOnlineInfo.put("fileSize",currentOnlineInfo.getLong("fileSize"));
+            currentTempOnlineInfo.put("scriptName",currentOnlineInfo.getString("fileName"));
+            currentTempOnlineInfo.put("version",currentOnlineInfo.getString("curVersion"));
+            currentTempOnlineInfo.put("md5Code",currentOnlineInfo.getString("md5Code"));
+            currentTempOnlineInfo.put("fileType",currentOnlineInfo.getString("fileType"));
         }
         JSONObject devInfo = new JSONObject();
         devInfo.put("scriptId",file.getId());
