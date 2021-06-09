@@ -2127,6 +2127,25 @@ $(".addFile").click(function (event) {
     var locat = $(".addFile").offset();
     $("#newScriptDiv").css("top", (locat.top + 30) + "px").css("left", (locat.left - 140) + "px").css("display", "block");
 })
+$(".runList").click(function (event) {
+    showRightMenuBackground();
+    hiddenLeftRightMeun();
+
+    var url = "/scriptcenter/runList.html";
+    var uplineCheck = $.dialog.open(url, {
+        title: "脚本运行历史",
+        lock: true,
+        width: "1024px",
+        height: "624px",
+        opacity: 0.5,
+        esc: false,
+        close: function () {
+        }
+    });
+
+
+
+})
 /*新建脚本 end */
 
 var leftManagerFrameBus = new FrameBus();

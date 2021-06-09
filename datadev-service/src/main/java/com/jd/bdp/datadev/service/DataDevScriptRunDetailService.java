@@ -101,4 +101,8 @@ public interface DataDevScriptRunDetailService {
 
 
     HoldDoubleValue<Integer, Double> listFinishTask(Long limit) throws Exception;
+
+
+    PageResultDTO runListPage(DataDevScriptRunDetail runDetail, Pageable pageable) throws Exception;
+
 }

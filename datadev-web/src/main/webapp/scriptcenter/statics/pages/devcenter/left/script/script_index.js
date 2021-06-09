@@ -13,6 +13,7 @@ function hiddenLeftRightMeun(isFromBroadCast) {
     $(".datadevSelectedText").removeClass("datadevSelectedText");
     $("#newScriptDiv").hide()
 
+    $("#rightMenuBackground").hide();
     //清除右侧右键菜单
     if(isFromBroadCast == undefined){
         QIAN_KUN && QIAN_KUN.utils.broadcast("clear-right-right-meun", "clearRight")

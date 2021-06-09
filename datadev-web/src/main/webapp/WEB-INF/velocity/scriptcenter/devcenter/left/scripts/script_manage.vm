@@ -16,11 +16,12 @@
 
     <div style="height: 80px;width: 100%;    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);background: white;">
         <div class="content icon-content" id="scriptManageTool">
-            <span class="bdp-icon addFile ide-xj pop-title" data-title="新建脚本"></span>
-            <span class="bdp-icon addDir ide-xjml pop-title" data-title="创建目录"></span>
-            <span class="bdp-icon refresh ide-shuax pop-title" data-title="刷新"></span>
-            <span class="bdp-icon upLoad ide-left-sc pop-title" data-title="上传脚本"></span>
-            <span class="bdp-icon newGit ide-icon-xzgit pop-title" id="newGitProjectBtn"data-title="新建项目"></span>
+            <span class="bdp-icon runList bdp-grzx-time pop-title" title="运行历史" data-title="运行历史"></span>
+            <span class="bdp-icon addFile ide-xj pop-title" title="新建脚本" data-title="新建脚本"></span>
+            <span class="bdp-icon addDir ide-xjml pop-title" title="创建目录" data-title="创建目录"></span>
+            <span class="bdp-icon refresh ide-shuax pop-title" title="刷新" data-title="刷新"></span>
+            <span class="bdp-icon upLoad ide-left-sc pop-title" title="上传脚本" data-title="上传脚本"></span>
+            <span class="bdp-icon newGit ide-icon-xzgit pop-title" title="新建项目" id="newGitProjectBtn"data-title="新建项目"></span>
         </div>
         <div class="content appSelect-content" style="position: absolute;top: 35px;left: 0px;text-align:left;padding-right: 37px;padding-left: 10px">
             <input id="appSelect" class="appSelect" value="" style="height: 32px">
@@ -239,4 +240,6 @@
 <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/script_index.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/script_qiankun_tab.js?_dc=$!{staticVersion}"></script>
+
 
