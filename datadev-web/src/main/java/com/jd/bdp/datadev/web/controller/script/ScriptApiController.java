@@ -107,7 +107,7 @@ public class ScriptApiController {
                 for (DataDevGitProject temp : erpProjectBySearch) {
                     JSONObject project = new JSONObject();
                     project.put("projectId", temp.getGitProjectId());
-                    project.put("projectName", temp.getGitProjectName());
+                    project.put("projectName", temp.getGitProjectPath());
                     project.put("projectType", projectType);
                     jsonArray.add(project);
                 }

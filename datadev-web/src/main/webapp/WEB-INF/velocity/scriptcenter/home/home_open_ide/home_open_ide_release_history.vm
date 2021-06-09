@@ -1,0 +1,25 @@
+<div class="script-online-history">
+    <h4 class="bdp-control-title">发布历史</h4>
+
+    <div class="bdp-form-group">
+        <label class="bdp-control-label script-operate-history-label">项目空间：</label>
+        <div class="script-operate-history-content" >
+            <select id="projectSpaceMo" class="appSelect" style="width: 30%;">
+                <option value=""></option>
+            </select>
+            <a class="bdp-btn bdp-btn-primary" id="release-his-query">查询</a>
+        </div>
+    </div>
+    <div class="jd-table-parent" id="release-jd-table-parent" style="margin-left:20px;width: 740px;height:540px;overflow: hidden;">
+        <table class="jd-table table table-hover " id="release-grid-table">
+        </table>
+        <div id="release-grid-pager">
+
+        </div>
+    </div>
+
+</div>
+<script src="/scriptcenter/statics/pages/home/home_open_ide/home_open_ide_release_history.js?_dc=$!{staticVersion}"></script>
+
+
+

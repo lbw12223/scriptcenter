@@ -10,26 +10,26 @@ $(function () {
     var color = HOME_COOKIE.getColorCookie();
     var compareInfo = undefined;
 
-    var theme= color === "white" ? "chrome" : "tomorrow_night";
-    console.log("theme===>", theme);
-    theme = "chrome";
-    differ = new AceDiff({
-        mode: "ace/mode/sql",
-        theme: "ace/theme/" + theme,
-        showConnectors: true,
-        left: {
-            editable: false,
-            theme: "ace/theme/" + theme
-        },
-        right: {
-            editable: false,
-            theme: "ace/theme/" + theme
-        }
-    });
-    var leftTips=$.dialog.data("leftTips") ||"本地代码";
-    var rightTips=$.dialog.data("rightTips")||"线上代码";
-    $("#leftTips").text(leftTips)
-    $("#rightTips").text(rightTips)
+    // var theme= color === "white" ? "chrome" : "tomorrow_night";
+    // console.log("theme===>", theme);
+    // theme = "chrome";
+    // differ = new AceDiff({
+    //     mode: "ace/mode/sql",
+    //     theme: "ace/theme/" + theme,
+    //     showConnectors: true,
+    //     left: {
+    //         editable: false,
+    //         theme: "ace/theme/" + theme
+    //     },
+    //     right: {
+    //         editable: false,
+    //         theme: "ace/theme/" + theme
+    //     }
+    // });
+    // var leftTips=$.dialog.data("leftTips") ||"本地代码";
+    // var rightTips=$.dialog.data("rightTips")||"线上代码";
+    // $("#leftTips").text(leftTips)
+    // $("#rightTips").text(rightTips)
 
     // var data = {
     //     projectSpaceId: gitProjectId,
@@ -48,17 +48,25 @@ $(function () {
         scriptId: $("#scriptId").val(),
         scriptName: $("#scriptFileName").val()
     };
-    console.log("diff/scriptCompare data:", data);
     commonAjaxEvents.commonPostAjax("/scriptcenter/diff/scriptCompare.ajax", data, null, function (node, data) {
         compareInfo = data.obj.scriptPair;
-        differ.getEditors().left.setValue(data.obj.scriptPair.currentInfo.content || "");
-        differ.getEditors().right.setValue(data.obj.scriptPair.remoteInfo.content || "");
-        differ.getEditors().left.focus();
-        differ.getEditors().right.focus();
-        differ.getEditors().left.clearSelection();
-        differ.getEditors().right.clearSelection();
-    });
+        // differ.getEditors().left.setValue(data.obj.scriptPair.currentInfo.content || "");
+        // differ.getEditors().right.setValue(data.obj.scriptPair.remoteInfo.content || "");
+        // differ.getEditors().left.focus();
+        // differ.getEditors().right.focus();
+        // differ.getEditors().left.clearSelection();
+        // differ.getEditors().right.clearSelection();
+        new JmdCodeDiff({
+            el: document.querySelector("#codeDiff"),
+            oldString: compareInfo.remoteInfo.content || "",
+            newString: compareInfo.currentInfo.content || "",
+            context: 10000,
+            outputFormat: "side-by-side",
+            isShowNoChange: true,
+            showTitle: false
+        });
 
+    });
 
     function save(content) {
         var data = {

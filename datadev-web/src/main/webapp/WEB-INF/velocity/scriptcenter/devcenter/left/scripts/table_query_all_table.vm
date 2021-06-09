@@ -46,7 +46,7 @@
                     <div id="searchAllTabOrColSpinner"
                          style="display:none;position: absolute;top: 0px;right: 0px;left: 0px;bottom: 0px;background: #252A2F !important">
                     </div>
-                    <div id="allTableContainer" class="all-table-container">
+                    <div id="allTableContainer" class="all-table-container all-table-container--top">
                     </div>
                     <div id="allTablePager" class="all-table-pager">
                     </div>

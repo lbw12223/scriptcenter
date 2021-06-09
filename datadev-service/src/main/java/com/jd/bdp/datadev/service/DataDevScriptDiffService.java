@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.jd.bdp.datadev.domain.diff.ReleaseCompareVo;
 import com.jd.jbdp.release.model.po.ReleaseObjInfo;
+import com.jd.jbdp.release.model.vo.ReleaseObjRecordVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 
 public interface DataDevScriptDiffService {
@@ -37,11 +38,11 @@ public interface DataDevScriptDiffService {
     /**
      * 发布上线历史
      *
-     * @param projectSpaceId
+     * @param projectId
      * @param page
      * @param size
      * @return
      * @throws Exception
      */
-    PageInfo<ReleaseObjInfo> releaseRecord(Long projectSpaceId, String scriptName, Integer page, Integer size) throws Exception;
+    PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptName, Integer page, Integer size) throws Exception;
 }

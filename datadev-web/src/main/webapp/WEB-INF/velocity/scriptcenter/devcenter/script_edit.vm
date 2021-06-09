@@ -407,7 +407,7 @@
                 #parse("/scriptcenter/home/home_open_ide/home_open_ide_buffalo_task_list.vm")
             </div>
             <div id="online-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
-                #parse("/scriptcenter/home/home_open_ide/home_open_ide_online_history.vm")
+                #parse("/scriptcenter/home/home_open_ide/home_open_ide_release_history.vm")
             </div>
             <div id="operate-history" class="tab-content undisplay" data-width="800" style="overflow:auto;">
                 #parse("/scriptcenter/home/home_open_ide/home_open_ide_operate_history.vm")

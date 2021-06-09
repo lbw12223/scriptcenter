@@ -16,7 +16,7 @@ import com.jd.bdp.domain.dto.JsfResultDTO;
 import com.jd.bdp.planing.api.ProjectInterface;
 import com.jd.bdp.rc.domain.enums.ReleaseTypeEnum;
 import com.jd.jbdp.release.api.ReleaseSubmitInterface;
-import com.jd.jbdp.release.model.po.ReleaseObjInfo;
+import com.jd.jbdp.release.model.vo.ReleaseObjRecordVo;
 import com.jd.jbdp.release.model.vo.SubmitInfoVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.commons.lang.StringUtils;
@@ -204,9 +204,11 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
     }
 
     @Override
-    public PageInfo<ReleaseObjInfo> releaseRecord(Long projectSpaceId, String scriptName, Integer page, Integer size) throws Exception {
+    public PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptName, Integer page, Integer size) throws Exception {
         SubmitInfoVo submitInfoVo = new SubmitInfoVo();
-        submitInfoVo.setProjectId(projectSpaceId);
+        if (projectId != null && projectId > 0) {
+            submitInfoVo.setProjectId(projectId);
+        }
         submitInfoVo.setDevObjKey(scriptName);
         submitInfoVo.setObjType("script");
         submitInfoVo.setPageNum(page);
