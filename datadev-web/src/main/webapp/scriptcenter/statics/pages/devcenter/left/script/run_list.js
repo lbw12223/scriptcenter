@@ -1,4 +1,4 @@
-var stopUrl = "/scriptcenter/script/batchStop.ajax";
+var stopUrl = "/scriptcenter/script//batchStop.ajax";
 
 
 $(function () {

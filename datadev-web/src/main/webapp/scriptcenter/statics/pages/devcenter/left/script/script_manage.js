@@ -2139,7 +2139,7 @@ $(".runList").click(function (event) {
     var uplineCheck = $.dialog.open(url, {
         title: "脚本运行历史",
         lock: true,
-        width: "1024px",
+        width: "1084px",
         height: "624px",
         opacity: 0.5,
         esc: false,

@@ -25,6 +25,8 @@ import com.jd.bdp.datadev.util.HttpUtil;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
 import com.jd.bdp.datadev.web.interceptor.ProjectSpaceIdParam;
 import com.jd.bdp.urm.sso.UrmUserHolder;
+import com.jd.ump.annotation.JProEnum;
+import com.jd.ump.annotation.JProfiler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -331,6 +333,31 @@ public class ScriptOperateController {
         } catch (Exception e) {
             logger.error("===========================" + runDetailId + "停止失败:" + e.getMessage());
         }
+        return JSONObjectUtil.getSuccessResult("停止成功");
+    }
+
+
+    @ExceptionMessageAnnotation(errorMessage = "批量停止运行脚本")
+    @RequestMapping("batchStop.ajax")
+    @ResponseBody
+    public JSONObject batchStop(UrmUserHolder userHolder, String runDetailIds) throws Exception {
+        if (StringUtils.isBlank(userHolder.getErp())) {
+            throw new RuntimeException("请先登陆");
+        }
+        for(String runDetailId : runDetailIds.split(",")){
+            try {
+
+                DataDevScriptRunDetail runDetail = runDetailService.findById(Long.parseLong(runDetailId));
+                projectService.verifyUserAuthority(userHolder.getErp(), runDetail.getGitProjectId());
+                runDetail.setStopErp(userHolder.getErp());
+                runDetail.setOperator(userHolder.getErp());
+                scriptService.stopScript(runDetail);
+            } catch (Exception e) {
+                logger.error("===========================" + runDetailId + "停止失败:" + e.getMessage());
+            }
+        }
+
+
         return JSONObjectUtil.getSuccessResult("停止成功");
     }
 

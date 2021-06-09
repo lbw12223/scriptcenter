@@ -1,5 +1,5 @@
-#set($layout="layout_bdp_no_left.vm")
-#set($page_title="数据开发平台 IDE")
+#set($layout="layout_blank.vm")
+
 <link rel="stylesheet" href="/datadev/statics/jdDataDevTab/JdDataDevTab_copy.css?_dc=$!{staticVersion}"
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="/datadev/statics/pages/home/home_open_ide.css?_dc=1112121$!{staticVersion}">
@@ -9,6 +9,27 @@
 <link rel="stylesheet" href="/datadev/statics/treeGrid/css/jquery.treegrid.css">
 <link rel="stylesheet" href="/datadev/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
 
+<style type="text/css">
+    .script-run-history-Time{
+        width: 180px !important;
+    }
+    .run-item {
+        cursor: pointer;
+        text-decoration: underline;
+        margin-left: 10px;
+    }
+    .tmp-version{
+        text-decoration: none !important;
+    }
+
+    .run-item:hover {
+        color: #3286E9;
+    }
+
+    .run-item-one {
+        margin-left: 20px !important;
+    }
+    </style>
 <div class="script-run-history" style="margin-top: 20px;">
 
     <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">
@@ -73,7 +94,7 @@
 
     <a class="bdp-btn bdp-btn-default" id="stop-mutil" style="margin-left: 25px;">强制停止</a>
 
-    <div class="jd-table-parent" id="run-jd-table-parent" style="margin-top:20px;  margin-left:20px;width: 100%;height:520px;overflow: hidden;background: #31353C;">
+    <div class="jd-table-parent" id="run-jd-table-parent" style="margin-top:20px;  margin-left:20px;width: 100%;height:380px;overflow: hidden;background: #31353C;">
         <table class="jd-table table table-hover " id="run-grid-table" style="background: #272A2F;">
         </table>
         <div id="run-grid-pager">
@@ -96,5 +117,6 @@
 <script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
 
-<script src="/scriptcenter/statics/pages/home/home_open_ide_run_list.js?_dc=$!{staticVersion}"></script>
+
+<script src="/scriptcenter/statics/pages/devcenter/left/script/run_list.js?_dc=$!{staticVersion}"></script>
 
