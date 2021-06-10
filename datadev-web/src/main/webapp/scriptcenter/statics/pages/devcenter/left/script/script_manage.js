@@ -288,7 +288,7 @@ function locationScript(gitProjectId, gitProjectFilePath, scriptId) {
             }
 
         } else {
-            top.$.errorMsg("该脚本已被删除");
+            //$.errorMsg("该脚本已被删除");
         }
     })
 }
@@ -1326,7 +1326,7 @@ $(function () {
 
         function shareScript(gitProjectId, gitProjectFilePath) {
             var html = "<div style='line-height: 25px;padding: 20px 20px 10px'>复制脚本URL到剪贴板，可让其他项目成员快速定位到该脚本。</div>";
-            top.$.bdpMsg({
+            $.bdpMsg({
                 title: "提示",
                 mainContent: html,
                 width: "350px",
@@ -1337,14 +1337,14 @@ $(function () {
                             gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
                             var url = _bdpDomain + "/scriptcenter/index.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
                             copyContent(url);
-                            top.$.successMsg("脚本URL已复制到剪贴板")
+                            $.successMsg("脚本URL已复制到剪贴板")
                         },
                         btnClass: 'bdp-btn-primary'
                     },
                     {
                         text: "取消",
                         event: function () {
-                            top.$.removeMsg();
+                            $.removeMsg();
                         }
                     }
                 ]
@@ -1452,13 +1452,13 @@ $(function () {
                 } else {
                     content = "是否确定删除脚本（任务调度中的脚本将同步删除）？";
                 }
-                top.$.confirmMsg({
+                $.confirmMsg({
                     content: content,
                     buttons: [
                         {
                             text: "确定",
                             event: function () {
-                                top.$.removeMsg();
+                                $.removeMsg();
                                 removeScriptDirect(gitProjectId, gitProjectFilePath);
                             }
                         },
@@ -1485,9 +1485,9 @@ $(function () {
                     //删除“当前选中的zTree节点”cookie
                     HOME_COOKIE.rmActiveGitPathCookie($("#loginErp").val());
 
-                    top.$.successMsg("删除脚本成功");
+                    $.successMsg("删除脚本成功");
                 } else {
-                    top.$.errorMsg("删除出现异常");
+                    $.errorMsg("删除出现异常");
                 }
             })
 
@@ -1581,19 +1581,19 @@ $(function () {
                     $.dialog.data("rightTips", "git   commitId：" + data.obj.newGitVersion);
                     diff(gitProjectId, gitProjectFilePath, function (key, ajaxData) {
                         datadevInit.directSave(function () {
-                            top.$.successMsg(data.message);
+                            $.successMsg(data.message);
                         }, ajaxData, key);
                     });
                 } else {
-                    top.$.successMsg("pull成功");
+                    $.successMsg("pull成功");
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Pull...")
+                $.loadingMsg("正在Pull...")
             });
         }
 
         function pushFile(gitProjectId, gitProjectFilePath) {
-            top.$.loadingMsg("正在Push...");
+            $.loadingMsg("正在Push...");
             var key = getKey(gitProjectId, gitProjectFilePath);
             pushFileDirect(gitProjectId, gitProjectFilePath);
 
@@ -1742,12 +1742,12 @@ $(function () {
                         close: function () {
                         }
                     });
-                    top.$.dialog.data("dialogObj", dialogId);
+                    $.dialog.data("dialogObj", dialogId);
                 } else {
-                    top.$.successMsg("Pull成功");
+                    $.successMsg("Pull成功");
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Pull...")
+                $.loadingMsg("正在Pull...")
             })
         }
 
@@ -1822,11 +1822,11 @@ $(function () {
                         mergeAndPushDir(gitProjectId, gitProjectDirPath, gitCommitMessage);
                     });
                 } else {
-                    top.$.successMsg("push成功")
+                    $.successMsg("push成功")
                     changeDirGitStatus(gitProjectId, gitProjectDirPath);
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Push...")
+                $.loadingMsg("正在Push...")
             })
         }
 
@@ -1878,7 +1878,7 @@ window["bdp-qiankun"] = {
  */
 function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version) {
     if (!path) {
-        top.$.errorMsg("脚本path为空，不能打开脚本");
+        $.errorMsg("脚本path为空，不能打开脚本");
     }
     if (!name) {
         var index = path.lastIndexOf("/");
@@ -1947,7 +1947,7 @@ function getUrl(gitProjectId, path, pythonType) {
 
 function showPushInfo(pushNum, submitCallBack, isDir) {
     if (pushNum == 0) {
-        top.$.successMsg("与git版本一致，不需要push。");
+        $.successMsg("与git版本一致，不需要push。");
         return;
     }
     var html =
@@ -1963,7 +1963,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
         "           </div>" +
         "     </div>" +
         "</form>";
-    top.$.bdpMsg({
+    $.bdpMsg({
         title: "Push 提交",
         mainContent: html,
         width: "600px",
@@ -1980,7 +1980,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
             {
                 text: "取消",
                 event: function () {
-                    top.$.removeMsg();
+                    $.removeMsg();
                 }
             }
         ]

@@ -1,5 +1,4 @@
-#set($layout="layout_blank_dev_center.vm")
-#set($page_title="运行详情")
+#set($layout="layout_blank.vm")
 #*移动 white / black css 里面*#
 ##<link rel="stylesheet" href="/scriptcenter/statics/pages/home/home_open_ide/dataLog.css?_dc=111$!{staticVersion}">
 

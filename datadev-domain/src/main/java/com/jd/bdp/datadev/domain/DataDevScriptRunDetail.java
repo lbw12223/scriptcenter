@@ -98,6 +98,7 @@ public class DataDevScriptRunDetail {
     private String  doSqlToolCheck = "true";
     private Long marketId ;
     private String marketName ;
+    private String gitProjectPath;
 
 
 
@@ -684,5 +685,13 @@ public class DataDevScriptRunDetail {
 
     public void setMarketName(String marketName) {
         this.marketName = marketName;
+    }
+
+    public String getGitProjectPath() {
+        return gitProjectPath;
+    }
+
+    public void setGitProjectPath(String gitProjectPath) {
+        this.gitProjectPath = gitProjectPath;
     }
 }
