@@ -183,6 +183,7 @@ function setScriptLocation(gitProjectId, gitProjectFilePath) {
 function resetLocation() {
     locationScriptObj = {};
 }
+
 //deleted 06--8
 // function loadScript(gitProjectId, gitProjectFilePath) {
 //     if (getSelectedProjectId() == gitProjectId) {
@@ -423,6 +424,7 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
         preSelectedId = node.tId;
     }
 }
+
 //deleleted 2021-06-08
 // function updateNode(newNode) {
 //     if (getSelectedProjectId() == newNode.gitProjectId && newNode.path) {
@@ -660,15 +662,15 @@ $(function () {
                     return item.appgroupId
                 },
                 formatResult: function (item) {
-                    var type = "G" ;
-                    if(item.appgroupId < 900000000){
-                        type = "G" ;
-                    }else if(item.appgroupId > 900000000 &&  item.appgroupId < 1000000000){
-                        type = "C" ;
-                    }else{
-                        type = "L" ;
+                    var type = "G";
+                    if (item.appgroupId < 900000000) {
+                        type = "G";
+                    } else if (item.appgroupId > 900000000 && item.appgroupId < 1000000000) {
+                        type = "C";
+                    } else {
+                        type = "L";
                     }
-                    return  "<span class='projectType'>"+type+"</span>" + "<span class='projectName'>"+item.appgroupName+"</span>";
+                    return "<span class='projectType'>" + type + "</span>" + "<span class='projectName'>" + item.appgroupName + "</span>";
                 },
                 formatSelection: function (item) {
                     return item.appgroupName;
@@ -1864,6 +1866,8 @@ var QIAN_KUN = undefined;
 window["bdp-qiankun"] = {
     mount: function (msg) {
         QIAN_KUN = msg;
+
+        TabCacheClass.openCacheTabs();
     }
 }
 
@@ -1900,7 +1904,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
             })
         }
     }
-
+    TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
 }
 
@@ -2148,7 +2152,6 @@ $(".runList").click(function (event) {
     });
 
 
-
 })
 /*新建脚本 end */
 
@@ -2163,6 +2166,49 @@ $(window).resize(function () {
 
 });
 
+var TabCacheClass = /** @class */ (function () {
+    function TabCacheClass(cfg) {
+        this.config = cfg;
+        this.state = {};
+        this.isInstance();
+    }
+
+    // 校验是否实例
+    TabCacheClass.prototype.isInstance = function () {
+        if (!(this instanceof TabCacheClass)) {
+            throw TypeError("Class constructor An cannot be invoked without 'new'");
+        }
+    };
+
+    TabCacheClass.addCache = function (params) {
+        const cacheTabs = TabCacheClass.getCache();
+        const tabs = cacheTabs || [];
+        const tab = tabs.find(item => {
+            return item.key === params.key
+        });
+        if (!tab) {
+            tabs.push(params);
+            JmdUtil.LsUtil.setItem('tabs', tabs, top.window)
+        }
+    }
+
+    TabCacheClass.getCache = function () {
+        return JmdUtil.LsUtil.getItem('tabs', top.window);
+    }
+
+    TabCacheClass.openCacheTabs = function () {
+        const cacheTabs = TabCacheClass.getCache();
+        if (!cacheTabs || cacheTabs !== '') {
+            cacheTabs.forEach(item => {
+                const path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
+                const nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
+                openScript(nowGitProjectId, path, item.title)
+            })
+        }
+    }
+
+    return TabCacheClass;
+}())
 
 
 

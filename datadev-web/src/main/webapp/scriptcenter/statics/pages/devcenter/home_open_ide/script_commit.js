@@ -25,7 +25,6 @@ var ScriptCommit = /** @class */ (function () {
     ScriptCommit.prototype.run = function () {
         this.bindEvent();
     }
-
     // 校验是否实例
     ScriptCommit.prototype.isInstance = function () {
         if (!(this instanceof ScriptCommit)) {
