@@ -225,7 +225,7 @@ $.extend({
     },
     confirmMsg: function (_params) {
         if(top.Msg){
-            top.Msg.confirmMsg(params);
+            top.Msg.confirmMsg(_params);
             return ;
         }
         this.removeMsg();

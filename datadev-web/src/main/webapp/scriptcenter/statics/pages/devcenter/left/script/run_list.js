@@ -1,9 +1,10 @@
 var stopUrl = "/scriptcenter/script//batchStop.ajax";
 
 
+///scriptcenter/devcenter/home_data_log.html?runDetailId=20629&dataLog=1
 $(function () {
     var runHistory = {};
-    var getDataLogUrl = "/scriptcenter/home/home_data_log.html";
+    var getDataLogUrl = "/scriptcenter/devcenter/home_data_log.html";
     runHistory.init = function () {
         this.isInit = true;
         var _colModel = [
@@ -263,7 +264,19 @@ $(function () {
     $("#run-jd-table-parent").on("click", "span.run-data-log", function (event) {
         var runDetailId = $(this).attr("data-index");
         var dataLogType = $(this).attr("data-type");
-        window.open(getDataLogUrl + "?runDetailId=" + runDetailId + "&dataLog=" + dataLogType);
+
+
+        var url = getDataLogUrl + "?runDetailId=" + runDetailId + "&dataLog=" + dataLogType
+        $.dialog.open(url, {
+            title: "运行日志",
+            lock: true,
+            width: "70%",
+            height: "80%",
+            opacity: 0.5,
+            esc: false,
+            close: function () {
+            }
+        })
     })
     $("#run-jd-table-parent").on("click", "span.stop-script", function (event) {
         var runDetailId = $(this).attr("data-index");

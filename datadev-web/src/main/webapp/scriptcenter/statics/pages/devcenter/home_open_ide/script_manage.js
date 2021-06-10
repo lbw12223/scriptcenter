@@ -270,7 +270,7 @@ function downloadScript(path, gitProjectId) {
                 }
             }, 1000)
         } else {
-            $.errorMsg("该脚本已被删除");
+           $.errorMsg("该脚本已被删除");
         }
     })
 }

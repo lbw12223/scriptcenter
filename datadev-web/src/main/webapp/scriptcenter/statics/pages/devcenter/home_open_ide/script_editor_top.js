@@ -696,7 +696,7 @@ var datadevInit = {
             title: "脚本对比",
             lock: true,
             width: "1380px",
-            height: "644px",
+            height: "664px",
             opacity: 0.5,
             esc: false,
             close: function () {

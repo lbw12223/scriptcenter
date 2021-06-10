@@ -4,48 +4,53 @@
 
 <link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css"/>
 <link rel="stylesheet" href="/scriptcenter/statics/pages/devcenter/upline_dialog/check.css"/>
-<div style="color: #666">
-    <input type="hidden" id="scriptFileId" value="$!{dataDevScriptFile.id}">
-    <input type="hidden" id="scriptFileName" value="$!{dataDevScriptFile.name}">
+<form  id="submitForm">
+    <div style="color: #666">
+        <input type="hidden" id="scriptFileId" value="$!{dataDevScriptFile.id}">
+        <input type="hidden" id="scriptFileName" value="$!{dataDevScriptFile.name}">
 
-    <div>
-        <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
-            <span class="jmd-title-text">关联任务</span>
-        </div>
-
-        <div class="bdp-upline-dialog-check-desc">
-            <span>脚本关联的线上任务：共</span>
-            <span class="bdp-upline-dialog-check-desc-num">$!{totalCount}</span>
-            <span>个。 其中L0任务：</span>
-            <span class="bdp-upline-dialog-check-desc-num">$!{totalL0}</span>
-            <span>个，L1任务：</span>
-            <span class="bdp-upline-dialog-check-desc-num">$!{totalL1}</span>
-            <span>个.</span>
-        </div>
-
-        <div class="bdp-upline-dialog-check-table">
-            <table id="gridTable"></table>
-        </div>
-    </div>
-    <div class="bdp-upline-dialog-check-form clearfix">
-        <div class="bdp-upline-dialog-check-form-left">
+        <div>
             <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
-                <span class="jmd-title-text">项目空间</span>
+                <span class="jmd-title-text">关联任务</span>
             </div>
-            <p class="bdp-upline-dialog-check-form-left-content">$!{spaceProjectName}</p>
+
+            <div class="bdp-upline-dialog-check-desc">
+                <span>脚本关联的线上任务：共</span>
+                <span class="bdp-upline-dialog-check-desc-num">$!{totalCount}</span>
+                <span>个。 其中L0任务：</span>
+                <span class="bdp-upline-dialog-check-desc-num">$!{totalL0}</span>
+                <span>个，L1任务：</span>
+                <span class="bdp-upline-dialog-check-desc-num">$!{totalL1}</span>
+                <span>个.</span>
+            </div>
+
+            <div class="bdp-upline-dialog-check-table">
+                <table id="gridTable"></table>
+            </div>
         </div>
-        <div class="bdp-upline-dialog-check-form-right">
-            <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
-                <span class="jmd-title-text">变更描述</span>
+        <div class="bdp-upline-dialog-check-form clearfix">
+            <div class="bdp-upline-dialog-check-form-left">
+                <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
+                    <span class="jmd-title-text">项目空间: <span class="bdp-upline-dialog-check-desc-num">$!{spaceProjectName}</span></span>
+                </div>
+                <p class="bdp-upline-dialog-check-form-left-content">$!{spaceProjectName}</p>
             </div>
-            <textarea id="commitMsg" style="width: 400px;height: 150px"></textarea>
+            <div class="bdp-upline-dialog-check-form-right">
+                <div class="jmd-title jmd-title-line--middle jmd-title--line jmd-title--small">
+                    <span class="jmd-title-text">变更描述</span>
+                </div>
+                <div class='bdp-form-group dialog-group'>
+                    <textarea id="commitMsg" name="commitMsg" style="width: 400px;height: 130px"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="acediff-bottom bdp-upline-dialog-check-footer" style="padding: 4px;">
+            <a class="bdp-btn bdp-btn-primary" style="float: right;" id="submit">发布</a>
+            <a class="bdp-btn bdp-btn-default" style="float: right;" id="cancelButton">取消</a>
         </div>
     </div>
-    <div class="acediff-bottom bdp-upline-dialog-check-footer" style="padding: 4px;">
-        <a class="bdp-btn bdp-btn-primary" style="float: right;" id="submit">发布</a>
-        <a class="bdp-btn bdp-btn-default" style="float: right;" id="cancelButton">取消</a>
-    </div>
-</div>
+</form>
+
 <script>
 
 </script>
