@@ -209,9 +209,3 @@ var ScriptCommit = /** @class */ (function () {
     return ScriptCommit;
 }())
 
-$(function () {
-    var scriptCommit = new ScriptCommit();
-    console.log(scriptCommit)
-    scriptCommit.run();
-})
-

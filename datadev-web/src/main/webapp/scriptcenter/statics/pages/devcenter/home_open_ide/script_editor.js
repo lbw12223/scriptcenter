@@ -401,7 +401,7 @@ var homeOpenPageEvent = {
     },
     bindFrameBus: function () {
         var frameBus = new FrameBus();
-        frameBus.on(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], function (data, callback) {
+        frameBus.on(BdpFrameBusConfig['TOP_VALID_CODE_DIFF'], function (data, callback) {
             callback(scriptHelper.validIsChangeCode(editor))
         })
     },

@@ -1866,7 +1866,7 @@ var QIAN_KUN = undefined;
 window["bdp-qiankun"] = {
     mount: function (msg) {
         QIAN_KUN = msg;
-
+        TabCacheClass.bindFrameEvent();
         TabCacheClass.openCacheTabs();
     }
 }
@@ -1896,13 +1896,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm: true,
-        beforeConfirm: function (cb) {
-            var frameBus = new FrameBus();
-            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {}, function (f) {
-                cb(f)
-            })
-        }
+        closeConfirm: false,
     }
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
@@ -1911,6 +1905,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
 function removeQianKunScriptTab(key) {
     QIAN_KUN.utils.closeTabByKey({key: key})
     QIAN_KUN.utils.closeTabByKey(key)
+    TabCacheClass.removeCache(key)
 }
 
 
@@ -2180,31 +2175,121 @@ var TabCacheClass = /** @class */ (function () {
         }
     };
 
-    TabCacheClass.addCache = function (params) {
-        const cacheTabs = TabCacheClass.getCache();
-        const tabs = cacheTabs || [];
-        const tab = tabs.find(item => {
-            return item.key === params.key
+    // 加入缓存
+    TabCacheClass.addCache = function (param) {
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        var tab = tabs.find(item => {
+            return item.key === param.key
         });
         if (!tab) {
-            tabs.push(params);
-            JmdUtil.LsUtil.setItem('tabs', tabs, top.window)
+            tabs.push(param);
+            TabCacheClass.setCache(tabs);
         }
     }
 
-    TabCacheClass.getCache = function () {
-        return JmdUtil.LsUtil.getItem('tabs', top.window);
+    // 写入缓存
+    TabCacheClass.setCache = function (params) {
+        JmdUtil.LsUtil.setItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, params, top.window)
     }
 
+    // 获取现有缓存
+    TabCacheClass.getCache = function () {
+        return JmdUtil.LsUtil.getItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, top.window);
+    }
+
+    // 修改缓存
+    TabCacheClass.updateCache = function (param) {
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        if (JmdUtil.ValidateUtil.isEmptyList(tabs)) {
+            return;
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].key === param.key) {
+                for (var k in param) {
+                    tabs[i][k] = param[k]
+
+                }
+                break;
+            }
+        }
+        TabCacheClass.setCache(tabs);
+    }
+
+    // 删除缓存中的一个
+    TabCacheClass.removeCache = function (key) {
+        if (!key) {
+            throw new Error("请传入唯一的key")
+        }
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        var oldLen = tabs.length;
+        if (JmdUtil.ValidateUtil.isEmptyList(tabs)) {
+            return;
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].key === key) {
+                tabs.splice(i, 1);
+                i--;
+                break;
+            }
+        }
+        if (oldLen === tabs.length) {
+            return;
+        }
+        TabCacheClass.setCache(tabs);
+    }
+
+    // 清空缓存
+    TabCacheClass.clearCache = function () {
+        JmdUtil.LsUtil.removeItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, top.window)
+    }
+
+    // 从缓存打开tabs
     TabCacheClass.openCacheTabs = function () {
-        const cacheTabs = TabCacheClass.getCache();
-        if (!cacheTabs || cacheTabs !== '') {
+        var cacheTabs = TabCacheClass.getCache();
+        if (JmdUtil.ValidateUtil.notEmptyList(cacheTabs)) {
             cacheTabs.forEach(item => {
-                const path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
-                const nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
+                var path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
+                var nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
                 openScript(nowGitProjectId, path, item.title)
             })
         }
+    }
+
+    // 绑定frameBus事件
+    TabCacheClass.bindFrameEvent = function () {
+        var frameBus = new FrameBus();
+        TabCacheClass.bindLogoutFrameEvent(frameBus);
+        TabCacheClass.bindCloseTabFrameEvent(frameBus);
+        TabCacheClass.bindUpdateTabFrameEvent(frameBus);
+        TabCacheClass.bindAddTabFrameEvent(frameBus);
+    }
+
+    // 退出登录清空缓存
+    TabCacheClass.bindLogoutFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_LOGIN_OUT, function () {
+            TabCacheClass.clearCache()
+        })
+    }
+    // 关闭tab删除tab项
+    TabCacheClass.bindCloseTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_CLOSE, function (key) {
+            TabCacheClass.removeCache(key)
+        })
+    }
+    // 修改tabs项
+    TabCacheClass.bindUpdateTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_UPDATE, function (param) {
+            TabCacheClass.updateCache(param)
+        })
+    }
+    // 添加tab项
+    TabCacheClass.bindAddTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_ADD, function (param) {
+            TabCacheClass.addCache(param)
+        })
     }
 
     return TabCacheClass;
