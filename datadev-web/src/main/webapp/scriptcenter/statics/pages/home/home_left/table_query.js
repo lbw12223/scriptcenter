@@ -38,6 +38,7 @@ $(function () {
     }
 
     function changeAccount(marketId) {
+        debugger
         if (marketId) {
             commonAjaxEvents.commonPostAjax("/scriptcenter/config/getAccountByErp.ajax", {marketId: marketId}, $("#accountCodeSelect"), function (node, data) {
                 $("#queryAccountSelect").empty();

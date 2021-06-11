@@ -1031,9 +1031,8 @@ var datadevInit = {
                 $("#queueName").text("配置账号队列");
             }
             $("#queueCodeDropDiv ul.queueCodeDropUl").prepend(lis);
-            if(data && data.data && data.data.obj && data.data.obj2.length > 0){
+            if(data && data.data && data.data.obj && data.data.obj2 && data.data.obj2.length > 0){
                 configObj2 = data.data.obj2;
-
             }
         })
         $("#queueCodeDropDiv").appendTo("body");

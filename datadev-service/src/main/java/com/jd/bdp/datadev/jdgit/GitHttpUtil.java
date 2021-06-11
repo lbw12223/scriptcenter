@@ -81,6 +81,9 @@ public class GitHttpUtil {
     public static boolean isCoding(Long gitProjectId){
         return gitProjectId > _9YI ;
     }
+    public static boolean isCodingOrGit(Long gitProjectId){
+        return gitProjectId < _10YI ;
+    }
 
     public static GitRequestClient createClientByCode(Integer gitOrCodingCode) {
         if (gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()) {

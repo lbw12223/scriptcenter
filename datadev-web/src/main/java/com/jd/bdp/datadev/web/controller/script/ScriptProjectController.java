@@ -513,13 +513,34 @@ public class ScriptProjectController {
      */
     @RequestMapping("syncScriptToDataDev.ajax")
     @ResponseBody
-    public com.alibaba.fastjson.JSONObject syncScriptToDataDev(UrmUserHolder urmUserHolder, Long gitProjectId, String dirPath, @RequestParam(value = "syncMember", defaultValue = "0") Integer syncMember, @RequestParam(value = "scriptId", defaultValue = "0") Long scriptId, @RequestParam(value = "scriptName", defaultValue = "") String scriptName, @RequestParam(value = "scriptVersion", defaultValue = "") String scriptVersion, @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId, @RequestParam(value = "sync", defaultValue = "0") Integer isSync) throws Exception {
+    public com.alibaba.fastjson.JSONObject syncScriptToDataDev(UrmUserHolder urmUserHolder,
+                                                               Long gitProjectId,
+                                                               String dirPath,
+                                                               @RequestParam(value = "syncMember", defaultValue = "0") Integer syncMember,
+                                                               @RequestParam(value = "scriptId", defaultValue = "0") Long scriptId,
+                                                               @RequestParam(value = "scriptName", defaultValue = "") String scriptName,
+                                                               @RequestParam(value = "scriptVersion", defaultValue = "") String scriptVersion,
+                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId,
+                                                               @RequestParam(value = "sync", defaultValue = "0") Integer isSync) throws Exception {
         logger.error("insert================syncScriptToDataDev.ajax");
         com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDev(gitProjectId, dirPath, jsdAppgroupId, urmUserHolder.getErp(), syncMember.equals(1), scriptName, scriptId, scriptVersion, isSync != 0);
         return JSONObjectUtil.getSuccessResult("success", jsonObject);
     }
 
+    @RequestMapping("syncScriptToDataDevToLocalProject.ajax")
+    @ResponseBody
+    public com.alibaba.fastjson.JSONObject syncScriptToDataDevToLocalProject(
+                                                               UrmUserHolder urmUserHolder,
+                                                               Long gitProjectId,
+                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
+        logger.error("insert================syncScriptToDataDev.ajax");
+//        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDev(gitProjectId, jsdAppgroupId, urmUserHolder.getErp(), syncMember.equals(1), scriptName, scriptId, scriptVersion, isSync != 0);
+//        return JSONObjectUtil.getSuccessResult("success", jsonObject);
+        return null ;
+    }
+
     /**
+     *
      * 同步脚本
      *
      * @param urmUserHolder

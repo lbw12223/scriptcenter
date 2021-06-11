@@ -59,7 +59,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
     private AuthorityCenterMarketInfoInterface marketInfoInterface;
 
     @Autowired
-    private DataDevCenterService dataDevCenterService ;
+    private DataDevCenterService dataDevCenterService;
 
     @Autowired
     private DataDevScriptConfigService configService;
@@ -72,7 +72,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
     private HbaseRunDetailLog hbaseRunDetailLog;
 
     @Autowired
-    private UrmUtil urmUtil ;
+    private UrmUtil urmUtil;
 
     @Autowired
     private AllMarketComponent allMarketComponent;
@@ -196,7 +196,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
 
 
     @Override
-    public void verifyMarket(DataDevScriptFile file, DataDevScriptRunDetail runDetail, String erp , Long spaceProjectId) throws Exception {
+    public void verifyMarket(DataDevScriptFile file, DataDevScriptRunDetail runDetail, String erp, Long spaceProjectId) throws Exception {
 
         if ((file.getType() == DataDevScriptTypeEnum.SQL.toCode() || (runDetail.getScriptConfigId() != null && runDetail.getScriptConfigId() > 0))) {
             if (runDetail.getScriptConfigId() == null || runDetail.getScriptConfigId() < 0) {
@@ -207,7 +207,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                 throw new RuntimeException("配置不存在");
             }
             if (org.apache.commons.lang.StringUtils.isBlank(config.getOwner()) || !config.getOwner().equals(erp)) {
-               // throw new RuntimeException(erp + "无配置的使用权限");
+                // throw new RuntimeException(erp + "无配置的使用权限");
             }
             if (org.apache.commons.lang.StringUtils.isBlank(config.getClusterCode())) {
                 throw new RuntimeException("该配置的集群code为空");
@@ -230,7 +230,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
             runDetail.setRunClusterCode(config.getRunClusterCode());
             boolean authority = dataDevClusterAdminService.getClusterAdminByErp(erp);
             if (!authority) {
-                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp,spaceProjectId);
+                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp, spaceProjectId);
                 if (apiResultDTO.isSuccess()) {
                     for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
                         if (config.getClusterCode().equals(marketInfoDto.getClusterCode()) && config.getMarketLinuxUser().equals(marketInfoDto.getMarketUser())) {
@@ -242,13 +242,8 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                 if (!authority) {
                     throw new RuntimeException("无正在使用的集市" + config.getMarketId() + "权限");
                 }
-                ClusterHadoopAccount account = new ClusterHadoopAccount();
-                if (config.getMarketId() == null) {
-                    throw new RuntimeException("集市id为空");
-                }
-                account.setMarketId(config.getMarketId());
-                account.setOperator(erp);
-                ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(account,erp,spaceProjectId);
+
+                ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(runDetail.getMarketLinuxUser(), erp, spaceProjectId);
                 if (accountResultDTO.isSuccess()) {
                     for (ClusterHadoopAccount clusterHadoopAccount : (List<ClusterHadoopAccount>) accountResultDTO.getList()) {
                         if (config.getAccountCode().equals(clusterHadoopAccount.getCode())) {
@@ -263,7 +258,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                 ClusterHadoopQueue queue = new ClusterHadoopQueue();
                 queue.setOperator(erp);
                 queue.setProductionAccountCode(config.getAccountCode());
-                ApiResultDTO queueResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(queue,spaceProjectId);
+                ApiResultDTO queueResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(runDetail.getMarketLinuxUser() , runDetail.getAccountCode(), erp, spaceProjectId);
                 if (queueResultDTO.isSuccess()) {
                     for (ClusterHadoopQueue clusterHadoopQueue : (List<ClusterHadoopQueue>) queueResultDTO.getList()) {
                         if (config.getQueueCode().equals(clusterHadoopQueue.getQueueCode())) {
@@ -403,14 +398,14 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
 
         Long count = runDetailDao.runListCount(runDetail);
         List<DataDevScriptRunDetail> list = new ArrayList<DataDevScriptRunDetail>();
-        if(count > 0){
+        if (count > 0) {
             runDetail.setStart(pageable.getOffset());
             runDetail.setLimit(pageable.getPageSize());
             list = runDetailDao.runListPage(runDetail);
-            for(DataDevScriptRunDetail item : list){
+            for (DataDevScriptRunDetail item : list) {
                 handDataDevScriptRunDetailListItem(item);
                 ClusterHadoopMarketDto clusterHadoopMarketDto = allMarketComponent.getMarketById(item.getMarketId());
-                if(clusterHadoopMarketDto != null){
+                if (clusterHadoopMarketDto != null) {
                     item.setMarketName(clusterHadoopMarketDto.getMarketName());
                 }
                 item.setOperator(urmUtil.getErpAndNameByErp(item.getOperator()));
@@ -421,7 +416,8 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
         pageResultDTO.setRows(list);
         return pageResultDTO;
     }
-    private void handDataDevScriptRunDetailListItem(DataDevScriptRunDetail detail){
+
+    private void handDataDevScriptRunDetailListItem(DataDevScriptRunDetail detail) {
         DataDevScriptRunStatusEnum statusEnum = DataDevScriptRunStatusEnum.enumValueOf(detail.getStatus());
         detail.setStatusStr(statusEnum != null ? statusEnum.toDesc() : "");
         if (detail.getStartTime() != null && detail.getEndTime() != null) {

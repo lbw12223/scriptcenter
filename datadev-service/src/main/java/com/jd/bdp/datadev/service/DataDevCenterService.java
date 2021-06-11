@@ -24,9 +24,13 @@ public interface DataDevCenterService {
 
     ApiResultDTO getGrantAuthorityMarketForBuffalo(String erp , Long spaceProjectId);
 
-    ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(ClusterHadoopAccount account ,String erp ,Long spaceProjectId) ;
+    ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(String marketUser ,String erp ,Long spaceProjectId) ;
 
-    ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo(ClusterHadoopQueue queue , Long spaceProjectId) ;
+    ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo( String marketUser , String accountCode  , String erp , Long spaceProjectId) ;
+
+
+
+
 
 
 }
