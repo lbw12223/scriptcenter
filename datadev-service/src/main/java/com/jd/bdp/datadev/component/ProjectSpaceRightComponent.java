@@ -164,7 +164,7 @@ public class ProjectSpaceRightComponent implements InitializingBean {
      * @param projectSpaceId
      * @return
      */
-    private List<ProjectMemberBO> getMembers(Long projectSpaceId) {
+    public List<ProjectMemberBO> getMembers(Long projectSpaceId) {
         List<ProjectMemberBO> projectMemberBOS = CACHE.get(projectSpaceId);
         if (projectMemberBOS == null) {
             setOneProjectSpaceMember(projectSpaceId);

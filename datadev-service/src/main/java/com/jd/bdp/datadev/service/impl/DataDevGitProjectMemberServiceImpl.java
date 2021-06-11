@@ -65,4 +65,17 @@ public class DataDevGitProjectMemberServiceImpl implements DataDevGitProjectMemb
     public void deleteById(Long id) {
         dataDevGitProjectMemberDao.deleteById(id);
     }
+
+    @Override
+    public DataDevGitProjectMember findLocalProjcetMaster(Long gitProject) {
+        List<DataDevGitProjectMember> all = findAll(gitProject);
+        if(all != null && all.size() > 0){
+            for(DataDevGitProjectMember temp : all){
+                if(temp.getAccessLevel().equals(50)){
+                    return  temp;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -78,7 +78,7 @@ public class ScriptProjectController {
     private DataDevScriptFileService dataDevScriptFileService;
 
     @Autowired
-    private DataDevGitProjectDao dataDevGitProjectDao ;
+    private DataDevGitProjectDao dataDevGitProjectDao;
 
     @Autowired
     private UrmUtil urmUtil;
@@ -88,9 +88,6 @@ public class ScriptProjectController {
     private String SysOwner;
     @Value("${coding.private.user}")
     private String SysOwnerCoding;
-
-
-
 
 
     /**
@@ -134,10 +131,10 @@ public class ScriptProjectController {
     @RequestMapping("/createLocalProject.ajax")
     @ResponseBody
     public JSONObject createLocalProject(UrmUserHolder userHolder, String projectName, String description) throws Exception {
-        DataDevGitProject dataDevGitProject =  dataDevGitProjectDao.getGitProjectByPath(projectName);
+        DataDevGitProject dataDevGitProject = dataDevGitProjectDao.getGitProjectByPath(projectName);
 
-        if(dataDevGitProject != null){
-            throw new RuntimeException("项目【"+projectName+"】已经存在！");
+        if (dataDevGitProject != null) {
+            throw new RuntimeException("项目【" + projectName + "】已经存在！");
         }
         DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
         insertDataDevGitProject.setGitProjectPath(projectName);
@@ -165,7 +162,6 @@ public class ScriptProjectController {
     }
 
 
-
     /**
      * 添加项目成员
      *
@@ -177,10 +173,10 @@ public class ScriptProjectController {
     @RequestMapping("/addProjectMember.ajax")
     @ResponseBody
     public JSONObject addProjectMember(UrmUserHolder userHolder, Long gitProjectId, String erps) throws Exception {
-        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI;
         List<JDGitMembers> jdGitMembersList = new ArrayList<JDGitMembers>();
         List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
-        if(isGitOrCoding){
+        if (isGitOrCoding) {
 
 
             if (StringUtils.isNotEmpty(erps)) {
@@ -215,17 +211,17 @@ public class ScriptProjectController {
                 dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
             }
 
-        }else{
+        } else {
 
             if (StringUtils.isNotEmpty(erps)) {
                 for (String erp : erps.split(",")) {
 
                     DataDevGitProjectMember temp = new DataDevGitProjectMember();
                     temp.setAccessLevel(ImportScriptManager.DEVELOPER);
-                    DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findByErp(gitProjectId,erp);
+                    DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findByErp(gitProjectId, erp);
 
-                    if(dataDevGitProjectMember != null){
-                        throw new RuntimeException("用户【"+erp+"】已经存在！");
+                    if (dataDevGitProjectMember != null) {
+                        throw new RuntimeException("用户【" + erp + "】已经存在！");
                     }
                     temp.setGitMemberName(erp);
                     temp.setGitMemberUserName(erp);
@@ -236,7 +232,6 @@ public class ScriptProjectController {
 
                 dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
             }
-
 
 
         }
@@ -255,26 +250,41 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "添加Git项目成员")
     @RequestMapping("/addSharedWithGroups.ajax")
     @ResponseBody
-    public JSONObject addSharedWithGroups(UrmUserHolder urmUserHolder, Long gitProjectId, Long gitGroupId, String gitGroupName) throws Exception {
+    public JSONObject addSharedWithGroups(UrmUserHolder urmUserHolder,
+                                          Long gitProjectId,
+                                          Long gitGroupId,
+                                          String gitGroupName,
+                                          Integer isSyncProjectSpace) throws Exception {
 
-        JDGitProjectShareGroups jdGitProjectShareGroups = new JDGitProjectShareGroups();//创建JDGitProjectShareGroups
-        jdGitProjectShareGroups.setJdGroupId(gitGroupId);
-        jdGitProjectShareGroups.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
-        jdGitProjectShareGroups.setGroupName(gitGroupName);
-        jdGitProjectShareGroups.setGitProjectId(gitProjectId);
-
-        JDGitProjects jdGitProjects = new JDGitProjects();//创建JDGitProjects
-        jdGitProjects.setGitProjectId(gitProjectId);
-        List<JDGitProjectShareGroups> list = new ArrayList<JDGitProjectShareGroups>();
-        list.add(jdGitProjectShareGroups);//JDGitProjects添加JDGitProjectShareGroups
-        jdGitProjects.setSharedWithGroups(list);
-        jdGitProjects.addSharedGroup(jdGitProjectShareGroups);//添加到git上
-
+        boolean isGitOrCoding = GitHttpUtil.isCodingOrGit(gitProjectId);
         DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup = new DataDevGitProjectSharedGroup();//創建DataDevGitProjectSharedGroup
-        dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
-        dataDevGitProjectSharedGroup.setGitGroupId(gitGroupId);
-        dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
-        dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
+        if (isGitOrCoding) {
+            JDGitProjectShareGroups jdGitProjectShareGroups = new JDGitProjectShareGroups();//创建JDGitProjectShareGroups
+            jdGitProjectShareGroups.setJdGroupId(gitGroupId);
+            jdGitProjectShareGroups.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
+            jdGitProjectShareGroups.setGroupName(gitGroupName);
+            jdGitProjectShareGroups.setGitProjectId(gitProjectId);
+
+            JDGitProjects jdGitProjects = new JDGitProjects();//创建JDGitProjects
+            jdGitProjects.setGitProjectId(gitProjectId);
+            List<JDGitProjectShareGroups> list = new ArrayList<JDGitProjectShareGroups>();
+            list.add(jdGitProjectShareGroups);//JDGitProjects添加JDGitProjectShareGroups
+            jdGitProjects.setSharedWithGroups(list);
+            jdGitProjects.addSharedGroup(jdGitProjectShareGroups);//添加到git上
+
+            dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
+            dataDevGitProjectSharedGroup.setGitGroupId(gitGroupId);
+            dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
+            dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
+        } else {
+
+            dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
+            dataDevGitProjectSharedGroup.setGitGroupId(gitGroupId + GitHttpUtil._10YI);
+            dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
+            dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
+            dataDevGitProjectSharedGroup.setIsCanSysProjectScript(isSyncProjectSpace != null && isSyncProjectSpace == 1 ? 1 : 0);
+        }
+
         dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
         return JSONObjectUtil.getSuccessResult("添加共享组成功");
 
@@ -291,10 +301,10 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "删除Git人员")
     @RequestMapping("/deleteProjectMember.ajax")
     @ResponseBody
-    public JSONObject deleteProjectMember(UrmUserHolder userHolder, Long gitProjectId, Long gitMemberId , Long id) throws Exception {
-        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
+    public JSONObject deleteProjectMember(UrmUserHolder userHolder, Long gitProjectId, Long gitMemberId, Long id) throws Exception {
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI;
 
-        if(isGitOrCoding){
+        if (isGitOrCoding) {
             JDGitMembers jdGitMembers = new JDGitMembers();//创建JDGitMembers
             jdGitMembers.setGitUserId(gitMemberId);
 
@@ -303,9 +313,9 @@ public class ScriptProjectController {
             jdGitProjects.deleteProjectMember(jdGitMembers);//JDGitProjects执行删除操作
             dataDevGitProjectMemberService.deleteGitProjectMemberById(gitProjectId, gitMemberId);
             return JSONObjectUtil.getSuccessResult("删除人员成功");
-        }else{
+        } else {
             DataDevGitProjectMember dataDevGitProjectMember = dataDevGitProjectMemberService.findById(id);
-            if(dataDevGitProjectMember.getAccessLevel() ==  DataDevGitAccessLevelEnum.Owner.toCode()){
+            if (dataDevGitProjectMember.getAccessLevel() == DataDevGitAccessLevelEnum.Owner.toCode()) {
                 throw new RuntimeException("创建人不能删除！");
             }
             dataDevGitProjectMemberService.deleteById(id);
@@ -355,7 +365,7 @@ public class ScriptProjectController {
     @RequestMapping("/listErpGroups.ajax")
     @ResponseBody
     public JSONObject listErpGroups(UrmUserHolder userHolder, Integer gitOrCodingCode) throws Exception {
-        return JSONObjectUtil.getSuccessResult(dataDevGitGroupService.listErpGroup(userHolder.getErp(),gitOrCodingCode));
+        return JSONObjectUtil.getSuccessResult(dataDevGitGroupService.listErpGroup(userHolder.getErp(), gitOrCodingCode));
     }
 
     /**
@@ -370,7 +380,7 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "创建Git组")
     @RequestMapping("/createGroup.ajax")
     @ResponseBody
-    public JSONObject createGroup(UrmUserHolder userHolder, String groupName, String description, String erps ,Integer gitOrCodingCode ) throws Exception {
+    public JSONObject createGroup(UrmUserHolder userHolder, String groupName, String description, String erps, Integer gitOrCodingCode) throws Exception {
         //查询JdUser ID
         Set<String> erpSets = new HashSet<String>();
         for (String erpTemp : erps.split(",")) {
@@ -391,8 +401,8 @@ public class ScriptProjectController {
             jdGitUser.setGitOrCodingCode(gitOrCodingCode);
             JDGitUser searchJdUser = jdGitUser.searchUser();
             if (searchJdUser == null) {
-                String url=gitOrCodingCode==DataDevGitOrCodingEnum.GIT.tocode()?"git.jd.com":"coding.jd.com";
-                throw new RuntimeException("用户[" + erp + "未激活，请在<a href='http://"+url+"'target='blank'>"+url+"</a>登录一次进行激活！");
+                String url = gitOrCodingCode == DataDevGitOrCodingEnum.GIT.tocode() ? "git.jd.com" : "coding.jd.com";
+                throw new RuntimeException("用户[" + erp + "未激活，请在<a href='http://" + url + "'target='blank'>" + url + "</a>登录一次进行激活！");
             }
             JDGitMembers temp = new JDGitMembers();
             temp.setName(userHolder.getErp());
@@ -403,14 +413,14 @@ public class ScriptProjectController {
             }
             temp.setGitUserId(searchJdUser.getId());
             jdGitMembers.add(temp);
-            if(gitOrCodingCode == DataDevGitOrCodingEnum.GIT.tocode() ){
+            if (gitOrCodingCode == DataDevGitOrCodingEnum.GIT.tocode()) {
                 //git
                 if (erp.equals(userHolder.getErp())) {
                     temp.setAccessLevel(ImportScriptManager.OWNER);
                 } else {
                     temp.setAccessLevel(ImportScriptManager.DEVELOPER);
                 }
-            }else{
+            } else {
                 //coding
                 if (erp.equals(userHolder.getErp())) {
                     temp.setAccessLevel(ImportScriptManager.MASTER);
@@ -445,6 +455,7 @@ public class ScriptProjectController {
     public String newProjectTips(UrmUserHolder userHolder) throws Exception {
         return "scriptcenter/home/project/newProjectTips";
     }
+
     @RequestMapping("/newGitTips.html")
     public String newGitTips(UrmUserHolder userHolder) throws Exception {
         return "scriptcenter/home/project/newGitTips";
@@ -454,6 +465,7 @@ public class ScriptProjectController {
     public String newGitProject(UrmUserHolder userHolder) throws Exception {
         return "scriptcenter/home/project/newGitProject";
     }
+
     @RequestMapping("/newLocalProject.html")
     public String newLocalProject(UrmUserHolder userHolder) throws Exception {
         return "scriptcenter/home/project/newLocalProject";
@@ -530,17 +542,14 @@ public class ScriptProjectController {
     @RequestMapping("syncScriptToDataDevToLocalProject.ajax")
     @ResponseBody
     public com.alibaba.fastjson.JSONObject syncScriptToDataDevToLocalProject(
-                                                               UrmUserHolder urmUserHolder,
-                                                               Long gitProjectId,
-                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
-        logger.error("insert================syncScriptToDataDev.ajax");
-//        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDev(gitProjectId, jsdAppgroupId, urmUserHolder.getErp(), syncMember.equals(1), scriptName, scriptId, scriptVersion, isSync != 0);
-//        return JSONObjectUtil.getSuccessResult("success", jsonObject);
-        return null ;
+            UrmUserHolder urmUserHolder,
+            Long gitProjectId,
+            @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
+        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDev(gitProjectId, "", jsdAppgroupId, urmUserHolder.getErp(), false, null, 0l, null, false);
+        return JSONObjectUtil.getSuccessResult("success", jsonObject);
     }
 
     /**
-     *
      * 同步脚本
      *
      * @param urmUserHolder
@@ -616,7 +625,7 @@ public class ScriptProjectController {
     public JSONObject listUser(Long gitProjectId) throws Exception {
         List<DataDevGitProjectMember> projectMembers = dataDevGitProjectMemberService.findAll(gitProjectId);
 
-        if(gitProjectId < GitHttpUtil._10YI){
+        if (gitProjectId < GitHttpUtil._10YI) {
             JDGitProjects jdGitProjects = new JDGitProjects();
             jdGitProjects.setGitProjectId(gitProjectId);
             JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
@@ -687,8 +696,8 @@ public class ScriptProjectController {
     @RequestMapping("projectDetail.html")
     public String projectDetail(UrmUserHolder urmUserHolder, Long gitProjectId, String gitProjectFilePath, Model model) throws Exception {
 
-        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI ;
-        if(isGitOrCoding){
+        boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI;
+        if (isGitOrCoding) {
             JDGitProjects jdGitProjects = new JDGitProjects();
             jdGitProjects.setGitProjectId(gitProjectId);
             JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
@@ -703,8 +712,8 @@ public class ScriptProjectController {
             Long groupId = dataDevGitProject.getGroupId();//找到项目所属组的id
 
             List<DataDevGitGroupMember> list = dataDevGitGroupMemberService.queryFromGroupId(groupId);//找到这个组的所有成员
-            for(DataDevGitGroupMember dataDevGitGroupMember:list){
-                logger.error("projectDetail list="+dataDevGitGroupMember.toString() );
+            for (DataDevGitGroupMember dataDevGitGroupMember : list) {
+                logger.error("projectDetail list=" + dataDevGitGroupMember.toString());
             }
 
 
@@ -719,7 +728,7 @@ public class ScriptProjectController {
             }
 
             isProjectMember = (dataDevGitProjectMember != null && dataDevGitProjectMember.getAccessLevel() >= 40);//检查操作人员是否项目成员
-            logger.error("projectDetail isProjectMember="+isProjectMember +";isGroupMember="+isGroupMember+";groupId="+groupId);
+            logger.error("projectDetail isProjectMember=" + isProjectMember + ";isGroupMember=" + isGroupMember + ";groupId=" + groupId);
             if (isProjectMember || isGroupMember) {
                 hasAuthority = true; //如果操作人权限不够，则无权限进行添加和删除操作
             }
@@ -732,7 +741,7 @@ public class ScriptProjectController {
 
             return "scriptcenter/art/projectDetail";
 
-        }else{
+        } else {
             boolean hasAuthority = true;
             String erp = urmUserHolder.getErp();
             DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
@@ -747,14 +756,14 @@ public class ScriptProjectController {
              *     $("#description").text(projectDetail.description);
              */
             dataDevGitProject.setGitProjectPath(dataDevGitProject.getGitProjectName());
-            model.addAttribute("projectDetail", JSONObject.toJSONString(dataDevGitProject) );
+            model.addAttribute("projectDetail", JSONObject.toJSONString(dataDevGitProject));
             model.addAttribute("gitProjectId", gitProjectId);
             model.addAttribute("gitProjectFilePath", gitProjectFilePath);
             model.addAttribute("hasAuthority", hasAuthority);
             model.addAttribute("isCodingOrGit", 0);
-            model.addAttribute("createDate",dataDevGitProject.getRefreshTime());
-            model.addAttribute("description",dataDevGitProject.getDescription());
-            model.addAttribute("projectName",dataDevGitProject.getGitProjectName());
+            model.addAttribute("createDate", dataDevGitProject.getRefreshTime());
+            model.addAttribute("description", dataDevGitProject.getDescription());
+            model.addAttribute("projectName", dataDevGitProject.getGitProjectName());
 
             return "scriptcenter/art/projectDetail";
         }
@@ -767,8 +776,19 @@ public class ScriptProjectController {
     }
 
     @RequestMapping("addGroup.html")
-    public String addGroup(Long gitProjectId, Model model) throws Exception {
+    public String addGroup(UrmUserHolder urmUserHolder, Long gitProjectId, Model model) throws Exception {
+
+        String erp = urmUserHolder.getErp();
+
+        DataDevGitProjectMember localProjcetMaster = dataDevGitProjectMemberService.findLocalProjcetMaster(gitProjectId);
+
+        boolean hasSetProjectOwnerRight = localProjcetMaster != null && localProjcetMaster.getGitMemberName().equalsIgnoreCase(erp);
+
+
         model.addAttribute("gitProjectId", gitProjectId);
+        model.addAttribute("isCodingOrGit", GitHttpUtil.isCodingOrGit(gitProjectId) ? 1 : 0);
+        model.addAttribute("hasSetProjectOwnerRight", hasSetProjectOwnerRight);
+
         return "scriptcenter/art/addGroup";
     }
 
@@ -804,15 +824,28 @@ public class ScriptProjectController {
     @RequestMapping("sharedWithGroups.ajax")
     @ResponseBody
     public net.sf.json.JSONObject sharedWithGroupsAjax(Long gitProjectId) throws Exception {
-        boolean isCoding = GitHttpUtil.isCoding(gitProjectId);
+        boolean isCoding = GitHttpUtil.isCodingOrGit(gitProjectId);
         JDGitProjects jdGitProjects = new JDGitProjects();
         jdGitProjects.setGitProjectId(gitProjectId);
         JDGitProjects projectDetail = jdGitProjects.gitProjectDetail();
-        List<JDGitProjectShareGroups> sharedWithGroups = projectDetail.getSharedWithGroups();
-        if(isCoding && sharedWithGroups != null && sharedWithGroups.size() > 0){
-            for(JDGitProjectShareGroups jdGitProjectShareGroups :sharedWithGroups){
+        List<JDGitProjectShareGroups> sharedWithGroups = new ArrayList<JDGitProjectShareGroups>();
+        if (isCoding && sharedWithGroups != null && sharedWithGroups.size() > 0) {
+            sharedWithGroups = projectDetail.getSharedWithGroups();
+            for (JDGitProjectShareGroups jdGitProjectShareGroups : sharedWithGroups) {
                 jdGitProjectShareGroups.setGitProjectId(gitProjectId);
                 jdGitProjectShareGroups.setJdGroupId(jdGitProjectShareGroups.getJdGroupId() + GitHttpUtil._9YI);
+            }
+        } else {
+            List<DataDevGitProjectSharedGroup> list = dataDevGitProjectSharedGroupService.list(gitProjectId);
+            if (list != null) {
+                for (DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup : list) {
+                    JDGitProjectShareGroups temp = new JDGitProjectShareGroups();
+                    temp.setIsCanSysProjectScript(dataDevGitProjectSharedGroup.getIsCanSysProjectScript());
+                    temp.setJdGroupId(dataDevGitProjectSharedGroup.getGitGroupId());
+                    temp.setGroupAccessLevel(dataDevGitProjectSharedGroup.getGroupAccessLevel());
+                    temp.setGroupName(dataDevGitProjectSharedGroup.getGroupName());
+                    sharedWithGroups.add(temp);
+                }
             }
         }
         Page<JDGitProjectShareGroups> page = new PageImpl<JDGitProjectShareGroups>(sharedWithGroups);
@@ -897,7 +930,7 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "Git项目导入")
     @RequestMapping("getGitProjectByPath.ajax")
     @ResponseBody
-    public JSONObject getGitProjectByPath(String projectGitPath, UrmUserHolder urmUserHolder,Integer gitOrCodingCode) {
+    public JSONObject getGitProjectByPath(String projectGitPath, UrmUserHolder urmUserHolder, Integer gitOrCodingCode) {
         try {
             String proFilePath = getGitProPath(projectGitPath);
             JDGitProjects jdGitProjects = new JDGitProjects();
@@ -923,11 +956,11 @@ public class ScriptProjectController {
                         if (StringUtils.equals(name, erp)) {
                             authorFlag = m.getAccessLevel();
                         }
-                        if(gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()){
+                        if (gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()) {
                             if (StringUtils.equals(name, SysOwnerCoding)) {
                                 bdpUserFlag = m.getAccessLevel();
                             }
-                        }else{
+                        } else {
                             if (StringUtils.equals(name, SysOwner)) {
                                 bdpUserFlag = m.getAccessLevel();
                             }
@@ -935,26 +968,26 @@ public class ScriptProjectController {
                     }
                     if (bdpUserFlag == 0) {
                         String SysOwnerErp = SysOwner;
-                        if(gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()){
+                        if (gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()) {
                             SysOwnerErp = SysOwnerCoding;
                         }
-                        DataDevGitGroupMember dataDevGitGroupMember = dataDevGitGroupMemberService.getDataDevGitGroupMebByErp(SysOwnerErp, groupGitId,gitOrCodingCode);
+                        DataDevGitGroupMember dataDevGitGroupMember = dataDevGitGroupMemberService.getDataDevGitGroupMebByErp(SysOwnerErp, groupGitId, gitOrCodingCode);
 //                        logger.error("=========项目组成员："+JSONObject.toJSONString(dataDevGitGroupMember));
                         if (dataDevGitGroupMember != null) {
                             bdpUserFlag = dataDevGitGroupMember.getAccessLevel();
                         }
                     }
                     if (bdpUserFlag < 40) {
-                        if(gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()){
+                        if (gitOrCodingCode == DataDevGitOrCodingEnum.CODING.tocode()) {
                             logger.error("虚拟账号:" + SysOwnerCoding + "在该项目中不是owner或者master或是不在该项目中：" + projectGitPath);
                             return JSONObjectUtil.getFailResult(SysOwnerCoding + "账号角色需设置为Master（项目成员）", null);
-                        }else{
+                        } else {
                             logger.error("虚拟账号:" + SysOwner + "在该项目中不是owner或者master或是不在该项目中：" + projectGitPath);
                             return JSONObjectUtil.getFailResult(SysOwner + "账号角色需设置为Master（项目成员）或Owner（组成员）", null);
                         }
                     }
                     if (authorFlag == 0) {//项目成员不包括这个erp
-                        DataDevGitGroupMember dataDevGitGroupMember = dataDevGitGroupMemberService.getDataDevGitGroupMebByErp(erp, groupGitId,gitOrCodingCode);
+                        DataDevGitGroupMember dataDevGitGroupMember = dataDevGitGroupMemberService.getDataDevGitGroupMebByErp(erp, groupGitId, gitOrCodingCode);
                         if (dataDevGitGroupMember != null) {
                             authorFlag = dataDevGitGroupMember.getAccessLevel();
                         }
@@ -1027,7 +1060,7 @@ public class ScriptProjectController {
     @ExceptionMessageAnnotation(errorMessage = "验证Git项目地址")
     @RequestMapping("testGitConnect.ajax")
     @ResponseBody
-    public JSONObject testGitConnect(String projectGitPath, UrmUserHolder urmUserHolder , Integer gitOrCodingCode) {
+    public JSONObject testGitConnect(String projectGitPath, UrmUserHolder urmUserHolder, Integer gitOrCodingCode) {
 
         try {
             String proFilePath = getGitProPath(projectGitPath);

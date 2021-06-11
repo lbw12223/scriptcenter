@@ -17,6 +17,8 @@ public class JDGitProjectShareGroups extends GitConvertToDataDevDomain<DataDevGi
     private String groupName;
     private Integer groupAccessLevel;
     private String groupAccessLevelRight;
+    private Integer isCanSysProjectScript ;
+
 
     //JDGitGroups{gitProjectId=23057, jdGroupId=14397, groupName='frank_test1', groupAccessLevel=40}
     @Override
@@ -113,6 +115,14 @@ public class JDGitProjectShareGroups extends GitConvertToDataDevDomain<DataDevGi
         }else{
             this.groupAccessLevelRight = "Guest";
         }
+    }
+
+    public Integer getIsCanSysProjectScript() {
+        return isCanSysProjectScript;
+    }
+
+    public void setIsCanSysProjectScript(Integer isCanSysProjectScript) {
+        this.isCanSysProjectScript = isCanSysProjectScript;
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.jd.bdp.datadev.service;
 import com.jd.bdp.datadev.domain.DataDevGitProject;
 import com.jd.bdp.datadev.domain.DataDevGitProjectSharedGroup;
 
+import java.util.List;
+
 /**
  * Created by zhangrui25 on 2018/5/23.
  */
@@ -15,4 +17,5 @@ public interface DataDevGitProjectSharedGroupService {
 
     void deleteSharedGroupFromProject(DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup);
 
+    List<DataDevGitProjectSharedGroup> list(Long gitProjectId);
 }

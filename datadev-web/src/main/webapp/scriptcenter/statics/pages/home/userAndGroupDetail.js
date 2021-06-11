@@ -115,6 +115,9 @@ $(function () {
 
     function initUser() {
         if (!initUserStatus) {
+
+
+            var isCodingOrGit = !$("#gitProjectId").val() * 1 > 1000000000 ;
             initUserStatus = true;
             var _colModel = [
                 {
@@ -137,6 +140,28 @@ $(function () {
 
             ];
 
+            if(!isCodingOrGit){
+                _colModel = [
+                    {
+                        name:'jdGroupId',
+                        hidden:true,
+                    },
+                    {
+                        name: 'groupName',
+                        label: "项目空间",
+                        sortable: false
+                    },
+                    {
+                        name: 'groupAccessLevelRight',
+                        label: "操作",
+                        sortable: false,
+                        formatter: function (cellvalue, options, record) {
+                            return "<a href='javascript:sysScript(" + record.jdGroupId + ")' target='_self'>同步脚本</a>"
+                        }
+                    }
+                ]
+
+            }
             jQuery("#group-grid-table").jqGrid({
                 datatype: "json",
                 url:'/scriptcenter/project/sharedWithGroups.ajax',
@@ -254,6 +279,53 @@ function openGroupDetail(groupId) {
     });
 }
 
+function sysScript(projectSpaceId){
+
+    commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteSharedWithGroups.ajax",{
+        projectSpaceId: projectSpaceId
+    }, $("#delete-group"), function (node, data) {
+
+
+        if(total > 0){
+
+            console.log("同步......")
+            console.log(data)
+            var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>正在同步脚本...<br />";
+            content += "同步进度 ";
+            content += "<span id='processOn'>0</span>";
+            content += "<span id='processTotal'></span>";
+            content += "</p>";
+            $.bdpMsg(
+                {
+                    title: "提示",
+                    width: "400px",
+                    mainContent: content,
+                    buttons: [
+                        {
+                            text: "关闭",
+                            event: function () {
+                                $.removeMsg();
+                            },
+                            btnClass: 'bdp-btn-primary'
+                        }
+                    ]
+                }
+            )
+
+            window.setInterval(function (){
+
+            },1000)
+        }else{
+
+
+
+
+        }
+
+    });
+
+
+}
 //格式化按钮
 function initButtons() {
     var hasAuthority = $("#hasAuthority").val();

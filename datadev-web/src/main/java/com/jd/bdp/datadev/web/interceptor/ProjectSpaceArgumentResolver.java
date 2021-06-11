@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ProjectSpaceArgumentResolver implements HandlerMethodArgumentResolver {
     private static final Log logger = LogFactory.getLog(UrmUserHolderArgumentResolver.class);
-    private Long spaceProjetId;
 
     public ProjectSpaceArgumentResolver() {
     }

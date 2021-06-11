@@ -11,6 +11,8 @@ public class DataDevGitProjectSharedGroup {
     private String groupName ;
     private Integer groupAccessLevel;
 
+    private Integer isCanSysProjectScript ;
+
 
     public Long getGitProjectId() {
         return gitProjectId;
@@ -50,6 +52,14 @@ public class DataDevGitProjectSharedGroup {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getIsCanSysProjectScript() {
+        return isCanSysProjectScript;
+    }
+
+    public void setIsCanSysProjectScript(Integer isCanSysProjectScript) {
+        this.isCanSysProjectScript = isCanSysProjectScript;
     }
 
     @Override

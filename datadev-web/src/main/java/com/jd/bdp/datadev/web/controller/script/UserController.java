@@ -54,15 +54,15 @@ public class UserController {
 
         List<TblBaseUser> userList = new ArrayList<TblBaseUser>();
         try {
-            keyword= URLDecoder.decode(keyword,"utf-8");
-            keyword= URLDecoder.decode(keyword,"utf-8");
+            keyword = URLDecoder.decode(keyword, "utf-8");
+            keyword = URLDecoder.decode(keyword, "utf-8");
             TblBaseUser user = new TblBaseUser();
             user.setSearchValue(keyword);
             String data = urmUserInterface.list(appCode, token, System.currentTimeMillis(), user);
-            Map<String,Class> map = new HashMap<String, Class>();
+            Map<String, Class> map = new HashMap<String, Class>();
             map.put("obj", TblBaseUser.class);
-            JSFResultDTO dto = (JSFResultDTO) JSONObject.toBean(JSONObject.fromObject(data), JSFResultDTO.class,map);
-            if (dto !=null && dto.getCode() != null && dto.getCode().intValue() == 0) {
+            JSFResultDTO dto = (JSFResultDTO) JSONObject.toBean(JSONObject.fromObject(data), JSFResultDTO.class, map);
+            if (dto != null && dto.getCode() != null && dto.getCode().intValue() == 0) {
                 userList = dto.getList();
             }
             return AjaxUtil.list2Json(userList);
@@ -92,11 +92,11 @@ public class UserController {
                 TblBaseUser user = new TblBaseUser();
                 user.setErp(erp);
                 String data = urmUserInterface.find(appCode, token, System.currentTimeMillis(), user);
-                Map<String,Class> map = new HashMap<String, Class>();
+                Map<String, Class> map = new HashMap<String, Class>();
                 map.put("obj", TblBaseUser.class);
-                JSFResultDTO dto = (JSFResultDTO) JSONObject.toBean(JSONObject.fromObject(data), JSFResultDTO.class,map);
-                if (dto !=null && dto.getCode() != null && dto.getCode().intValue() == 0) {
-                    TblBaseUser tmp = (TblBaseUser)dto.getObj();
+                JSFResultDTO dto = (JSFResultDTO) JSONObject.toBean(JSONObject.fromObject(data), JSFResultDTO.class, map);
+                if (dto != null && dto.getCode() != null && dto.getCode().intValue() == 0) {
+                    TblBaseUser tmp = (TblBaseUser) dto.getObj();
                     userList.add(tmp);
                 }
                 if (user != null) {
@@ -112,39 +112,45 @@ public class UserController {
 
 
     @Autowired
-    private ProjectSpaceRightComponent projectSpaceRightComponent ;
+    private ProjectSpaceRightComponent projectSpaceRightComponent;
+
     /**
-     *
      * @param keyWord
      * @return
      */
     @RequestMapping("list_groups.ajax")
     @ResponseBody
-    public JSONObject listGroups(UrmUserHolder urmUserHolder, String keyWord , Long gitProjectId) {
+    public JSONObject listGroups(UrmUserHolder urmUserHolder, String keyWord, Long gitProjectId) {
         boolean isCodingOrGit = GitHttpUtil.isCodingOrGit(gitProjectId);
-        String erp =  urmUserHolder.getErp();
-        if(isCodingOrGit){
+        List<DataDevGitGroup> list = new ArrayList<DataDevGitGroup>();
+
+        String erp = urmUserHolder.getErp();
+        if (!isCodingOrGit) {
             //查询用户有权限的项目空间
-
             List<ProjectBO> projectSpaces = projectSpaceRightComponent.getProjectSpaces(erp);
-
-            return null;
-
-
-        }else{
-            List<DataDevGitGroup> list = new ArrayList<DataDevGitGroup>();
+            if (projectSpaces != null && projectSpaces.size() > 0) {
+                for (ProjectBO bo : projectSpaces) {
+                    DataDevGitGroup temp = new DataDevGitGroup();
+                    temp.setGitGroupId(bo.getId());
+                    temp.setName(bo.getName());
+                    temp.setFullPath(bo.getName());
+                    temp.setFullName(bo.getName());
+                    list.add(temp);
+                }
+            }
+        } else {
             try {
                 if (keyWord != null && keyWord.length() != 0)
-                    keyWord= URLDecoder.decode(keyWord,"utf-8");
+                    keyWord = URLDecoder.decode(keyWord, "utf-8");
                 JDGitGroups jdGitGroups = new JDGitGroups();
                 jdGitGroups.setOwned(false);
                 list = jdGitGroups.listGroups(keyWord);
-                return AjaxUtil.list2Json(list);
             } catch (Exception e) {
                 logger.error("组列表获取失败", e);
-                return AjaxUtil.list2Json(list);
             }
         }
+        return AjaxUtil.list2Json(list);
+
 
     }
 

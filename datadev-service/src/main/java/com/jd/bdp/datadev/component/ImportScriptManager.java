@@ -663,6 +663,7 @@ public class ImportScriptManager {
         }
         HttpRequestDTO dto = new HttpRequestDTO();
         String url = scriptDomian + "/api/v2/buffalo4/script/getScriptList";
+        url = "http://11.91.176.108/api/v2/buffalo4/script/getScriptList";
         dto.setAppId(smpAppId);
         dto.setToken(smpAppToken);
         dto.setTime(System.currentTimeMillis());

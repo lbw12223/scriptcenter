@@ -7,7 +7,8 @@
         git_project_id as gitProjectId,
         git_group_id as gitGroupId,
         group_name as groupName,
-        group_access_level  as groupAccessLevel
+        group_access_level  as groupAccessLevel,
+        is_can_sys_project_script  as isCanSysProjectScript
     </sql>
 
 
@@ -17,10 +18,16 @@
         git_project_id,
         git_group_id,
         group_name,
-        group_access_level)
+        group_access_level,
+        is_can_sys_project_script)
         VALUES
         <foreach collection="gitProjectSharedGroupList" item="gitProjectSharedGroup" open="" separator="," close="">
-            (#{gitProjectSharedGroup.gitProjectId},#{gitProjectSharedGroup.gitGroupId}, #{gitProjectSharedGroup.groupName},#{gitProjectSharedGroup.groupAccessLevel})
+            (#{gitProjectSharedGroup.gitProjectId},
+            #{gitProjectSharedGroup.gitGroupId},
+            #{gitProjectSharedGroup.groupName},
+            #{gitProjectSharedGroup.groupAccessLevel},
+            #{gitProjectSharedGroup.isCanSysProjectScript}
+            )
         </foreach>
     </insert>
 
@@ -32,5 +39,12 @@
         delete from git_project_shared_group
         where git_project_id = #{gitProjectId} and git_group_id = #{gitGroupId}
     </delete>
+
+
+    <select id="listProjectGroup" resultType="DataDevGitProjectSharedGroup">
+        SELECT
+        <include refid="datadev_script_project_column"></include>
+        FROM git_project_shared_group where git_project_id = #{gitProjectId}
+    </select>
 
 </mapper>

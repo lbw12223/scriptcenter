@@ -18,7 +18,6 @@ public interface DataDevGitProjectSharedGroupDao {
     void insert(@Param("gitProjectSharedGroupList")  List<DataDevGitProjectSharedGroup> gitProjectSharedGroupList);
 
 
-
     /**
      * 删除
      * @param projectId
@@ -31,4 +30,6 @@ public interface DataDevGitProjectSharedGroupDao {
      */
     void deleteSharedGroup(DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup);
 
+
+    List<DataDevGitProjectSharedGroup> listProjectGroup(@Param("gitProjectId") Long projectId) ;
 }

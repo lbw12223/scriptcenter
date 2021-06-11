@@ -3,10 +3,12 @@ $(function () {
 
     datadev_group_common.initGroup($("#addGroupInput"), false);
     $("#addGroupBtn").click(function () {
+        debugger
         var gitGroupName = {};
         var gitProjectId = $("#gitProjectId").val();
         var gitGroupId = $("#addGroupInput").val();
         var allGroups = $("#addGroupInput").data("groupNames");
+        var isSync = $("#sync").prop("checked") === true ? 1 : 0 ;
         for (var i = 0; i < allGroups.dataList.length; i++) {
             if (allGroups.dataList[i].gitGroupId == gitGroupId) {
                 gitGroupName = allGroups.dataList[i].name;
@@ -16,7 +18,8 @@ $(function () {
         commonAjaxEvents.commonPostAjax("/scriptcenter/project/addSharedWithGroups.ajax",{
             gitProjectId:gitProjectId,
             gitGroupId:gitGroupId,
-            gitGroupName: gitGroupName
+            gitGroupName: gitGroupName,
+            isSyncProjectSpace:isSync
         },$("#addGroupBtn"),function (node, data) {
             console.log(data.obj);
             art.dialog.close();

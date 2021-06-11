@@ -1,21 +1,44 @@
 #set($layout="layout_blank.vm")
 
-<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newGitProject.css?_dc=$!{staticVersion}" type="text/css">
+<link rel="stylesheet" href="/scriptcenter/statics/pages/home/project/newGitProject.css?_dc=$!{staticVersion}"
+      type="text/css">
 <input type="hidden" id="gitProjectId" value="${gitProjectId}"/>
 <div id="gitProjectArt">
 
     <form id="gitProForm">
 
         <div style="width: 100%" class="project-name-content bdp-form-group">
-            <label style="margin-left: -50px" class="bdp-control-label"><i class="bdp-note">*</i>添加组：</label>
+            <label style="margin-left: -50px" class="bdp-control-label"><i class="bdp-note">*</i>
+                #if($!{isCodingOrGit} == 1)
+                    添加组：
+                #else
+                    项目空间：
+                #end
+            </label>
             <div style="width: 320px; margin-left: 0px" class="project-item">
                 <input class="bdp-form-control" id="addGroupInput" autocomplete="off" style="width: 100%">
             </div>
         </div>
 
-        <div style="float: left" class="project-name-content">
-            <textarea id="sharedGroupMembers" style="width:320px; height:150px; overflow-x:hidden; margin-left: 74px" readonly></textarea>
-        </div>
+        #if($!{isCodingOrGit} == 1){
+            <div style="float: left" class="project-name-content">
+                <textarea id="sharedGroupMembers"
+                          style="width:320px; height:150px; overflow-x:hidden; margin-left: 74px" readonly></textarea>
+            </div>
+        #end
+        #if($!{hasSetProjectOwnerRight} == "true")
+
+            <div style="width: 100%" class="project-name-content bdp-form-group">
+                <label style="margin-left: -50px" class="bdp-control-label"><i class="bdp-note">*</i>
+                    同步脚本：
+                </label>
+                <div style="width: 320px; margin-left: 0px" class="project-item">
+                    <input type="checkbox"  id="sync" autocomplete="off" style="width: 100%">
+                </div>
+            </div>
+
+        #end
+
 
     </form>
     <div class="buttons-div">
@@ -27,7 +50,7 @@
 #define($javascriptBlock)
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
-#*<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>*#
+    #*<script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>*#
 <script src="/scriptcenter/statics/pages/home/addGroup.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
 #end

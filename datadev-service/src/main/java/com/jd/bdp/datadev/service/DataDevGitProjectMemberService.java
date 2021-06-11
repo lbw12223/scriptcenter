@@ -63,4 +63,6 @@ public interface DataDevGitProjectMemberService {
      */
     void deleteById(Long id);
 
+
+    DataDevGitProjectMember findLocalProjcetMaster(Long gitProject);
 }
