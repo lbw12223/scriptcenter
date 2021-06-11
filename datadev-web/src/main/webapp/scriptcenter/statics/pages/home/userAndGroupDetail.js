@@ -281,19 +281,18 @@ function openGroupDetail(groupId) {
 
 function sysScript(projectSpaceId){
 
-    commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteSharedWithGroups.ajax",{
-        projectSpaceId: projectSpaceId
+    commonAjaxEvents.commonPostAjax("/scriptcenter/project/syncScriptToDataDevNew.ajax",{
+        jsdAppgroupId: projectSpaceId,
+        gitProjectId: $("#gitProjectId").val()
     }, $("#delete-group"), function (node, data) {
-
-
+        var total = data.obj && data.obj.total ? data.obj.total * 1 : 0 ;
         if(total > 0){
-
             console.log("同步......")
             console.log(data)
             var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>正在同步脚本...<br />";
             content += "同步进度 ";
             content += "<span id='processOn'>0</span>";
-            content += "<span id='processTotal'></span>";
+            content += "<span id='processTotal'>"+total+"</span>";
             content += "</p>";
             $.bdpMsg(
                 {
@@ -311,20 +310,24 @@ function sysScript(projectSpaceId){
                     ]
                 }
             )
-
             window.setInterval(function (){
-
+                setProcessOn(projectSpaceId);
             },1000)
         }else{
-
-
-
-
+             $.successMsg("当前服务目录已经同步完成，无可同步脚本!")
         }
-
     });
-
-
+}
+function setProcessOn(projectSpaceId){
+    commonAjaxEvents.commonPostAjax("/scriptcenter/project/syncScriptToDataDevProcess.ajax",{
+        appGroupId: projectSpaceId
+    }, $("#delete-group"), function (node, data) {
+        if(data.obj){
+            $.successMsg("同步完成!")
+        }else{
+            $("#processOn").val(data.obj.currentIndex);
+        }
+    });
 }
 //格式化按钮
 function initButtons() {

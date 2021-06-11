@@ -233,7 +233,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                 ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp, spaceProjectId);
                 if (apiResultDTO.isSuccess()) {
                     for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
-                        if (config.getClusterCode().equals(marketInfoDto.getClusterCode()) && config.getMarketLinuxUser().equals(marketInfoDto.getMarketUser())) {
+                        if ( config.getMarketLinuxUser().equals(marketInfoDto.getMarketUser())) {
                             authority = true;
                             break;
                         }

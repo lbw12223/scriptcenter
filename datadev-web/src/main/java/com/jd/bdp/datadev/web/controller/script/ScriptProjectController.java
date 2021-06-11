@@ -552,15 +552,10 @@ public class ScriptProjectController {
     @ResponseBody
     public com.alibaba.fastjson.JSONObject syncScriptToDataDevNew(UrmUserHolder urmUserHolder,
                                                                Long gitProjectId,
-                                                               String dirPath,
-                                                               @RequestParam(value = "syncMember", defaultValue = "0") Integer syncMember,
-                                                               @RequestParam(value = "scriptId", defaultValue = "0") Long scriptId,
-                                                               @RequestParam(value = "scriptName", defaultValue = "") String scriptName,
-                                                               @RequestParam(value = "scriptVersion", defaultValue = "") String scriptVersion,
-                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId,
-                                                               @RequestParam(value = "sync", defaultValue = "0") Integer isSync) throws Exception {
-        logger.error("insert================syncScriptToDataDevNew.ajax");
-        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDevNew(gitProjectId, dirPath, jsdAppgroupId, urmUserHolder.getErp(), syncMember.equals(1), scriptName, scriptId, scriptVersion, isSync != 0);
+                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
+
+        String erp = urmUserHolder.getErp();
+        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDevNew(gitProjectId, jsdAppgroupId, erp);
         return JSONObjectUtil.getSuccessResult("success", jsonObject);
     }
 

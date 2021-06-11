@@ -260,6 +260,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
             DataDevScriptConfig dataDevScriptConfig = new DataDevScriptConfig();
             dataDevScriptConfig.setRunMarketLinuxUser(martCode);
             dataDevScriptConfig.setRunClusterCode(clusterCode);
+            dataDevScriptConfig.setClusterCode(clusterCode);
             logger.error("==================="+JSONObject.toJSONString(jsfResultDto));
             if(jsfResultDto.getCode() == 0){
                 ClusterHadoopMarket market = (ClusterHadoopMarket)jsfResultDto.getObj();
