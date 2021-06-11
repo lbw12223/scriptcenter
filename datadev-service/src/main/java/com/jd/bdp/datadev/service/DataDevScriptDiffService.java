@@ -44,5 +44,5 @@ public interface DataDevScriptDiffService {
      * @return
      * @throws Exception
      */
-    PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptName, Integer page, Integer size) throws Exception;
+    PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptId, Integer page, Integer size) throws Exception;
 }

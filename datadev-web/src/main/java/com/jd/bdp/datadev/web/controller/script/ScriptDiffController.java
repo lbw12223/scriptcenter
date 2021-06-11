@@ -3,6 +3,7 @@ package com.jd.bdp.datadev.web.controller.script;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.jd.bdp.common.utils.AjaxUtil;
 import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.component.ImportScriptManager;
 import com.jd.bdp.datadev.component.JSONObjectUtil;
@@ -22,6 +23,7 @@ import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import com.jd.jbdp.release.api.ReleaseSubmitInterface;
 import com.jd.jbdp.release.model.po.ReleaseObjInfo;
+import com.jd.jbdp.release.model.po.ReleaseWfInfo;
 import com.jd.jbdp.release.model.vo.ReleaseObjRecordVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.log4j.Logger;
@@ -155,12 +157,13 @@ public class ScriptDiffController {
     public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String commitMsg,Long scriptFileId ) throws Exception {
 
         try {
+//            projectSpaceId = 10109L;
             String operator = userHolder.getErp();
-            preSumit(projectSpaceId,scriptFileId,commitMsg,operator);
-            return JSONObjectUtil.getSuccessResult(true);
+            ReleaseWfInfo releaseWfInfo = preSubmit(projectSpaceId, scriptFileId, commitMsg, operator);
+            return JSONObjectUtil.getSuccessResult(releaseWfInfo);
         } catch (Exception e) {
             logger.error("scriptCompare.ajax failed: ", e);
-            return JSONObjectUtil.getFailResult("提交发布失败!" + e.getMessage(), false);
+            return JSONObjectUtil.getFailResult("提交发布失败!" + e.getMessage(), null);
         }
     }
 
@@ -189,7 +192,7 @@ public class ScriptDiffController {
      * @param scriptFileId
      * @throws Exception
      */
-    private void preSumit(Long projectSpaceId , Long scriptFileId , String commitMsg , String erp) throws Exception{
+    private ReleaseWfInfo preSubmit(Long projectSpaceId , Long scriptFileId , String commitMsg , String erp) throws Exception{
         DataDevScriptFile old = fileService.findById(scriptFileId);
         old.setVerDescription(commitMsg);
         old.setApplicationId(projectSpaceId);
@@ -214,7 +217,7 @@ public class ScriptDiffController {
         importScriptManager.callBackScript(old.getId(), null, old.getGitProjectId(), old.getGitProjectFilePath(), erp, old.getVersion());
 
         //提交发布中心
-        dataDevCenterService.upLineScriptNew(old, erp);
+        return dataDevCenterService.upLineScriptNew(old, erp);
 
 
 
@@ -265,21 +268,27 @@ public class ScriptDiffController {
      */
     @RequestMapping("/releaseRecord.ajax")
     @ResponseBody
-    public JSONObject releaseRecord(UrmUserHolder userHolder,
-                                    @RequestParam(value = "projectId", required = false) Long projectId,
-                                    @RequestParam(value = "scriptName") String scriptName,
+    public net.sf.json.JSONObject releaseRecord(UrmUserHolder userHolder,
+                                    @RequestParam(value = "projectId") Long projectId,
+                                    @RequestParam(value = "scriptId") String scriptId,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "rows", defaultValue = "10") Integer size) {
         String erp = userHolder.getErp();
+        PageInfo<ReleaseObjRecordVo> releaseObjInfoPageInfo;
+        PageResultDTO pageResultDTO = new PageResultDTO();
         try {
-            String SPLIT = "#-#" ;
-            scriptName = "test.sh" + SPLIT + "1005";
-            PageInfo<ReleaseObjRecordVo> releaseObjInfoPageInfo = dataDevScriptDiffService.releaseRecord(projectId, scriptName, page, size);
-            return JSONObjectUtil.getSuccessResult(releaseObjInfoPageInfo);
+            releaseObjInfoPageInfo = dataDevScriptDiffService.releaseRecord(projectId, scriptId, page, size);
+            pageResultDTO.setRows(releaseObjInfoPageInfo.getList());
+            pageResultDTO.setSuccess(true);
+            pageResultDTO.setRecords(releaseObjInfoPageInfo.getTotal());
         } catch (Exception e) {
             logger.error("releaseRecord.ajax failed: ", e);
-            return JSONObjectUtil.getFailResult(e.getMessage(), false);
+            pageResultDTO.setSuccess(false);
+            pageResultDTO.setRecords(0L);
         }
+        pageResultDTO.setPage(page);
+        pageResultDTO.setLimit(size);
+        return AjaxUtil.gridJson(pageResultDTO);
     }
 
 

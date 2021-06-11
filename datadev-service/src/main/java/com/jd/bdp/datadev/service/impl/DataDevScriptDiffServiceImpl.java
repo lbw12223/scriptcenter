@@ -204,12 +204,12 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
     }
 
     @Override
-    public PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptName, Integer page, Integer size) throws Exception {
+    public PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptId, Integer page, Integer size) throws Exception {
         SubmitInfoVo submitInfoVo = new SubmitInfoVo();
         if (projectId != null && projectId > 0) {
             submitInfoVo.setProjectId(projectId);
         }
-        submitInfoVo.setDevObjKey(scriptName);
+        submitInfoVo.setDevObjKey(scriptId);
         submitInfoVo.setObjType("script");
         submitInfoVo.setPageNum(page);
         submitInfoVo.setPageSize(size);

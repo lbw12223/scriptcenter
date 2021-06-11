@@ -28,6 +28,58 @@ public class BuffaloComponent {
     private String taskListUrl;
 
 
+    @Value("${devCenter.domain}")
+    private String devCenterPrefix;
+    @Value("${url.davcenter.envInfo}")
+    private String envInfoUrl;
+
+
+    public JSONArray getDBEnvInfo(String marketCode, String clusterCode) throws Exception {
+        JSONObject data = new JSONObject();
+        data.put("appId", appId);
+        data.put("token", token);
+        data.put("time", System.currentTimeMillis());
+        data.put("marketCode", marketCode);
+        data.put("clusterCode", clusterCode);
+        logger.info("=========获取库变量入参：" + data.toJSONString());
+        String entity = HttpUtil.doPostWithParamAndBody(devCenterPrefix + envInfoUrl, null, data);
+//        entity = "{\n" +
+//                "    \"code\": 0,\n" +
+//                "    \"list\": [\n" +
+//                "        {\n" +
+//                "            \"cluseterCode\": \"xx\",\n" +
+//                "            \"marketCode\": \"xx\",\n" +
+//                "            \"prodDb\": \"MOCK_DB_WCC_SH_1_PROD\",\n" +
+//                "            \"variableCode\": \"MOCK_DB_WCC_SH_1\",\n" +
+//                "            \"devDb\": \"MOCK_DB_WCC_SH_1_DEV\"\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"cluseterCode\": \"xx\",\n" +
+//                "            \"marketCode\": \"xx\",\n" +
+//                "            \"prodDb\": \"MOCK_DB_WCC_SH_2_PROD\",\n" +
+//                "            \"variableCode\": \"MOCK_DB_WCC_SH_2\",\n" +
+//                "            \"devDb\": \"MOCK_DB_WCC_SH_2_DEV\"\n" +
+//                "        }\n" +
+//                "    ],\n" +
+//                "    \"message\": \"获取集市库变量数据成功\",\n" +
+//                "    \"success\": true\n" +
+//                "}";
+        logger.info("=========获取库变量结果：" + entity);
+        JSONObject jsonObject;
+        try {
+            jsonObject = JSON.parseObject(entity);
+        } catch(Exception e) {
+            logger.error("获取库变量 返回异常");
+            throw new Exception("获取库变量 返回异常");
+        }
+        if(jsonObject.getInteger("code") != 0) {
+            logger.error("获取库变量 失败");
+            throw new Exception(jsonObject.getString("message"));
+        }
+
+        return jsonObject.getJSONArray("list");
+    }
+
     /**
      * 调度中心-获取生产侧的脚本内容接口  fileContent
      */

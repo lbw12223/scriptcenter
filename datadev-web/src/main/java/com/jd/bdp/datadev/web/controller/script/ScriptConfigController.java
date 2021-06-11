@@ -427,7 +427,7 @@ public class ScriptConfigController {
                                       @RequestParam(value = "pageNumber", defaultValue = "1") Integer pageNumber,
                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         JSONObject result = new JSONObject();
-        JSONArray list = null;
+        JSONArray list = new JSONArray();
         try {
             JSONObject params = new JSONObject();
             params.put("page", pageNumber);

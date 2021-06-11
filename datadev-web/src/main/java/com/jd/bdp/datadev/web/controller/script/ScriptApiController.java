@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.amp.sdk.annotation.AuthChecker;
-import com.jd.bdp.datadev.component.HbaseScript;
-import com.jd.bdp.datadev.component.ImportScriptManager;
-import com.jd.bdp.datadev.component.JSONObjectUtil;
-import com.jd.bdp.datadev.component.UrmUtil;
+import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
@@ -64,9 +61,27 @@ public class ScriptApiController {
     @Autowired
     private DataDevScriptFileService dataDevScriptFileService;
 
+    @Autowired
+    private BuffaloComponent buffaloComponent;
+
     private String appId = "bdp.jd.com";
     private String encryptKey = "!@#$QWER";
 //    private String appIdToken = DesEncrypter.cryptString(appId, "!@#$QWER");
+
+    @RequestMapping("/getEnvInfo")
+    @ResponseBody
+    public JSONObject getEnvInfo(String marketCode, String clusterCode) throws Exception {
+        // 根据runClusterCode和runMarketLinuxUser获取库变量
+        JSONArray dbEnvInfo = buffaloComponent.getDBEnvInfo(marketCode, clusterCode);
+        JSONObject envObjs = new JSONObject();
+        for (Object o : dbEnvInfo) {
+            JSONObject jsonObject = (JSONObject) o;
+            String variableCode = jsonObject.getString("variableCode");
+            String devDb = jsonObject.getString("devDb");
+            envObjs.put(variableCode, devDb);
+        }
+        return envObjs;
+    }
 
     /**
      * 根据ProjectType获取coding，本地，git项目

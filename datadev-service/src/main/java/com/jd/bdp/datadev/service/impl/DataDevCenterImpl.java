@@ -28,6 +28,7 @@ import com.jd.bdp.rc.api.ReleaseInterface;
 import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
 import com.jd.bdp.rc.domain.bo.ReleaseRecordBo;
 import com.jd.jbdp.release.api.ReleaseSubmitInterface;
+import com.jd.jbdp.release.model.po.ReleaseWfInfo;
 import com.jd.jbdp.release.model.vo.SubmitInfoVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.commons.httpclient.params.HttpMethodParams;
@@ -131,7 +132,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
      * @param erp
      * @param file
      */
-    private void uplineReleaseCenterNew( JSONObject resObject  , String erp , DataDevScriptFile file , JSONObject preOnline) throws Exception{
+    private ReleaseWfInfo uplineReleaseCenterNew(JSONObject resObject  , String erp , DataDevScriptFile file , JSONObject preOnline) throws Exception{
 
         String fileName = file.getName() ;
         Long projectSpaceId = file.getApplicationId();
@@ -157,10 +158,12 @@ public class DataDevCenterImpl implements DataDevCenterService {
         devInfo.put("fileType",fileType);
         devInfo.put("preOnline",preOnline);
 
-        String devObjKey = projectSpaceId + SPLIT + file.getName() ;
-
+        String devObjKey = file.getId().toString();
+        tempSubmitObj.setOperatorType(currentOnlineInfo != null ? "更新": "新建");
         tempSubmitObj.setDevInfo(devInfo);
         tempSubmitObj.setDevObjKey(devObjKey);
+        // onlineObjKey非首次发布时必传
+        tempSubmitObj.setOnlineObjKey(currentOnlineInfo != null ? currentOnlineInfo.getLong("fileId").toString() : null);
         tempSubmitObj.setOnlineInfo(currentTempOnlineInfo);
         tempSubmitObj.setObjType("script");
         String commitMsg = file.getVerDescription();
@@ -171,12 +174,19 @@ public class DataDevCenterImpl implements DataDevCenterService {
         submitInfoVo.setSubmitObj(Arrays.asList(tempSubmitObj));
 
 
-        JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+
+        JsfResultDTO submit = JSONObject.parseObject("{\"code\":0,\"obj\":{\"submitId\":374,\"wfId\":53893}}", JsfResultDTO.class);//releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+        ReleaseWfInfo releaseWfInfo = new ReleaseWfInfo();
+        releaseWfInfo.setSubmitId(374L);
+        releaseWfInfo.setWfId(53893L);
+        submit.setCode(0);
+        submit.setObj(releaseWfInfo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
        // return submit != null && submit.getCode() == 0;
        if(submit.getCode() != 0) {
            throw new RuntimeException("发布失败!");
        }
+       return (ReleaseWfInfo) submit.getObj();
 
 
     }
@@ -280,7 +290,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
     @Override
-    public DataDevScriptFilePublish upLineScriptNew(DataDevScriptFile file, String erp)  throws Exception{
+    public ReleaseWfInfo upLineScriptNew(DataDevScriptFile file, String erp)  throws Exception{
 
         String userToken = urmUtil.UserTokenByErp(null, erp);
         DataDevScriptFilePublish insertPublish = new DataDevScriptFilePublish();
@@ -376,8 +386,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
 
                 publishDao.updateStatus(insertPublish);
-                uplineReleaseCenterNew(obj,erp,file,preOnline);
-                return insertPublish;
+                return uplineReleaseCenterNew(obj,erp,file,preOnline);
+//                return insertPublish;
             } else if (resObject.getInteger("code") == 206) {
                 throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");
             } else {
