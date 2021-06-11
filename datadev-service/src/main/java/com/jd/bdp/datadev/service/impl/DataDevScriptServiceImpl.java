@@ -567,6 +567,14 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
 
 
         /**
+         *
+         * export JDHXXXXX_CLUSTER_NAME=nzoth
+         * export JDHXXXXX_USER=mart_scr
+         * export TEAM_USER=mart_dapb
+         * export JDHXXXXX_QUEUE=bdp_jmart_dapb_union.bdp_jmart_dapb_union_formal
+         * source /bin/sh
+         *
+         *
          export JDHXXXXX_CLUSTER_NAME=nzoth
          export JDHXXXXX_USER=mart_scr
          export TEAM_USER=whx_test_accountDev
@@ -575,8 +583,8 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
          */
         scriptRunDetail.setRunClusterCode("nzoth");
         scriptRunDetail.setRunMarketLinuxUser("mart_scr");
-        scriptRunDetail.setQueueCode("bdp_jmart_dapb_union.bdp_jmart_dapb_union_dev");
-        scriptRunDetail.setAccountCode("whx_test_accountDev");
+        scriptRunDetail.setQueueCode("bdp_jmart_dapb_union.bdp_jmart_dapb_union_formal");
+        scriptRunDetail.setAccountCode("mart_dapb");
         return scriptRunDetail;
     }
 
