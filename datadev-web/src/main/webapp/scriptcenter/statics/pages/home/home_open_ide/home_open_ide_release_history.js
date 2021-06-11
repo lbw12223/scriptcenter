@@ -35,13 +35,11 @@ $(function () {
                     name: 'version',
                     label: "版本",
                     sortable: false,
-                    // formatter: function (cellvalue, options, record) {
-                    //     var version = getVersionFromScriptUrl(record.releaseInfoDev.scriptUrl);
-                    //     var id = record.id;
-                    //     var name = "";
-                    //     var str = '<span class="run-item run-script-version" data-id="'+id+'" data-name="'+name+'" data-version="' + version + '"  >' + version + '</span>';
-                    //     return str;
-                    // }
+                    formatter: function (cellvalue, options, record) {
+                        var id = record.releaseSubmitId;
+                        var str = "<a href='/release/compare?compareStatus=r_record&id=" + id + "' target='_blank'>"+record.version+"</a>";
+                        return str;
+                    }
                 },
                 {
                     name:'projectName',
