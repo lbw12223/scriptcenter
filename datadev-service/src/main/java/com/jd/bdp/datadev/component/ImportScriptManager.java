@@ -12,6 +12,7 @@ import com.jd.bdp.datadev.jdgit.JDGitMembers;
 import com.jd.bdp.datadev.jdgit.JDGitProjects;
 import com.jd.bdp.datadev.jdgit.JDGitUser;
 import com.jd.bdp.datadev.service.*;
+import com.jd.bdp.datadev.util.HttpUtil;
 import com.jd.jim.cli.Cluster;
 import com.jd.jsf.gd.util.StringUtils;
 import net.sf.json.JSONArray;
@@ -22,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zhangrui25 on 2018/6/21.
@@ -52,6 +51,9 @@ public class ImportScriptManager {
 
     @Value("${jd.bdp.script.domain}")
     public String scriptDomian;
+
+    @Value("${buffalo.domain.name}")
+    private String buffalo4Prefix;
 
     public static final Integer OWNER = 50;
 
@@ -202,6 +204,59 @@ public class ImportScriptManager {
     }
 
     /**
+     * 1.check 当前项目空间下的文件是否 已经和 这次需要导入的脚本列表是否重复
+     * 2.同步脚本
+     * 3.同步脚本中心的人员
+     * 同步脚本中心的数据到数据开发平台
+     */
+    public com.alibaba.fastjson.JSONObject syncScriptToDataDevNew(final Long gitProjectId, final String dirPath, final Long appGroupId, final String erp, final boolean syncMember, String fileName, Long fileId, String version, boolean isSync) throws Exception {
+        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
+        logger.error("before================syncScriptToDataDev.ajax");
+
+        if (StringUtils.isNotBlank(jimClient.get(syncKey))) {
+            throw new RuntimeException("当前项目空间正在同步!.");
+        }
+        logger.error("after================syncScriptToDataDev.ajax");
+
+        final JSONArray managerScriptFiles = getScriptListNew(appGroupId);
+        if (managerScriptFiles == null || managerScriptFiles.size() < 1) {
+            throw new RuntimeException("当前项目空间无待同步脚本.");
+        }
+        //创建目录
+        if (StringUtils.isNotBlank(dirPath)) {
+            dataDevScriptDirService.createScriptDir(gitProjectId, dirPath, erp);
+        }
+        //检查文件是否重复
+//        checkScriptFileExits(managerScriptFiles, gitProjectId, dirPath);
+
+        final com.alibaba.fastjson.JSONObject valueObject = new com.alibaba.fastjson.JSONObject();
+
+        jimClient.set(syncKey, valueObject.toString());
+        valueObject.put("currentIndex", 1);
+        valueObject.put("currentFile", managerScriptFiles.getJSONObject(0).getString("fileName"));
+        valueObject.put("total", managerScriptFiles.size());
+        valueObject.put("failCount", 0);
+        valueObject.put("successCount", 0);
+        valueObject.put("gitProjectId", gitProjectId);
+        if (isSync) {
+            List<ZtreeNode> ztreeNodeList = handSyncScriptNew(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, valueObject);
+//            syncMember(gitProjectId, appGroupId, syncMember);
+            valueObject.put("ztreeNodeList", ztreeNodeList);
+        } else {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //同步脚本
+                    handSyncScript(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, valueObject);
+                    //同步人员
+//                    syncMember(gitProjectId, appGroupId, syncMember);
+                }
+            }).start();
+        }
+        return valueObject;
+    }
+
+    /**
      * 过滤掉已经通过的 文件
      *
      * @param managerScriptFiles
@@ -285,6 +340,39 @@ public class ImportScriptManager {
     }
 
     /**
+     * 同步脚本
+     * <p>
+     * 同时给Redis里面写入值{currentIndex , currentFile, total , failCount , successCount}
+     */
+    private List<ZtreeNode> handSyncScriptNew(final Long gitProjectId, final Long appGroupId, final JSONArray managerScriptFiles, final String dirPath, final String erp, final com.alibaba.fastjson.JSONObject valueObject) {
+        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
+        List<ZtreeNode> ztreeNodeList = new ArrayList<ZtreeNode>();
+        try {
+            DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+
+
+            for (int index = 0; index < managerScriptFiles.size(); index++) {
+                //修改Redis
+                valueObject.put("currentIndex", (index + 1));
+                valueObject.put("currentFile", managerScriptFiles.getJSONObject(index).getString("fileName"));
+                jimClient.set(syncKey, valueObject.toString());
+                ZtreeNode ztreeNode = handSyncScriptSingleNew(dataDevGitProject, valueObject, managerScriptFiles.getJSONObject(index), appGroupId, dirPath, erp);
+                ztreeNodeList.add(ztreeNode);
+            }
+            return ztreeNodeList;
+        } catch (Exception e) {
+            logger.error(e);
+        } finally {
+            try {
+//                Thread.sleep(1000 * 8);
+                jimClient.del(syncKey);
+            } catch (Exception e) {
+            }
+        }
+        return ztreeNodeList;
+    }
+
+    /**
      * 下载脚本
      *
      * @param erp
@@ -348,6 +436,59 @@ public class ImportScriptManager {
                 }
             }
             callBackScript(script, gitProjectId, gitProjectFilePath, erp, null);
+            redisValue.put("successCount", redisValue.getIntValue("successCount") + 1);
+
+            insertPublish(erp, script, dataDevGitProject, gitProjectFilePath);
+            return ztreeNode;
+        } catch (Exception e) {
+            redisValue.put("failCount", redisValue.getIntValue("failCount") + 1);
+            logger.error(e);
+        } finally {
+            jimClient.set(syncKey, redisValue.toString());
+        }
+        return ztreeNode;
+    }
+
+    /**
+     * 处理单个脚本完成的时候同步redis
+     * 3.git同步脚本
+     * 2.hbase同步脚本
+     * <p>
+     * 1.数据库创建脚本
+     * 4.大文件不同步
+     */
+    private ZtreeNode handSyncScriptSingleNew(DataDevGitProject dataDevGitProject, com.alibaba.fastjson.JSONObject redisValue, JSONObject script, Long appGroupId, String dirPath, String erp) {
+        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
+        ZtreeNode ztreeNode = null;
+        try {
+            erp = script.get("creator")!=null? script.getString("creator") : erp;
+            String fileName = script.getString("fileName");
+            Long gitProjectId = dataDevGitProject.getGitProjectId();
+            Integer scriptType = DataDevScriptTypeEnum.getFileNameScriptType(fileName).toCode();
+            byte[] bytes = loadFile(erp, script.getLong("fileId"), script.getString("curVersion"));
+            if (bytes == null || bytes.length < 1) {
+                throw new RuntimeException("empty file");
+            }
+            String gitProjectFilePath = StringUtils.isNotBlank(dirPath) ? (dirPath + "/" + fileName) : fileName;
+            String description = script.get("description") != null ? script.get("description").toString() : "";
+            String startShellPath = script.get("scriptPackagePath") != null ? script.get("scriptPackagePath").toString() : "";
+            /**
+             * 插入数据库,hbase
+             */
+            ztreeNode = dataDevScriptFileService.createNewFile(gitProjectId, gitProjectFilePath, scriptType, erp, 0, bytes, description, startShellPath);
+            Long size = (long) bytes.length;
+            if (SplitFileUtils.isBigFile(size) == 0) {
+                /**
+                 * 同步到Git 大文件不同步到Git
+                 */
+                try {
+                    dataDevScriptFileService.createGitFile(dataDevGitProject, fileName, gitProjectFilePath, erp, scriptType, bytes);
+
+                } catch (Exception e) {
+                    logger.error("======================createGitFile:" + e.getMessage());
+                }
+            }
+            callBackScriptNew(script, gitProjectId, gitProjectFilePath, erp, null);
             redisValue.put("successCount", redisValue.getIntValue("successCount") + 1);
 
             insertPublish(erp, script, dataDevGitProject, gitProjectFilePath);
@@ -477,6 +618,51 @@ public class ImportScriptManager {
         logger.error("===========================updateScriptVersion:" + com.alibaba.fastjson.JSONObject.toJSONString(httpResultDto));
         if (httpResultDto.getInt("code") != 0) {
             throw new RuntimeException(httpResultDto.getString("message"));
+        }
+    }
+
+
+    private void callBackScriptNew(JSONObject script, Long gitProjectId, String gitProjectFilePath, String erp, String version) throws Exception {
+        callBackScriptNew(script.getLong("fileId"), script.getString("curVersion"), gitProjectId, gitProjectFilePath, erp, version);
+    }
+
+    /**
+     * @param fileId
+     * @param buffaloVersion
+     * @param gitProjectId
+     * @param gitProjectFilePath
+     * @param erp
+     * @param version
+     * @throws Exception
+     */
+    public void callBackScriptNew(Long fileId, String buffaloVersion, Long gitProjectId, String gitProjectFilePath, String erp, String version) throws Exception {
+        DataDevScriptFile dataDevScriptFile = dataDevScriptFileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath);
+
+        String url = buffalo4Prefix + "/api/v2/buffalo4/script/updateScriptIdAndVersion";
+        com.alibaba.fastjson.JSONObject data = new com.alibaba.fastjson.JSONObject();
+        data.put("fileId", fileId);
+        data.put("version", buffaloVersion);
+        data.put("dataDevScriptId", dataDevScriptFile.getId());
+        data.put("dataDevScriptVersion", StringUtils.isBlank(version) ? 1000L : version);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("appId", appId);
+        long timeMillis = System.currentTimeMillis();
+        params.put("time", Long.toString(timeMillis));
+
+        logger.info("-------updateScriptVersion：" + params + "; body=" + data);
+        String entity = HttpUtil.doPostWithParamAndBody(url, params, data);
+        logger.info("-------updateScriptVersion：" + entity);
+        JSONObject jsonObject;
+        try {
+            jsonObject = JSONObject.fromObject(entity);
+        } catch(Exception e) {
+            logger.error("获取某个项目空间下面的脚本接口 返回异常");
+            throw new Exception("获取某个项目空间下面的脚本接口 返回异常");
+        }
+        if (jsonObject.getInt("code") == 0) {
+            throw new RuntimeException(jsonObject.getString("message"));
         }
     }
 
@@ -682,6 +868,47 @@ public class ImportScriptManager {
         }
     }
 
+
+    /**
+     * 获取某个项目空间下面的脚本
+     *
+     * @param appGroupId
+     * @throws Exception
+     */
+    public JSONArray getScriptListNew(Long appGroupId) throws Exception {
+        String url = buffalo4Prefix + "/api/v2/buffalo4/script/getNoSyncScript";
+        com.alibaba.fastjson.JSONObject data = new com.alibaba.fastjson.JSONObject();
+
+        data.put("appGroupId", appGroupId);
+        data.put("limit", 100000);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("appId", appId);
+        long timeMillis = System.currentTimeMillis();
+        params.put("time", Long.toString(timeMillis));
+
+        logger.info("-------调度中心-获取某个项目空间下面的脚本接口参数：" + params + "; body=" + data);
+        String entity = HttpUtil.doPostWithParamAndBody(url, params, data);
+        logger.info("-------调度中心-获取某个项目空间下面的脚本接口结果：" + entity);
+
+        JSONObject jsonObject;
+        try {
+            jsonObject = JSONObject.fromObject(entity);
+        } catch(Exception e) {
+            logger.error("获取某个项目空间下面的脚本接口 返回异常");
+            throw new Exception("获取某个项目空间下面的脚本接口 返回异常");
+        }
+        if (jsonObject.getInt("code") == 0) {
+            if (jsonObject.get("list") != null) {
+                return jsonObject.getJSONArray("list");
+            } else {
+                return new JSONArray();
+            }
+        } else {
+            throw new RuntimeException(jsonObject.getString("message"));
+        }
+    }
     /**
      * 获取项目空间人员
      *
