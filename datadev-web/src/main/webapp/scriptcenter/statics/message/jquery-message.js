@@ -333,7 +333,7 @@ $.extend({
      * @param params
      */
     bdpMsg: function (params, init) {
-        if(top.Msg && params.topWindow === true){
+        if(top.Msg){
             top.Msg.bdpMsg(params,init);
             return ;
         }

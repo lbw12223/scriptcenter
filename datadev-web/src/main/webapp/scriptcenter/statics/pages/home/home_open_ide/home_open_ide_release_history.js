@@ -13,7 +13,7 @@ $(function () {
             page: 1,
             postData: {
                 projectId: $("#projectSpaceMo option:checked").val(),
-                scriptName: $.trim($("#fileName").val())
+                scriptId: $.trim($("#scriptFileId").val())
             }
         }).trigger("reloadGrid");
     });
@@ -22,7 +22,11 @@ $(function () {
         initSelect();
         if(this.isInit){
             jQuery("#release-grid-table").jqGrid('setGridParam',{
-                page:1
+                page:1,
+                postData: {
+                    projectId: $("#projectSpaceMo option:checked").val(),
+                    scriptId: $.trim($("#scriptFileId").val())
+                }
             }).trigger("reloadGrid");
         }else {
             this.isInit = true;
@@ -31,29 +35,27 @@ $(function () {
                     name: 'version',
                     label: "版本",
                     sortable: false,
-                    // formatter: function (cellvalue, options, record) {
-                    //     var version = getVersionFromScriptUrl(record.releaseInfoDev.scriptUrl);
-                    //     var id = record.id;
-                    //     var name = "";
-                    //     var str = '<span class="run-item run-script-version" data-id="'+id+'" data-name="'+name+'" data-version="' + version + '"  >' + version + '</span>';
-                    //     return str;
-                    // }
+                    formatter: function (cellvalue, options, record) {
+                        var id = record.releaseSubmitId;
+                        var str = "<a href='/release/compare?compareStatus=r_record&id=" + id + "' target='_blank'>"+record.version+"</a>";
+                        return str;
+                    }
                 },
                 {
                     name:'projectName',
                     label:'项目空间',
                     sortable:false,
-                    formatter: function (cellvalue, options, record) {
-                        return record.projectName+"("+record.releaseInfoDev.projectId+")";
-                    }
+                    // formatter: function (cellvalue, options, record) {
+                    //     return record.projectName+"("+record.projectId+")";
+                    // }
                 },
                 {
-                    name: 'releaseErpName',
+                    name: 'releaseErp',
                     label: "发布人",
                     sortable: false,
-                    formatter: function (cellvalue, options, record) {
-                        return record.releaseErpName+"("+record.releaseErp+")";
-                    }
+                    // formatter: function (cellvalue, options, record) {
+                    //     return record.releaseErpName+"("+record.releaseErp+")";
+                    // }
                 },
                 {
                     name: 'releaseTime',
@@ -64,7 +66,7 @@ $(function () {
                     // }
                 },
                 {
-                    name: 'releaseOperatorType',
+                    name: 'releaseOperatorTypeDesc',
                     label: "变更类型",
                     sortable: false
                 },
@@ -86,7 +88,7 @@ $(function () {
                 mtype: 'POST',
                 postData: {
                     projectId: $("#projectSpaceMo option:checked").val(),
-                    scriptName: $.trim($("#fileName").val())
+                    scriptId: $.trim($("#scriptFileId").val())
                 },
                 colModel: _colModel,
                 viewrecords: true,
@@ -139,9 +141,9 @@ $(function () {
                     options += "<option value='" + p.id + "' >" + p.name+ "</option>"
                 }
                 $("#projectSpaceMo").append(options);
-                $("#projectSpaceMo").select2(
-                    {placeholder: '请选择项目空间'}
-                );
+
+                var defaultVal = data.obj[0] ? data.obj[0].id : 0;
+                $("#projectSpaceMo").val(defaultVal).select2();
             }
         })
     }

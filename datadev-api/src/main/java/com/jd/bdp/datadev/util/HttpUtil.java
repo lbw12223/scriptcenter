@@ -64,12 +64,14 @@ public class HttpUtil {
 
     public static String doPostWithParamAndBody(String uri, Map<String, String> params, com.alibaba.fastjson.JSONObject body) throws Exception {
         // 将param拼接到uri
-        String param = "?";
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            param += String.format("%s=%s&", entry.getKey(), entry.getValue());
+        if (params != null && params.size() > 0) {
+            String param = "?";
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                param += String.format("%s=%s&", entry.getKey(), entry.getValue());
+            }
+            param = param.substring(0, param.length() - 1);
+            uri += param;
         }
-        param = param.substring(0, param.length() - 1);
-        uri += param;
 
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");

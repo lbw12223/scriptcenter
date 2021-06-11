@@ -1,6 +1,7 @@
 package com.jd.bdp.datadev.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.api.common.JsfResultDto;
 import com.jd.bdp.api.think.cluster.ClusterJSFInterface;
@@ -64,6 +65,9 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
     private DataDevDependencyService devDependencyService;
     @Autowired
     private DataDevScriptConfigService configService;
+
+    @Autowired
+    private BuffaloComponent buffaloComponent;
 
     @Value("${datadev.appId}")
     private String appId;
@@ -483,11 +487,16 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
 
     private DataDevScriptRunDetail fillScriptRunDetail(DataDevScriptRunDetail scriptRunDetail, DataDevScriptFile scriptFile, boolean isMergeMarket) throws Exception {
 
-       //insert envs ;//
-
-
-
-
+//        //TODO MOCK需要删除 根据runClusterCode和runMarketLinuxUser获取库变量
+//        JSONArray aa = buffaloComponent.getDBEnvInfo("xxx", "yyy");
+//        JSONObject bb = new JSONObject();
+//        for (Object o : aa) {
+//            JSONObject jsonObject = (JSONObject) o;
+//            String variableCode = jsonObject.getString("variableCode");
+//            String devDb = jsonObject.getString("devDb");
+//            bb.put(variableCode, devDb);
+//        }
+//        scriptRunDetail.setEnvs(bb.toJSONString());
 
         scriptRunDetail.setType(scriptFile.getType());
         if (!ScriptTypeEnum.SQL.toCode().equals(scriptRunDetail.getType()) || StringUtils.isBlank(scriptRunDetail.getEngineType())) {
@@ -508,8 +517,22 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
         }
         if (isMergeMarket && StringUtils.isNotBlank(scriptRunDetail.getClusterCode()) && StringUtils.isNotBlank(scriptRunDetail.getMarketLinuxUser()) && StringUtils.isNotBlank(scriptRunDetail.getAccountCode())) {
             DataDevScriptConfig oriClusterAndMarketByMarketCode = configService.getOriClusterAndMarketByMarketCode(scriptRunDetail.getClusterCode(), scriptRunDetail.getMarketLinuxUser(), scriptRunDetail.getAccountCode());
-            scriptRunDetail.setRunClusterCode(oriClusterAndMarketByMarketCode.getRunClusterCode());
-            scriptRunDetail.setRunMarketLinuxUser(oriClusterAndMarketByMarketCode.getRunMarketLinuxUser());
+            String runClusterCode = oriClusterAndMarketByMarketCode.getRunClusterCode();
+            String runMarketLinuxUser = oriClusterAndMarketByMarketCode.getRunMarketLinuxUser();
+            scriptRunDetail.setRunClusterCode(runClusterCode);
+            scriptRunDetail.setRunMarketLinuxUser(runMarketLinuxUser);
+
+            // 根据runClusterCode和runMarketLinuxUser获取库变量
+            JSONArray dbEnvInfo = buffaloComponent.getDBEnvInfo(runMarketLinuxUser, runClusterCode);
+            JSONObject envObjs = new JSONObject();
+            for (Object o : dbEnvInfo) {
+                JSONObject jsonObject = (JSONObject) o;
+                String variableCode = jsonObject.getString("variableCode");
+                String devDb = jsonObject.getString("devDb");
+                envObjs.put(variableCode, devDb);
+            }
+            scriptRunDetail.setEnvs(envObjs.toJSONString());
+
         }
         scriptRunDetail.setStartShellPath(StringUtils.isNotBlank(startShellPath) ? startShellPath.trim() : "");
         scriptRunDetail.setCreator(StringUtils.isNotBlank(scriptRunDetail.getCreator()) ? scriptRunDetail.getCreator() : "bdp_sys");
