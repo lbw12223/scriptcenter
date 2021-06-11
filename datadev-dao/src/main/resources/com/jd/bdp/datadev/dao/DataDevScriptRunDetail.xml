@@ -205,6 +205,114 @@
 
     </select>
 
+    <select id="runListPage" resultType="DataDevScriptRunDetail">
+        SELECT
+        runDetail.id,
+        runDetail.script_file_id as scriptFileId,
+        runDetail.version,
+        runDetail.operator,
+        runDetail.start_time as startTime,
+        runDetail.end_time as endTime,
+        runDetail.status,
+        runDetail.cluster_code as clusterCode,
+        runDetail.market_linux_user as marketLinuxUser,
+        runDetail.queue_code as queueCode,
+        runDetail.account_code as accountCode,
+        runDetail.args,
+        runDetail.process_id as processId,
+        runDetail.creator,
+        runDetail.created,
+        runDetail.type,
+        runDetail.log_count as logCount,
+        runDetail.data_count as dataCount,
+        runDetail.envs,
+        runDetail.response_code as responseCode,
+        runDetail.args_import_type as argsImportType,
+        runDetail.start_shell_path as startShellPath,
+        runDetail.ip,
+        runDetail.script_config_id AS scriptConfigId,
+        runDetail.stop_erp as stopErp,
+        runDetail.git_project_id as gitProjectId,
+        runDetail.git_project_file_path as gitProjectFilePath,
+        runDetail.engine_type as engineType,
+        runDetail.run_type AS runType,
+        runDetail.git_project_dir_path AS gitProjectDirPath,
+        runDetail.dependency_id AS dependencyId,
+        runDetail.debug_flag as debugFlag,
+        runDetail.run_tmp as runTmp,
+        runDetail.run_cluster_code as runClusterCode,
+        runDetail.run_market_linux_user as runMarketLinuxUser ,
+        gitProject.git_project_path as gitProjectPath ,
+        scriptConfig.market_id as marketId,
+        scriptConfig.queue_id as queueId,
+        scriptConfig.account_id as accountId
+        FROM script_run_detail as runDetail
+        left join git_project as gitProject on gitProject.git_project_id = runDetail.git_project_id
+        left join script_config as scriptConfig on scriptConfig.id = runDetail.script_config_id
+        WHERE 1 = 1
+        <if test="id != null">
+            AND runDetail.id = #{id}
+        </if>
+        <if test="operator != null and operator != ''">
+            AND runDetail.operator = #{operator}
+        </if>
+        <if test="startTimeFrom !=null ">
+            AND runDetail.start_time >= #{startTimeFrom}
+        </if>
+        <if test="startTimeTo !=null ">
+            AND runDetail.start_time &lt;= #{startTimeTo}
+        </if>
+        <if test="endTimeFrom !=null ">
+            AND runDetail.end_time >= #{endTimeFrom}
+        </if>
+        <if test="endTimeTo !=null ">
+            AND runDetail.end_time &lt;= #{endTimeTo}
+        </if>
+        <if test="marketId !=null ">
+            AND scriptConfig.market_id = #{marketId}
+        </if>
+        <if test="statusList != null ">
+            AND
+            <foreach collection="statusList" item="item" open="(" close=")" separator="or">
+                runDetail.status = #{item}
+            </foreach>
+        </if>
+
+        ORDER BY id desc limit #{start},#{limit}
+    </select>
+    <select id="runListCount" resultType="Long">
+        SELECT count(*)
+        FROM script_run_detail
+        left join script_config as scriptConfig on scriptConfig.id = script_run_detail.script_config_id
+        WHERE 1 = 1
+        <if test="id != null">
+            AND script_run_detail.id = #{id}
+        </if>
+        <if test="operator != null and operator != ''">
+            AND operator = #{operator}
+        </if>
+        <if test="startTimeFrom !=null ">
+            AND start_time >= #{startTimeFrom}
+        </if>
+        <if test="startTimeTo !=null ">
+            AND start_time &lt;= #{startTimeTo}
+        </if>
+        <if test="endTimeFrom !=null ">
+            AND end_time >= #{endTimeFrom}
+        </if>
+        <if test="endTimeTo !=null ">
+            AND end_time &lt;= #{endTimeTo}
+        </if>
+        <if test="marketId !=null ">
+            AND scriptConfig.market_id = #{marketId}
+        </if>
+        <if test="statusList != null ">
+            AND
+            <foreach collection="statusList" item="item" open="(" close=")" separator="or">
+                status = #{item}
+            </foreach>
+        </if>
+    </select>
 
 
 </mapper>

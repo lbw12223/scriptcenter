@@ -96,6 +96,10 @@ public class DataDevScriptRunDetail {
     private Integer cgroupMemoryLimit = 10;
     private Integer cgroupCpuLimit = 5;
     private String  doSqlToolCheck = "true";
+    private Long marketId ;
+    private String marketName ;
+    private String gitProjectPath;
+
 
 
     public Integer getRunByDataPreview() {
@@ -665,5 +669,29 @@ public class DataDevScriptRunDetail {
 
     public void setDoSqlToolCheck(String doSqlToolCheck) {
         this.doSqlToolCheck = doSqlToolCheck;
+    }
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getGitProjectPath() {
+        return gitProjectPath;
+    }
+
+    public void setGitProjectPath(String gitProjectPath) {
+        this.gitProjectPath = gitProjectPath;
     }
 }

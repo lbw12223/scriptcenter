@@ -8,7 +8,9 @@ import com.jd.bdp.api.think.dto.ClusterBaseDto;
 import com.jd.bdp.api.think.dto.ClusterHadoopMarketDto;
 import com.jd.bdp.common.utils.DESUtil;
 import com.jd.bdp.common.utils.PageResultDTO;
+import com.jd.bdp.datadev.component.AllMarketComponent;
 import com.jd.bdp.datadev.component.HbaseRunDetailLog;
+import com.jd.bdp.datadev.component.UrmUtil;
 import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
 import com.jd.bdp.datadev.dao.DataDevScriptRunDetailDao;
 import com.jd.bdp.datadev.domain.DataDevScriptConfig;
@@ -68,6 +70,12 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
 
     @Autowired
     private HbaseRunDetailLog hbaseRunDetailLog;
+
+    @Autowired
+    private UrmUtil urmUtil ;
+
+    @Autowired
+    private AllMarketComponent allMarketComponent;
 
     private static String ENCRYPT_KEY = "CvNvX5Ggmu72dQTj";
     private static Pattern IP_PATTERN = Pattern.compile("((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))");
@@ -370,4 +378,79 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
         return new HoldDoubleValue<>(numberCount, total);
     }
 
+    @Override
+    public PageResultDTO runListPage(DataDevScriptRunDetail runDetail, Pageable pageable) throws Exception {
+        PageResultDTO pageResultDTO = new PageResultDTO();
+
+        if (StringUtils.isNotBlank(runDetail.getStatusStr())) {
+            String[] strings = runDetail.getStatusStr().trim().split(",");
+            runDetail.setStatusList(new ArrayList<Integer>());
+            for (String str : strings) {
+                if (StringUtils.isBlank(str)) {
+                    continue;
+                }
+                Integer sta = Integer.parseInt(str);
+                if (DataDevScriptRunStatusEnum.enumValueOf(sta) != null) {
+                    runDetail.getStatusList().add(sta);
+                }
+                if (DataDevScriptRunStatusEnum.Running.toCode() == sta) {
+                    runDetail.getStatusList().add(DataDevScriptRunStatusEnum.Delay.toCode());
+                }
+            }
+        } else {
+            runDetail.setStatusList(null);
+        }
+
+        Long count = runDetailDao.runListCount(runDetail);
+        List<DataDevScriptRunDetail> list = new ArrayList<DataDevScriptRunDetail>();
+        if(count > 0){
+            runDetail.setStart(pageable.getOffset());
+            runDetail.setLimit(pageable.getPageSize());
+            list = runDetailDao.runListPage(runDetail);
+            for(DataDevScriptRunDetail item : list){
+                handDataDevScriptRunDetailListItem(item);
+                ClusterHadoopMarketDto clusterHadoopMarketDto = allMarketComponent.getMarketById(item.getMarketId());
+                if(clusterHadoopMarketDto != null){
+                    item.setMarketName(clusterHadoopMarketDto.getMarketName());
+                }
+                item.setOperator(urmUtil.getErpAndNameByErp(item.getOperator()));
+            }
+        }
+        pageResultDTO.setRecords(count);
+        pageResultDTO.setSuccess(true);
+        pageResultDTO.setRows(list);
+        return pageResultDTO;
+    }
+    private void handDataDevScriptRunDetailListItem(DataDevScriptRunDetail detail){
+        DataDevScriptRunStatusEnum statusEnum = DataDevScriptRunStatusEnum.enumValueOf(detail.getStatus());
+        detail.setStatusStr(statusEnum != null ? statusEnum.toDesc() : "");
+        if (detail.getStartTime() != null && detail.getEndTime() != null) {
+            Long timeDif = detail.getEndTime().getTime() - detail.getStartTime().getTime();
+            if (timeDif >= 0) {
+                String timeStr = "";
+                if (timeDif / (1000 * 60 * 60) > 0) {
+                    timeStr += timeDif / (1000 * 60 * 60) + "h";
+                    timeDif %= (1000 * 60 * 60);
+                }
+                if (StringUtils.isNotBlank(timeStr) || timeDif / (1000 * 60) > 0) {
+                    timeStr += timeDif / (1000 * 60) + "min";
+                    timeDif %= (1000 * 60);
+                }
+                if (timeDif / (1000 * 60) <= 0) {
+                    timeStr += timeDif / (1000) + "s";
+                }
+                detail.setTimePeriod(timeStr);
+            }
+        }
+        if (StringUtils.isNotBlank(detail.getEngineType())) {
+            DataDevScriptEngineTypeEnum engineTypeEnum = DataDevScriptEngineTypeEnum.enumValueOf(detail.getEngineType());
+            if (engineTypeEnum != null) {
+                detail.setEngineType(engineTypeEnum.getName());
+            }
+        }
+        if (detail.getRunTmp() != null && detail.getRunTmp() == 1) {
+            detail.setVersion("临时版本");
+        }
+        detail.setRunTypeStr(DataDevRunTypeEnum.enumValueOf(detail.getRunType()).toRunDesc());
+    }
 }

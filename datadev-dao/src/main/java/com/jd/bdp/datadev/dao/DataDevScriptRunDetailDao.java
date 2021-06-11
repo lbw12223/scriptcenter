@@ -66,4 +66,18 @@ public interface DataDevScriptRunDetailDao {
 
 
     List<DataDevScriptRunDetail> listFinishTask(@Param("limit") Long limit);
+
+    /**
+     * runListPage
+     * @param
+     * @return
+     */
+    List<DataDevScriptRunDetail> runListPage(DataDevScriptRunDetail detail);
+
+    /**
+     * runListCount
+     * @param
+     * @return
+     */
+    Long runListCount(DataDevScriptRunDetail detail);
 }

@@ -1,6 +1,8 @@
 package com.jd.bdp.datadev.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.jd.bdp.common.utils.AjaxUtil;
+import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevGitAccessLevelEnum;
@@ -18,6 +20,8 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,6 +94,52 @@ public class HomeController {
     @Value("${datadev.token}")
     private String appToken;
 
+    @Autowired
+    private DataDevClusterAdminService dataDevClusterAdminService ;
+
+    @Autowired
+    private DataDevScriptRunDetailService runDetailService;
+
+    @RequestMapping({"/scriptcenter/runList.html"})
+    public String runListHtml(UrmUserHolder userHolder, Model model) throws Exception{
+        boolean isClusterAdmin = dataDevClusterAdminService.getClusterAdminByErp(userHolder.getErp());
+        model.addAttribute("isClusterAdmin", isClusterAdmin);
+
+        return "/scriptcenter/devcenter/run_list";
+    }
+    @RequestMapping({"/scriptcenter/runList.ajax"})
+    @ResponseBody
+    public JSONObject runListAjax(UrmUserHolder userHolder,
+                                  DataDevScriptRunDetail runDetail,
+                                  @RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "rows", defaultValue = "10") int rows) {
+        PageResultDTO pageResultDTO = new PageResultDTO();
+        Pageable pageable = new PageRequest(page - 1, rows);
+        try {
+            runDetail.setMarketId(runDetail.getMarketId() != null && runDetail.getMarketId() > 0 ? runDetail.getMarketId() : null);
+            boolean isClusterAdmin = dataDevClusterAdminService.getClusterAdminByErp(userHolder.getErp());
+            String opertor = runDetail.getOperator();
+            //如果是集群管理员，那么有选择erp，权限或者必须指定人
+            if (isClusterAdmin) {
+                if (StringUtils.isNotBlank(opertor)) {
+                    runDetail.setOperator(opertor);
+                }
+            } else {
+                runDetail.setOperator(userHolder.getErp());
+            }
+
+            pageResultDTO = runDetailService.runListPage(runDetail, pageable);
+        } catch (Exception e) {
+            logger.error(e);
+            pageResultDTO.setSuccess(false);
+            pageResultDTO.setRecords(0L);
+            pageResultDTO.setMessage("获取列表失败！" + e.getMessage());
+        }
+        pageResultDTO.setPage(page);
+        pageResultDTO.setLimit(rows);
+        pageResultDTO.setMessage("获取成功");
+        return AjaxUtil.gridJson(pageResultDTO);
+    }
 
     private String getGuideRedisKey(String erp) {
         String env = SpringPropertiesUtils.getPropertiesValue("${datadev.env}");

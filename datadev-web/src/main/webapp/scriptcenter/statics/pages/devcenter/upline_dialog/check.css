@@ -1,0 +1,123 @@
+.jmd-title {
+    margin-bottom: 8px;
+}
+
+.jmd-title--line {
+    display: block;
+    width: 100%;
+    position: relative;
+    border-radius: 2px 2px 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 12px 0;
+    box-sizing: border-box;
+    background-color: #FFF;
+}
+
+.jmd-title--line .jmd-title-text {
+    position: relative;
+    font-size: 16px;
+    line-height: 24px;
+    color: #262626;
+    font-weight: 600;
+    padding-left: 19px;
+    z-index: 2;
+    padding-right: 24px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.jmd-title--line.jmd-title-line--middle {
+    border-bottom: 0;
+    padding: 7px 0;
+}
+
+.jmd-title--line.jmd-title-line--middle:before {
+    content: "";
+    width: 5px;
+    height: 8px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 3px;
+    background: #2F64EB;
+    z-index: 3;
+}
+
+.jmd-title--line.jmd-title-line--middle:after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, .06);
+}
+
+
+.bdp-upline-dialog-check-desc {
+    margin-bottom: 16px;
+}
+
+.bdp-upline-dialog-check-desc span {
+    height: 22px;
+    line-height: 22px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.bdp-upline-dialog-check-desc .bdp-upline-dialog-check-desc-num {
+    color: #2F64EB;
+}
+
+.bdp-upline-dialog-check-table {
+    width: 100%;
+    height: 280px;
+}
+
+
+.bdp-upline-dialog-check-table .table-wrap {
+    border: 0;
+}
+
+.bdp-upline-dialog-check-table .table-header {
+    background: repeat-x #FAFAFA !important;
+}
+
+.bdp-upline-dialog-check-table .footer-toolbar {
+    background: #ebebeb  !important;
+}
+
+.bdp-upline-dialog-check-table .footer-toolbar .ajax-page .pagination > li.active,
+.bdp-upline-dialog-check-table .footer-toolbar .ajax-page .pagination > li.active:focus,
+.bdp-upline-dialog-check-table .footer-toolbar .ajax-page .pagination > li.active:hover {
+    background-color: #2F64EB;
+}
+
+.bdp-upline-dialog-check-form {
+    width: 100%;
+    height: 220px;
+}
+
+.bdp-upline-dialog-check-footer {
+    background: #ebebeb !important;
+}
+
+.bdp-upline-dialog-check-form {
+    padding-top: 24px;
+}
+
+.bdp-upline-dialog-check-form .bdp-upline-dialog-check-form-left {
+    float: left;
+    width: 49%;
+}
+
+.bdp-upline-dialog-check-form .bdp-upline-dialog-check-form-right {
+    float: right;
+    width: 49%;
+}
+
+.bdp-help-block{
+    position: inherit !important;
+}

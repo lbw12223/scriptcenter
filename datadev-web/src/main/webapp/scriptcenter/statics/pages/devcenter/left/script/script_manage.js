@@ -183,6 +183,7 @@ function setScriptLocation(gitProjectId, gitProjectFilePath) {
 function resetLocation() {
     locationScriptObj = {};
 }
+
 //deleted 06--8
 // function loadScript(gitProjectId, gitProjectFilePath) {
 //     if (getSelectedProjectId() == gitProjectId) {
@@ -288,7 +289,7 @@ function locationScript(gitProjectId, gitProjectFilePath, scriptId) {
             }
 
         } else {
-            top.$.errorMsg("该脚本已被删除");
+            //$.errorMsg("该脚本已被删除");
         }
     })
 }
@@ -423,6 +424,7 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
         preSelectedId = node.tId;
     }
 }
+
 //deleleted 2021-06-08
 // function updateNode(newNode) {
 //     if (getSelectedProjectId() == newNode.gitProjectId && newNode.path) {
@@ -660,15 +662,15 @@ $(function () {
                     return item.appgroupId
                 },
                 formatResult: function (item) {
-                    var type = "G" ;
-                    if(item.appgroupId < 900000000){
-                        type = "G" ;
-                    }else if(item.appgroupId > 900000000 &&  item.appgroupId < 1000000000){
-                        type = "C" ;
-                    }else{
-                        type = "L" ;
+                    var type = "G";
+                    if (item.appgroupId < 900000000) {
+                        type = "G";
+                    } else if (item.appgroupId > 900000000 && item.appgroupId < 1000000000) {
+                        type = "C";
+                    } else {
+                        type = "L";
                     }
-                    return  "<span class='projectType'>"+type+"</span>" + "<span class='projectName'>"+item.appgroupName+"</span>";
+                    return "<span class='projectType'>" + type + "</span>" + "<span class='projectName'>" + item.appgroupName + "</span>";
                 },
                 formatSelection: function (item) {
                     return item.appgroupName;
@@ -960,7 +962,7 @@ $(function () {
 
             $("#rightMenuBackground").contextmenu(function (e) {
                 e.preventDefault() // 阻止右键菜单默认行为
-                $("#rightMenuBackground").click();
+                // $("#rightMenuBackground").click();
             })
 
 
@@ -1326,7 +1328,7 @@ $(function () {
 
         function shareScript(gitProjectId, gitProjectFilePath) {
             var html = "<div style='line-height: 25px;padding: 20px 20px 10px'>复制脚本URL到剪贴板，可让其他项目成员快速定位到该脚本。</div>";
-            top.$.bdpMsg({
+            $.bdpMsg({
                 title: "提示",
                 mainContent: html,
                 width: "350px",
@@ -1337,14 +1339,14 @@ $(function () {
                             gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
                             var url = _bdpDomain + "/scriptcenter/index.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
                             copyContent(url);
-                            top.$.successMsg("脚本URL已复制到剪贴板")
+                            $.successMsg("脚本URL已复制到剪贴板")
                         },
                         btnClass: 'bdp-btn-primary'
                     },
                     {
                         text: "取消",
                         event: function () {
-                            top.$.removeMsg();
+                            $.removeMsg();
                         }
                     }
                 ]
@@ -1452,13 +1454,13 @@ $(function () {
                 } else {
                     content = "是否确定删除脚本（任务调度中的脚本将同步删除）？";
                 }
-                top.$.confirmMsg({
+                $.confirmMsg({
                     content: content,
                     buttons: [
                         {
                             text: "确定",
                             event: function () {
-                                top.$.removeMsg();
+                                $.removeMsg();
                                 removeScriptDirect(gitProjectId, gitProjectFilePath);
                             }
                         },
@@ -1485,9 +1487,9 @@ $(function () {
                     //删除“当前选中的zTree节点”cookie
                     HOME_COOKIE.rmActiveGitPathCookie($("#loginErp").val());
 
-                    top.$.successMsg("删除脚本成功");
+                    $.successMsg("删除脚本成功");
                 } else {
-                    top.$.errorMsg("删除出现异常");
+                    $.errorMsg("删除出现异常");
                 }
             })
 
@@ -1581,19 +1583,19 @@ $(function () {
                     $.dialog.data("rightTips", "git   commitId：" + data.obj.newGitVersion);
                     diff(gitProjectId, gitProjectFilePath, function (key, ajaxData) {
                         datadevInit.directSave(function () {
-                            top.$.successMsg(data.message);
+                            $.successMsg(data.message);
                         }, ajaxData, key);
                     });
                 } else {
-                    top.$.successMsg("pull成功");
+                    $.successMsg("pull成功");
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Pull...")
+                $.loadingMsg("正在Pull...")
             });
         }
 
         function pushFile(gitProjectId, gitProjectFilePath) {
-            top.$.loadingMsg("正在Push...");
+            $.loadingMsg("正在Push...");
             var key = getKey(gitProjectId, gitProjectFilePath);
             pushFileDirect(gitProjectId, gitProjectFilePath);
 
@@ -1742,12 +1744,12 @@ $(function () {
                         close: function () {
                         }
                     });
-                    top.$.dialog.data("dialogObj", dialogId);
+                    $.dialog.data("dialogObj", dialogId);
                 } else {
-                    top.$.successMsg("Pull成功");
+                    $.successMsg("Pull成功");
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Pull...")
+                $.loadingMsg("正在Pull...")
             })
         }
 
@@ -1822,11 +1824,11 @@ $(function () {
                         mergeAndPushDir(gitProjectId, gitProjectDirPath, gitCommitMessage);
                     });
                 } else {
-                    top.$.successMsg("push成功")
+                    $.successMsg("push成功")
                     changeDirGitStatus(gitProjectId, gitProjectDirPath);
                 }
             }, undefined, undefined, undefined, undefined, function () {
-                top.$.loadingMsg("正在Push...")
+                $.loadingMsg("正在Push...")
             })
         }
 
@@ -1864,6 +1866,8 @@ var QIAN_KUN = undefined;
 window["bdp-qiankun"] = {
     mount: function (msg) {
         QIAN_KUN = msg;
+        TabCacheClass.bindFrameEvent();
+        TabCacheClass.openCacheTabs();
     }
 }
 
@@ -1878,7 +1882,7 @@ window["bdp-qiankun"] = {
  */
 function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version) {
     if (!path) {
-        top.$.errorMsg("脚本path为空，不能打开脚本");
+        $.errorMsg("脚本path为空，不能打开脚本");
     }
     if (!name) {
         var index = path.lastIndexOf("/");
@@ -1892,21 +1896,16 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm: true,
-        beforeConfirm: function (cb) {
-            var frameBus = new FrameBus();
-            frameBus.emit(bdpFrameBusConfig.key['TOP_VALID_CODE_DIFF'], {}, function (f) {
-                cb(f)
-            })
-        }
+        closeConfirm: false,
     }
-
+    TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
 }
 
 function removeQianKunScriptTab(key) {
     QIAN_KUN.utils.closeTabByKey({key: key})
     QIAN_KUN.utils.closeTabByKey(key)
+    TabCacheClass.removeCache(key)
 }
 
 
@@ -1947,7 +1946,7 @@ function getUrl(gitProjectId, path, pythonType) {
 
 function showPushInfo(pushNum, submitCallBack, isDir) {
     if (pushNum == 0) {
-        top.$.successMsg("与git版本一致，不需要push。");
+        $.successMsg("与git版本一致，不需要push。");
         return;
     }
     var html =
@@ -1963,7 +1962,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
         "           </div>" +
         "     </div>" +
         "</form>";
-    top.$.bdpMsg({
+    $.bdpMsg({
         title: "Push 提交",
         mainContent: html,
         width: "600px",
@@ -1980,7 +1979,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
             {
                 text: "取消",
                 event: function () {
-                    top.$.removeMsg();
+                    $.removeMsg();
                 }
             }
         ]
@@ -2131,6 +2130,24 @@ $(".addFile").click(function (event) {
     var locat = $(".addFile").offset();
     $("#newScriptDiv").css("top", (locat.top + 30) + "px").css("left", (locat.left - 140) + "px").css("display", "block");
 })
+$(".runList").click(function (event) {
+    showRightMenuBackground();
+    hiddenLeftRightMeun();
+
+    var url = "/scriptcenter/runList.html";
+    var uplineCheck = $.dialog.open(url, {
+        title: "脚本运行历史",
+        lock: true,
+        width: "1084px",
+        height: "624px",
+        opacity: 0.5,
+        esc: false,
+        close: function () {
+        }
+    });
+
+
+})
 /*新建脚本 end */
 
 var leftManagerFrameBus = new FrameBus();
@@ -2144,6 +2161,139 @@ $(window).resize(function () {
 
 });
 
+var TabCacheClass = /** @class */ (function () {
+    function TabCacheClass(cfg) {
+        this.config = cfg;
+        this.state = {};
+        this.isInstance();
+    }
+
+    // 校验是否实例
+    TabCacheClass.prototype.isInstance = function () {
+        if (!(this instanceof TabCacheClass)) {
+            throw TypeError("Class constructor An cannot be invoked without 'new'");
+        }
+    };
+
+    // 加入缓存
+    TabCacheClass.addCache = function (param) {
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        var tab = tabs.find(item => {
+            return item.key === param.key
+        });
+        if (!tab) {
+            tabs.push(param);
+            TabCacheClass.setCache(tabs);
+        }
+    }
+
+    // 写入缓存
+    TabCacheClass.setCache = function (params) {
+        JmdUtil.LsUtil.setItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, params, top.window)
+    }
+
+    // 获取现有缓存
+    TabCacheClass.getCache = function () {
+        return JmdUtil.LsUtil.getItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, top.window);
+    }
+
+    // 修改缓存
+    TabCacheClass.updateCache = function (param) {
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        if (JmdUtil.ValidateUtil.isEmptyList(tabs)) {
+            return;
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].key === param.key) {
+                for (var k in param) {
+                    tabs[i][k] = param[k]
+
+                }
+                break;
+            }
+        }
+        TabCacheClass.setCache(tabs);
+    }
+
+    // 删除缓存中的一个
+    TabCacheClass.removeCache = function (key) {
+        if (!key) {
+            throw new Error("请传入唯一的key")
+        }
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        var oldLen = tabs.length;
+        if (JmdUtil.ValidateUtil.isEmptyList(tabs)) {
+            return;
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].key === key) {
+                tabs.splice(i, 1);
+                i--;
+                break;
+            }
+        }
+        if (oldLen === tabs.length) {
+            return;
+        }
+        TabCacheClass.setCache(tabs);
+    }
+
+    // 清空缓存
+    TabCacheClass.clearCache = function () {
+        JmdUtil.LsUtil.removeItem(BdpLocalStorageConfig.SCRIPT_CENTER_TABS, top.window)
+    }
+
+    // 从缓存打开tabs
+    TabCacheClass.openCacheTabs = function () {
+        var cacheTabs = TabCacheClass.getCache();
+        if (JmdUtil.ValidateUtil.notEmptyList(cacheTabs)) {
+            cacheTabs.forEach(item => {
+                var path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
+                var nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
+                openScript(nowGitProjectId, path, item.title)
+            })
+        }
+    }
+
+    // 绑定frameBus事件
+    TabCacheClass.bindFrameEvent = function () {
+        var frameBus = new FrameBus();
+        TabCacheClass.bindLogoutFrameEvent(frameBus);
+        TabCacheClass.bindCloseTabFrameEvent(frameBus);
+        TabCacheClass.bindUpdateTabFrameEvent(frameBus);
+        TabCacheClass.bindAddTabFrameEvent(frameBus);
+    }
+
+    // 退出登录清空缓存
+    TabCacheClass.bindLogoutFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_LOGIN_OUT, function () {
+            TabCacheClass.clearCache()
+        })
+    }
+    // 关闭tab删除tab项
+    TabCacheClass.bindCloseTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_CLOSE, function (key) {
+            TabCacheClass.removeCache(key)
+        })
+    }
+    // 修改tabs项
+    TabCacheClass.bindUpdateTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_UPDATE, function (param) {
+            TabCacheClass.updateCache(param)
+        })
+    }
+    // 添加tab项
+    TabCacheClass.bindAddTabFrameEvent = function (frameBus) {
+        frameBus.on(BdpFrameBusConfig.BDP_SCRIPT_CENTER_TAB_ADD, function (param) {
+            TabCacheClass.addCache(param)
+        })
+    }
+
+    return TabCacheClass;
+}())
 
 
 
