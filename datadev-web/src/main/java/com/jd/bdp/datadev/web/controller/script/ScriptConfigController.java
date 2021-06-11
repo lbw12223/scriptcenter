@@ -97,8 +97,8 @@ public class ScriptConfigController {
     public JSONObject getConfigByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
-        List<DataDevScriptConfig> defaultProjectpaceConfig = projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
-        return JSONObjectUtil.getSuccessResultTwoObj(list,defaultProjectpaceConfig);
+        List<DataDevScriptConfig> defaultProjectpaceConfig = new ArrayList<DataDevScriptConfig>(); //projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
+        return JSONObjectUtil.getSuccessResultTwoObj(list, null);
     }
 
 
@@ -107,29 +107,20 @@ public class ScriptConfigController {
     @ResponseBody
     public JSONObject getMarketByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
         try {
-//            userHolder.setErp("bjyuanz");
-
             //首先判断用户是否是集群管理员，如果是获取所有集市，如果不是调用权限接口
-            boolean isClusterAdmin = dataDevClusterAdminService.getClusterAdminByErp(userHolder.getErp());
-            if (isClusterAdmin) {
-                logger.error("getMarketByErp  " + userHolder.getErp() + "是集群管理员");
-                List<MarketInfoDto> allOpenMarketList = dataDevClusterAdminService.getAllMarkets();
-                return JSONObjectUtil.getSuccessResult(allOpenMarketList);
-            } else {
-                Long time = System.currentTimeMillis();
-                logger.error("========================getMarketByErp" + appId + appToken + time + userHolder.getErp());
-                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(userHolder.getErp(), projectSpaceId);
-                logger.error("========================getMarketByErp" + JSONObject.toJSONString(apiResultDTO));
-                if (apiResultDTO.isSuccess()) {
-                    List<MarketInfoDto> list = new ArrayList<MarketInfoDto>();
-                    for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
-                        if (!marketInfoDto.getClusterCode().equals(MYSQL_CLUSTER)) {
-                            list.add(marketInfoDto);
-                        }
+
+            ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(userHolder.getErp(), projectSpaceId);
+            logger.error("========================getMarketByErp" + JSONObject.toJSONString(apiResultDTO));
+            if (apiResultDTO.isSuccess()) {
+                List<MarketInfoDto> list = new ArrayList<MarketInfoDto>();
+                for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
+                    if (!marketInfoDto.getClusterCode().equals(MYSQL_CLUSTER)) {
+                        list.add(marketInfoDto);
                     }
-                    return JSONObjectUtil.getSuccessResult(list);
                 }
+                return JSONObjectUtil.getSuccessResult(list);
             }
+
 
         } catch (Exception e) {
             logger.error("==================getMarketByErp:", e);
@@ -140,43 +131,17 @@ public class ScriptConfigController {
     @ExceptionMessageAnnotation(errorMessage = "获取队列列表")
     @RequestMapping("/getQueueByErp.ajax")
     @ResponseBody
-    public JSONObject getQueueByErp(UrmUserHolder userHolder, ClusterHadoopQueue clusterHadoopQueue ,@ProjectSpaceIdParam Long projectSpaceId ) throws Exception {
+    public JSONObject getQueueByErp(UrmUserHolder userHolder, ClusterHadoopQueue clusterHadoopQueue, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
         try {
-//            userHolder.setErp("bjyuanz");
 
-            boolean isClusterAdmin = dataDevClusterAdminService.getClusterAdminByErp(userHolder.getErp());
-            logger.error("是集群管理员zhangrui156? " + isClusterAdmin);
-            if (isClusterAdmin) {
-                logger.error("getQueueByErp  " + userHolder.getErp() + "是集群管理员。");
-                String accountCode = clusterHadoopQueue.getProductionAccountCode();
-                Long marketId = clusterHadoopQueue.getMarketId();
-                ClusterHadoopAccount clusterHadoopAccount = new ClusterHadoopAccount();
-                clusterHadoopAccount.setMarketId(marketId);
-                clusterHadoopAccount.setCode(accountCode);
-                ApiResultDTO apiResultDTO = marketInfoInterface.getAccountByMarketAndCode(appId, appToken, System.currentTimeMillis(), clusterHadoopAccount);
-                int code = apiResultDTO.getCode();
-                if (code == 0) {
-                    ClusterHadoopAccount clusterHadoopAccountR = (ClusterHadoopAccount) apiResultDTO.getObj();
-                    if (clusterHadoopAccountR != null) {
-                        Long accountId = clusterHadoopAccountR.getId();
-                        List list = dataDevClusterAdminService.getAllClusterQueueOneMarketOneAccount(accountId);
-                        logger.error("===========================queuelist111:" + list.size());
-                        return JSONObjectUtil.getSuccessResult(list);
-                    } else {
-                        logger.error("根据marketId：" + marketId + " accountCode:" + accountCode + " 获取生产账号信息为空");
-                    }
-                } else {
-                    logger.error("根据marketId：" + marketId + " accountCode:" + accountCode + " 获取生产账号id失败，code:" + code + " message:" + apiResultDTO.getMessage());
+            String marketUser = clusterHadoopQueue.getLinuxUser();
+            String acountCode = clusterHadoopQueue.getProductionAccountCode();
 
-                }
-
-            } else {
-                clusterHadoopQueue.setOperator(userHolder.getErp());
-                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(clusterHadoopQueue,projectSpaceId);
-                if (apiResultDTO.isSuccess()) {
-                    logger.error(JSONObject.toJSONString(apiResultDTO.getList()));
-                    return JSONObjectUtil.getSuccessResult(apiResultDTO.getList());
-                }
+            clusterHadoopQueue.setOperator(userHolder.getErp());
+            ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(marketUser, acountCode, userHolder.getErp(), projectSpaceId);
+            if (apiResultDTO.isSuccess()) {
+                logger.error(JSONObject.toJSONString(apiResultDTO.getList()));
+                return JSONObjectUtil.getSuccessResult(apiResultDTO.getList());
             }
 
         } catch (Exception e) {
@@ -190,21 +155,13 @@ public class ScriptConfigController {
     @ResponseBody
     public JSONObject getAccountByErp(UrmUserHolder userHolder, ClusterHadoopAccount clusterHadoopAccount, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
         try {
-//            userHolder.setErp("bjyuanz");
+            String marketUser = clusterHadoopAccount.getLinuxUser();
 
-            boolean isClusterAdmin = dataDevClusterAdminService.getClusterAdminByErp(userHolder.getErp());
-            if (isClusterAdmin) {
-                logger.error("getAccountByErp  " + userHolder.getErp() + "是集群管理员");
-                List list = dataDevClusterAdminService.getAllClusterHadoopAccountOneMarket(clusterHadoopAccount.getMarketId());
-                return JSONObjectUtil.getSuccessResult(list);
-            } else {
-                clusterHadoopAccount.setOperator(userHolder.getErp());
-                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(clusterHadoopAccount, userHolder.getErp(), projectSpaceId);
-                if (apiResultDTO.isSuccess()) {
-                    return JSONObjectUtil.getSuccessResult(apiResultDTO.getList());
-                }
+            clusterHadoopAccount.setOperator(userHolder.getErp());
+            ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(marketUser, userHolder.getErp(), projectSpaceId);
+            if (apiResultDTO.isSuccess()) {
+                return JSONObjectUtil.getSuccessResult(apiResultDTO.getList());
             }
-
         } catch (Exception e) {
             logger.error("==================getAccountByErp:" + e.getMessage());
         }
@@ -606,16 +563,13 @@ public class ScriptConfigController {
                 result.add(config);
                 continue;
             } else if (config.getStatus() == 1) {
-//                if (config.getMarketId() != null && config.getAccountId() != null && config.getQueueId() != null) {
-                if (config.getMarketId() != null && (config.getAccountId() != null || StringUtils.isNotBlank(config.getAccountCode())) && (StringUtils.isNotBlank(config.getQueueCode()) || config.getQueueId() != null)) {
-                    config.setOriId(config.getId());
-                    config.setCreator(userHolder.getErp());
-                    config.setMender(userHolder.getErp());
-                    config.setOwner(userHolder.getErp());
-                    configService.addConfig(config);
-                    config.setStatus(null);
-                    result.add(config);
-                }
+                config.setOriId(config.getId());
+                config.setCreator(userHolder.getErp());
+                config.setMender(userHolder.getErp());
+                config.setOwner(userHolder.getErp());
+                configService.addConfig(config);
+                config.setStatus(null);
+                result.add(config);
             } else if (config.getStatus() == 2) {
                 configService.deleteConfig(config.getId());
             } else if (config.getStatus() == 3) {

@@ -1,8 +1,12 @@
 package com.jd.bdp.datadev.web.controller.script;
 
 import com.jd.bdp.common.utils.AjaxUtil;
+import com.jd.bdp.datadev.component.ProjectSpaceRightComponent;
 import com.jd.bdp.datadev.domain.DataDevGitGroup;
+import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.jdgit.JDGitGroups;
+import com.jd.bdp.planing.domain.bo.ProjectBO;
+import com.jd.bdp.urm.sso.UrmUserHolder;
 import com.jd.bdp.urm2.api.dto.JSFResultDTO;
 import com.jd.bdp.urm2.api.user.UrmUserInterface;
 import com.jd.bdp.urm2.domain.user.TblBaseUser;
@@ -106,21 +110,42 @@ public class UserController {
         }
     }
 
+
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent ;
+    /**
+     *
+     * @param keyWord
+     * @return
+     */
     @RequestMapping("list_groups.ajax")
     @ResponseBody
-    public JSONObject listGroups(String keyWord) {
-        List<DataDevGitGroup> list = new ArrayList<DataDevGitGroup>();
-        try {
-            if (keyWord != null && keyWord.length() != 0)
-                keyWord= URLDecoder.decode(keyWord,"utf-8");
-            JDGitGroups jdGitGroups = new JDGitGroups();
-            jdGitGroups.setOwned(false);
-            list = jdGitGroups.listGroups(keyWord);
-            return AjaxUtil.list2Json(list);
-        } catch (Exception e) {
-            logger.error("组列表获取失败", e);
-            return AjaxUtil.list2Json(list);
+    public JSONObject listGroups(UrmUserHolder urmUserHolder, String keyWord , Long gitProjectId) {
+        boolean isCodingOrGit = GitHttpUtil.isCodingOrGit(gitProjectId);
+        String erp =  urmUserHolder.getErp();
+        if(isCodingOrGit){
+            //查询用户有权限的项目空间
+
+            List<ProjectBO> projectSpaces = projectSpaceRightComponent.getProjectSpaces(erp);
+
+            return null;
+
+
+        }else{
+            List<DataDevGitGroup> list = new ArrayList<DataDevGitGroup>();
+            try {
+                if (keyWord != null && keyWord.length() != 0)
+                    keyWord= URLDecoder.decode(keyWord,"utf-8");
+                JDGitGroups jdGitGroups = new JDGitGroups();
+                jdGitGroups.setOwned(false);
+                list = jdGitGroups.listGroups(keyWord);
+                return AjaxUtil.list2Json(list);
+            } catch (Exception e) {
+                logger.error("组列表获取失败", e);
+                return AjaxUtil.list2Json(list);
+            }
         }
+
     }
 
     public static void main(String[] args) {

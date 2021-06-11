@@ -10,9 +10,9 @@ $(function () {
     var accountCodeSelect = $("#accountCodeSelect").select2();
     var queueCodeSelect = $("#queueCodeSelect").select2();
     var marketSelect = $("#marketSelect").select2();
-    var engineTypeSelect=$("#engineTypeSelect").select2();
+    var engineTypeSelect = $("#engineTypeSelect").select2();
     var formValid = undefined;
-    var engineTypeEnum={"jd-hive":"Hive-引擎","presto":"Presto-高速引擎","spark":"Spark-分析引擎","impala":"Impala-引擎"};//存放的是引擎枚举
+    var engineTypeEnum = {"jd-hive": "Hive-引擎", "presto": "Presto-高速引擎", "spark": "Spark-分析引擎", "impala": "Impala-引擎"};//存放的是引擎枚举
 
 
     $("#account-ok").click(function () {
@@ -23,37 +23,39 @@ $(function () {
     })
     $("#applyMarket").click(function () {
         //打开项目空间详情页
-        window.open(_bdpDomain+"/planning/project/detail/"+top.window.projectSpaceId);
+        window.open(_bdpDomain + "/planning/project/detail/" + top.window.projectSpaceId);
         // applyBuffaloMarket();
     })
+    //单击选中事件
     $("ul.account-history-ul,ul.account-history-ul2").on("click", "li", function (e) {
-        if(e.delegateTarget.className == "account-history-ul2"){
-            $("#account-add").addClass("icon-disabled");
-            $("#account-remove").addClass("icon-disabled");
-            $("#account-copy").addClass("icon-disabled");
-            $("#account-up").addClass("icon-disabled");
-            $("#account-down").addClass("icon-disabled");
+        debugger
+        // if (e.delegateTarget.className == "account-history-ul2") {
+        //     $("#account-add").addClass("icon-disabled");
+        //     $("#account-remove").addClass("icon-disabled");
+        //     $("#account-copy").addClass("icon-disabled");
+        //     $("#account-up").addClass("icon-disabled");
+        //     $("#account-down").addClass("icon-disabled");
+        //
+        //     $("#accountName").attr("disabled", "disabled");
+        //     $("#marketSelect").attr("disabled", "disabled");
+        //     $("#accountCodeSelect").attr("disabled", "disabled");
+        //     $("#queueCodeSelect").attr("disabled", "disabled");
+        //     $("#engineTypeSelect").attr("disabled", "disabled");
+        //
+        // } else {
+        //     $("#account-add").removeClass("icon-disabled");
+        //     $("#account-remove").removeClass("icon-disabled");
+        //     $("#account-copy").removeClass("icon-disabled");
+        //     $("#account-up").removeClass("icon-disabled");
+        //     $("#account-down").removeClass("icon-disabled");
+        //
+        //     $("#accountName").removeAttr("disabled");
+        //     $("#marketSelect").removeAttr("disabled");
+        //     $("#accountCodeSelect").removeAttr("disabled");
+        //     $("#queueCodeSelect").removeAttr("disabled");
+        //     $("#engineTypeSelect").removeAttr("disabled");
+        // }
 
-            $("#accountName").attr("disabled","disabled");
-            $("#marketSelect").attr("disabled","disabled");
-            $("#accountCodeSelect").attr("disabled","disabled");
-            $("#queueCodeSelect").attr("disabled","disabled");
-            $("#engineTypeSelect").attr("disabled","disabled");
-
-        }else{
-            $("#account-add").removeClass("icon-disabled");
-            $("#account-remove").removeClass("icon-disabled");
-            $("#account-copy").removeClass("icon-disabled");
-            $("#account-up").removeClass("icon-disabled");
-            $("#account-down").removeClass("icon-disabled");
-
-            $("#accountName").removeAttr("disabled");
-            $("#marketSelect").removeAttr("disabled");
-            $("#accountCodeSelect").removeAttr("disabled");
-            $("#queueCodeSelect").removeAttr("disabled");
-            $("#engineTypeSelect").removeAttr("disabled");
-        }
-        
         formValid.resetForm();
         if ($(this).attr("data-name")) {
             $("#accountName").val($(this).attr("data-name"));
@@ -63,8 +65,8 @@ $(function () {
         $("#account-form").validate().element($("#accountName"));
         $("li.account-history-li.active").removeClass("active");
         $(this).addClass("active");
-        var marketId = $(this).attr("data-market-id") ? $(this).attr("data-market-id") : "";
-        $("#marketSelect").val(marketId).trigger("change",true);
+        var marketCode = $(this).attr("data-linux-user") ? $(this).attr("data-linux-user") : "";
+        $("#marketSelect").val(marketCode).trigger("change", true);
         // changeMarket();
         return false;
     })
@@ -73,16 +75,16 @@ $(function () {
         return pattern.test(value);
     }, "只支持中文,字母,数字,下划线,中划线");
     jQuery.validator.addMethod("verifyRepeatName", function (value, element) {
-        var nameCount=0;
+        var nameCount = 0;
         $("li.account-history-li").each(function () {
-            if($(this).attr("data-name")==value){
+            if ($(this).attr("data-name") == value) {
                 nameCount++;
             }
         })
-        return nameCount<=1;
+        return nameCount <= 1;
     }, "配置名不能重复");
 
-    formValid=$('#account-form').validate({
+    formValid = $('#account-form').validate({
         rules: {
             marketLinuxUser: {
                 required: true
@@ -100,7 +102,7 @@ $(function () {
                 required: true,
                 maxlength: 250,
                 validAccountName: true,
-                verifyRepeatName:true
+                verifyRepeatName: true
             }
         },
         messages: {
@@ -108,7 +110,7 @@ $(function () {
                 required: "必填字段！",
                 maxlength: $.validator.format("最多{0}个字符"),
                 validAccountName: "只支持中文,字母,数字,下划线,中划线",
-                verifyRepeatName:"配置名不能重复"
+                verifyRepeatName: "配置名不能重复"
             },
             marketLinuxUser: {
                 required: "必填字段！"
@@ -154,7 +156,7 @@ $(function () {
                 if (config.showOrder && config.showOrder > maxShowOrder) {
                     maxShowOrder = config.showOrder;
                 }
-                lis += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+                lis += "<li class='account-history-li' data-id='" + config.id + "' data-market-user='" + config.marketUser + "' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
             }
             ul.append(lis);
         }
@@ -169,10 +171,10 @@ $(function () {
                 // if (config.showOrder && config.showOrder > maxShowOrder) {
                 //     maxShowOrder = config.showOrder;
                 // }
-                lis2 += "<li class='account-history-li' data-id='" + config.id + "' data-market-id='"+config.marketId+"' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+                lis2 += "<li class='account-history-li' data-id='" + config.id + "' data-market-user='" + config.marketUser + "' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
             }
             ul2.append(lis2);
-        }else{
+        } else {
             ul2.parent().prev(".account-part-name").hide()
         }
 
@@ -187,7 +189,7 @@ $(function () {
             }
         });
     })
-//status; 1添加 2删除 3改变 其他值:默认不变
+    //status; 1添加 2删除 3改变 其他值:默认不变
     $("#account-add").click(function () {
         var ul = $("div.account-history ul.account-history-ul");
         var dataId = addIndex--;
@@ -222,21 +224,21 @@ $(function () {
         var dataId = addIndex--;
         var config = getConfigById(id, true);
         var copyName = config.name + "_copy";
-        var copyNamePattern = new RegExp("^"+copyName+"_(\\d)+$");
+        var copyNamePattern = new RegExp("^" + copyName + "_(\\d)+$");
         var maxNum = 0;
         $("li.account-history-li").each(function () {
             var name = $(this).attr("data-name");
-            var results=copyNamePattern.exec(name);
-            if(results && results[1]){
-                maxNum=Math.max(maxNum,results[1]*1);
+            var results = copyNamePattern.exec(name);
+            if (results && results[1]) {
+                maxNum = Math.max(maxNum, results[1] * 1);
             }
         })
         config.id = dataId;
-        config.name = copyName+"_"+(++maxNum);
+        config.name = copyName + "_" + (++maxNum);
         config.showOrder = ++maxShowOrder;
         config.status = 1;
-        var ul = $("div.account-history ul");
-        var li = "<li class='account-history-li' data-market-id='"+config.marketId+"' data-name='" + config.name + "' data-id='" + dataId + "' data-cluster='" + config.clusterCode + "' data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+        var ul = $($("div.account-history ul").get(0));
+        var li = "<li class='account-history-li' data-market-user='" + config.marketUser + "' data-name='" + config.name + "' data-id='" + dataId + "' data-cluster='" + config.clusterCode + "' data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
         ul.prepend(li);
         tmpConfigArr.unshift(config);
         activeLi(0, true, false);
@@ -328,7 +330,7 @@ $(function () {
                     }
                 }
             })
-        }else {
+        } else {
             $("#accountName").val("");
             $("#marketSelect").val("").trigger("change");
         }
@@ -338,7 +340,7 @@ $(function () {
         var config = {};
         if (isCopy) {
             for (var index = 0; index < tmpConfigArr.length; index++) {
-                if (id && tmpConfigArr[index] && (tmpConfigArr[index].id == id || tmpConfigArr[index].oriId==id)) {
+                if (id && tmpConfigArr[index] && (tmpConfigArr[index].id == id || tmpConfigArr[index].oriId == id)) {
                     var oriConfig = tmpConfigArr[index];
                     for (var pro in oriConfig) {
                         config[pro] = oriConfig[pro];
@@ -373,7 +375,8 @@ $(function () {
         }
     });
 
-    $("#marketSelect").on("change", function (event,isStayStatus) {
+    $("#marketSelect").on("change", function (event, isStayStatus) {
+
         var option = $("option:selected", $("#marketSelect"));
         var activeLi = $("li.account-history-li.active");
         if (option.length > 0 && option.attr("value") != "") {
@@ -383,31 +386,32 @@ $(function () {
                 config.status = config.status ? config.status : 3;
                 config.clusterCode = option.attr("data-cluster");
                 config.marketLinuxUser = option.attr("data-market-user");
-                config.marketId = option.attr("data-id") != "null" ? option.attr("data-id") : null;
+                config.marketUser = option.attr("market-user") != "null" ? option.attr("market-user") : null;
                 activeLi.attr("data-cluster", config.clusterCode);
                 activeLi.attr("data-linux-user", config.marketLinuxUser);
-                activeLi.attr("data-market-id", config.marketId);
-                if(!isStayStatus){
+                activeLi.attr("data-market-user", config.marketUser);
+                if (!isStayStatus) {
                     config.accountCode = null;
                     config.accountId = null;
                     config.queueCode = null;
                     config.queueId = null;
-                    config.engineType=null;
+                    config.engineType = null;
                     activeLi.attr("data-account", "");
                     activeLi.attr("data-queue", "");
                     activeLi.attr("data-engine", "");
                 }
 
             }
-            var marketId = option.attr("data-id");
-            changeAccount(marketId,isStayStatus);
+            var marketUser = option.attr("data-market-user");
+            changeAccount(marketUser, isStayStatus);
         } else {
             changeAccount();
         }
     })
-    $("#accountCodeSelect").on("change", function (event,isStayStatus) {
+    $("#accountCodeSelect").on("change", function (event, isStayStatus) {
+
         var marOption = $("option:selected", $("#marketSelect"));
-        var marketId = marOption.attr("data-id");
+        var marketUser = marOption.attr("data-market-user");
         var option = $("option:selected", $("#accountCodeSelect"));
         var dataCode = option.attr("value");
         if (marOption.length > 0 && marOption.attr("value") != "" && option.length > 0 && option.attr("value") != "") {
@@ -417,20 +421,22 @@ $(function () {
             if (config) {
                 config.status = config.status ? config.status : 3;
                 config.accountCode = option.attr("value");
+                config.clusterCode = option.attr("data-cluster");
                 config.accountId = option.attr("data-id") != "null" ? option.attr("data-id") : null;
                 activeLi.attr("data-account", config.accountCode);
-                if(!isStayStatus){
+                activeLi.attr("data-cluster", config.clusterCode)
+                if (!isStayStatus) {
                     config.queueCode = null;
                     config.queueId = null;
-                    config.engineType=null;
+                    config.engineType = null;
+                    config.clusterCode = null;
                     activeLi.attr("data-queue", "");
                     activeLi.attr("data-engine", "");
                 }
-
             }
             $(this).parent().find(".bdp-help-block").remove();
-            changeQueue(marketId, dataCode);
-        }else {
+            changeQueue(marketUser, dataCode);
+        } else {
             changeQueue();
         }
     })
@@ -448,8 +454,8 @@ $(function () {
                 activeLi.attr("data-queue", config.queueCode);
             }
             $(this).parent().find(".bdp-help-block").remove();
-            changeEngine(option.attr("data-engine")!= "null" ? option.attr("data-engine") : null);
-        }else{
+            changeEngine(option.attr("data-engine") != "null" ? option.attr("data-engine") : null);
+        } else {
             changeEngine();
         }
     })
@@ -478,7 +484,7 @@ $(function () {
             if (data && data.obj) {
                 for (var index = 0; index < data.obj.length; index++) {
                     var market = data.obj[index];
-                    options += "<option data-ugdap='" + market.isUgdap + "' data-cluster='" + market.clusterCode + "' data-id='" + market.marketId + "' data-market-user='"+market.marketUser+"' value='" + market.marketId + "'>" + market.marketName + "</option>";
+                    options += "<option data-ugdap='" + market.isUgdap + "' data-cluster='" + market.clusterCode + "' data-id='" + market.marketUser + "' data-market-user='" + market.marketUser + "' value='" + market.marketUser + "'>" + market.marketName + "</option>";
                 }
             }
             $("#marketSelect").empty().append(options);
@@ -488,14 +494,14 @@ $(function () {
     }
 
     //集市改变重新拉取生产账号
-    function changeAccount(marketId,isStayStatus) {
-        if (marketId) {
-            commonAjaxEvents.commonPostAjax(datadev_common.listAccountUrl, {marketId: marketId}, $("#accountCodeSelect"), function (node, data) {
+    function changeAccount(marketCode, isStayStatus) {
+        if (marketCode) {
+            commonAjaxEvents.commonPostAjax(datadev_common.listAccountUrl, {linuxUser: marketCode}, $("#accountCodeSelect"), function (node, data) {
                 var options = "<option value=''></option>";
                 if (data && data.obj) {
                     for (var index = 0; index < data.obj.length; index++) {
                         var account = data.obj[index];
-                        options += "<option  data-id='" + account.id + "'  value='" + account.code + "'>" + account.name + "</option>";
+                        options += "<option data-cluster='" + account.clusterCode + "'  data-id='" + account.id + "'  value='" + account.code + "'>" + account.name + "</option>";
                     }
                 }
                 $("#accountCodeSelect").empty().append(options);
@@ -503,7 +509,7 @@ $(function () {
                 var activeLi = $("li.account-history-li.active");
                 if (activeLi.length == 1) {
                     var account = $(activeLi).attr("data-account");
-                    $("#accountCodeSelect").val(account).trigger("change",isStayStatus?true:false);
+                    $("#accountCodeSelect").val(account).trigger("change", isStayStatus ? true : false);
                 } else {
                     changeQueue();
                 }
@@ -517,11 +523,11 @@ $(function () {
     }
 
     //生产账号改变重新拉取队列
-    function changeQueue(marketId, accountCode) {
-        if (marketId) {
+    function changeQueue(marketUser, accountCode) {
+        if (marketUser) {
             commonAjaxEvents.commonPostAjax(datadev_common.listQueueUrl, {
-                marketId: marketId,
-                productionAccountCode: accountCode || ""
+                productionAccountCode: accountCode || "",
+                linuxUser: marketUser
             }, $("#queueCodeSelect"), function (node, data) {
                 var options = "<option value=''></option>";
                 if (data && data.obj) {
@@ -536,7 +542,7 @@ $(function () {
                 if (activeLi.length == 1) {
                     var queue = $(activeLi).attr("data-queue");
                     $("#queueCodeSelect").val(queue).trigger("change");
-                }else{
+                } else {
                     changeEngine();
                 }
             });
@@ -548,6 +554,7 @@ $(function () {
         }
 
     }
+
     //队列改变时重新获取引擎,并默认选中jd-hive
     function changeEngine(engineTypes) {
         if (engineTypes) {
@@ -555,18 +562,18 @@ $(function () {
             var splitEngineType = engineTypes.split(",");
             for (var index = 0; index < splitEngineType.length; index++) {
                 var engineType = splitEngineType[index];
-                options += "<option  value='" + engineType + "'>" + ((engineTypeEnum[engineType]==undefined)?"不支持引擎":engineTypeEnum[engineType]) + "</option>";
+                options += "<option  value='" + engineType + "'>" + ((engineTypeEnum[engineType] == undefined) ? "不支持引擎" : engineTypeEnum[engineType]) + "</option>";
             }
             $("#engineTypeSelect").empty().append(options);
             engineTypeSelect = $("#engineTypeSelect").select2();
             var activeLi = $("li.account-history-li.active");
-            if (activeLi.length == 1&&$(activeLi).attr("data-engine")) {
+            if (activeLi.length == 1 && $(activeLi).attr("data-engine")) {
                 var engine = $(activeLi).attr("data-engine");
                 $("#engineTypeSelect").val(engine).trigger("change");
             }
 
             var option = $("option:selected", $("#engineTypeSelect"));
-            if (option.length == 1&& option.attr("value")=="") {//默认选中hive
+            if (option.length == 1 && option.attr("value") == "") {//默认选中hive
                 $("#engineTypeSelect").val("jd-hive").trigger("change");
             }
         } else {
@@ -577,23 +584,44 @@ $(function () {
     }
 
     function saveConfig(hideModal) {
+
         var result = true;
         var lis = $("li.account-history-li");
-        var duObj={};
-        if (lis.length > 0 ) {
+        var duObj = {};
+        if (lis.length > 0) {
             result = $('#account-form').valid();
-            if(result){
+            if (result) {
                 lis.each(function (index, element) {
                     element = $(element);
-                    result = !duObj[element.attr("data-name")] && Boolean(element.attr("data-cluster")) && Boolean(element.attr("data-name")) && Boolean(element.attr("data-queue")) && Boolean(element.attr("data-account"))&& Boolean(element.attr("data-engine"))
+                    result = !duObj[element.attr("data-name")] && Boolean(element.attr("data-cluster")) && Boolean(element.attr("data-name")) && Boolean(element.attr("data-queue")) && Boolean(element.attr("data-account")) && Boolean(element.attr("data-engine"))
                     if (!result) {
                         element.trigger("click");
                         return false;
                     }
-                    duObj[element.attr("data-name")]=true;
+
+                    // var tempStatus = 1;
+                    // ////1添加 2删除 3改变order 其他值:默认不变
+                    // if(element.attr("data-id") * 1 <= 0){
+                    //
+                    // }else{
+                    //     tempStatus = 2;
+                    // }
+                    // tmpConfigArr.push({
+                    //     projectSpaceId: top.window.projectSpaceId,
+                    //     clusterCode: element.attr("data-cluster"),
+                    //     marketLinuxUser: element.attr("data-linux-user"),
+                    //     queueCode: element.attr("data-queue"),
+                    //     accountCode: element.attr("data-account"),
+                    //     name: element.attr("data-name"),
+                    //     engineType : element.attr("data-engine"),
+                    //     id: element.attr("data-id"),
+                    //     status: tempStatus
+                    // })
+                    duObj[element.attr("data-name")] = true;
                 });
             }
         }
+
         if (result) {
             $(".bdp-help-block").remove();
             //添加“项目空间id”
@@ -606,8 +634,8 @@ $(function () {
                     configObj = data.obj;
                     tmpConfigArr = deepArray(configObj);
                     var activeLi = $("li.account-history-li.active");
-                    var oriId=-1;
-                    if(activeLi.length>0){
+                    var oriId = -1;
+                    if (activeLi.length > 0) {
                         oriId = activeLi.attr("data-id");
                         for (var index = 0; index < data.obj.length; index++) {
                             if (oriId == data.obj[index].id || oriId == data.obj[index].oriId) {

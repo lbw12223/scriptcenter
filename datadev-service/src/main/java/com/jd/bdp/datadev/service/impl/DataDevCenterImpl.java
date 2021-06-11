@@ -395,14 +395,15 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
 
     @Override
-    public ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(ClusterHadoopAccount account ,String erp ,Long spaceProjectId) {
+    public ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(String marketUser ,String erp ,Long spaceProjectId) {
         ApiResultDTO apiResultDTO = new ApiResultDTO();
 
         List<ClusterHadoopAccount> accountList = new ArrayList<ClusterHadoopAccount>();
         ProjectAccountRelBO projectBO = new ProjectAccountRelBO();
         projectBO.setErp(erp);
         projectBO.setId(spaceProjectId);
-        projectBO.setMarketUser(account.getLinuxUser());
+        projectBO.setMarketUser(marketUser);
+       // projectBO.setEnvType(1);
 
         com.jd.bdp.planing.api.model.ApiResult<ProjectAccountRelBO> accountApiResult = projectInterface.getGrantAuthorityProductionAccount(appId, appToken, System.currentTimeMillis(), projectBO);
         logger.info("====getGrantAuthorityProductionAccountInMarketForBuffalo=========spaceApiResultresult" + JSONObject.toJSONString(accountApiResult));
@@ -411,10 +412,9 @@ public class DataDevCenterImpl implements DataDevCenterService {
             for(ProjectAccountRelBO bo : accountApiResult.getList()){
                 ClusterHadoopAccount temp = new ClusterHadoopAccount();
                 temp.setId(bo.getId());
-                temp.setCode(bo.getCode());
-                temp.setName(bo.getName());
-              //  temp.setClusterId(bo.getClusterId());
-               // temp.setMarketId(bo.getMarketId());
+                temp.setCode(bo.getAccount());
+                temp.setName(bo.getAccountName());
+                temp.setClusterCode(bo.getClusterCode());
                 accountList.add(temp);
             }
         }
@@ -428,18 +428,17 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
     @Override
-    public ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo(ClusterHadoopQueue queue , Long spaceProjectId) {
-
+    public ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo(String marketUser , String accountCode , String erp , Long spaceProjectId) {
 
         ApiResultDTO apiResultDTO = new ApiResultDTO();
 
         List<ClusterHadoopQueue> queueList = new ArrayList<ClusterHadoopQueue>();
         ProjectQueueRelBO projectQueueRelBO = new ProjectQueueRelBO();
-        projectQueueRelBO.setProductionAccountCode(queue.getProductionAccountCode());
+        projectQueueRelBO.setMarketUser(marketUser);
+        projectQueueRelBO.setProductionAccountCode(accountCode);
         projectQueueRelBO.setProjectId(spaceProjectId);
-        //projectQueueRelBO.setMarketId(String.valueOf(queue.getMarketId()));
-
-        logger.info("====queue" + JSONObject.toJSONString(projectQueueRelBO) + queue.getMarketId());
+        projectQueueRelBO.setErp(erp);
+        projectQueueRelBO.setEnvType("1");
 
         com.jd.bdp.planing.api.model.ApiResult<ProjectQueueRelBO> queueApiResult = projectInterface.getGrantAuthorityQueue(appId, appToken, System.currentTimeMillis(), projectQueueRelBO);
         logger.info("====queueresult=" + JSONObject.toJSONString(queueApiResult));
@@ -452,7 +451,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 //temp.setMarketId(bo.getMarketId() != null ? Long.parseLong(bo.getMarketId()) : -1);
                 temp.setQueueCode(bo.getQueueCode());
                 temp.setQueueName(bo.getQueueName());
-                temp.setEngineTypes(bo.getEngineTypes());
+                temp.setEngineTypes(bo.getEngineTypes() == null ? "jd-hive,spark,presto" : bo.getEngineTypes());
                 queueList.add(temp);
             }
         }
@@ -479,10 +478,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
         if(spaceApiResult.getSuccess()){
             for(ProjectAccountRelBO tempBo : spaceApiResult.getList()){
                 MarketInfoDto marketInfoDto = new MarketInfoDto();
-               // marketInfoDto.setClusterName(tempBo.getClusterName());
                 marketInfoDto.setClusterCode(tempBo.getClusterCode());
-               // marketInfoDto.setMarketId(tempBo.getMarketId() != null ? String.valueOf(tempBo.getMarketId()):"");
-                marketInfoDto.setMarketCode(tempBo.getCode());
+                marketInfoDto.setMarketCode(tempBo.getMarketUser());
                 marketInfoDto.setMarketUser(tempBo.getMarketUser());
                 marketInfoDto.setMarketName(tempBo.getMarketName());
                 marketInfoDto.setMarketMagagers(tempBo.getMarketManagers());
@@ -494,7 +491,6 @@ public class DataDevCenterImpl implements DataDevCenterService {
         apiResultDTO.setSuccess(spaceApiResult.getSuccess());
         apiResultDTO.setCode(spaceApiResult.getCode());
         apiResultDTO.setMessage(spaceApiResult.getMessage());
-
         return apiResultDTO;
     }
 }

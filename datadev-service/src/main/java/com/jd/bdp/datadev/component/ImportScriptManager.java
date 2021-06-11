@@ -126,12 +126,14 @@ public class ImportScriptManager {
         }
         logger.error("after================syncScriptToDataDev.ajax");
 
-        final JSONArray managerScriptFiles = filterSynced(getScriptList(appGroupId, erp, fileName, fileId, version));
+        final JSONArray managerScriptFiles = filterSynced(getScriptList(appGroupId, erp, fileId));
         if (managerScriptFiles == null || managerScriptFiles.size() < 1) {
             throw new RuntimeException("当前项目空间无待同步脚本.");
         }
         //创建目录
         if (StringUtils.isNotBlank(dirPath)) {
+            // /zhangrui156
+            // /wangheengcheng17
             dataDevScriptDirService.createScriptDir(gitProjectId, dirPath, erp);
         }
         //检查文件是否重复
@@ -161,6 +163,41 @@ public class ImportScriptManager {
                 }
             }).start();
         }
+        return valueObject;
+    }
+
+    public JSONObject syncScriptToDataDevLocal(final Long gitProjectId, final   Long appGroupId,final   String erp) throws Exception {
+
+
+
+        final JSONArray managerScriptFiles = filterSynced(getScriptList(appGroupId, erp, 0L));
+        if (managerScriptFiles == null || managerScriptFiles.size() < 1) {
+            throw new RuntimeException("当前项目空间无待同步脚本.");
+        }
+
+        //创建目录 Erp 维度目录
+
+        final String dirPath = "" ;
+        //检查文件是否重复
+
+        final JSONObject valueObject = new JSONObject();
+
+        valueObject.put("currentIndex", 1);
+        valueObject.put("currentFile", managerScriptFiles.getJSONObject(0).getString("fileName"));
+        valueObject.put("total", managerScriptFiles.size());
+        valueObject.put("failCount", 0);
+        valueObject.put("successCount", 0);
+        valueObject.put("gitProjectId", gitProjectId);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //同步脚本
+                handSyncScript(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, null);
+                //同步人员
+                syncMember(gitProjectId, appGroupId, false);
+            }
+        }).start();
         return valueObject;
     }
 
@@ -617,10 +654,9 @@ public class ImportScriptManager {
      * @param erp
      * @throws Exception
      */
-    public JSONArray getScriptList(Long appGroupId, String erp, String fileName, Long fileId, String version) throws Exception {
+    public JSONArray getScriptList(Long appGroupId, String erp, Long fileId) throws Exception {
         //单独一个文件的处理
         if (fileId != null && fileId > 0L) {
-
             JSONArray result = new JSONArray();
             result.add(getOneScript(erp, fileId));
             return result;

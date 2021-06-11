@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ProjectSpaceArgumentResolver implements HandlerMethodArgumentResolver {
     private static final Log logger = LogFactory.getLog(UrmUserHolderArgumentResolver.class);
+    private Long spaceProjetId;
 
     public ProjectSpaceArgumentResolver() {
     }
@@ -35,11 +36,11 @@ public class ProjectSpaceArgumentResolver implements HandlerMethodArgumentResolv
         Long spaceProjetId = 0L ;
         if(request.getParameter("projectSpaceId") != null){
             try{
-                return Long.parseLong(request.getParameter("projectSpaceId"));
+                spaceProjetId =  Long.parseLong(request.getParameter("projectSpaceId"));
             }catch (Exception e){
             }
         }
-        return spaceProjetId ;
+        return spaceProjetId <= 0L ? 100101L : spaceProjetId;
     }
 }
 
