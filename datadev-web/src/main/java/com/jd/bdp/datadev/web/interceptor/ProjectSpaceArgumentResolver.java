@@ -39,7 +39,7 @@ public class ProjectSpaceArgumentResolver implements HandlerMethodArgumentResolv
             }catch (Exception e){
             }
         }
-        return spaceProjetId <= 0L ? 100101L : spaceProjetId;
+        return spaceProjetId <= 0L ? 100134L : spaceProjetId;
     }
 }
 

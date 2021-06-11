@@ -62,7 +62,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
     private ClusterJSFInterface clusterJSFInterface;
 
     @Autowired
-    private ProjectSpaceRightComponent projectSpaceRightComponent ;
+    private ProjectSpaceRightComponent projectSpaceRightComponent;
 
 
     @Override
@@ -186,7 +186,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
         for (DataDevScriptConfig config : configsByMarketIds) {
             updateMergeConfig(config, successList, failList);
         }
-        for(Long id:marketIdList){
+        for (Long id : marketIdList) {
             //runDetailService.updateRunCode(id);
         }
         return new HoldDoubleValue<>(successList, failList);
@@ -256,50 +256,46 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
             ClusterHadoopMarketDto queryMarket = new ClusterHadoopMarketDto();
             queryMarket.setClusterCode(clusterCode);
             queryMarket.setLinuxUser(martCode);
-            JsfResultDto jsfResultDto = jsfInterface.getMarketInfoByClusterCodeAndMartCode(appId, token, new Date().getTime(), queryMarket);
+            //JsfResultDto jsfResultDto = jsfInterface.getMarketInfoByClusterCodeAndMartCode(appId, token, new Date().getTime(), queryMarket);
             DataDevScriptConfig dataDevScriptConfig = new DataDevScriptConfig();
             dataDevScriptConfig.setRunMarketLinuxUser(martCode);
             dataDevScriptConfig.setRunClusterCode(clusterCode);
             dataDevScriptConfig.setClusterCode(clusterCode);
-            logger.error("==================="+JSONObject.toJSONString(jsfResultDto));
-            if(jsfResultDto.getCode() == 0){
-                ClusterHadoopMarket market = (ClusterHadoopMarket)jsfResultDto.getObj();
-                logger.error("================"+market.getId()+"================="+scMarketId+"=============="+market.getId().equals(scMarketId));
-                if(market.getId()!=null /*&& market.getId().equals(scMarketId)*/){
-                    String appId = "123";
-                    String token = "123";
-                    String time = String.valueOf(new Date().getTime());
-                    StringBuilder stringBuilder = new StringBuilder(queryClusterUrl);
-                    stringBuilder.append("?appId=").append(appId);
-                    stringBuilder.append("&token=").append(token);
-                    stringBuilder.append("&time=").append(time);
-                    stringBuilder.append("&clusterCode=").append(clusterCode);
-                    stringBuilder.append("&martCode=").append(martCode);
-                    stringBuilder.append("&account=").append(account);
 
-                    CloseableHttpClient httpClient = HttpClients.createDefault();
-                    HttpGet request = new HttpGet(stringBuilder.toString());
-                    CloseableHttpResponse response = httpClient.execute(request);
-                    HttpEntity entry = response.getEntity();
-                    int code = response.getStatusLine().getStatusCode();
-                    System.out.println("\tcode:" + code);
-                    String result = EntityUtils.toString(entry);
-                    HttpClientUtils.closeQuietly(response);
-                    HttpClientUtils.closeQuietly(httpClient);
-                    logger.error("ugdap url:" + stringBuilder.toString());
-                    if (code == 200) {
-                        logger.error("ugdap:" + result);
-                        net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(result);
-                        if (jsonObject.get("code") != null && jsonObject.getInt("code") == 0) {
-                            net.sf.json.JSONObject dataJson = (net.sf.json.JSONObject) jsonObject.get("data");
-                            dataDevScriptConfig.setRunClusterCode(dataJson.getString("physicalClusterCode"));
-                            dataDevScriptConfig.setRunMarketLinuxUser(dataJson.getString("authMart"));
-                        }
-                    }
+            String appId = "123";
+            String token = "123";
+            String time = String.valueOf(new Date().getTime());
+            StringBuilder stringBuilder = new StringBuilder(queryClusterUrl);
+            stringBuilder.append("?appId=").append(appId);
+            stringBuilder.append("&token=").append(token);
+            stringBuilder.append("&time=").append(time);
+            stringBuilder.append("&clusterCode=").append(clusterCode);
+            stringBuilder.append("&martCode=").append(martCode);
+            stringBuilder.append("&account=").append(account);
+
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(stringBuilder.toString());
+            CloseableHttpResponse response = httpClient.execute(request);
+            HttpEntity entry = response.getEntity();
+            int code = response.getStatusLine().getStatusCode();
+            System.out.println("\tcode:" + code);
+            String result = EntityUtils.toString(entry);
+            HttpClientUtils.closeQuietly(response);
+            HttpClientUtils.closeQuietly(httpClient);
+            logger.error("ugdap url:" + stringBuilder.toString());
+            if (code == 200) {
+                logger.error("ugdap:" + result);
+                net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(result);
+                if (jsonObject.get("code") != null && jsonObject.getInt("code") == 0) {
+                    net.sf.json.JSONObject dataJson = (net.sf.json.JSONObject) jsonObject.get("data");
+                    dataDevScriptConfig.setRunClusterCode(dataJson.getString("physicalClusterCode"));
+                    dataDevScriptConfig.setRunMarketLinuxUser(dataJson.getString("authMart"));
                 }
             }
+
             return dataDevScriptConfig;
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             logger.error("调用ugdap接口报错：" + e.getMessage());
             throw new RuntimeException(e.getMessage());
         }

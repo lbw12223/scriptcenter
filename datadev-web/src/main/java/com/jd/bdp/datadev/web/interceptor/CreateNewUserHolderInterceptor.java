@@ -16,9 +16,9 @@ public class CreateNewUserHolderInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         UrmUserHolder hostHolder = new UrmUserHolder();
-        hostHolder.setErp("liujianjia");//jiaboyu5
+        hostHolder.setErp("wangchengcheng17");//jiaboyu5
         hostHolder.setLogin(true);
-        hostHolder.setName("liujianjia");
+        hostHolder.setName("wangchengcheng17");
         request.setAttribute(UrmUserHolder.REQUEST_KEY_HOLDER, hostHolder);
         request.setAttribute("bdpDomain", "http://t.bdp.jd.com");
 

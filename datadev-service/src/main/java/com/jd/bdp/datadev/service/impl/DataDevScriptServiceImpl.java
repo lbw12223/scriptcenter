@@ -565,6 +565,18 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
         scriptRunDetail.setCgroupCpuLimit(cgroupCpuLimit);
         scriptRunDetail.setCgroupMemoryLimit(cgroupMemoryLimit);
 
+
+        /**
+         export JDHXXXXX_CLUSTER_NAME=nzoth
+         export JDHXXXXX_USER=mart_scr
+         export TEAM_USER=whx_test_accountDev
+         export JDHXXXXX_QUEUE=bdp_jmart_dapb_union.bdp_jmart_dapb_union_dev
+         source /bin/sh
+         */
+        scriptRunDetail.setRunClusterCode("nzoth");
+        scriptRunDetail.setRunMarketLinuxUser("mart_scr");
+        scriptRunDetail.setQueueCode("bdp_jmart_dapb_union.bdp_jmart_dapb_union_dev");
+        scriptRunDetail.setAccountCode("whx_test_accountDev");
         return scriptRunDetail;
     }
 
