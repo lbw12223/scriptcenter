@@ -240,7 +240,7 @@ public class ImportScriptManager {
         valueObject.put("gitProjectId", gitProjectId);
         if (isSync) {
             List<ZtreeNode> ztreeNodeList = handSyncScriptNew(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, valueObject);
-            syncMember(gitProjectId, appGroupId, syncMember);
+//            syncMember(gitProjectId, appGroupId, syncMember);
             valueObject.put("ztreeNodeList", ztreeNodeList);
         } else {
             new Thread(new Runnable() {
@@ -249,7 +249,7 @@ public class ImportScriptManager {
                     //同步脚本
                     handSyncScript(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, valueObject);
                     //同步人员
-                    syncMember(gitProjectId, appGroupId, syncMember);
+//                    syncMember(gitProjectId, appGroupId, syncMember);
                 }
             }).start();
         }
