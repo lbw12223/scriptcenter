@@ -4,10 +4,7 @@ import SQLinForm_200.SQLForm;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.common.utils.PageResultDTO;
-import com.jd.bdp.datadev.component.HbaseScript;
-import com.jd.bdp.datadev.component.ImportScriptManager;
-import com.jd.bdp.datadev.component.UrmUtil;
-import com.jd.bdp.datadev.component.ZipUtil;
+import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.dao.*;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevHisTypeEnum;
@@ -102,6 +99,9 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
 
     @Autowired
     private DataDevScriptRunDetailDao dataDevScriptRunDetailDao;
+
+    @Autowired
+    private DevCenterBuffaloComponent devCenterBuffaloComponent;
 
     @Override
     public Long getDefaultProjectId() throws Exception {
@@ -641,12 +641,39 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
                 dataDevScriptFileHis.setFileId(dataBaseScriptFile.getId());
                 dataDevScriptFileHis.setRelationDependencyId(relationDependencyId);
                 dataDevScriptFileHisDao.insertHis(dataDevScriptFileHis);
+
+                try {
+                    devCenterBuffaloComponent.savecallBackDevCentor(dataDevScriptFileHis.getFileId(),
+                            dataDevScriptFileHis.getName(),
+                            DataDevScriptTypeEnum.enumValueOf(dataBaseScriptFile.getType()).toName(),
+                            newVersion,
+                            gitProjectId,
+                            gitProjectFilePath,
+                            bytes.length,
+                            newMd5);
+                } catch (Exception e) {
+                    logger.error("savecallBackDevCentor", e);
+                }
+
             }
             dataDevScriptFileDao.updateGitScriptFile(gitProjectId, gitProjectFilePath, updateParams);
             return new HoldDoubleValue<Boolean, JDGitFiles>(isDiscover, ressult);
         }
         ressult.setContent(hbaseScript.getScriptContent(dataBaseScriptFile));
         return new HoldDoubleValue<Boolean, JDGitFiles>(isDiscover, ressult);
+
+    }
+
+    /**
+     * https://cf.jd.com/pages/viewpage.action?pageId=498424815
+     * <p>
+     * <p>
+     * /devcenter/api/script/updateInfo
+     * <p>
+     * 每次修改的时候 - 保存开发中心接口
+     */
+    private void callBackDevCentor() {
+
 
     }
 
@@ -1342,7 +1369,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
         List<DataDevScriptFile> allDataBaseDataDevScriptFile = dataDevScriptFileDao.queryDirAll(gitProjectId, gitProjectDirPath);
 
-        return handPush(dataDevGitProject, erp, allDataBaseDataDevScriptFile, commitMessage, gitProjectDirPath, true,false);
+        return handPush(dataDevGitProject, erp, allDataBaseDataDevScriptFile, commitMessage, gitProjectDirPath, true, false);
 
     }
 
@@ -1363,7 +1390,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
 
         DataDevScriptFile dataDevScriptFile = dataDevScriptFileDao.getSingleScriptFileIgnoreDeleted(gitProjectId, gitProjectFilePath);
-        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false,false);
+        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false, false);
         if (result != null && result.size() > 0) {
             return result.get(0);
         }
@@ -1372,6 +1399,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
 
     /**
      * 直接push文件
+     *
      * @param gitProjectId
      * @param gitProjectFilePath
      * @param commitMessage
@@ -1387,7 +1415,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
 
         DataDevScriptFile dataDevScriptFile = dataDevScriptFileDao.getSingleScriptFileIgnoreDeleted(gitProjectId, gitProjectFilePath);
-        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false,true);
+        List<DataDevScriptFile> result = handPush(dataDevGitProject, erp, Arrays.asList(dataDevScriptFile), commitMessage, gitProjectFilePath, false, true);
         if (result != null && result.size() > 0) {
             return result.get(0);
         }
@@ -1402,7 +1430,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
      * @return
      * @throws Exception
      */
-    private List<DataDevScriptFile> handPush(DataDevGitProject dataDevGitProject, String erp, List<DataDevScriptFile> allDataBaseDataDevScriptFile, String commitMessage, String commitPath, boolean isDir , boolean isDirectPush) throws Exception {
+    private List<DataDevScriptFile> handPush(DataDevGitProject dataDevGitProject, String erp, List<DataDevScriptFile> allDataBaseDataDevScriptFile, String commitMessage, String commitPath, boolean isDir, boolean isDirectPush) throws Exception {
 
         /**
          * 2018-12-11 发现Git PUSH 接口对于大于10M的也可以push 上去但是Push的结果不对
@@ -1462,9 +1490,9 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
                 continue;
             }
             if (!dataBaseTemp.getGitVersion().equals(dataBaseTemp.getLastGitVersion())) {
-                if(isDirectPush){
+                if (isDirectPush) {
                     updateDataDevScriptFile.add(dataBaseTemp);
-                }else{
+                } else {
                     dataBaseTemp.setNewGitVersion(dataBaseTemp.getLastGitVersion());
                     maryMerge.add(dataBaseTemp);
                 }

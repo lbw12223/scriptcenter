@@ -42,7 +42,13 @@
 
     </form>
     <div class="buttons-div">
-        <a class="bdp-btn bdp-btn-primary" id="addGroupBtn">添加组</a>
+        <a class="bdp-btn bdp-btn-primary" id="addGroupBtn">
+            #if($!{isCodingOrGit} == 1)
+                添加添加组
+            #else
+                添加项目空间
+            #end
+        </a>
         <a class="bdp-btn bdp-btn-default" id="closeGroupBtn">关闭</a>
     </div>
 </div>

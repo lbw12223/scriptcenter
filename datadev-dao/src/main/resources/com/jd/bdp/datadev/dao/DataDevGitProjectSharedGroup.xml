@@ -47,4 +47,10 @@
         FROM git_project_shared_group where git_project_id = #{gitProjectId}
     </select>
 
+    <select id="findBy" resultType="DataDevGitProjectSharedGroup">
+        SELECT
+        <include refid="datadev_script_project_column"></include>
+        FROM git_project_shared_group where git_project_id = #{gitProjectId} and git_group_id= #{gitProjectGroupId} limit 1
+    </select>
+
 </mapper>

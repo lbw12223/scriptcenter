@@ -277,16 +277,20 @@ public class ScriptProjectController {
             dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
             dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
         } else {
-
+            Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
+            boolean isExits  = dataDevGitProjectSharedGroupService.isExits(gitProjectId,gitProjectGroupId) ;
+            if(isExits){
+                return JSONObjectUtil.getSuccessResult("项目空间已经存在！");
+            }
             dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
-            dataDevGitProjectSharedGroup.setGitGroupId(gitGroupId + GitHttpUtil._10YI);
+            dataDevGitProjectSharedGroup.setGitGroupId(gitProjectGroupId);
             dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
             dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
             dataDevGitProjectSharedGroup.setIsCanSysProjectScript(isSyncProjectSpace != null && isSyncProjectSpace == 1 ? 1 : 0);
         }
 
         dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
-        return JSONObjectUtil.getSuccessResult("添加共享组成功");
+        return JSONObjectUtil.getSuccessResult("添加项目空间成功");
 
     }
 
@@ -544,7 +548,7 @@ public class ScriptProjectController {
      *
      * @param urmUserHolder
      * @param gitProjectId
-     * @param dirPath
+     * @param
      * @return
      * @throws Exception
      */
@@ -559,15 +563,7 @@ public class ScriptProjectController {
         return JSONObjectUtil.getSuccessResult("success", jsonObject);
     }
 
-    @RequestMapping("syncScriptToDataDevToLocalProject.ajax")
-    @ResponseBody
-    public com.alibaba.fastjson.JSONObject syncScriptToDataDevToLocalProject(
-            UrmUserHolder urmUserHolder,
-            Long gitProjectId,
-            @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
-        com.alibaba.fastjson.JSONObject jsonObject = importScriptManager.syncScriptToDataDev(gitProjectId, "", jsdAppgroupId, urmUserHolder.getErp(), false, null, 0l, null, false);
-        return JSONObjectUtil.getSuccessResult("success", jsonObject);
-    }
+
 
     /**
      * 同步脚本

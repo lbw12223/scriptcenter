@@ -18,4 +18,6 @@ public interface DataDevGitProjectSharedGroupService {
     void deleteSharedGroupFromProject(DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup);
 
     List<DataDevGitProjectSharedGroup> list(Long gitProjectId);
+
+    boolean isExits(Long gitProjectId ,  Long gitGroupId) ;
 }

@@ -72,7 +72,7 @@ $(function () {
 
     $("#add-group").on("click", function () {
         $.dialog.open("/scriptcenter/project/addGroup.html?gitProjectId=" + $("#gitProjectId").val(),{
-            title: "添加組",
+            title: "添加",
             lock: true,
             width: "400px",
             height: "300px",
@@ -289,10 +289,10 @@ function sysScript(projectSpaceId){
         if(total > 0){
             console.log("同步......")
             console.log(data)
-            var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>正在同步脚本...<br />";
-            content += "同步进度 ";
-            content += "<span id='processOn'>0</span>";
-            content += "<span id='processTotal'>"+total+"</span>";
+            var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>【"+total+"】个脚本，正在同步...<br />";
+           // content += "同步进度 ";
+           // content += "<span id='processOn'>0</span>";
+           // content += "<span id='processTotal'>"+total+"</span>";
             content += "</p>";
             $.bdpMsg(
                 {
@@ -310,9 +310,7 @@ function sysScript(projectSpaceId){
                     ]
                 }
             )
-            window.setInterval(function (){
-                setProcessOn(projectSpaceId);
-            },1000)
+
         }else{
              $.successMsg("当前服务目录已经同步完成，无可同步脚本!")
         }

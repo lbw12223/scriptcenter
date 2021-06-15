@@ -3,7 +3,10 @@ package com.jd.bdp.datadev.component;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jd.bdp.datadev.domain.DataDevScriptFile;
 import com.jd.bdp.datadev.util.HttpUtil;
+import com.jd.jsf.gd.util.StringUtils;
+import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +14,10 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * 生产中心的接口
+ */
 @Component
 public class BuffaloComponent {
 
@@ -32,6 +39,96 @@ public class BuffaloComponent {
     private String devCenterPrefix;
     @Value("${url.davcenter.envInfo}")
     private String envInfoUrl;
+
+
+    /**
+     * 获取某个项目空间下面的脚本
+     *
+     * @param appGroupId
+     * @throws Exception
+     */
+    public net.sf.json.JSONArray getScriptListNew(Long appGroupId) throws Exception {
+        JSONArray result = new JSONArray();
+        try {
+            String url = buffalo4Prefix + "/api/v2/buffalo4/script/getNoSyncScript";
+            JSONObject data = new JSONObject();
+            data.put("appGroupId", appGroupId);
+            data.put("limit", 100000);
+            Map<String, String> params = new HashMap<>();
+            params.put("token", token);
+            params.put("appId", appId);
+            long timeMillis = System.currentTimeMillis();
+            params.put("time", Long.toString(timeMillis));
+
+            String entity = HttpUtil.doPostWithParamAndBody(url, params, data);
+            JSONObject jsonObject = JSONObject.parseObject(entity);
+            if (jsonObject.getInteger("code") == 0) {
+                if (jsonObject.get("list") != null) {
+                    JSONArray list = jsonObject.getJSONArray("list");
+                    for(int index = 0 ; index < list.size() ; index++){
+                        String curVersion = list.getJSONObject(index).getString("curVersion");
+                        if(StringUtils.isBlank(curVersion)){
+                            continue;
+                        }
+                        result.add(list.getJSONObject(index));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("getScriptListNew", e);
+            result = new JSONArray();
+        }
+        return net.sf.json.JSONArray.fromObject(result);
+    }
+
+
+    /**
+     * 初始化同步脚本管理的脚本
+     *
+     *
+     * https://cf.jd.com/pages/viewpage.action?pageId=515468266
+     *
+     *
+     * 回调 生产 中心接口
+     * @param fileId
+     * @param buffaloVersion
+     * @param version
+     * @throws Exception
+     */
+    public void syncBuffloScriptCallback(Long fileId,
+                                         String buffaloVersion,
+                                         DataDevScriptFile dataDevScriptFile,
+                                         String version ,
+                                         String md5) throws Exception {
+
+        String url = buffalo4Prefix + "/api/v2/buffalo4/script/updateScriptIdAndVersion";
+        com.alibaba.fastjson.JSONObject data = new com.alibaba.fastjson.JSONObject();
+
+
+        data.put("fileId", String.valueOf(fileId));
+        data.put("version", buffaloVersion);
+        data.put("md5Code", md5);
+
+        data.put("dataDevScriptId", String.valueOf(dataDevScriptFile.getId()));
+        data.put("dataDevScriptVersion",  StringUtils.isBlank(version) ? String.valueOf(1000) : version);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("appId", appId);
+        long timeMillis = System.currentTimeMillis();
+        params.put("time", Long.toString(timeMillis));
+
+        String entity = HttpUtil.doPostWithParamAndBody(url, params, data);
+        net.sf.json.JSONObject jsonObject;
+        try {
+            jsonObject = net.sf.json.JSONObject.fromObject(entity);
+        } catch (Exception e) {
+            throw new Exception("同步时候，回调更新接口 返回异常",e);
+        }
+        if (jsonObject.getInt("code") != 0) {
+            throw new RuntimeException(jsonObject.getString("message"));
+        }
+    }
 
 
     public JSONArray getDBEnvInfo(String marketCode, String clusterCode) throws Exception {
@@ -68,11 +165,11 @@ public class BuffaloComponent {
         JSONObject jsonObject;
         try {
             jsonObject = JSON.parseObject(entity);
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("获取库变量 返回异常");
             throw new Exception("获取库变量 返回异常");
         }
-        if(jsonObject.getInteger("code") != 0) {
+        if (jsonObject.getInteger("code") != 0) {
             logger.error("获取库变量 失败");
             throw new Exception(jsonObject.getString("message"));
         }
@@ -80,10 +177,11 @@ public class BuffaloComponent {
         return jsonObject.getJSONArray("list");
     }
 
+
     /**
      * 调度中心-获取生产侧的脚本内容接口  fileContent
      */
-    public JSONObject scriptGetFileContent(String scriptName, Long projectId)throws Exception {
+    public JSONObject scriptGetFileContent(String scriptName, Long projectId) throws Exception {
         JSONObject data = new JSONObject();
 
         data.put("scriptName", scriptName);
@@ -101,13 +199,12 @@ public class BuffaloComponent {
         JSONObject jsonObject;
         try {
             jsonObject = JSON.parseObject(entity);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             logger.error("调度中心-获取脚本内容接口 返回异常");
             throw new Exception("调度中心-获取脚本内容接口 返回异常");
         }
 
-        if(jsonObject.getInteger("code") != 0) {
+        if (jsonObject.getInteger("code") != 0) {
             logger.error("调度中心-获取脚本内容接口 失败");
             throw new Exception(jsonObject.getString("message"));
         }
@@ -116,8 +213,9 @@ public class BuffaloComponent {
         return obj;
     }
 
-    public JSONObject getTaskList(Long projectSpaceId, String scriptName, String operator)throws Exception {
+    public JSONObject getTaskList(Long projectSpaceId, String scriptName, String operator) throws Exception {
         JSONObject data = new JSONObject();
+
 
         data.put("scriptName", scriptName);
         data.put("jsdAppgroupId", projectSpaceId);
@@ -139,7 +237,7 @@ public class BuffaloComponent {
         int totalCount = 0;
         int L0 = 0;
         int L1 = 0;
-        if(list != null && list.size() > 0){
+        if (list != null && list.size() > 0) {
             for (Object o : list) {
                 JSONObject json = (JSONObject) o;
                 if (json != null) {
@@ -153,7 +251,7 @@ public class BuffaloComponent {
             totalCount = jsonObject.getInteger("totalCount");
         }
 
-        res.put("totalCount",totalCount);
+        res.put("totalCount", totalCount);
         res.put("totalL0", L0);
         res.put("totalL1", L1);
         res.put("list", list);
@@ -197,6 +295,7 @@ public class BuffaloComponent {
             //throw new Exception(e.getMessage());
         }
         return new JSONObject();
-
     }
+
+
 }

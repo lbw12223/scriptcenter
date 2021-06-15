@@ -10,6 +10,7 @@ import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
 import com.jd.bdp.datadev.web.annotations.ExceptionMessageAnnotation;
+import com.jd.bdp.datadev.web.interceptor.ProjectSpaceIdParam;
 import com.jd.bdp.planing.api.ProjectInterface;
 import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.rc.api.ApiResult;
@@ -238,24 +239,31 @@ public class DevCentorController {
 
     @RequestMapping({"uplineArtCheck.html"})
     public String uplineCheck(Model model,UrmUserHolder urmUserHolder ,
-                              Long projectSpaceId ,
+                              @ProjectSpaceIdParam Long projectSpaceId ,
                               Long scriptId) throws Exception {
 
+        try {
 
-        DataDevScriptFile dataDevScriptFile = fileService.findById(scriptId);
+
+            DataDevScriptFile dataDevScriptFile = fileService.findById(scriptId);
 
 
-        JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, dataDevScriptFile.getName(), urmUserHolder.getErp());
-        Long totalCount = result.getLong("totalCount");
-        Long totalL0 = result.getLong("totalL0");
-        Long totalL1 = result.getLong("totalL1");
+            JSONObject result = dataDevScriptDiffService.getTaskList(projectSpaceId, dataDevScriptFile.getName(), urmUserHolder.getErp());
+            Long totalCount = result.getLong("totalCount");
+            Long totalL0 = result.getLong("totalL0");
+            Long totalL1 = result.getLong("totalL1");
 
-        ProjectBO projectB0 = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
-        model.addAttribute("totalL0",totalL0);
-        model.addAttribute("totalL1",totalL1);
-        model.addAttribute("totalCount",totalCount);
-        model.addAttribute("spaceProjectName",projectB0 != null ? projectB0.getName() : "");
-        model.addAttribute("dataDevScriptFile",dataDevScriptFile);
+            ProjectBO projectB0 = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
+            model.addAttribute("totalL0",totalL0);
+            model.addAttribute("totalL1",totalL1);
+            model.addAttribute("totalCount",totalCount);
+            model.addAttribute("spaceProjectName",projectB0 != null ? projectB0.getName() : "");
+            model.addAttribute("dataDevScriptFile",dataDevScriptFile);
+
+        }catch (Exception e){
+
+        }
+
 
 
 

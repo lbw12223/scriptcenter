@@ -106,4 +106,9 @@ public class DataDevGitProjectSharedGroupServiceImpl implements DataDevGitProjec
     public List<DataDevGitProjectSharedGroup> list(Long gitProjectId) {
         return dataDevGitProjectSharedGroupDao.listProjectGroup(gitProjectId);
     }
+
+    @Override
+    public boolean isExits(Long gitProjectId, Long gitGroupId) {
+       return dataDevGitProjectSharedGroupDao.findBy(gitProjectId,gitGroupId) != null ;
+    }
 }

@@ -32,4 +32,8 @@ public interface DataDevGitProjectSharedGroupDao {
 
 
     List<DataDevGitProjectSharedGroup> listProjectGroup(@Param("gitProjectId") Long projectId) ;
+
+
+    DataDevGitProjectSharedGroup findBy(@Param("gitProjectId") Long gitProjectId ,@Param("gitProjectGroupId") Long gitProjectGroupId  ) ;
+
 }

@@ -21,7 +21,7 @@ $(function () {
             gitGroupName: gitGroupName,
             isSyncProjectSpace:isSync
         },$("#addGroupBtn"),function (node, data) {
-            console.log(data.obj);
+            $.successMsg(data.obj);
             art.dialog.close();
         })
     })
