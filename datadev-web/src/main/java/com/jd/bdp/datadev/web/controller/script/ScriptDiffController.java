@@ -157,7 +157,12 @@ public class ScriptDiffController {
     public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String commitMsg,Long scriptFileId ) throws Exception {
 
         try {
-            projectSpaceId = 10109L;
+//            if(true){
+//                ReleaseWfInfo releaseWfInfo = new ReleaseWfInfo();
+//                releaseWfInfo.setSubmitId(1000L);
+//                releaseWfInfo.setWfId(1000L);
+//                return JSONObjectUtil.getSuccessResult(releaseWfInfo);
+//            }
             String operator = userHolder.getErp();
             ReleaseWfInfo releaseWfInfo = preSubmit(projectSpaceId, scriptFileId, commitMsg, operator);
             return JSONObjectUtil.getSuccessResult(releaseWfInfo);

@@ -5,11 +5,11 @@ $(function () {
     var gitProjectId = $("#gitProjectId").val();
 
     var isCodingOrGit = $("#isCodingOrGit").val();
-    if(isCodingOrGit * 1 == 1){
+    if (isCodingOrGit * 1 == 1) {
         $("#projectName").text(projectDetail.projectPath);
         $("#projectId").text(projectDetail.gitProjectId);
         $("#HTTP").text(projectDetail.webUrl);
-        $("#HTTP").attr("href",projectDetail.webUrl);
+        $("#HTTP").attr("href", projectDetail.webUrl);
         $("#SSH").text(projectDetail.sshUrl);
         $("#creatTime").text(projectDetail.createDate);
         $("#description").text(projectDetail.description);
@@ -26,7 +26,7 @@ $(function () {
     });
 
     $("#add-user").on("click", function () {
-        $.dialog.open("/scriptcenter/project/addUser.html?gitProjectId=" + $("#gitProjectId").val(),{
+        $.dialog.open("/scriptcenter/project/addUser.html?gitProjectId=" + $("#gitProjectId").val(), {
             title: "添加成员",
             lock: true,
             width: "400px",
@@ -60,18 +60,18 @@ $(function () {
     function removeMember() {
         var gr = $("#member-grid-table").getGridParam('selrow');
         var gitMemberId = $("#member-grid-table").getCell(gr, "gitMemberId");
-        var id =  $("#member-grid-table").getCell(gr, "id");
-        commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteProjectMember.ajax",{
+        var id = $("#member-grid-table").getCell(gr, "id");
+        commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteProjectMember.ajax", {
             gitProjectId: gitProjectId,
             gitMemberId: gitMemberId,
-            id:id
+            id: id
         }, $("#delete-user"), function (node, data) {
             jQuery("#member-grid-table").trigger("reloadGrid");
         });
     }
 
     $("#add-group").on("click", function () {
-        $.dialog.open("/scriptcenter/project/addGroup.html?gitProjectId=" + $("#gitProjectId").val(),{
+        $.dialog.open("/scriptcenter/project/addGroup.html?gitProjectId=" + $("#gitProjectId").val(), {
             title: "添加",
             lock: true,
             width: "400px",
@@ -105,7 +105,7 @@ $(function () {
     function removeGroup() {
         var gr = $("#group-grid-table").getGridParam('selrow');
         var jdGroupId = $("#group-grid-table").getCell(gr, "jdGroupId");
-        commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteSharedWithGroups.ajax",{
+        commonAjaxEvents.commonPostAjax("/scriptcenter/project/deleteSharedWithGroups.ajax", {
             gitProjectId: gitProjectId,
             jdGroupId: jdGroupId
         }, $("#delete-group"), function (node, data) {
@@ -117,12 +117,12 @@ $(function () {
         if (!initUserStatus) {
 
 
-            var isCodingOrGit = !$("#gitProjectId").val() * 1 > 1000000000 ;
+            var isCodingOrGit = !$("#gitProjectId").val() * 1 > 1000000000;
             initUserStatus = true;
             var _colModel = [
                 {
-                    name:'jdGroupId',
-                    hidden:true,
+                    name: 'jdGroupId',
+                    hidden: true,
                 },
                 {
                     name: 'groupName',
@@ -140,11 +140,11 @@ $(function () {
 
             ];
 
-            if(!isCodingOrGit){
+            if (!isCodingOrGit) {
                 _colModel = [
                     {
-                        name:'jdGroupId',
-                        hidden:true,
+                        name: 'jdGroupId',
+                        hidden: true,
                     },
                     {
                         name: 'groupName',
@@ -156,7 +156,10 @@ $(function () {
                         label: "操作",
                         sortable: false,
                         formatter: function (cellvalue, options, record) {
-                            return "<a href='javascript:sysScript(" + record.jdGroupId + ")' target='_self'>同步脚本</a>"
+                            if (record.isCanSysProjectScript * 1 == 1) {
+                                return " <a href='javascript:sysScript(" + record.jdGroupId + ")' target='_self'>同步脚本</a>"
+                            }
+                            return "";
                         }
                     }
                 ]
@@ -164,8 +167,8 @@ $(function () {
             }
             jQuery("#group-grid-table").jqGrid({
                 datatype: "json",
-                url:'/scriptcenter/project/sharedWithGroups.ajax',
-                mType:'POST',
+                url: '/scriptcenter/project/sharedWithGroups.ajax',
+                mType: 'POST',
                 postData: {
                     gitProjectId: $.trim($("#gitProjectId").val()),
                 },
@@ -178,20 +181,20 @@ $(function () {
                 height: "100%",
                 shrinkToFit: true,
                 scrollOffset: 6,
-                forceFit:true,
-                multiselect:true,
+                forceFit: true,
+                multiselect: true,
                 multiboxonly: true,
                 loadComplete: function (data) {
                     jqGrid.initWidth(jQuery, '#group-grid-table', "#group-jd-table-parent");
                     jqGrid.reset(jQuery);
-                    $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height()-41);
+                    $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height() - 41);
                 },
                 onSelectRow: function (rowid, status) {
                     initGroupButtons();//格式化功能按钮
                 },
                 beforeSelectRow: function () {
                     $("#group-grid-table").jqGrid('resetSelection');
-                    return(true);
+                    return (true);
                 }
             });
 
@@ -219,15 +222,15 @@ $(function () {
             var pager_selector = "#member-grid-pager";
             jQuery("#member-grid-table").jqGrid({
                 datatype: "json",
-                url:'/scriptcenter/project/projectMemberInfo.ajax',
-                mType:'POST',
+                url: '/scriptcenter/project/projectMemberInfo.ajax',
+                mType: 'POST',
                 postData: {
                     gitProjectId: $.trim($("#gitProjectId").val()),
                 },
                 colModel: _colModel2,
                 viewrecords: true,
                 rowList: [3, 5, 10, 20, 50, 100],
-                pager:pager_selector,
+                pager: pager_selector,
                 altRows: true,
                 width: '100%',
                 autowidth: true,
@@ -235,39 +238,39 @@ $(function () {
                 height: "100%",
                 shrinkToFit: true,
                 scrollOffset: 6,
-                forceFit:true,
-                multiselect:true,
+                forceFit: true,
+                multiselect: true,
                 multiboxonly: true,
                 loadComplete: function (data) {
                     jqGrid.initWidth(jQuery, '#member-grid-table', "#member-jd-table-parent");
                     jqGrid.reset(jQuery);
-                    $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height()-185);
+                    $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height() - 185);
                 },
                 onSelectRow: function (rowid, status) {//单击行触发事件
                     initButtons();//格式化功能按钮
                 },
                 beforeSelectRow: function () {
                     $("#member-grid-table").jqGrid('resetSelection');
-                    return(true);
+                    return (true);
                 }
             });
             $(window).resize(function () {
                 $("#group-grid-table").setGridWidth($("#group-jd-table-parent").width());
-                $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height()-41);
+                $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height() - 41);
                 $("#member-grid-table").setGridWidth($("#member-jd-table-parent").width());
-                $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height()-185);
+                $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height() - 185);
             });
         } else {
             $("#group-grid-table").setGridWidth($("#group-jd-table-parent").width());
-            $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height()-41);
+            $("#group-grid-table").setGridHeight($("#group-jd-table-parent").height() - 41);
             $("#member-grid-table").setGridWidth($("#member-jd-table-parent").width());
-            $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height()-185);
+            $("#member-grid-table").setGridHeight($("#member-jd-table-parent").height() - 185);
         }
     }
 })
 
 function openGroupDetail(groupId) {
-    $.dialog.open("/scriptcenter/project/groupMember.html?groupId="+ groupId,{
+    $.dialog.open("/scriptcenter/project/groupMember.html?groupId=" + groupId, {
         title: "组成员",
         lock: true,
         width: "600px",
@@ -279,21 +282,24 @@ function openGroupDetail(groupId) {
     });
 }
 
-function sysScript(projectSpaceId){
+function sysScript(projectSpaceId) {
 
-    commonAjaxEvents.commonPostAjax("/scriptcenter/project/syncScriptToDataDevNew.ajax",{
+    debugger
+    projectSpaceId = projectSpaceId - 1000000000;
+    commonAjaxEvents.commonPostAjax("/scriptcenter/project/syncScriptToDataDevNew.ajax", {
         jsdAppgroupId: projectSpaceId,
         gitProjectId: $("#gitProjectId").val()
     }, $("#delete-group"), function (node, data) {
-        var total = data.obj && data.obj.total ? data.obj.total * 1 : 0 ;
-        if(total > 0){
-            console.log("同步......")
-            console.log(data)
-            var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>【"+total+"】个脚本，正在同步...<br />";
-           // content += "同步进度 ";
-           // content += "<span id='processOn'>0</span>";
-           // content += "<span id='processTotal'>"+total+"</span>";
+        var total = data.obj && data.obj.total ? data.obj.total * 1 : 0;
+        var processOn = data.obj && data.obj.processOn ? data.obj.processOn * 1 : 1;
+
+        if (total > 0) {
+            var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>【" + total + "】个脚本，正在同步...<br />";
+            content += "同步进度 ";
+            content += "<span id='processOn'>" + processOn + "</span>";
+            content += "<span id='processTotal'> / " + total + "</span>";
             content += "</p>";
+            content += "<p style='color: #DC9116;'>注：关闭窗口不会停止脚本同步！</p>"
             $.bdpMsg(
                 {
                     title: "提示",
@@ -310,23 +316,36 @@ function sysScript(projectSpaceId){
                     ]
                 }
             )
+            window.setTimeout(function () {
+                setProcessOn(projectSpaceId)
+            }, 1000);
 
-        }else{
-             $.successMsg("当前服务目录已经同步完成，无可同步脚本!")
+        } else {
+            $.successMsg("当前服务目录已经同步完成，无可同步脚本!")
         }
     });
 }
-function setProcessOn(projectSpaceId){
-    commonAjaxEvents.commonPostAjax("/scriptcenter/project/syncScriptToDataDevProcess.ajax",{
+
+function setProcessOn(projectSpaceId) {
+    console.log("setProcessOn:" + projectSpaceId)
+    commonAjaxEvents.commonNoRemoveMsgPostAjax("/scriptcenter/project/syncScriptToDataDevProcess.ajax", {
         appGroupId: projectSpaceId
     }, $("#delete-group"), function (node, data) {
-        if(data.obj){
-            $.successMsg("同步完成!")
-        }else{
-            $("#processOn").val(data.obj.currentIndex);
+        if (data.obj.processOn * 1 >= data.obj.total * 1) {
+            $.successMsg("同步完成! 其中成功【" + data.obj.success + "】，失败【" + data.obj.failed + "】" )
+        } else {
+            if (top.Msg) {
+                top.$("#processOn").html(data.obj.processOn);
+            } else {
+                $("#processOn").html(data.obj.processOn);
+            }
+            window.setTimeout(function () {
+                setProcessOn(projectSpaceId)
+            }, 1000);
         }
     });
 }
+
 //格式化按钮
 function initButtons() {
     var hasAuthority = $("#hasAuthority").val();

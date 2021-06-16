@@ -152,8 +152,6 @@ var commonAjaxEvents = {
             }
         });
     },
-
-
     commonGetAjax:function (_url,_data,succssCallback){
         if(top && top.window && top.window.projectSpaceId){
             _data['projectSpaceId'] = top.window.projectSpaceId
@@ -302,7 +300,27 @@ var commonAjaxEvents = {
                 }
             }
         });
-    }
+    },
+    commonNoRemoveMsgPostAjax: function (_url, _data, node, succssCallback, complete, parentModal,isJson,spinner,beforeEvent) {
+        if(top && top.window && top.window.projectSpaceId){
+            _data['projectSpaceId'] = top.window.projectSpaceId <= 0 ? 10347 : top.window.projectSpaceId
+        }else{
+            _data['projectSpaceId'] = 0 ;
+        }
+        //_data['projectSpaceId'] = 10109;
+        $.ajax({
+            url: _url,
+            data: _data,
+            type: "post",
+            dataType: 'json',
+            contentType:isJson?"application/json;charset=utf-8":"application/x-www-form-urlencoded;charset=utf-8",
+            success: function (data) {
+                succssCallback && succssCallback(node, data);
+            }
+        });
+    },
+
+
 }
 function disableButton(button) {
     button && button.addClass("bdp-disabled");

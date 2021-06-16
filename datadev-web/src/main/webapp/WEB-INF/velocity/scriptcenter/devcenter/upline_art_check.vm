@@ -1,5 +1,4 @@
 #set($layout="layout_blank.vm")
-#set($page_title="artCheck")
 <link rel="stylesheet" href="/scriptcenter/statics/ace-diff/styles.css?_dc=$!{staticVersion}">
 
 <link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css"/>
