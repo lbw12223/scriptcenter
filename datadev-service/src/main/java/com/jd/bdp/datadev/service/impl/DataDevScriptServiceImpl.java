@@ -515,7 +515,7 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
         } else {
             scriptRunDetail.setRunTmp(0);
         }
-        if (isMergeMarket && StringUtils.isNotBlank(scriptRunDetail.getClusterCode()) && StringUtils.isNotBlank(scriptRunDetail.getMarketLinuxUser()) && StringUtils.isNotBlank(scriptRunDetail.getAccountCode())) {
+        if (/*isMergeMarket && */StringUtils.isNotBlank(scriptRunDetail.getClusterCode()) && StringUtils.isNotBlank(scriptRunDetail.getMarketLinuxUser()) && StringUtils.isNotBlank(scriptRunDetail.getAccountCode())) {
             DataDevScriptConfig oriClusterAndMarketByMarketCode = configService.getOriClusterAndMarketByMarketCode(scriptRunDetail.getClusterCode(), scriptRunDetail.getMarketLinuxUser(), scriptRunDetail.getAccountCode());
             String runClusterCode = oriClusterAndMarketByMarketCode.getRunClusterCode();
             String runMarketLinuxUser = oriClusterAndMarketByMarketCode.getRunMarketLinuxUser();

@@ -28,7 +28,6 @@ $(function () {
     })
     //单击选中事件
     $("ul.account-history-ul,ul.account-history-ul2").on("click", "li", function (e) {
-        debugger
         // if (e.delegateTarget.className == "account-history-ul2") {
         //     $("#account-add").addClass("icon-disabled");
         //     $("#account-remove").addClass("icon-disabled");
@@ -384,7 +383,6 @@ $(function () {
             var config = getConfigById(id);
             if (config) {
                 config.status = config.status ? config.status : 3;
-                config.clusterCode = option.attr("data-cluster");
                 config.marketLinuxUser = option.attr("data-market-user");
                 config.marketUser = option.attr("market-user") != "null" ? option.attr("market-user") : null;
                 activeLi.attr("data-cluster", config.clusterCode);
@@ -429,7 +427,7 @@ $(function () {
                     config.queueCode = null;
                     config.queueId = null;
                     config.engineType = null;
-                    config.clusterCode = null;
+                   // config.clusterCode = null;
                     activeLi.attr("data-queue", "");
                     activeLi.attr("data-engine", "");
                 }
@@ -585,6 +583,7 @@ $(function () {
 
     function saveConfig(hideModal) {
 
+        debugger
         var result = true;
         var lis = $("li.account-history-li");
         var duObj = {};
@@ -598,25 +597,6 @@ $(function () {
                         element.trigger("click");
                         return false;
                     }
-
-                    // var tempStatus = 1;
-                    // ////1添加 2删除 3改变order 其他值:默认不变
-                    // if(element.attr("data-id") * 1 <= 0){
-                    //
-                    // }else{
-                    //     tempStatus = 2;
-                    // }
-                    // tmpConfigArr.push({
-                    //     projectSpaceId: top.window.projectSpaceId,
-                    //     clusterCode: element.attr("data-cluster"),
-                    //     marketLinuxUser: element.attr("data-linux-user"),
-                    //     queueCode: element.attr("data-queue"),
-                    //     accountCode: element.attr("data-account"),
-                    //     name: element.attr("data-name"),
-                    //     engineType : element.attr("data-engine"),
-                    //     id: element.attr("data-id"),
-                    //     status: tempStatus
-                    // })
                     duObj[element.attr("data-name")] = true;
                 });
             }
