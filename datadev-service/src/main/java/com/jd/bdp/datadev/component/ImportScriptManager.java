@@ -465,7 +465,7 @@ public class ImportScriptManager {
             /**
              * 插入数据库,hbase
              */
-            dataDevScriptFileService.deleteScriptFile(gitProjectId, gitProjectFilePath, erp);
+            dataDevScriptFileService.deleteScriptFile(appGroupId, gitProjectId, gitProjectFilePath, erp);
             ztreeNode = dataDevScriptFileService.createNewFile(gitProjectId, gitProjectFilePath, scriptType, erp, 0, bytes, description, startShellPath);
             callBackScriptNew(script, gitProjectId, gitProjectFilePath, erp, null);
             redisValue.put("successCount", redisValue.getIntValue("successCount") + 1);

@@ -254,7 +254,7 @@ public interface DataDevScriptFileService {
      * @throws Exception
      */
 
-    void deleteScriptFile(Long gitProjectId, String gitProjectFilePath, String erp) throws Exception;
+    void deleteScriptFile(Long projectSpaceId, Long gitProjectId, String gitProjectFilePath, String erp) throws Exception;
 
     /**
      * rename

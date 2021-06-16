@@ -184,7 +184,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         logger.info("submit result:" + JSONObject.toJSONString(submit));
        // return submit != null && submit.getCode() == 0;
        if(submit.getCode() != 0) {
-           throw new RuntimeException("发布失败!");
+           throw new RuntimeException(submit.getMessage());
        }
        return (ReleaseWfInfo) submit.getObj();
 

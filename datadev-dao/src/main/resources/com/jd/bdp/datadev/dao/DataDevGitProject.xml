@@ -11,7 +11,8 @@
         git_project.finish_project_tree_flag as finishProjectTreeFlag,
         git_project.finish_project_member_flag as finishProjectMemberFlag,
         git_project.refresh_time as refreshTime,
-        git_project.group_id as groupId
+        git_project.group_id as groupId,
+        git_project.description as description
     </sql>
 
 
