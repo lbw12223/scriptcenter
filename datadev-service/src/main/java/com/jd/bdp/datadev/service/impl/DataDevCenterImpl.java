@@ -175,7 +175,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
 
 
-        JsfResultDTO submit = JSONObject.parseObject("{\"code\":0,\"obj\":{\"submitId\":374,\"wfId\":53893}}", JsfResultDTO.class);//releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+        JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);//JSONObject.parseObject("{\"code\":0,\"obj\":{\"submitId\":374,\"wfId\":53893}}", JsfResultDTO.class);
         ReleaseWfInfo releaseWfInfo = new ReleaseWfInfo();
         releaseWfInfo.setSubmitId(374L);
         releaseWfInfo.setWfId(53893L);
