@@ -132,6 +132,11 @@ public class BuffaloComponent {
 
 
     public JSONArray getDBEnvInfo(String marketCode, String clusterCode) throws Exception {
+
+        clusterCode = "taran" ;
+        marketCode = "jsm_market" ;
+
+
         JSONObject data = new JSONObject();
         data.put("appId", appId);
         data.put("token", token);

@@ -73,28 +73,27 @@ public class DataDevCenterImpl implements DataDevCenterService {
     private String appToken;
 
 
-
     @Autowired
     private DataDevScriptFileService fileService;
 
     @Autowired
-    private ReleaseInterface releaseInterface ;
+    private ReleaseInterface releaseInterface;
 
     @Autowired
-    private ProjectInterface projectInterface ;
+    private ProjectInterface projectInterface;
 
     @Autowired
-    private ReleaseSubmitInterface releaseSubmitInterface ;
+    private ReleaseSubmitInterface releaseSubmitInterface;
 
     @Autowired
-    private BuffaloComponent buffaloComponent ;
+    private BuffaloComponent buffaloComponent;
 
-    public static final String SPLIT = "#-#" ;
+    public static final String SPLIT = "#-#";
+
     /**
-     *
      * 提交到发布中心
      */
-    private void uplineReleaseCenter( JSONObject resObject  , String erp , DataDevScriptFile file){
+    private void uplineReleaseCenter(JSONObject resObject, String erp, DataDevScriptFile file) {
         ReleaseInfoFromDevDto releaseInfoFromDevDto = new ReleaseInfoFromDevDto();
         releaseInfoFromDevDto.setObjType("script");
         releaseInfoFromDevDto.setProjectId(file.getApplicationId());
@@ -102,17 +101,16 @@ public class DataDevCenterImpl implements DataDevCenterService {
         releaseInfoFromDevDto.setDesc(file.getVerDescription());
 
 
-
         JSONObject releaseInfo = new JSONObject();
-        releaseInfo.put("projectId",file.getApplicationId());
-        releaseInfo.put("projectName",file.getApplicationName());
-        releaseInfo.put("scriptName",file.getName());
+        releaseInfo.put("projectId", file.getApplicationId());
+        releaseInfo.put("projectName", file.getApplicationName());
+        releaseInfo.put("scriptName", file.getName());
         //releaseInfo.put("scriptId",resObject.getLongValue("fileId"));
         //releaseInfo.put("scriptVersion",resObject.getString("version"));
-        releaseInfo.put("fileId",resObject.getLongValue("fileId"));
-        releaseInfo.put("version",resObject.getString("version"));
-        releaseInfo.put("scriptUrl","/scriptcenter/api/downloadScriptNoAuth.ajax?id="+file.getId()+"&version="+file.getVersion());
-        releaseInfo.put("scriptDesc",file.getVerDescription());
+        releaseInfo.put("fileId", resObject.getLongValue("fileId"));
+        releaseInfo.put("version", resObject.getString("version"));
+        releaseInfo.put("scriptUrl", "/scriptcenter/api/downloadScriptNoAuth.ajax?id=" + file.getId() + "&version=" + file.getVersion());
+        releaseInfo.put("scriptDesc", file.getVerDescription());
 
         releaseInfoFromDevDto.setShowInfo(releaseInfo);
         releaseInfoFromDevDto.setReleaseInfo(releaseInfo);
@@ -120,7 +118,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         releaseInfoFromDevDto.setReleaseName(file.getName() + "(" + file.getVersion() + ")");
         ApiResult<ReleaseRecordBo> releaseRecordBoApiResult = releaseInterface.submitRelease(appId, appToken, System.currentTimeMillis(), releaseInfoFromDevDto);
 
-        if(!releaseRecordBoApiResult.isSuccess()){
+        if (!releaseRecordBoApiResult.isSuccess()) {
             throw new RuntimeException("提交发布中心失败," + releaseRecordBoApiResult.getMessage());
         }
     }
@@ -128,38 +126,39 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
     /**
      * 提交发布中心New
+     *
      * @param resObject
      * @param erp
      * @param file
      */
-    private ReleaseWfInfo uplineReleaseCenterNew(JSONObject resObject  , String erp , DataDevScriptFile file , JSONObject preOnline) throws Exception{
+    private ReleaseWfInfo uplineReleaseCenterNew(JSONObject resObject, String erp, DataDevScriptFile file, JSONObject preOnline) throws Exception {
 
-        String fileName = file.getName() ;
+        String fileName = file.getName();
         Long projectSpaceId = file.getApplicationId();
 
         JSONObject currentOnlineInfo = buffaloComponent.getCurrentOnlineInfo(fileName, projectSpaceId);
 
-        String fileType= DataDevScriptTypeEnum.enumValueOf(file.getType()).toName();
+        String fileType = DataDevScriptTypeEnum.enumValueOf(file.getType()).toName();
         SubmitObj tempSubmitObj = new SubmitObj();
         JSONObject currentTempOnlineInfo = new JSONObject();
-        if(currentOnlineInfo != null){
-            currentTempOnlineInfo.put("scriptId",currentOnlineInfo.getLong("fileId"));
-            currentTempOnlineInfo.put("fileSize",currentOnlineInfo.getLong("fileSize"));
-            currentTempOnlineInfo.put("scriptName",currentOnlineInfo.getString("fileName"));
-            currentTempOnlineInfo.put("version",currentOnlineInfo.getString("curVersion"));
-            currentTempOnlineInfo.put("md5Code",currentOnlineInfo.getString("md5Code"));
-            currentTempOnlineInfo.put("fileType",currentOnlineInfo.getString("fileType"));
+        if (currentOnlineInfo != null) {
+            currentTempOnlineInfo.put("scriptId", currentOnlineInfo.getLong("fileId"));
+            currentTempOnlineInfo.put("fileSize", currentOnlineInfo.getLong("fileSize"));
+            currentTempOnlineInfo.put("scriptName", currentOnlineInfo.getString("fileName"));
+            currentTempOnlineInfo.put("version", currentOnlineInfo.getString("curVersion"));
+            currentTempOnlineInfo.put("md5Code", currentOnlineInfo.getString("md5Code"));
+            currentTempOnlineInfo.put("fileType", currentOnlineInfo.getString("fileType"));
         }
         JSONObject devInfo = new JSONObject();
-        devInfo.put("scriptId",file.getId());
-        devInfo.put("fileSize",file.getSize());
-        devInfo.put("scriptName",file.getName());
-        devInfo.put("version",file.getVersion());
-        devInfo.put("fileType",fileType);
-        devInfo.put("preOnline",preOnline);
+        devInfo.put("scriptId", file.getId());
+        devInfo.put("fileSize", file.getSize());
+        devInfo.put("scriptName", file.getName());
+        devInfo.put("version", file.getVersion());
+        devInfo.put("fileType", fileType);
+        devInfo.put("preOnline", preOnline);
 
         String devObjKey = file.getId().toString();
-        tempSubmitObj.setOperatorType(currentOnlineInfo != null ? "更新": "新建");
+        tempSubmitObj.setOperatorType(currentOnlineInfo != null ? "更新" : "新建");
         tempSubmitObj.setDevInfo(devInfo);
         tempSubmitObj.setDevObjKey(devObjKey);
         // onlineObjKey非首次发布时必传
@@ -174,7 +173,6 @@ public class DataDevCenterImpl implements DataDevCenterService {
         submitInfoVo.setSubmitObj(Arrays.asList(tempSubmitObj));
 
 
-
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);//JSONObject.parseObject("{\"code\":0,\"obj\":{\"submitId\":374,\"wfId\":53893}}", JsfResultDTO.class);
 //        ReleaseWfInfo releaseWfInfo = new ReleaseWfInfo();
 //        releaseWfInfo.setSubmitId(374L);
@@ -182,18 +180,18 @@ public class DataDevCenterImpl implements DataDevCenterService {
 //        submit.setCode(0);
 //        submit.setObj(releaseWfInfo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
-       // return submit != null && submit.getCode() == 0;
-       if(submit.getCode() != 0) {
-           throw new RuntimeException(submit.getMessage());
-       }
-       return (ReleaseWfInfo) submit.getObj();
+        // return submit != null && submit.getCode() == 0;
+        if (submit.getCode() != 0) {
+            throw new RuntimeException(StringUtils.isNotBlank(submit.getMessage()) ? "发布失败!" : submit.getMessage());
+        }
+        return (ReleaseWfInfo) submit.getObj();
 
 
     }
 
 
     @Override
-    public DataDevScriptFilePublish upLineScript(DataDevScriptFile file, String erp, DataDevScriptFilePublish oldPublish, Integer runType)  throws Exception{
+    public DataDevScriptFilePublish upLineScript(DataDevScriptFile file, String erp, DataDevScriptFilePublish oldPublish, Integer runType) throws Exception {
 
         String userToken = urmUtil.UserTokenByErp(null, erp);
         DataDevScriptFilePublish insertPublish = new DataDevScriptFilePublish();
@@ -264,8 +262,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
             JSONObject resObject = JSONObject.parseObject(response);
 
 
-
-            logger.info("==================syncScriptFileFromDevForPublish" +  JSONObject.toJSONString(resObject) );
+            logger.info("==================syncScriptFileFromDevForPublish" + JSONObject.toJSONString(resObject));
             if (resObject != null && resObject.getInteger("code") != null && resObject.getInteger("code") == 0) {
                 JSONObject obj = resObject.getJSONObject("obj");
                 String bdpRequestId = obj.get("bpmRequestId") != null ? obj.get("bpmRequestId").toString() : null;
@@ -274,7 +271,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 insertPublish.setRequestId(bdpRequestId != null ? Long.valueOf(bdpRequestId) : null);
                 insertPublish.setStatus(StringUtils.isNotBlank(bdpRequestId) ? DataDevScriptPublishStatusEnum.Auditing.toCode() : DataDevScriptPublishStatusEnum.Success.toCode());
                 publishDao.updateStatus(insertPublish);
-                uplineReleaseCenter(obj,erp,file);
+                uplineReleaseCenter(obj, erp, file);
                 return insertPublish;
             } else if (resObject.getInteger("code") == 206) {
                 throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");
@@ -290,7 +287,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
     @Override
-    public ReleaseWfInfo upLineScriptNew(DataDevScriptFile file, String erp)  throws Exception{
+    public ReleaseWfInfo upLineScriptNew(DataDevScriptFile file, String erp) throws Exception {
 
         String userToken = urmUtil.UserTokenByErp(null, erp);
         DataDevScriptFilePublish insertPublish = new DataDevScriptFilePublish();
@@ -322,7 +319,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
              *
              */
             //file.setBytes("sss".getBytes());
-           file.setBytes(fileService.getScriptBytes(file.getGitProjectId(), file.getGitProjectFilePath(), file.getVersion(), erp));
+            file.setBytes(fileService.getScriptBytes(file.getGitProjectId(), file.getGitProjectFilePath(), file.getVersion(), erp));
             String fileName = file.getName();
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
             builder.setCharset(Charset.forName("UTF-8"));// 设置请求的编码格式
@@ -335,7 +332,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
             builder.addTextBody("time", String.valueOf(date.getTime()), contentType);
             builder.addTextBody("sign", MD5Util.getMD5Str(smpAppToken + userToken + date.getTime()), contentType);
             String url = buffaloDomain + "/api/v2/buffalo4/script/syncScriptFileFromDevForPublish";
-            url = buffaloDomain  + "/api/v2/buffalo4/script/uploadFileForDevCenter";
+            url = buffaloDomain + "/api/v2/buffalo4/script/uploadFileForDevCenter";
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("erp", file.getApplicationId());
             if (file.getType() == DataDevScriptTypeEnum.Zip.toCode()) {
@@ -358,7 +355,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
             JSONObject resObject = JSONObject.parseObject(response);
 
 
-            logger.info("==================syncScriptFileFromDevForPublish" +  JSONObject.toJSONString(resObject) );
+            logger.info("==================syncScriptFileFromDevForPublish" + JSONObject.toJSONString(resObject));
             if (resObject != null && resObject.getInteger("code") != null && resObject.getInteger("code") == 0) {
                 JSONObject obj = resObject.getJSONObject("obj");
                 String bdpRequestId = obj.get("bpmRequestId") != null ? obj.get("bpmRequestId").toString() : null;
@@ -377,16 +374,16 @@ public class DataDevCenterImpl implements DataDevCenterService {
                  */
                 JSONObject preOnline = new JSONObject();
 
-                preOnline.put("scriptId",obj.getLong("fileId"));
-                preOnline.put("fileSize",obj.getLong("fileSize"));
-                preOnline.put("scriptName",obj.getString("fileName"));
-                preOnline.put("version",obj.getString("version"));
-                preOnline.put("md5Code",obj.getString("md5Code"));
-                preOnline.put("fileType",obj.getString("fileType"));
+                preOnline.put("scriptId", obj.getLong("fileId"));
+                preOnline.put("fileSize", obj.getLong("fileSize"));
+                preOnline.put("scriptName", obj.getString("fileName"));
+                preOnline.put("version", obj.getString("version"));
+                preOnline.put("md5Code", obj.getString("md5Code"));
+                preOnline.put("fileType", obj.getString("fileType"));
 
 
                 publishDao.updateStatus(insertPublish);
-                return uplineReleaseCenterNew(obj,erp,file,preOnline);
+                return uplineReleaseCenterNew(obj, erp, file, preOnline);
 //                return insertPublish;
             } else if (resObject.getInteger("code") == 206) {
                 throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");
@@ -394,7 +391,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 throw new RuntimeException(resObject.getString("message"));
             }
         } catch (Exception e) {
-            logger.error("buffalo=====================" + e.getMessage(),e);
+            logger.error("buffalo=====================" + e.getMessage(), e);
             insertPublish.setStatus(DataDevScriptPublishStatusEnum.Failure.toCode());
             publishDao.updateStatus(insertPublish);
             throw new RuntimeException(e.getMessage());
@@ -402,10 +399,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
 
-
-
     @Override
-    public ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(String marketUser ,String erp ,Long spaceProjectId) {
+    public ApiResultDTO getGrantAuthorityProductionAccountInMarketForBuffalo(String marketUser, String erp, Long spaceProjectId) {
         ApiResultDTO apiResultDTO = new ApiResultDTO();
 
         List<ClusterHadoopAccount> accountList = new ArrayList<ClusterHadoopAccount>();
@@ -413,13 +408,13 @@ public class DataDevCenterImpl implements DataDevCenterService {
         projectBO.setErp(erp);
         projectBO.setId(spaceProjectId);
         projectBO.setMarketUser(marketUser);
-       // projectBO.setEnvType(1);
+        // projectBO.setEnvType(1);
 
         com.jd.bdp.planing.api.model.ApiResult<ProjectAccountRelBO> accountApiResult = projectInterface.getGrantAuthorityProductionAccount(appId, appToken, System.currentTimeMillis(), projectBO);
         logger.info("====getGrantAuthorityProductionAccountInMarketForBuffalo=========spaceApiResultresult" + JSONObject.toJSONString(accountApiResult));
 
-        if(accountApiResult.isSuccess()){
-            for(ProjectAccountRelBO bo : accountApiResult.getList()){
+        if (accountApiResult.isSuccess()) {
+            for (ProjectAccountRelBO bo : accountApiResult.getList()) {
                 ClusterHadoopAccount temp = new ClusterHadoopAccount();
                 temp.setId(bo.getId());
                 temp.setCode(bo.getAccount());
@@ -438,7 +433,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
     @Override
-    public ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo(String marketUser , String accountCode , String erp , Long spaceProjectId) {
+    public ApiResultDTO getGrantAuthorityQueueOneAccountInMarketForBuffalo(String marketUser, String accountCode, String erp, Long spaceProjectId) {
 
         ApiResultDTO apiResultDTO = new ApiResultDTO();
 
@@ -453,8 +448,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
         com.jd.bdp.planing.api.model.ApiResult<ProjectQueueRelBO> queueApiResult = projectInterface.getGrantAuthorityQueue(appId, appToken, System.currentTimeMillis(), projectQueueRelBO);
         logger.info("====queueresult=" + JSONObject.toJSONString(queueApiResult));
 
-        if(queueApiResult.isSuccess()){
-            for(ProjectQueueRelBO bo : queueApiResult.getList()){
+        if (queueApiResult.isSuccess()) {
+            for (ProjectQueueRelBO bo : queueApiResult.getList()) {
                 ClusterHadoopQueue temp = new ClusterHadoopQueue();
                 temp.setId(bo.getId());
                 temp.setClusterId(bo.getClusterId() != null ? Long.parseLong(bo.getClusterId()) : -1);
@@ -476,7 +471,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
     }
 
     @Override
-    public ApiResultDTO getGrantAuthorityMarketForBuffalo(String erp , Long spaceProjectId) {
+    public ApiResultDTO getGrantAuthorityMarketForBuffalo(String erp, Long spaceProjectId) {
         ApiResultDTO apiResultDTO = new ApiResultDTO();
         List<MarketInfoDto> list = new ArrayList<MarketInfoDto>();
 
@@ -485,8 +480,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
         projectBO.setId(spaceProjectId);
         com.jd.bdp.planing.api.model.ApiResult<ProjectAccountRelBO> spaceApiResult = projectInterface.getGrantAuthorityMarket(appId, appToken, System.currentTimeMillis(), projectBO);
         logger.info("==========getGrantAuthorityMarketForBuffalo===spaceApiResult" + JSONObject.toJSONString(spaceApiResult));
-        if(spaceApiResult.getSuccess()){
-            for(ProjectAccountRelBO tempBo : spaceApiResult.getList()){
+        if (spaceApiResult.getSuccess()) {
+            for (ProjectAccountRelBO tempBo : spaceApiResult.getList()) {
                 MarketInfoDto marketInfoDto = new MarketInfoDto();
                 marketInfoDto.setClusterCode(tempBo.getClusterCode());
                 marketInfoDto.setMarketCode(tempBo.getMarketUser());

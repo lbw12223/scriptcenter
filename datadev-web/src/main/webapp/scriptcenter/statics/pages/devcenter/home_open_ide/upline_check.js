@@ -148,13 +148,15 @@ jQuery(function () {
                     commitMsg: commitMsg,
                     scriptFileId: scriptFileId
                 }, null, function (node, data) {
-                    window.artDialog.close();
-                    $.dialog.data("uplineDiff").close();
-                    top.$.bdpMsg({
+
+
+                    $.bdpMsg({
                         title: "提示",
                         mainContent: "<p style='margin: 20px;'>脚本已成功提交至发布中心。点此查看<a href='/atom/workflow/v2/apply/detail.html?requestId="+data.obj.wfId+"' target='_blank'/>审批详情</p>",
-                        width: "400px"
+                        width: "400px",
                     });
+                    window.artDialog.close();
+                    $.dialog.data("uplineDiff").close();
                  })
             });
             $("#cancelButton").click(function (){

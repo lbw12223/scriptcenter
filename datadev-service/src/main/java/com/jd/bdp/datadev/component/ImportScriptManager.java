@@ -15,6 +15,7 @@ import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.util.HttpUtil;
 import com.jd.jim.cli.Cluster;
 import com.jd.jsf.gd.util.StringUtils;
+import net.bytebuddy.asm.Advice;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
@@ -86,7 +87,13 @@ public class ImportScriptManager {
     private Cluster jimClient;
 
     @Autowired
-    private BuffaloComponent buffaloComponent ;
+    private BuffaloComponent buffaloComponent;
+
+    @Autowired
+    private DataDevScriptFileDao dataDevScriptFileDao;
+
+    @Autowired
+    private ImportScriptManagerRedis importScriptManagerRedis;
 
     public static void main(String args[]) throws Exception {
         //   getAppGroupMemebers(10075L);
@@ -100,8 +107,7 @@ public class ImportScriptManager {
      * @param appGroupId
      */
     public void clearSync(Long appGroupId) {
-        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
-        jimClient.del(syncKey);
+        importScriptManagerRedis.endImport(appGroupId);
     }
 
     /**
@@ -111,8 +117,7 @@ public class ImportScriptManager {
      * @return
      */
     public String getSyncRedisValue(Long appGroupId) {
-        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
-        return jimClient.get(syncKey);
+        return importScriptManagerRedis.current(appGroupId);
     }
 
     /**
@@ -121,6 +126,7 @@ public class ImportScriptManager {
      * 3.同步脚本中心的人员
      * 同步脚本中心的数据到数据开发平台
      */
+    @Deprecated
     public com.alibaba.fastjson.JSONObject syncScriptToDataDev(final Long gitProjectId, final String dirPath, final Long appGroupId, final String erp, final boolean syncMember, String fileName, Long fileId, String version, boolean isSync) throws Exception {
         String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
 
@@ -166,39 +172,6 @@ public class ImportScriptManager {
         return valueObject;
     }
 
-    public JSONObject syncScriptToDataDevLocal(final Long gitProjectId, final Long appGroupId, final String erp) throws Exception {
-
-
-        final JSONArray managerScriptFiles = filterSynced(getScriptList(appGroupId, erp, 0L));
-        if (managerScriptFiles == null || managerScriptFiles.size() < 1) {
-            throw new RuntimeException("当前项目空间无待同步脚本.");
-        }
-
-        //创建目录 Erp 维度目录
-
-        final String dirPath = "";
-        //检查文件是否重复
-
-        final JSONObject valueObject = new JSONObject();
-
-        valueObject.put("currentIndex", 1);
-        valueObject.put("currentFile", managerScriptFiles.getJSONObject(0).getString("fileName"));
-        valueObject.put("total", managerScriptFiles.size());
-        valueObject.put("failCount", 0);
-        valueObject.put("successCount", 0);
-        valueObject.put("gitProjectId", gitProjectId);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //同步脚本
-                handSyncScript(gitProjectId, appGroupId, managerScriptFiles, dirPath, erp, null);
-                //同步人员
-                syncMember(gitProjectId, appGroupId, false);
-            }
-        }).start();
-        return valueObject;
-    }
 
     /**
      * 1.check 当前项目空间下的文件是否 已经和 这次需要导入的脚本列表是否重复
@@ -206,31 +179,29 @@ public class ImportScriptManager {
      * 3.同步脚本中心的人员
      * 同步脚本中心的数据到数据开发平台
      */
-    public com.alibaba.fastjson.JSONObject syncScriptToDataDevNew(final Long gitProjectId, final Long appGroupId, final String erp) throws Exception {
+    public JSONObject syncScriptToDataDevNew(final Long gitProjectId, final Long appGroupId, final String erp) throws Exception {
 
 
         final JSONArray managerScriptFiles = buffaloComponent.getScriptListNew(appGroupId);  // getScriptList(appGroupId, erp, 0L);
         if (managerScriptFiles == null || managerScriptFiles.size() < 1) {
             throw new RuntimeException("当前项目空间无待同步脚本.");
         }
+        if (!importScriptManagerRedis.isCanSyncProjectId(appGroupId)) {
+            throw new RuntimeException("当前项目空间正在同步!.");
+        }
+
         //创建目录
-        final com.alibaba.fastjson.JSONObject valueObject = new com.alibaba.fastjson.JSONObject();
-        valueObject.put("currentIndex", 1);
-        valueObject.put("currentFile", managerScriptFiles.getJSONObject(0).getString("fileName"));
-        valueObject.put("total", managerScriptFiles.size());
-        valueObject.put("failCount", 0);
-        valueObject.put("successCount", 0);
-        valueObject.put("gitProjectId", gitProjectId);
+        String startImport = importScriptManagerRedis.startImport(appGroupId, managerScriptFiles.size());
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //同步脚本
-                handSyncScriptLocal(gitProjectId, appGroupId, managerScriptFiles, valueObject, erp);
+                handSyncScriptLocal(gitProjectId, appGroupId, managerScriptFiles, erp);
             }
         }).start();
 
-        return valueObject;
+        return JSONObject.fromObject(startImport);
     }
 
     /**
@@ -316,60 +287,26 @@ public class ImportScriptManager {
         return ztreeNodeList;
     }
 
-    private List<ZtreeNode> handSyncScriptLocal(final Long gitProjectId, final Long appGroupId, final JSONArray managerScriptFiles, final com.alibaba.fastjson.JSONObject valueObject, String erp) {
+    private List<ZtreeNode> handSyncScriptLocal(final Long gitProjectId, final Long appGroupId, final JSONArray managerScriptFiles, String erp) {
         List<ZtreeNode> ztreeNodeList = new ArrayList<ZtreeNode>();
-        try {
-            DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
-            for (int index = 0; index < managerScriptFiles.size(); index++) {
-                //修改Redis
-                JSONObject obj =  managerScriptFiles.getJSONObject(index);
-                valueObject.put("currentIndex", (index + 1));
-                valueObject.put("currentFile", managerScriptFiles.getJSONObject(index).getString("fileName"));
 
-                ZtreeNode ztreeNode = handSyncScriptSingleLocal(dataDevGitProject, valueObject, obj, appGroupId, erp);
-                ztreeNodeList.add(ztreeNode);
-            }
-            return ztreeNodeList;
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
-
-        }
-        return ztreeNodeList;
-    }
-
-    /**
-     * 同步脚本
-     * <p>
-     * 同时给Redis里面写入值{currentIndex , currentFile, total , failCount , successCount}
-     */
-    private List<ZtreeNode> handSyncScriptNew(final Long gitProjectId, final Long appGroupId, final JSONArray managerScriptFiles, final String dirPath, final String erp, final com.alibaba.fastjson.JSONObject valueObject) {
-        String syncKey = String.format(SYNC_APPGROUP_ID_KEY, SpringPropertiesUtils.getPropertiesValue("${datadev.env}"), appGroupId);
-        List<ZtreeNode> ztreeNodeList = new ArrayList<ZtreeNode>();
-        try {
-            DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
-
-
-            for (int index = 0; index < managerScriptFiles.size(); index++) {
-                //修改Redis
-                valueObject.put("currentIndex", (index + 1));
-                valueObject.put("currentFile", managerScriptFiles.getJSONObject(index).getString("fileName"));
-                jimClient.set(syncKey, valueObject.toString());
-                ZtreeNode ztreeNode = handSyncScriptSingleNew(dataDevGitProject, valueObject, managerScriptFiles.getJSONObject(index), appGroupId, dirPath, erp);
-                ztreeNodeList.add(ztreeNode);
-            }
-            return ztreeNodeList;
-        } catch (Exception e) {
-            logger.error(e);
-        } finally {
+        DataDevGitProject dataDevGitProject = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+        for (int index = 0; index < managerScriptFiles.size(); index++) {
             try {
-//                Thread.sleep(1000 * 8);
-                jimClient.del(syncKey);
+                Thread.sleep(1000);
+                JSONObject obj = managerScriptFiles.getJSONObject(index);
+                ZtreeNode ztreeNode = handSyncScriptSingleLocal(dataDevGitProject, obj, appGroupId, erp);
+                ztreeNodeList.add(ztreeNode);
             } catch (Exception e) {
+                logger.error("handSyncScriptLocal", e);
             }
         }
+        importScriptManagerRedis.endImport(appGroupId);
+
         return ztreeNodeList;
+
     }
+
 
     /**
      * 下载脚本
@@ -448,7 +385,7 @@ public class ImportScriptManager {
         return ztreeNode;
     }
 
-    private ZtreeNode handSyncScriptSingleLocal(DataDevGitProject dataDevGitProject, com.alibaba.fastjson.JSONObject redisValue, JSONObject script, Long appGroupId, String erp) {
+    private ZtreeNode handSyncScriptSingleLocal(DataDevGitProject dataDevGitProject, JSONObject script, Long appGroupId, String erp) {
         ZtreeNode ztreeNode = null;
         try {
             erp = script.get("managers") != null ? script.getString("managers") : erp;
@@ -465,15 +402,19 @@ public class ImportScriptManager {
             /**
              * 插入数据库,hbase
              */
-            dataDevScriptFileService.deleteScriptFile(appGroupId, gitProjectId, gitProjectFilePath, erp);
+
+            dataDevScriptFileDao.realDeleteSingleScriptFile(gitProjectId, gitProjectFilePath);
+
             ztreeNode = dataDevScriptFileService.createNewFile(gitProjectId, gitProjectFilePath, scriptType, erp, 0, bytes, description, startShellPath);
             callBackScriptNew(script, gitProjectId, gitProjectFilePath, erp, null);
-            redisValue.put("successCount", redisValue.getIntValue("successCount") + 1);
 
+            importScriptManagerRedis.increaseSuccess(appGroupId);
             insertPublish(erp, script, dataDevGitProject, gitProjectFilePath);
+
+
             return ztreeNode;
         } catch (Exception e) {
-            redisValue.put("failCount", redisValue.getIntValue("failCount") + 1);
+            importScriptManagerRedis.increaseFailed(appGroupId);
             logger.error(e);
         } finally {
         }
@@ -658,7 +599,7 @@ public class ImportScriptManager {
         String curVersion = script.getString("curVersion");
         DataDevScriptFile dataDevScriptFile = dataDevScriptFileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath);
 
-        buffaloComponent.syncBuffloScriptCallback(fileId,curVersion,dataDevScriptFile,version,dataDevScriptFile.getFileMd5());
+        buffaloComponent.syncBuffloScriptCallback(fileId, curVersion, dataDevScriptFile, version, dataDevScriptFile.getFileMd5());
     }
 
 
@@ -862,8 +803,6 @@ public class ImportScriptManager {
             throw new RuntimeException(httpResultDto.getString("message"));
         }
     }
-
-
 
 
     /**
