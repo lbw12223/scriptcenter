@@ -19,8 +19,101 @@ $(function () {
     });
     onlineHistory.isInit = false;
     onlineHistory.init = function initData() {
-        initSelect();
-        if(this.isInit){
+        initSelect(loadGrid);
+        // if(this.isInit){
+        //     jQuery("#release-grid-table").jqGrid('setGridParam',{
+        //         page:1,
+        //         postData: {
+        //             projectId: $("#projectSpaceMo option:checked").val(),
+        //             scriptId: $.trim($("#scriptFileId").val())
+        //         }
+        //     }).trigger("reloadGrid");
+        // }else {
+        //     this.isInit = true;
+        //     var _colModel = [
+        //         {
+        //             name: 'version',
+        //             label: "版本",
+        //             sortable: false,
+        //             formatter: function (cellvalue, options, record) {
+        //                 var id = record.releaseSubmitId;
+        //                 var str = "<a href='/release/compare?compareStatus=r_record&id=" + id + "' target='_blank'>"+record.version+"</a>";
+        //                 return str;
+        //             }
+        //         },
+        //         {
+        //             name:'projectName',
+        //             label:'项目空间',
+        //             sortable:false,
+        //             // formatter: function (cellvalue, options, record) {
+        //             //     return record.projectName+"("+record.projectId+")";
+        //             // }
+        //         },
+        //         {
+        //             name: 'releaseErp',
+        //             label: "发布人",
+        //             sortable: false,
+        //             // formatter: function (cellvalue, options, record) {
+        //             //     return record.releaseErpName+"("+record.releaseErp+")";
+        //             // }
+        //         },
+        //         {
+        //             name: 'releaseTime',
+        //             label: "提交时间",
+        //             sortable: false
+        //             // formatter: function (cellvalue, options, record) {
+        //             //     return record.releaseErpName+"("+record.releaseErp+")";
+        //             // }
+        //         },
+        //         {
+        //             name: 'releaseOperatorTypeDesc',
+        //             label: "变更类型",
+        //             sortable: false
+        //         },
+        //         {
+        //             name: 'releaseDesc',
+        //             label: "变更描述",
+        //             sortable: false
+        //         },
+        //         {
+        //             name: 'statusDesc',
+        //             label: "状态",
+        //             sortable: false
+        //         }
+        //     ];
+        //     var pager_selector = "#release-grid-pager";
+        //     jQuery("#release-grid-table").jqGrid({
+        //         datatype: "json",
+        //         url: '/scriptcenter/diff/releaseRecord.ajax',
+        //         mtype: 'POST',
+        //         postData: {
+        //             projectId: $("#projectSpaceMo option:checked").val(),
+        //             scriptId: $.trim($("#scriptFileId").val())
+        //         },
+        //         colModel: _colModel,
+        //         viewrecords: true,
+        //         rowList: [5, 10, 20, 50, 100],
+        //         pager: pager_selector,
+        //         altRows: true,
+        //         width: '100%',
+        //         autowidth: true,
+        //         autoencode: true,
+        //         height: "100%",
+        //         shrinkToFit: true,
+        //         rownumbers: true,
+        //         scrollOffset: 6,
+        //         loadComplete: function (data) {
+        //             jqGrid.initWidth(jQuery, '#release-grid-table', "#release-jd-table-parent");
+        //             jqGrid.reset(jQuery);
+        //             $("#release-grid-table").setGridHeight($("#release-jd-table-parent").height()-70);
+        //         }
+        //     });
+        // }
+
+    };
+
+    function loadGrid() {
+        if(onlineHistory.isInit){
             jQuery("#release-grid-table").jqGrid('setGridParam',{
                 page:1,
                 postData: {
@@ -29,7 +122,7 @@ $(function () {
                 }
             }).trigger("reloadGrid");
         }else {
-            this.isInit = true;
+            onlineHistory.isInit = true;
             var _colModel = [
                 {
                     name: 'version',
@@ -109,8 +202,8 @@ $(function () {
                 }
             });
         }
+    };
 
-    }
     $("#online-history").data("init", onlineHistory);
 
     $("#release-grid-table").on("click", "span.run-script-version", function (event) {
@@ -130,7 +223,7 @@ $(function () {
         return "";
     }
 
-    function initSelect() {
+    function initSelect(complateFunc) {
         $("#projectSpaceMo").empty();
         var url = "/scriptcenter/test/getUserProjectSpace.ajax";
         commonAjaxEvents.commonPostAjax(url, {}, $("#projectSpaceMo"), function (node, data) {
@@ -145,7 +238,7 @@ $(function () {
                 var defaultVal = data.obj[0] ? data.obj[0].id : 0;
                 $("#projectSpaceMo").val(defaultVal).select2();
             }
-        })
+        }, complateFunc)
     }
 
 })
