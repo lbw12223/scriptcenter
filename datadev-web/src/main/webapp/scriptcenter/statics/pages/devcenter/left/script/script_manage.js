@@ -123,7 +123,8 @@ function getZtreeNode(zNode) {
         open: zNode.openStatus == 1,
         targetDir: zNode.targetDir,
         gitStatus: zNode.gitStatus,
-        oriName: zNode.name
+        oriName: zNode.name ,
+        scriptFileId: zNode.id
     }
 }
 
@@ -541,7 +542,43 @@ function initKeyMap() {
         }
     })
 }
+function getUrlOpenScriptId(){
+    try{
+        var linkRegx = /scriptId\=(\d+)/g;
+        var group = linkRegx.exec(top.location.href);
+        if (group && group.length) {
+            return group[1]
+        }
+    }catch (e){
 
+    }
+    return 0 ;
+}
+function setSelectedScript(scriptId){
+    $.ajax({
+        url: "/scriptcenter/script/getAppByScriptId.ajax?scriptId=" + scriptId ,
+        data: {},
+        type: "post",
+        success: function (result) {
+            if(!result.obj.scriptFile || result.obj.scriptFile.id * 1 <= 0){
+                $.errorMsg("脚本已经删除,或者不存在!")
+                return;
+            }
+            if(result.obj.hasGitRight === false){
+                var gitProjectPath = result.obj.gitProject && result.obj.gitProject.gitProjectPath ? result.obj.gitProject.gitProjectPath : "" ;
+                $.errorMsg("无权限访问项目" +  gitProjectPath + " ！, 或对应项目不存在");
+                return;
+            }
+            var gitProjectId = result.obj.scriptFile.gitProjectId ;
+            if(gitProjectId * 1 > 0){
+                $("#appSelect").select2("val",gitProjectId,true);
+                var gitProjectPath = result.obj.scriptFile.gitProjectFilePath;
+                openScript(gitProjectId, gitProjectPath);
+            }
+        },
+        dataType: 'json'
+    });
+}
 $(function () {
 
 
@@ -601,6 +638,13 @@ $(function () {
         // }
 
 
+
+
+
+        //$("#appSelect").select2("val",8161178,true)
+
+
+
         function initSelect() {
             $("#appSelect").select2({
                 multiple: false,
@@ -626,7 +670,7 @@ $(function () {
                 },
                 initSelection: function (element, callback) {
                     $.ajax({
-                        url: getAppUrl,
+                        url: getAppUrl ,
                         data: {},
                         type: "post",
                         success: function (result) {
@@ -1236,7 +1280,8 @@ $(function () {
                         showScriptInfo();
                         break;
                     case "script_url":
-                        shareScript(rightClickNode.gitProjectId, rightClickNode.path)
+                        debugger
+                        shareScript(rightClickNode.scriptFileId)
                         break;
                     default:
                         break;
@@ -1326,7 +1371,7 @@ $(function () {
         }
 
 
-        function shareScript(gitProjectId, gitProjectFilePath) {
+        function shareScript(scriptFileId) {
             var html = "<div style='line-height: 25px;padding: 20px 20px 10px'>复制脚本URL到剪贴板，可让其他项目成员快速定位到该脚本。</div>";
             $.bdpMsg({
                 title: "提示",
@@ -1336,8 +1381,7 @@ $(function () {
                     {
                         text: "复制脚本URL",
                         event: function () {
-                            gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
-                            var url = _bdpDomain + "/scriptcenter/index.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
+                            var url = _bdpDomain + "/studio/index.html?appName=script-center&scriptId=" + scriptFileId;
                             copyContent(url);
                             $.successMsg("脚本URL已复制到剪贴板")
                         },
@@ -2295,6 +2339,12 @@ var TabCacheClass = /** @class */ (function () {
     return TabCacheClass;
 }())
 
+jQuery(function (){
 
 
+     var scriptId = getUrlOpenScriptId();
+    if(scriptId * 1 > 0){
+        setSelectedScript(scriptId);
+    }
 
+})

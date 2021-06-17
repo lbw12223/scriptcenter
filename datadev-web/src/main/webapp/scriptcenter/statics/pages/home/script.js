@@ -3271,7 +3271,7 @@ function initTopButton() {
                     return false;
                 }
                 if (enevntType === "scriptUrl") {
-                    parent.shareScript && parent.shareScript($("#gitProjectId").val(), $("#gitProjectFilePath").val())
+                    parent.shareScript && parent.shareScript($("#scriptFileId").val())
                 }
                 if (enevntType === "position") {
                     parent.locationScript && parent.locationScript($("#gitProjectId").val(), $("#gitProjectFilePath").val());
