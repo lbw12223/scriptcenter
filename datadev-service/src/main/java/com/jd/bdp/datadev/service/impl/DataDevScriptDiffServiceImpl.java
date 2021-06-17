@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 //import com.jd.bdp.buffalo.devcenter.SqlTableParser;
 import com.github.pagehelper.PageInfo;
 import com.jd.bdp.datadev.component.BuffaloComponent;
+import com.jd.bdp.datadev.component.DevCenterBuffaloComponent;
 import com.jd.bdp.datadev.domain.diff.DiffInfoVo;
 import com.jd.bdp.datadev.domain.diff.DiffPairVo;
 import com.jd.bdp.datadev.domain.diff.ReleaseCompareVo;
@@ -47,6 +48,9 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
     private BuffaloComponent buffaloComponent;
 
     @Autowired
+    private DevCenterBuffaloComponent devCenterBuffaloComponent;
+
+    @Autowired
     private ReleaseSubmitInterface releaseSubmitInterface;
 
     @Value("${datadev.appId}")
@@ -83,12 +87,13 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
         //  有文件就比较文件，没有，就比较基本信息
         //注意开发环境和  线上环境获取到的脚本的信息字段不同，解析时候注意。。
         if(devDetail != null ){
+            String fileType = devDetail.getString("type");
             currentLay.setName(devDetail.getString("name"));
             currentLay.setVersion(devDetail.getString("version"));
-            currentLay.setFileType(devDetail.getString("type"));
+            currentLay.setFileType(fileType);
 
             String fileContent = devDetail.getString("content");
-            if(StringUtils.isNotBlank(fileContent)){
+            if(isShell(fileType) || isPython(fileType)){
                 currentLay.setContent(fileContent);
             }else {
                 JSONObject devContent = new JSONObject();
@@ -97,16 +102,17 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
                 devContent.put("md5",devDetail.getString("md5"));
                 devContent.put("type",devDetail.getString("type"));
 
-                currentLay.setContent(devContent);
+                currentLay.setContent(JSONObject.toJSONString(devContent, true));
             }
         }
         if(onlineDetail != null){
+            String fileType = onlineDetail.getString("scriptType");
             remoteLay.setName(onlineDetail.getString("scriptName"));
             remoteLay.setVersion(onlineDetail.getString("version"));
-            remoteLay.setFileType(onlineDetail.getString("scriptType"));
+            remoteLay.setFileType(fileType);
 
             String fileContentOnline = onlineDetail.getString("fileContent");
-            if(StringUtils.isNotBlank(fileContentOnline)){
+            if(isShell(fileType) || isPython(fileType)){
                 remoteLay.setContent(fileContentOnline);
             }else {
                 JSONObject onlineContent = new JSONObject();
@@ -115,7 +121,7 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
                 onlineContent.put("md5",onlineDetail.getString("md5Code"));
                 onlineContent.put("type",onlineDetail.getString("scriptType"));
 
-                remoteLay.setContent(onlineContent);
+                remoteLay.setContent(JSONObject.toJSONString(onlineContent, true));
             }
         }
         diffPairVo.setCurrentInfo(currentLay);

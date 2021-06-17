@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/datadev/statics/zTree/css/zTreeStyle/debugZTreeStyle.css?_dc=$!{staticVersion}">
 <link rel="stylesheet" href="/datadev/statics/treeGrid/css/jquery.treegrid.css">
 <link rel="stylesheet" href="/datadev/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
-
+<link rel="stylesheet" href="/datadev/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
 <style type="text/css">
     .script-run-history-Time{
         width: 180px !important;
@@ -29,7 +29,19 @@
     .run-item-one {
         margin-left: 20px !important;
     }
-    </style>
+    .datetimepicker .datetimepicker-minutes,
+    .datetimepicker .datetimepicker-hours,
+    .datetimepicker .datetimepicker-days,
+    .datetimepicker .datetimepicker-months,
+    .datetimepicker .datetimepicker-years {
+        background: #FFF;
+    }
+
+    #pg_run-grid-pager {
+        background: #FFF;
+    }
+
+</style>
 <div class="script-run-history" style="margin-top: 20px;">
 
     <div class="bdp-form-group" style="height: 32px;margin-bottom: 10px">

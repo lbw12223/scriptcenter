@@ -744,9 +744,9 @@ public class ScriptOperateController {
      */
     @RequestMapping("remove.ajax")
     @ResponseBody
-    public JSONObject remove(UrmUserHolder userHolder, DataDevScriptFile file) throws Exception {
+    public JSONObject remove(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId, DataDevScriptFile file) throws Exception {
         projectService.verifyUserAuthority(userHolder.getErp(), file.getGitProjectId());
-        fileService.deleteScriptFile(file.getGitProjectId(), file.getGitProjectFilePath(), userHolder.getErp());
+        fileService.deleteScriptFile(projectSpaceId, file.getGitProjectId(), file.getGitProjectFilePath(), userHolder.getErp());
         return JSONObjectUtil.getSuccessResult("删除成功", null);
     }
 

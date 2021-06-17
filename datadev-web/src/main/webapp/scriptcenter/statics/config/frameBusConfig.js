@@ -1,6 +1,4 @@
 var BdpFrameBusConfig = {
-    // 校验是否代码改变事件
-    'TOP_VALID_CODE_DIFF': 'top:valid:code:diff',
     // 退出
     'BDP_LOGIN_OUT': 'bdp:logout',
     // bdp脚本中心关闭tab事件

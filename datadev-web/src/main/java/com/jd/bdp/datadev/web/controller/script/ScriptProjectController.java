@@ -461,7 +461,8 @@ public class ScriptProjectController {
     }
 
     @RequestMapping("/newGitTips.html")
-    public String newGitTips(UrmUserHolder userHolder) throws Exception {
+    public String newGitTips(UrmUserHolder userHolder, Model model) throws Exception {
+        model.addAttribute("gitPrivateUser", SysOwner);
         return "scriptcenter/home/project/newGitTips";
     }
 
@@ -482,7 +483,8 @@ public class ScriptProjectController {
     }
 
     @RequestMapping("/newCodingTips.html")
-    public String newCodingTips(UrmUserHolder userHolder) throws Exception {
+    public String newCodingTips(UrmUserHolder userHolder, Model model) throws Exception {
+        model.addAttribute("codingPrivateUser", SysOwnerCoding);
         return "scriptcenter/home/project/newCodingTips";
     }
 
@@ -936,12 +938,14 @@ public class ScriptProjectController {
     }
 
     @RequestMapping("useGitProject.html")
-    public String useGitProject(UrmUserHolder userHolder) throws Exception {
+    public String useGitProject(UrmUserHolder userHolder, Model model) throws Exception {
+        model.addAttribute("gitPrivateUser", SysOwner);
         return "scriptcenter/home/project/useGitProject";
     }
 
     @RequestMapping("useCodingProject.html")
-    public String useCodingProject(UrmUserHolder userHolder) throws Exception {
+    public String useCodingProject(UrmUserHolder userHolder, Model model) throws Exception {
+        model.addAttribute("codingPrivateUser", SysOwnerCoding);
         return "scriptcenter/home/project/useCodingProject";
     }
 

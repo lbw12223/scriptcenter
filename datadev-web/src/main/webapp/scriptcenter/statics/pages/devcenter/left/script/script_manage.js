@@ -638,13 +638,6 @@ $(function () {
         // }
 
 
-
-
-
-        //$("#appSelect").select2("val",8161178,true)
-
-
-
         function initSelect() {
             $("#appSelect").select2({
                 multiple: false,
@@ -1280,7 +1273,6 @@ $(function () {
                         showScriptInfo();
                         break;
                     case "script_url":
-                        debugger
                         shareScript(rightClickNode.scriptFileId)
                         break;
                     default:
@@ -1911,7 +1903,13 @@ window["bdp-qiankun"] = {
     mount: function (msg) {
         QIAN_KUN = msg;
         TabCacheClass.bindFrameEvent();
-        TabCacheClass.openCacheTabs();
+        TabCacheClass.openCacheTabs(function(cacheTabs){
+            cacheTabs.forEach(item => {
+                var path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
+                var nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
+                openScript(nowGitProjectId, path, item.title)
+            })
+        });
     }
 }
 
@@ -1940,7 +1938,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         title: name,
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
-        closeConfirm: false,
+        closeConfirm: true,
     }
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)

@@ -23,7 +23,7 @@
             <div class="tips" style="height: 81px; padding-top: 10px;padding-left: 20px;line-height: 20px;margin-right: 50px!important;width: 550px!important;">
                 <p>操作步骤提示：</p>
                 <p>1.登录<a href="http://git.jd.com" target="_blank">git.jd.com</a>，选择现有项目，复制git的http地址，并将可见级别设置为private。</p>
-                <p>2.将bdp_ide账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）。</p>
+                <p>2.将$!{gitPrivateUser}账号加入组（owner角色）或项目（仅限个人项目，Maintainer角色）。</p>
             </div>
         </div>
     </form>

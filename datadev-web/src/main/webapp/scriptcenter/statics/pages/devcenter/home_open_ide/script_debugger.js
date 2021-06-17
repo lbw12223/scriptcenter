@@ -2070,6 +2070,8 @@ $(function () {
         initInfo();
     }
 
+
+    // window.isCodeChangeByQiankunTab = verifyModify
 })
 
 function changeLastMender(data) {
