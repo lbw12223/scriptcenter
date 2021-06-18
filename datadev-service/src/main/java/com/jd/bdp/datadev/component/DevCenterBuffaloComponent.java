@@ -28,6 +28,9 @@ public class DevCenterBuffaloComponent {
     @Value("${url.davcenter.envInfo}")
     private String envInfoUrl;
 
+    @Value("${url.davcenter.listTaskByDevScriptId}")
+    private String listTaskByDevScriptIdUrl;
+
     private String saveUpdateDevCentor = "/devcenter/api/script/updateInfo";
 
 
@@ -134,5 +137,30 @@ public class DevCenterBuffaloComponent {
         }
 
         return jsonObject.getJSONArray("list");
+    }
+
+    public JSONObject getDevTaskList(Long scriptId) throws Exception {
+        JSONObject data = new JSONObject();
+
+        data.put("dataDevScriptId", scriptId);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("appId", appId);
+        long timeMillis = System.currentTimeMillis();
+        params.put("time", Long.toString(timeMillis));
+
+        logger.info("-------调度中心-获取脚本依赖开发任务列表接口参数：" + params + "; body=" + data);
+        String entity = HttpUtil.doPostWithParamAndBody(devCenterPrefix + listTaskByDevScriptIdUrl, params, data);
+        logger.info("-------调度中心-获取脚本依赖开发任务列表结果：" + entity);
+        JSONObject jsonObject = JSON.parseObject(entity);
+        JSONObject res = new JSONObject();
+        JSONArray list = jsonObject.containsKey("list") ? jsonObject.getJSONArray("list") : new JSONArray();
+        list = list == null ? new JSONArray() : list;
+//        int totalCount = jsonObject.getInteger("totalCount") == null ? 0 : jsonObject.getInteger("totalCount");
+
+        res.put("totalCount", list.size());
+        res.put("list", list);
+        return res;
     }
 }

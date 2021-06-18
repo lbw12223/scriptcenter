@@ -804,8 +804,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         if (dataDevScriptFile != null) {
             DataDevScriptFilePublish notFail = dataDevScriptPublishService.findLastNotFail(gitProjectId, gitProjectFilePath, null);
             if (notFail != null) {
-                //TODO check 线上发布任务  开发中的脚本任务
-                if (existDevOrProdTask(projectSpaceId, dataDevScriptFile.getName(), erp)) {
+                if (existDevOrProdTask(projectSpaceId, dataDevScriptFile.getName(), erp, dataDevScriptFile.getId())) {
                     throw new RuntimeException("该脚本存在开发任务或生产任务，不允许删除");
                 }
                 importScriptManager.deleteBuffaloScript(dataDevScriptFile, null, erp);
@@ -828,7 +827,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
      * @param operator
      * @return
      */
-    private boolean existDevOrProdTask(Long projectSpaceId, String scriptName, String operator) {
+    private boolean existDevOrProdTask(Long projectSpaceId, String scriptName, String operator, Long scriptId) {
         JSONObject taskList;
         try {
             taskList = buffaloComponent.getTaskList(projectSpaceId, scriptName, operator);
@@ -836,10 +835,14 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
             logger.error("校验是否存在生产任务失败。buffaloComponent.getTaskList failed: ", e);
             throw new RuntimeException("校验是否存在生产任务失败");
         }
-        //TODO check开发任务
-
-        //TODO &&开发任务
-        if (taskList.getInteger("totalCount") > 0) {
+        JSONObject devTaskList;
+        try {
+            devTaskList = devCenterBuffaloComponent.getDevTaskList(scriptId);
+        } catch (Exception e) {
+            logger.error("校验是否存在开发任务失败。devCenterBuffaloComponent.getDevTaskList failed: ", e);
+            throw new RuntimeException("校验是否存在开发任务失败");
+        }
+        if (taskList.getInteger("totalCount") > 0 || devTaskList.getInteger("totalCount") > 0) {
             return true;
         }
         return false;

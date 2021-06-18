@@ -2085,6 +2085,10 @@ $(".templateScript").click(function () {
     templateModal($(this), undefined);
 })
 
+$("#newScriptDiv").mouseleave(function () {
+    $(this).hide();
+});
+
 
 /**
  *
