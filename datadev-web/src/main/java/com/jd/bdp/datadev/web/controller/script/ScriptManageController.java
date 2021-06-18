@@ -56,7 +56,7 @@ public class ScriptManageController {
     @ExceptionMessageAnnotation(errorMessage = "获取当前用户可访问Git Project")
     @RequestMapping("/getAppByErp.ajax")
     @ResponseBody
-    public JSONObject getApps(UrmUserHolder userHolder, String keyword) throws Exception {
+    public JSONObject getApps(UrmUserHolder userHolder, String keyword ,@RequestParam(value = "scriptId", defaultValue = "0")  Long scriptId ) throws Exception {
         String erp = userHolder.getErp();
         if (StringUtils.isNotBlank(keyword)) {
             keyword = keyword.replaceAll("\\_", "\\\\_");
@@ -81,8 +81,42 @@ public class ScriptManageController {
                 list.add(dataDevApplication);
             }
         }
+
         return JSONObjectUtil.getSuccessResult(list);
     }
+
+
+    @ExceptionMessageAnnotation(errorMessage = "获取当前用户可访问Git Project")
+    @RequestMapping("/getAppByScriptId.ajax")
+    @ResponseBody
+    public JSONObject getAppByScriptId(@RequestParam(value = "scriptId", defaultValue = "0")  Long scriptId  , UrmUserHolder urmUserHolder) throws Exception {
+
+        JSONObject resutl = new JSONObject();
+        String erp = urmUserHolder.getErp();
+        boolean hasGitRight = false ;
+        DataDevScriptFile scriptFile = fileService.findById(scriptId);
+        DataDevGitProject gitProjectBy = null ;
+        if(scriptFile != null){
+            Long gitProjectId = scriptFile.getGitProjectId() ;
+             gitProjectBy = dataDevGitProjectService.getGitProjectBy(gitProjectId);
+            if(gitProjectBy != null){
+                List<DataDevGitProject> dataDevGitProjectList = dataDevGitProjectService.getErpProjectBySearch(erp, gitProjectBy.getGitProjectPath(), -1);
+                for(DataDevGitProject dataDevGitProject : dataDevGitProjectList){
+                    if(dataDevGitProject.getGitProjectId().equals(gitProjectBy.getGitProjectId())){
+                        hasGitRight = true ;
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        resutl.put("hasGitRight",hasGitRight);
+        resutl.put("gitProject",gitProjectBy);
+        resutl.put("scriptFile",scriptFile);
+        return JSONObjectUtil.getSuccessResult(resutl);
+    }
+
 
     /**
      * 得到目录下面的脚本和子目录

@@ -107,7 +107,6 @@ public class ScriptConfigController {
     @ResponseBody
     public JSONObject getMarketByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
         try {
-            //首先判断用户是否是集群管理员，如果是获取所有集市，如果不是调用权限接口
 
             ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(userHolder.getErp(), projectSpaceId);
             logger.error("========================getMarketByErp" + JSONObject.toJSONString(apiResultDTO));

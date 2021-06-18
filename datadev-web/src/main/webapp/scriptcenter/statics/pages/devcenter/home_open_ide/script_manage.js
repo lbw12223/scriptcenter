@@ -1029,7 +1029,7 @@ $(function () {
                         text: "复制脚本URL",
                         event: function () {
                             gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
-                            var url = _bdpDomain + "/scriptcenter/index.html?gitProjectId=" + gitProjectId + "&gitProjectFilePath=" + gitProjectFilePath;
+                            var url = _bdpDomain + "/studio/index.html?appName=script-center&scriptId=83010";
                             copyContent(url);
                             $.successMsg("脚本URL已复制到剪贴板")
                         },
