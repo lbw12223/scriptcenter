@@ -474,7 +474,7 @@ display: none;
 
 <script src="/scriptcenter/statics/spin/spin.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/frameBus/FrameBus.umd.min.js?_dc=$!{staticVersion}"></script>
-
+<script src="/scriptcenter/statics/pages/devcenter/left/script/frame-bus-event.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_help.js?_dc=sssssss1111$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_editor.js?_dc=sssssss1111$!{staticVersion}"></script>
 
@@ -491,7 +491,6 @@ display: none;
 <script src="/scriptcenter/statics/sql/dataDevSql.js?_dc=$!{staticVersion}"></script>
 
 
-<script src="/scriptcenter/statics/pages/devcenter/home_open_ide/script_commit.js?_dc=$!{staticVersion}"></script>
 #end
 
 
