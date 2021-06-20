@@ -581,10 +581,12 @@ public class DataDevScriptServiceImpl implements DataDevScriptService {
          export JDHXXXXX_QUEUE=bdp_jmart_dapb_union.bdp_jmart_dapb_union_dev
          source /bin/sh
          */
-        scriptRunDetail.setRunClusterCode("nzoth");
-        scriptRunDetail.setRunMarketLinuxUser("mart_scr");
-        scriptRunDetail.setQueueCode("bdp_jmart_dapb_union.bdp_jmart_dapb_union_formal");
-        scriptRunDetail.setAccountCode("mart_dapb");
+
+//        scriptRunDetail.setRunClusterCode("nzoth");
+//        scriptRunDetail.setRunMarketLinuxUser("mart_scr");
+//        scriptRunDetail.setQueueCode("bdp_jmart_dapb_union.bdp_jmart_dapb_union_formal");
+//        scriptRunDetail.setAccountCode("mart_dapb");
+
         return scriptRunDetail;
     }
 

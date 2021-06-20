@@ -34,6 +34,17 @@ public class DataDevScriptConfig {
     private String runMarketLinuxUser;//实际运行的marketLinuxUser
     private Long projectSpaceId;//项目空间ID
 
+
+    private String clusterName ;  //页面用于显示名称
+    private String marketName ;   //页面用于显示名称
+    private String accountName ;  //页面用于显示名称
+    private String queueName ;    //页面用于显示名称
+    private boolean hasRight;      //默认配置是否有权限
+    private Integer configType = 1;    //1: 个人 ， 2 ： 项目空间默认
+
+
+
+
     public Long getMarketId() {
         return marketId;
     }
@@ -224,5 +235,53 @@ public class DataDevScriptConfig {
 
     public void setProjectSpaceId(Long projectSpaceId) {
         this.projectSpaceId = projectSpaceId;
+    }
+
+    public String getClusterName() {
+        return clusterName;
+    }
+
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
+    }
+
+    public boolean isHasRight() {
+        return hasRight;
+    }
+
+    public void setHasRight(boolean hasRight) {
+        this.hasRight = hasRight;
+    }
+
+    public Integer getConfigType() {
+        return configType;
+    }
+
+    public void setConfigType(Integer configType) {
+        this.configType = configType;
     }
 }

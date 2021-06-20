@@ -3537,7 +3537,7 @@ div#script-manage .left_manage {
 }
 
 .ztree li div.nodeDiv:hover {
-    background-color : rgba(32, 131, 254, 0.08) !important;
+    background-color: #2667d3 !important;
 }
 
 

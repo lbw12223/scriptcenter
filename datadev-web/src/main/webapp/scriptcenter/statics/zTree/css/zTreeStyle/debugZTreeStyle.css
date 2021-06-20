@@ -123,7 +123,7 @@ website:	http://code.google.com/p/jquerytree/
 .debugparamkey {color: #EF6B5E !important;font-size: 13px !important;}
 .debugparamEq {margin-left: 5px !important; margin-right: 5px !important;}
 .debugparamvalue {font-size: 13px !important;}
-.debugparamvaluetype {font-size: 13px !important;margin-right: 5px !important; color: #9999 !important;;}
+.debugparamvaluetype {font-size: 13px !important;margin-right: 5px !important; color: red !important;;}
 
 /* 设置高度*/
 .ztree li a {
@@ -236,7 +236,7 @@ website:	http://code.google.com/p/jquerytree/
     margin: 0;
     font-size: 12px;
     font-family: MicrosoftYaHei Verdana, Arial, Helvetica, AppleGothic, sans-serif;
-    color: #A3A9B2;
+    color: #666;
     background-color: transparent
 }
 
@@ -653,7 +653,7 @@ ul.ztree.zTreeDragUL {
 
 .zTreeMask {
     z-index: 10000;
-    background-color: #cfcfcf;
+    background-color: red;
     opacity: 0.0;
     filter: alpha(opacity=0);
     position: absolute

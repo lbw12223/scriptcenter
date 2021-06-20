@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.common.utils.HttpRequestDTO;
 import com.jd.bdp.datadev.component.*;
 import com.jd.bdp.datadev.dao.DataDevScriptPublishDao;
+import com.jd.bdp.datadev.domain.DataDevScriptConfig;
 import com.jd.bdp.datadev.domain.DataDevScriptFile;
 import com.jd.bdp.datadev.domain.DataDevScriptFilePublish;
 import com.jd.bdp.datadev.enums.DataDevScriptPublishStatusEnum;
@@ -23,6 +24,7 @@ import com.jd.bdp.planing.api.ProjectInterface;
 import com.jd.bdp.planing.domain.bo.ProjectAccountRelBO;
 import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.planing.domain.bo.ProjectQueueRelBO;
+import com.jd.bdp.planing.domain.bo.ProjectResGroupBO;
 import com.jd.bdp.rc.api.ApiResult;
 import com.jd.bdp.rc.api.ReleaseInterface;
 import com.jd.bdp.rc.api.domains.ReleaseInfoFromDevDto;
@@ -470,6 +472,9 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
     }
 
+
+
+
     @Override
     public ApiResultDTO getGrantAuthorityMarketForBuffalo(String erp, Long spaceProjectId) {
         ApiResultDTO apiResultDTO = new ApiResultDTO();
@@ -477,9 +482,12 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
 
 
+
         ProjectBO projectBO = new ProjectBO();
         projectBO.setErp(erp);
         projectBO.setId(spaceProjectId);
+
+
         com.jd.bdp.planing.api.model.ApiResult<ProjectAccountRelBO> spaceApiResult = projectInterface.getGrantAuthorityMarket(appId, appToken, System.currentTimeMillis(), projectBO);
         logger.info("==========getGrantAuthorityMarketForBuffalo===spaceApiResult" + JSONObject.toJSONString(spaceApiResult));
         if (spaceApiResult.getSuccess()) {

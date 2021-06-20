@@ -17,6 +17,14 @@ public interface DataDevScriptConfigService {
     List<DataDevScriptConfig> getConfigsByErp(String erp, Long projectSpaceId)throws Exception;
 
     /**
+     * 项目空间快捷配置
+     * @param spaceProjectId
+     * @return
+     * @throws Exception
+     */
+    List<DataDevScriptConfig> defaultScriptConfig(String erp ,Long spaceProjectId) throws Exception ;
+
+    /**
      * 根据id查找
      * @param id
      * @return

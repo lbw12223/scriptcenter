@@ -7,15 +7,17 @@ import com.jd.bdp.api.think.dto.ClusterHadoopMarketDto;
 import com.jd.bdp.datadev.component.ProjectSpaceRightComponent;
 import com.jd.bdp.datadev.dao.DataDevPlumberArgsDao;
 import com.jd.bdp.datadev.dao.DataDevScriptConfigDao;
-import com.jd.bdp.datadev.domain.DataDevPlumberArgs;
-import com.jd.bdp.datadev.domain.DataDevScriptConfig;
-import com.jd.bdp.datadev.domain.HoldDoubleValue;
-import com.jd.bdp.datadev.service.DataDevPlumberArgsService;
-import com.jd.bdp.datadev.service.DataDevScriptConfigService;
-import com.jd.bdp.datadev.service.DataDevScriptRunDetailService;
+import com.jd.bdp.datadev.domain.*;
+import com.jd.bdp.datadev.enums.DataDevScriptEngineTypeEnum;
+import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
+import com.jd.bdp.datadev.service.*;
+import com.jd.bdp.domain.authorityCenter.MarketInfoDto;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopAccount;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopMarket;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopQueue;
+import com.jd.bdp.domain.urm.right.ApiResultDTO;
+import com.jd.bdp.planing.api.ProjectInterface;
+import com.jd.bdp.planing.domain.bo.ProjectResGroupBO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -64,12 +66,128 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
     @Autowired
     private ProjectSpaceRightComponent projectSpaceRightComponent;
 
+    @Autowired
+    private ProjectInterface projectInterface;
+
+    @Autowired
+    private DataDevCenterService dataDevCenterService;
+
+    @Autowired
+    private DataDevClusterAdminService dataDevClusterAdminService;
 
     @Override
     public List<DataDevScriptConfig> getConfigsByErp(String erp, Long projectSpaceId) throws Exception {
+
+
         List<DataDevScriptConfig> list = configDao.getConfigsByErp(erp, projectSpaceId);
         sortByOrder(list);
         return list;
+    }
+
+    /**
+     * 项目空间 默认配置
+     *
+     * @param spaceProjectId
+     * @return
+     */
+    @Override
+    public List<DataDevScriptConfig> defaultScriptConfig(String erp, Long spaceProjectId) {
+        List<DataDevScriptConfig> result = new ArrayList<DataDevScriptConfig>();
+        ProjectResGroupBO projectResGroupBO = new ProjectResGroupBO();
+        projectResGroupBO.setProjectId(spaceProjectId);
+        projectResGroupBO.setType(1);
+
+        com.jd.bdp.planing.api.model.ApiResult<ProjectResGroupBO> projectResGroup = projectInterface.getProjectResGroup(appId, token, System.currentTimeMillis(), projectResGroupBO);
+
+        if (projectResGroup.getCode().equals(0)) {
+            List<ProjectResGroupBO> projectResGroupList = projectResGroup.getList();
+            for (ProjectResGroupBO temp : projectResGroupList) {
+                DataDevScriptConfig insert = new DataDevScriptConfig();
+
+
+                insert.setClusterCode(temp.getLogicComputeClusterCode());
+                insert.setRunClusterCode(temp.getLogicComputeClusterCode());
+
+                insert.setMarketLinuxUser(temp.getMarketCode());
+                insert.setRunMarketLinuxUser(temp.getMarketCode());
+                insert.setAccountCode(temp.getAccount());
+                insert.setQueueCode(temp.getQueueCode());
+
+                insert.setName(temp.getName());
+                insert.setMarketName(temp.getMarketName());
+                insert.setAccountName(temp.getAccountName());
+                insert.setQueueName(temp.getQueueName());
+                insert.setId(temp.getId());
+                insert.setConfigType(2);
+                insert.setHasRight(hasProjectDefaultRight(erp, insert, spaceProjectId));
+                result.add(insert);
+            }
+
+        }
+        return result;
+    }
+
+
+    /**
+     * @return
+     */
+    private boolean hasProjectDefaultRight(String erp, DataDevScriptConfig config, Long spaceProjectId) {
+        try {
+
+            boolean authority = dataDevClusterAdminService.getClusterAdminByErp(erp);
+            if (authority) {
+                return authority;
+            }
+
+            boolean hasMarketAccountQueue = false ;
+            ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp, spaceProjectId);
+            if (apiResultDTO.isSuccess()) {
+                for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
+                    if (config.getMarketLinuxUser().equals(marketInfoDto.getMarketUser())) {
+                        hasMarketAccountQueue = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasMarketAccountQueue) {
+                throw new RuntimeException("无正在使用的集市" + config.getMarketLinuxUser() + "权限");
+            }
+
+            hasMarketAccountQueue = false ;
+            ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(config.getMarketLinuxUser(), erp, spaceProjectId);
+            if (accountResultDTO.isSuccess()) {
+                for (ClusterHadoopAccount clusterHadoopAccount : (List<ClusterHadoopAccount>) accountResultDTO.getList()) {
+                    if (config.getAccountCode().equals(clusterHadoopAccount.getCode())) {
+                        hasMarketAccountQueue = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasMarketAccountQueue) {
+                throw new RuntimeException("无正在使用的生产账号" + config.getAccountCode() + "权限");
+            }
+            hasMarketAccountQueue = false ;
+            ClusterHadoopQueue queue = new ClusterHadoopQueue();
+            queue.setOperator(erp);
+            queue.setProductionAccountCode(config.getAccountCode());
+            ApiResultDTO queueResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(config.getMarketLinuxUser(), config.getAccountCode(), erp, spaceProjectId);
+            if (queueResultDTO.isSuccess()) {
+                for (ClusterHadoopQueue clusterHadoopQueue : (List<ClusterHadoopQueue>) queueResultDTO.getList()) {
+                    if (config.getQueueCode().equals(clusterHadoopQueue.getQueueCode())) {
+                        hasMarketAccountQueue = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasMarketAccountQueue) {
+                throw new RuntimeException("无正在使用的队列" + config.getQueueCode() + "权限");
+            }
+            return true;
+        } catch (Exception e) {
+
+        }
+        return false;
+
     }
 
     @Override

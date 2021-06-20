@@ -196,7 +196,9 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
 
 
     @Override
-    public void verifyMarket(DataDevScriptFile file, DataDevScriptRunDetail runDetail, String erp, Long spaceProjectId) throws Exception {
+    public void verifyMarket(DataDevScriptFile file,
+                             DataDevScriptRunDetail runDetail,
+                             String erp, Long spaceProjectId) throws Exception {
 
         if ((file.getType() == DataDevScriptTypeEnum.SQL.toCode() || (runDetail.getScriptConfigId() != null && runDetail.getScriptConfigId() > 0))) {
             if (runDetail.getScriptConfigId() == null || runDetail.getScriptConfigId() < 0) {
@@ -240,7 +242,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                     }
                 }
                 if (!authority) {
-                    throw new RuntimeException("无正在使用的集市" + config.getMarketId() + "权限");
+                    throw new RuntimeException("无正在使用的集市" + config.getMarketLinuxUser() + "权限");
                 }
 
                 ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(runDetail.getMarketLinuxUser(), erp, spaceProjectId);
@@ -253,7 +255,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                     }
                 }
                 if (!authority) {
-                    throw new RuntimeException("无正在使用的生产账号" + config.getAccountId() + "权限");
+                    throw new RuntimeException("无正在使用的生产账号" + config.getAccountCode() + "权限");
                 }
                 ClusterHadoopQueue queue = new ClusterHadoopQueue();
                 queue.setOperator(erp);
@@ -268,7 +270,7 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                     }
                 }
                 if (!authority) {
-                    throw new RuntimeException("无正在使用的队列" + config.getQueueId() + "权限");
+                    throw new RuntimeException("无正在使用的队列" + config.getQueueCode() + "权限");
                 }
             }
         }

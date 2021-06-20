@@ -97,10 +97,14 @@ public class ScriptConfigController {
     public JSONObject getConfigByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
-        List<DataDevScriptConfig> defaultProjectpaceConfig = new ArrayList<DataDevScriptConfig>(); //projectSpaceRightComponent.getDefaultProjectpaceConfig(projectSpaceId);
-        return JSONObjectUtil.getSuccessResultTwoObj(list, null);
+        List<DataDevScriptConfig> defaultScriptConfig = configService.defaultScriptConfig(userHolder.getErp(), projectSpaceId);
+        return JSONObjectUtil.getSuccessResultTwoObj(list, defaultScriptConfig);
     }
 
+
+    private void getProjectSpaceDefaultResource() {
+
+    }
 
     @ExceptionMessageAnnotation(errorMessage = "获取集市列表")
     @RequestMapping("/getMarketByErp.ajax")
