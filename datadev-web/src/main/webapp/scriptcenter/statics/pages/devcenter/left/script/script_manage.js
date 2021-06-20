@@ -1360,6 +1360,11 @@ $(function () {
                     $.dialog.data("projectTipsArts", tipsArt);
                 }
             })
+
+
+            FrameBusBindClass.bindContextClick(function (data) {
+                console.log(data)
+            });
         }
 
 
@@ -1410,11 +1415,12 @@ $(function () {
                 menuTop = windowHeight - 10 - menuHeight
                 menuTop = menuTop < 0 ? 0 : menuTop;
             }
+
             $("#rightMenuBackground").show();
-            //console.log($(menu).html())
             var showContent = $(menu)
             $(menu).css({top: menuTop, left: menuLeft}).show();
         }
+
 
         function newDir(rightClickNode) {
 
@@ -1470,6 +1476,7 @@ $(function () {
                 menuTop = windowHeight - 10 - menuHeight
                 menuTop = menuTop < 0 ? 0 : menuTop;
             }
+
 
             hiddenLeftRightMeun();
             $("#rightClickScriptMenu").css({top: menuTop, left: menuLeft}).show();
@@ -1903,7 +1910,7 @@ window["bdp-qiankun"] = {
     mount: function (msg) {
         QIAN_KUN = msg;
         TabCacheClass.bindFrameEvent();
-        TabCacheClass.openCacheTabs(function(cacheTabs){
+        TabCacheClass.openCacheTabs(function (cacheTabs) {
             cacheTabs.forEach(item => {
                 var path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
                 var nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
@@ -1939,6 +1946,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
         closeConfirm: true,
+        needValid:true
     }
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
@@ -2076,6 +2084,10 @@ $(".templateScript").click(function () {
 
     templateModal($(this), undefined);
 })
+
+$("#newScriptDiv").mouseleave(function () {
+    $(this).hide();
+});
 
 
 /**

@@ -249,6 +249,7 @@
 <script src="/scriptcenter/statics/pages/user.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/home/scriptType.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/tab_cache.js?_dc=$!{staticVersion}"></script>
+<script src="/scriptcenter/statics/pages/devcenter/left/script/frame-bus-event.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/script_manage.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/script_index.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/pages/devcenter/left/script/script_qiankun_tab.js?_dc=$!{staticVersion}"></script>

@@ -399,19 +399,11 @@ var homeOpenPageEvent = {
             })
         }
     },
-    bindFrameBus: function () {
-        var frameBus = new FrameBus();
-        frameBus.on(BdpFrameBusConfig['TOP_VALID_CODE_DIFF'], function (data, callback) {
-            callback(scriptHelper.validIsChangeCode(editor))
-        })
-    },
-
 }
 
 
 homeOpenPageEvent.initPage();
 homeOpenPageEvent.initPageSizeChange();
-homeOpenPageEvent.bindFrameBus();
 $(document).contextmenu(function () {
     return false;
 })
