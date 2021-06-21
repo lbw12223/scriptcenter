@@ -33,7 +33,7 @@ public class HbaseRunDetailLog {
     private DataDevScriptRunDetailDao runDetailDao;
 
     @Autowired
-    private HbaseService hbaseService;
+    private HbaseServiceLogData hbaseService;
 
     @Value("${bdp.hbase.table.hbaseDatadevLog}")
     private String hbaseTableName ; // = "bdp:dataDevLog";

@@ -34,7 +34,7 @@ public class HbaseRunDetailData {
 
 
     @Autowired
-    private HbaseService hbaseService;
+    private HbaseServiceLogData hbaseService;
 
     @Value("${bdp.hbase.table.hbaseDatadevData}")
     private String hbaseTableName; //= "bdp:dataDevData";
