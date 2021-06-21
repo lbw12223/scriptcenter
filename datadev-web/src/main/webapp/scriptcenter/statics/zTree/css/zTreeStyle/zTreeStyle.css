@@ -250,7 +250,7 @@ website:	http://code.google.com/p/jquerytree/
 }
 
 .ztree li div.nodeDiv:hover span {
-    /*color: #EBF0F8;*/
+    color: #EBF0F8 !important;
 }
 
 /*.ztree li.selectedNode a:first-of-type{color:#EBF0F8 ;background-color: #3C5481}*/

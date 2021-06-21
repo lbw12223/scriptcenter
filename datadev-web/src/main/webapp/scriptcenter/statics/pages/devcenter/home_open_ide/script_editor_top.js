@@ -1015,7 +1015,6 @@ var datadevInit = {
     },
     initSelect: function () {
         commonAjaxEvents.commonPostAjax(getConfigUrl, {}, $("#queueCode"), function (node, data) {
-            console.log("8888")
             var lis = "<li class='defaultDropLi queueCodeDropLi active' data-index='-1'><span class='name'>不使用集市资源</span></li>";
             if (data && data.data && data.data.obj && data.data.obj.length > 0) {
                 for (var index = 0; index < data.data.obj.length; index++) {
