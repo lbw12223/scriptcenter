@@ -117,7 +117,7 @@ $(function () {
         if (!initUserStatus) {
 
 
-            var isCodingOrGit = !$("#gitProjectId").val() * 1 > 1000000000;
+            var isCodingOrGit = $("#gitProjectId").val() * 1 < 1000000000;
             initUserStatus = true;
             var _colModel = [
                 {

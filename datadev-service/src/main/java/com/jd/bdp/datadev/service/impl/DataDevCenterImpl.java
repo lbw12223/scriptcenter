@@ -167,6 +167,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         tempSubmitObj.setOnlineObjKey(currentOnlineInfo != null ? currentOnlineInfo.getLong("fileId").toString() : null);
         tempSubmitObj.setOnlineInfo(currentTempOnlineInfo);
         tempSubmitObj.setObjType("script");
+        tempSubmitObj.setProjectId(projectSpaceId);
         String commitMsg = file.getVerDescription();
         SubmitInfoVo submitInfoVo = new SubmitInfoVo();
         submitInfoVo.setProjectId(projectSpaceId);
@@ -176,11 +177,6 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
 
         JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);//JSONObject.parseObject("{\"code\":0,\"obj\":{\"submitId\":374,\"wfId\":53893}}", JsfResultDTO.class);
-//        ReleaseWfInfo releaseWfInfo = new ReleaseWfInfo();
-//        releaseWfInfo.setSubmitId(374L);
-//        releaseWfInfo.setWfId(53893L);
-//        submit.setCode(0);
-//        submit.setObj(releaseWfInfo);
         logger.info("submit result:" + JSONObject.toJSONString(submit));
         // return submit != null && submit.getCode() == 0;
         if (submit.getCode() != 0) {
@@ -336,7 +332,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
             String url = buffaloDomain + "/api/v2/buffalo4/script/syncScriptFileFromDevForPublish";
             url = buffaloDomain + "/api/v2/buffalo4/script/uploadFileForDevCenter";
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("erp", file.getApplicationId());
+            jsonObject.put("erp", erp);
             if (file.getType() == DataDevScriptTypeEnum.Zip.toCode()) {
                 jsonObject.put("scriptPackagePath", file.getStartShellPath());
             }
@@ -346,6 +342,8 @@ public class DataDevCenterImpl implements DataDevCenterService {
             jsonObject.put("dataDevScriptId", file.getId());
             jsonObject.put("dataDevScriptVersion", file.getVersion());
             jsonObject.put("model", "001");
+
+
 
             builder.addTextBody("data", jsonObject.toJSONString(), contentType);
 
@@ -386,7 +384,6 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
                 publishDao.updateStatus(insertPublish);
                 return uplineReleaseCenterNew(obj, erp, file, preOnline);
-//                return insertPublish;
             } else if (resObject.getInteger("code") == 206) {
                 throw new RuntimeException("调度系统在该项目空间下已存在未同步同名文件");
             } else {

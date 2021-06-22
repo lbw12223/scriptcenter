@@ -1159,6 +1159,7 @@ $(function () {
             })
 
             $("#gitMenuDiv").on("click", "li", function () {
+                $("#gitMenuDiv").css("display","none");
                 if ($(this).hasClass("gitProjectDetail")) {
                     var gitProjectId = getSelectedProjectId();
                     $.dialog.open("/scriptcenter/project/projectDetail.html?gitProjectId=" + gitProjectId, {
@@ -1418,7 +1419,7 @@ $(function () {
 
             $("#rightMenuBackground").show();
             var showContent = $(menu)
-            $(menu).css({top: menuTop, left: menuLeft}).show();
+            $(menu).css({top: menuTop, left: menuLeft - 60}).show();
         }
 
 
