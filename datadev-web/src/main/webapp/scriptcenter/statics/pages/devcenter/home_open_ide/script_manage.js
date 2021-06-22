@@ -1018,7 +1018,7 @@ $(function () {
         }
 
 
-        function shareScript(gitProjectId, gitProjectFilePath) {
+        function shareScript(scriptFileId) {
             var html = "<div style='line-height: 25px;padding: 20px 20px 10px'>复制脚本URL到剪贴板，可让其他项目成员快速定位到该脚本。</div>";
             $.bdpMsg({
                 title: "提示",
@@ -1028,8 +1028,7 @@ $(function () {
                     {
                         text: "复制脚本URL",
                         event: function () {
-                            gitProjectFilePath = encodeURIComponent(encodeURIComponent(gitProjectFilePath));
-                            var url = _bdpDomain + "/studio/index.html?appName=script-center&scriptId=83010";
+                            var url = _bdpDomain + "/studio/index.html?appName=script-center&scriptId=" + scriptFileId;
                             copyContent(url);
                             $.successMsg("脚本URL已复制到剪贴板")
                         },

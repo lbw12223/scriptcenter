@@ -20,6 +20,7 @@ import com.jd.jbdp.release.api.ReleaseSubmitInterface;
 import com.jd.jbdp.release.model.vo.ReleaseObjRecordVo;
 import com.jd.jbdp.release.model.vo.SubmitInfoVo;
 import com.jd.jbdp.release.model.vo.SubmitObj;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
