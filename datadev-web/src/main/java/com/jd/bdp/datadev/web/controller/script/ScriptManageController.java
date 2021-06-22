@@ -133,7 +133,7 @@ public class ScriptManageController {
      * @param range          0全部文件  1只获取目录
      * @param isRootSelect   是否选择根目录文件,不重复选择根目录文件，因为一开始就加载了，只加载缺的文件
      * @param targetRange    0：不选择target目录及子文件目录  1：所有文件  2：只选择target目录及子文件目录
-     * @return
+     * @return select sfss(ss)  , sub_ss  from
      * @throws Exception
      */
     @ExceptionMessageAnnotation(errorMessage = "获取目录下脚本")

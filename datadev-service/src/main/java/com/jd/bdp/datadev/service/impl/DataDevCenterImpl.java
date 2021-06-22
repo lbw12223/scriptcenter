@@ -445,7 +445,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
         projectQueueRelBO.setProductionAccountCode(accountCode);
         projectQueueRelBO.setProjectId(spaceProjectId);
         projectQueueRelBO.setErp(erp);
-        projectQueueRelBO.setEnvType("1");
+        //projectQueueRelBO.setEnvType(1);
 
         com.jd.bdp.planing.api.model.ApiResult<ProjectQueueRelBO> queueApiResult = projectInterface.getGrantAuthorityQueue(appId, appToken, System.currentTimeMillis(), projectQueueRelBO);
         logger.info("====queueresult=" + JSONObject.toJSONString(queueApiResult));

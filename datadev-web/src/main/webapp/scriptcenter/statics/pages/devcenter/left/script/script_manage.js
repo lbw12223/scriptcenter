@@ -1584,7 +1584,6 @@ $(function () {
                 if (data && data.obj) {
                     var zNode = data.obj;
                     while (zNode.children && zNode.children.length > 0) {
-                        ƒ
                         zNode = zNode.children[0];
                     }
                     var parNode = zTree.getNodeByParam("path", zNode.parentPath);

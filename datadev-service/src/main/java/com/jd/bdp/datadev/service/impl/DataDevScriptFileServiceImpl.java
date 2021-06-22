@@ -1370,10 +1370,11 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         List<JDGitRepositories> allGitRepositories = jdGitRepositories.treeAll();
         for (JDGitRepositories temp : allGitRepositories) {
             if (temp.getType().equals("blob")) {
+                String filePath = StringUtils.isNotEmpty(gitProjectDir) ? (gitProjectDir + '/' + temp.getName()) : temp.getPath();
                 JDGitFiles jdGitFile = new JDGitFiles();
                 jdGitFile.setName(temp.getName());
                 jdGitFile.setGitProjectId(gitProjectId);
-                jdGitFile.setFilePath(temp.getPath());
+                jdGitFile.setFilePath(filePath);
                 jdGitFile.setBinary(!DataDevScriptTypeEnum.getFileNameScriptType(temp.getName()).getCanEdit());
                 jdGitFile.setErp(erp);
                 result.add(jdGitFile);
