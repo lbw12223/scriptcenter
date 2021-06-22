@@ -16,6 +16,7 @@ import com.jd.bdp.datadev.service.DataDevCenterService;
 import com.jd.bdp.datadev.service.DataDevScriptDiffService;
 import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.datadev.service.impl.DataDevCenterImpl;
+import com.jd.bdp.datadev.web.interceptor.ProjectSpaceIdParam;
 import com.jd.bdp.domain.dto.JsfAuthDTO;
 import com.jd.bdp.domain.dto.JsfResultDTO;
 import com.jd.bdp.rc.api.ApiResult;
@@ -154,7 +155,7 @@ public class ScriptDiffController {
      */
     @RequestMapping("/submit.ajax")
     @ResponseBody
-    public JSONObject submit(UrmUserHolder userHolder, Long projectSpaceId, String commitMsg,Long scriptFileId ) throws Exception {
+    public JSONObject submit(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId, String commitMsg, Long scriptFileId ) throws Exception {
 
         try {
 //            if(true){
@@ -245,7 +246,7 @@ public class ScriptDiffController {
     }
 
     private void checkIsInReleaseNew(DataDevScriptFile file){
-        String devObjKey = file.getId() + DataDevCenterImpl.SPLIT + file.getVersion() ;
+        String devObjKey = file.getId().toString();
 
         SubmitObj submitObj = new SubmitObj();
         submitObj.setDevObjKey(devObjKey);
@@ -278,6 +279,9 @@ public class ScriptDiffController {
                                     @RequestParam(value = "scriptId") String scriptId,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "rows", defaultValue = "10") Integer size) {
+//        if(true){
+//            projectId = 100134L;
+//        }
         String erp = userHolder.getErp();
         PageInfo<ReleaseObjRecordVo> releaseObjInfoPageInfo;
         PageResultDTO pageResultDTO = new PageResultDTO();

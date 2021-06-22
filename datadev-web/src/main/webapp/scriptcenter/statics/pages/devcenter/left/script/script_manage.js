@@ -1179,6 +1179,7 @@ $(function () {
             })
 
             $("#gitMenuDiv").on("click", "li", function () {
+                $("#gitMenuDiv").css("display","none");
                 if ($(this).hasClass("gitProjectDetail")) {
                     var gitProjectId = getSelectedProjectId();
                     $.dialog.open("/scriptcenter/project/projectDetail.html?gitProjectId=" + gitProjectId, {
@@ -1438,7 +1439,7 @@ $(function () {
 
             $("#rightMenuBackground").show();
             var showContent = $(menu)
-            $(menu).css({top: menuTop, left: menuLeft}).show();
+            $(menu).css({top: menuTop, left: menuLeft - 60}).show();
         }
 
 
@@ -1604,7 +1605,6 @@ $(function () {
                 if (data && data.obj) {
                     var zNode = data.obj;
                     while (zNode.children && zNode.children.length > 0) {
-                        ƒ
                         zNode = zNode.children[0];
                     }
                     var parNode = zTree.getNodeByParam("path", zNode.parentPath);

@@ -45,20 +45,20 @@
                     <span class="keyWord">保存</span>
                     <span class="keyMap" style="">Ctrl+S</span>
                 </li>
-                #if($!{isGitOrCoding} == "true")
+            #end
+            #if($!{isGitOrCoding} == "true")
                 <li id="scriptGit" envent-type="git" class="meun_split_border">
                     <span class="keyWord">Git</span>
                     <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
                 </li>
-                #end
             #end
-        ##            <li envent-type="scriptUrl" class="meun_split_border"><span class="keyWord">复制脚本URL</span><span class="keyMap" style=""></span></li>
+                    <li envent-type="scriptUrl" class="meun_split_border"><span class="keyWord">复制脚本URL</span><span class="keyMap" style=""></span></li>
         ##            <li envent-type="position"><span class="keyWord">定位</span><span class="keyMap" style=""></span></li>
-        ##            <li envent-type="copyfilename"><span class="keyWord">复制文件名</span><span class="keyMap" style=""></span></li>
-        ##            <li envent-type="copyfilepath"><span class="keyWord">复制路径</span><span class="keyMap" style=""></span></li>
+                    <li envent-type="copyfilename"><span class="keyWord">复制文件名</span><span class="keyMap" style=""></span></li>
+                    <li envent-type="copyfilepath"><span class="keyWord">复制路径</span><span class="keyMap" style=""></span></li>
         ##            <li envent-type="rename"><span class="keyWord">重命名</span><span class="keyMap" style="">F2</span></li>
             <li envent-type="down"><span class="keyWord">下载到本地</span><span class="keyMap" style=""></span></li>
-            <li envent-type="addtemplate"><span class="keyWord">保存为模板</span><span class="keyMap" style=""></span></li>
+##            <li envent-type="addtemplate"><span class="keyWord">保存为模板</span><span class="keyMap" style=""></span></li>
         </ul>
     </div>
     <div id="rightClickGitMenu" class="rightMenu" style="display: none;width: 120px">

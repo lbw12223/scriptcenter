@@ -1,4 +1,3 @@
-
 var _colModel = [];
 $(function () {
     var initInfoStatus = false;
@@ -20,7 +19,7 @@ $(function () {
             }
         }
     });
-    var activeIndex = $("#dataLog").val()||0
+    var activeIndex = $("#dataLog").val() || 0
     $("#dataLogContainer").JdDataDevTab("active", activeIndex);
 
 
@@ -32,7 +31,7 @@ $(function () {
         // editor.setTheme("ace/theme/" + theme);
         var color = HOME_COOKIE.getColorCookie()
 
-        var theme= color === "white" ? "chrome" : "tomorrow_night";
+        var theme = "chrome";
         editor.setTheme("ace/theme/" + theme);
         editor.session.setMode("ace/mode/text");
         //字体大小
@@ -62,6 +61,7 @@ $(function () {
             getLog();
         }
     }
+
     function getLog() {
         $.ajax({
             url: getLogUrl,
@@ -116,10 +116,10 @@ $(function () {
                     $("#script-run-market").text(runDetailObj.marketLinuxUser || "--")
                     $("#script-run-account").text(runDetailObj.accountCode || "--")
                     $("#script-detail-queue").text(runDetailObj.queueCode || "--")
-                    if($("#scriptType").val()==4){
+                    if ($("#scriptType").val() == 4) {
                         $("#script-start-shell-path").text(runDetailObj.startShellPath || "--")
                     }
-                    if($("#scriptType").val() == 1){
+                    if ($("#scriptType").val() == 1) {
                         $("#script-engine").text(runDetailObj.engineType || "--")
                     }
                     var argsShow = "";

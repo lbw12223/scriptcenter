@@ -170,7 +170,7 @@ $(function () {
                 // if (config.showOrder && config.showOrder > maxShowOrder) {
                 //     maxShowOrder = config.showOrder;
                 // }
-                lis2 += "<li class='account-history-li' data-id='" + config.id + "' data-market-user='" + config.marketUser + "' data-cluster='" + config.clusterCode + "'  data-name='" + config.name + "'data-linux-user='" + config.marketLinuxUser + "' data-queue='" + config.queueCode + "'data-account='" + config.accountCode + "'data-engine='" + config.engineType + "'>" + config.name + "</li>";
+                lis2 += "<li class='account-history-li' data-id=" + config.id +">" + config.name + "</li>";
             }
             ul2.append(lis2);
         } else {

@@ -585,9 +585,7 @@ public class ImportScriptManager {
         data.put("dataDevScriptVersion", StringUtils.isBlank(version) ? 1000L : version);
 
         dto.setData(data);
-        logger.error("===========================updateScriptVersion:" + com.alibaba.fastjson.JSONObject.toJSONString(dto));
         JSONObject httpResultDto = HttpClientUtil.doGet(url, dto, erp);
-        logger.error("===========================updateScriptVersion:" + com.alibaba.fastjson.JSONObject.toJSONString(httpResultDto));
         if (httpResultDto.getInt("code") != 0) {
             throw new RuntimeException(httpResultDto.getString("message"));
         }

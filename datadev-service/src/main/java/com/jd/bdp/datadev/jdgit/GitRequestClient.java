@@ -83,6 +83,7 @@ public abstract class GitRequestClient {
 
         HttpGet httpGet = new HttpGet(url);
         httpGet.setHeader("PRIVATE-TOKEN", getPrivetToken());
+        httpGet.setHeader("content-type","text/json;charset=utf-8");
         return exctueRequest(httpGet);
     }
 
