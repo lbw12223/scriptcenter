@@ -229,14 +229,23 @@ public class DataDevScriptTemplateServiceImpl implements DataDevScriptTemplateSe
 
 
     @Override
-    public void shareTemplate(DataDevScriptTemplate template , String operator){
+    public DataDevScriptTemplate shareTemplate(DataDevScriptTemplate template , String operator){
+        if (template != null && template.getId() <= 0) {
+            try {
+                template = saveScriptTemplate(template, operator);
+                return template;
+            } catch (Exception e) {
+                logger.error("模板保存失败：", e);
+                throw new RuntimeException("模板保存失败！");
+            }
+        }
         boolean shareGits= template.getShareGits();
         String shareErps = template.getShareErps();
         List<DataDevScriptTemplateShare> templateShares = new ArrayList<>();
         if (StringUtils.isNotBlank(shareErps)) {
             String[] erpArray = shareErps.split(",");
             for (String erp : erpArray) {
-                if (StringUtils.isNotBlank(erp) ) {
+                if (StringUtils.isNotBlank(erp) && !erp.equals(operator)) {
                     templateShares.add(new DataDevScriptTemplateShare(template.getId(), 1L, erp, operator));
                 }
             }
@@ -250,6 +259,7 @@ public class DataDevScriptTemplateServiceImpl implements DataDevScriptTemplateSe
         }
         template.setStatus(0);
         dataDevScriptTemplateDao.updateScriptTemplate(template.getId(), template);
+        return template;
     }
     /**
      * @param template template.shareGits {@link com.jd.bdp.datadev.domain.DataDevGitDto}

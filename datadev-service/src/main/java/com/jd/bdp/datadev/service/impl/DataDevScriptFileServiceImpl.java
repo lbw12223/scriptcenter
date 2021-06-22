@@ -827,7 +827,8 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
      * @param operator
      * @return
      */
-    private boolean existDevOrProdTask(Long projectSpaceId, String scriptName, String operator, Long scriptId) {
+    @Override
+    public boolean existDevOrProdTask(Long projectSpaceId, String scriptName, String operator, Long scriptId) {
         JSONObject taskList;
         try {
             taskList = buffaloComponent.getTaskList(projectSpaceId, scriptName, operator);

@@ -404,7 +404,8 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
             gitProjectFilePath: node.path,
             gitProjectDirPath: node.parentPath,
             name: node.oriName,
-            type: node.type
+            type: node.type,
+            scriptFileId: node.scriptFileId
         };
         var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
             title: "修改文件名",
@@ -422,6 +423,10 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
         $.dialog.data("currentArt", currentArt);
         $.dialog.data("zTree", zTree);
         $.dialog.data("loginErp", loginErp);
+        var callbackfun = function (data) {
+            updateQianKunTab(data);
+        };
+        $.dialog.data("callbackfun", callbackfun);
         preSelectedId = node.tId;
     }
 }
@@ -579,6 +584,10 @@ function setSelectedScript(scriptId){
         dataType: 'json'
     });
 }
+
+function isLocal(gitProjectId) {
+    return gitProjectId >= 1000000000;
+}
 $(function () {
 
 
@@ -707,7 +716,7 @@ $(function () {
                     } else {
                         type = "L";
                     }
-                    return "<span class='projectType'>" + type + "</span>" + "<span class='projectName'>" + item.appgroupName + "</span>";
+                    return "<span class='projectType'>" + type + "</span>" + "<span class='projectName' style='width: 85%'>" + item.appgroupName + "</span>";
                 },
                 formatSelection: function (item) {
                     return item.appgroupName;
@@ -836,8 +845,14 @@ $(function () {
                             }
 
                             rightClickNode = treeNode;
+                            console.log("fuck===>", rightClickNode);
                             if (!treeNode) {
                                 $("#rightClickMenu li.remove").hide();
+                                if (isLocal(treeNode.gitProjectId)) {
+                                    $("#rightClickMenu li.git").hide();
+                                } else {
+                                    $("#rightClickMenu li.git").show();
+                                }
                                 showRightDirMenu(event, $("#rightClickMenu"));
                                 rightClickNode = undefined;
                                 $("#rightClickGitMenu").attr("data-type", "dir");
@@ -855,6 +870,11 @@ $(function () {
                                     }
                                 } else {
                                     $("#rightClickMenu li.remove").show();
+                                    if (isLocal(treeNode.gitProjectId)) {
+                                        $("#rightClickMenu li.git").hide();
+                                    } else {
+                                        $("#rightClickMenu li.git").show();
+                                    }
                                     menu = $("#rightClickMenu")
                                 }
                                 $("#rightClickGitMenu").attr("data-type", "dir");
@@ -1950,6 +1970,29 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
     }
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
+}
+
+function updateQianKunTab(dataObj){
+
+    var obj = dataObj.obj ;
+    while(obj.children && obj.children.length > 0){
+        obj = obj.children[0];
+    }
+    var path = obj.path ;
+    var gitProjectId = obj.gitProjectId ;
+    var name = obj.name ;
+
+    var params = {
+        url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + path + "&gitProjectId=" + gitProjectId,
+        icon: '',
+        title: name,
+        key: getKey(gitProjectId, path),
+        type: 'iframe',
+        closeConfirm: false
+    }
+
+
+    QIAN_KUN.utils.updateTab(params)
 }
 
 function removeQianKunScriptTab(key) {

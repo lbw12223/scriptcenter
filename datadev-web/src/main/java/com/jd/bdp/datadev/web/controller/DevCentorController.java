@@ -276,26 +276,42 @@ public class DevCentorController {
 
 
     @RequestMapping("shareTemplate.html")
-    public String shareTemplate(UrmUserHolder userHolder, Long templateId , Model model) throws Exception {
-        DataDevScriptTemplate dataDevScriptTemplate = templateService.getScriptTemplateById(templateId);
-        model.addAttribute("dataDevScriptTemplate", dataDevScriptTemplate); //当前版本号
-        model.addAttribute("scriptType", DataDevScriptTypeEnum.enumValueOf(dataDevScriptTemplate.getScriptType()).name()); //当前版本号
-        DataDevScriptFile scriptFile = fileService.findById(dataDevScriptTemplate.getScriptFileId());
-        dataDevScriptTemplate.setGitProjectFilePath(scriptFile.getGitProjectFilePath());
-        dataDevScriptTemplate.setGitProjectId(scriptFile.getGitProjectId());
-        List<DataDevScriptTemplateShare> infos = templateService.getSharesInfos(templateId);
-        StringBuilder erpsBuilder = new StringBuilder();
-        boolean gitShares = false;
-        for (DataDevScriptTemplateShare share : infos) {
-            if (share.getShareType() == 1) {
-                erpsBuilder.append(",").append(share.getShareTarget());
-            } else if (share.getShareType() == 2) {
-                gitShares = true;
-            }
-        }
+    public String shareTemplate(UrmUserHolder userHolder, Long templateId , Long scriptFileId, String scriptType, Integer pythonType, Model model) throws Exception {
+        DataDevScriptTemplate dataDevScriptTemplate = new DataDevScriptTemplate();
+        if (templateId != null && templateId > 0) {
+            dataDevScriptTemplate = templateService.getScriptTemplateById(templateId);
+            model.addAttribute("scriptType", StringUtils.isNotBlank(scriptType) ? scriptType : DataDevScriptTypeEnum.enumValueOf(dataDevScriptTemplate.getScriptType()).name()); //当前版本号
 
-        dataDevScriptTemplate.setShareErps(erpsBuilder.length() > 0 ? erpsBuilder.substring(1) : "");
-        dataDevScriptTemplate.setShareGits(gitShares);
+            DataDevScriptFile scriptFile = fileService.findById(dataDevScriptTemplate.getScriptFileId());
+            dataDevScriptTemplate.setGitProjectFilePath(scriptFile.getGitProjectFilePath());
+            dataDevScriptTemplate.setGitProjectId(scriptFile.getGitProjectId());
+
+            List<DataDevScriptTemplateShare> infos = templateService.getSharesInfos(templateId);
+            StringBuilder erpsBuilder = new StringBuilder();
+            boolean gitShares = false;
+            for (DataDevScriptTemplateShare share : infos) {
+                if (share.getShareType() == 1) {
+                    erpsBuilder.append(",").append(share.getShareTarget());
+                } else if (share.getShareType() == 2) {
+                    gitShares = true;
+                }
+            }
+            dataDevScriptTemplate.setShareErps(erpsBuilder.length() > 0 ? erpsBuilder.substring(1) : "");
+            dataDevScriptTemplate.setShareGits(gitShares);
+        } else {
+            DataDevScriptFile scriptFile = fileService.findById(scriptFileId);
+            dataDevScriptTemplate.setId(-1L);
+            dataDevScriptTemplate.setName(scriptFile.getName());
+            dataDevScriptTemplate.setDesc(scriptFile.getDescription());
+            dataDevScriptTemplate.setGitProjectFilePath(scriptFile.getGitProjectFilePath());
+            dataDevScriptTemplate.setGitProjectId(scriptFile.getGitProjectId());
+            dataDevScriptTemplate.setScriptType(scriptFile.getType());
+            dataDevScriptTemplate.setPythonType(pythonType);
+            dataDevScriptTemplate.setShareErps("");
+            dataDevScriptTemplate.setShareGits(false);
+            model.addAttribute("scriptType", StringUtils.isNotBlank(scriptType) ? scriptType : DataDevScriptTypeEnum.enumValueOf(dataDevScriptTemplate.getScriptType()).name()); //当前版本号
+        }
+        model.addAttribute("dataDevScriptTemplate", dataDevScriptTemplate);
         return "scriptcenter/home/share_temlplate";
     }
 

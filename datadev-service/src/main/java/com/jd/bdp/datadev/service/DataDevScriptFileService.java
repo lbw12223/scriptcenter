@@ -371,7 +371,7 @@ public interface DataDevScriptFileService {
      */
     boolean canMoveScriptFile(Long gitProjectId, String gitProjectFilePath) throws Exception;
 
-
+    boolean existDevOrProdTask(Long projectSpaceId, String scriptName, String operator, Long scriptId);
     /**
      * 定时删除临时文件
      *

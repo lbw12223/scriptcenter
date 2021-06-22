@@ -86,8 +86,8 @@ public class ScriptApiController {
     /**
      * 根据ProjectType获取coding，本地，git项目
      * <p>
-     * projectType:coding = 1
-     * projectType:git = 2
+     * projectType:git = 1
+     * projectType:coding = 2
      * projectType:local = 3
      *
      * @param erp

@@ -108,7 +108,7 @@
             <li class="remove meun_split_border">
                 <span class="name">删除</span>
             </li>
-            <li id="rightClickDirGitDiv" class="git meun_split_border">
+            <li id="rightClickDirGitDiv" style="display: block" class="git meun_split_border">
                 <span class="name">Git</span>
                 <span class="bdp-icon znz-yx shortKeySpan" style="margin-left: 60px;font-size: 12px;"></span>
             </li>
