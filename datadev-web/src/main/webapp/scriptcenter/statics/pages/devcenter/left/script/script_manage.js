@@ -845,7 +845,6 @@ $(function () {
                             }
 
                             rightClickNode = treeNode;
-                            console.log("fuck===>", rightClickNode);
                             if (!treeNode) {
                                 $("#rightClickMenu li.remove").hide();
                                 if (isLocal(treeNode.gitProjectId)) {
@@ -892,7 +891,8 @@ $(function () {
                         },
                         onDblClick: function (event, treeId, treeNode) {
                             if (treeNode && !treeNode.isParent && treeNode.path) {
-                                openScript(gitProjectId, treeNode.path, treeNode.oriName);
+                                console.log('sss==', treeNode);
+                                openScript(gitProjectId, treeNode.path, treeNode.oriName, null, null, null, null, treeNode.gitStatus);
                             }
                             return false;
                         },
@@ -1948,8 +1948,9 @@ window["bdp-qiankun"] = {
  * @param pythonType python版本 1：python2   2：python3
  * @param dirPath 父目录
  * @param version 版本号
+ * @param gitStatus git状态
  */
-function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version) {
+function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version, gitStatus) {
     if (!path) {
         $.errorMsg("脚本path为空，不能打开脚本");
     }
@@ -1958,7 +1959,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         name = index != -1 ? path.substring(index + 1) : path;
     }
 
-
+    var diffWithGit = isDiffWithGit(gitStatus);
     var params = {
         url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + path + "&gitProjectId=" + nowGitProjectId,
         icon: '',
@@ -1966,7 +1967,8 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         key: getKey(nowGitProjectId, path),
         type: 'iframe',
         closeConfirm: true,
-        needValid:true
+        needValid:true,
+        diffWithGit: diffWithGit
     }
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
@@ -2001,6 +2003,9 @@ function removeQianKunScriptTab(key) {
     TabCacheClass.removeCache(key)
 }
 
+function isDiffWithGit(gitStatus) {
+    return gitStatus === true || gitStatus === "MOD" || gitStatus === "ADD";
+}
 
 function getKey(gitProjectId, path) {
     gitProjectId = (gitProjectId + "").trim();
@@ -2350,7 +2355,7 @@ var TabCacheClass = /** @class */ (function () {
             cacheTabs.forEach(item => {
                 var path = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectFilePath')
                 var nowGitProjectId = JmdUtil.UrlUtil.getUrlArg(item.url, 'gitProjectId')
-                openScript(nowGitProjectId, path, item.title)
+                openScript(nowGitProjectId, path, item.title, null, null, null, null, item.diffWithGit)
             })
         }
     }

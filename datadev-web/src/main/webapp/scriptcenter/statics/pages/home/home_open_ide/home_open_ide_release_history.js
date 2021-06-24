@@ -235,7 +235,8 @@ $(function () {
                 }
                 $("#projectSpaceMo").append(options);
 
-                var defaultVal = data.obj[0] ? data.obj[0].id : 0;
+                var curProjectSpaceId = top.window.projectSpaceId;
+                var defaultVal = curProjectSpaceId ? curProjectSpaceId : (data.obj[0] ? data.obj[0].id : 0);
                 $("#projectSpaceMo").val(defaultVal).select2();
             }
         }, complateFunc)

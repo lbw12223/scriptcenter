@@ -209,7 +209,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
     $.bdpMsg({
         title: "Push 提交",
         mainContent: html,
-        width: 600,
+        width: "600px",
         buttons: [
             {
                 text: "提交",
@@ -397,6 +397,10 @@ var datadevInit = {
                 updatePackDetail(gitProjectId, gitProjectFilePath);
 
                 callBack && callBack(data);
+                // 检测editor内容变化
+                var changed = verifyModify();
+                // 展示Tab变动标志
+                showModifyIcon(getKey(), changed);
                 return;
             } else {
                 //暂存内容

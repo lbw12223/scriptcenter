@@ -348,6 +348,14 @@ task list
     margin-right: 10px;
 }
 
+.script-release-history .script-release-history-label {
+    width: 80px;
+    text-align: right;
+    top: 6px;
+    position: relative;
+    margin-right: 10px;
+}
+
 .script-buffalo-task-list .select-content {
     width: 250px;
 }
