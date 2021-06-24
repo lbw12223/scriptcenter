@@ -207,12 +207,12 @@ website:	http://code.google.com/p/jquerytree/
 .ztree li span.ADD{
     position: relative;
     top: 2px;
-    color: #666;
+    color: #428bca;
 }
 .ztree li span.MOD{
     position: relative;
     top: 2px;
-    color: #666;
+    color: #428bca;
 }
 .ztree li span.NON{
     position: relative;

@@ -219,7 +219,7 @@ public class DataDevScriptTemplate {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof DataDevScriptTemplate && ((DataDevScriptTemplate) obj).getId() == this.id){
+        if(obj instanceof DataDevScriptTemplate && ((DataDevScriptTemplate) obj).getId().equals(this.id)){
             return true;
         }
         return false;

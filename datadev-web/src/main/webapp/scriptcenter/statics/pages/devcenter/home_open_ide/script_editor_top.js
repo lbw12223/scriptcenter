@@ -209,7 +209,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
     $.bdpSelfMsg({
         title: "Push 提交",
         mainContent: html,
-        width: 600,
+        width: "600px",
         buttons: [
             {
                 text: "提交",
@@ -398,6 +398,10 @@ var datadevInit = {
                 updatePackDetail(gitProjectId, gitProjectFilePath);
 
                 callBack && callBack(data);
+                // 检测editor内容变化
+                var changed = verifyModify();
+                // 展示Tab变动标志
+                showModifyIcon(getKey(), changed);
                 return;
             } else {
                 //暂存内容
@@ -1876,7 +1880,11 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
 
 
     if(true){
-        var url = "/scriptcenter/devcenter/shareTemplate.html?templateId=" + templateId ;
+        // var gitProjectId = $("#gitProjectId").val();
+        var scriptFileId = $("#scriptFileId").val();
+        var scriptType = scriptObj.typeName ? scriptObj.typeName : scriptObj.name;
+        var pythonType = scriptObj.pythonType;
+        var url = "/scriptcenter/devcenter/shareTemplate.html?templateId=" + templateId + "&scriptFileId="+scriptFileId + "&scriptType=" + scriptType + "&pythonType=" + pythonType;
         var shareTemplateArt = $.dialog.open(url, {
             title: "保存模板",
             lock: true,
@@ -1889,15 +1897,19 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
         });
         $.dialog.data("shareTemplateArt", shareTemplateArt);
         $.dialog.data("activeWindow", activeWindow);
+        // $.dialog.data("scriptType", scriptObj.typeName ? scriptObj.typeName : scriptObj.name);
         $.dialog.data("callBackFunction", function (callBackData){
-            var temp = {
-                obj : {
-                    path:callBackData.gitProjectFilePath,
-                    gitProjectId:callBackData.gitProjectId,
-                    name:"模板-" + callBackData.name
-                }
-            }
-            updateQianKunTab && updateQianKunTab(temp)
+            // var temp = {
+            //     obj : {
+            //         path:callBackData.gitProjectFilePath,
+            //         gitProjectId:callBackData.gitProjectId,
+            //         name:"模板-" + callBackData.name
+            //     }
+            // }
+            // var path = callBackData.gitProjectFilePath;
+            // var gitProjectId = callBackData.gitProjectId;
+            // var name = "模板-" + callBackData.name;
+            openScript && openScript(callBackData.gitProjectId, callBackData.gitProjectFilePath, callBackData.name);
         });
 
 

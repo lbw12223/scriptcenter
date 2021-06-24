@@ -484,7 +484,7 @@ public class ScriptOperateController {
     @ExceptionMessageAnnotation(errorMessage = "修改脚本名字")
     @RequestMapping("scriptRename.ajax")
     @ResponseBody
-    public JSONObject scriptRename(UrmUserHolder userHolder, DataDevScriptFile file) throws Exception {
+    public JSONObject scriptRename(UrmUserHolder userHolder, DataDevScriptFile file, @ProjectSpaceIdParam Long projectSpaceId, String scriptName, Long scriptId) throws Exception {
 
         projectService.verifyUserAuthority(userHolder.getErp(), file.getGitProjectId());
         DataDevScriptFile oldFile = fileService.getScriptByGitProjectIdAndFilePath(file.getGitProjectId(), file.getGitProjectFilePath());
@@ -505,6 +505,9 @@ public class ScriptOperateController {
         }
         DataDevScriptFilePublish publish = publishService.findLastNotFail(file.getGitProjectId(), file.getGitProjectFilePath(), null);
         if (publish != null) {
+            if (fileService.existDevOrProdTask(projectSpaceId, scriptName, userHolder.getErp(), scriptId)) {
+                throw new RuntimeException("该脚本存在开发任务或生产任务，不允许重命名");
+            }
             throw new RuntimeException("脚本已上线,不能修改脚本名称");
         }
         DataDevScriptFile res = fileService.renameScriptFile(file.getGitProjectId(), file.getGitProjectFilePath(), file.getName(), userHolder.getErp());

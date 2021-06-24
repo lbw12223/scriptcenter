@@ -1652,7 +1652,10 @@ $(function () {
                 }
             }
 
-            verifyModify();
+            // 检测editor内容变化
+            var changed = verifyModify();
+            // 展示Tab变动标志
+            showModifyIcon(getKey(), changed);
 
             //当前光标在脚本中的位置
             var cursor = (editor.selection.getCursor());
@@ -1710,17 +1713,6 @@ $(function () {
         })
     }
 
-    function verifyModify() {
-        if (editor) {
-            var editValue = editor.getValue();
-            var oldMd5 = $("#fileMd5").val();
-            var newMd5 = $.md5(editValue);
-            parent.showModifyIcon && parent.showModifyIcon(getKey(), oldMd5 != newMd5);
-            notifyArgContentChange && notifyArgContentChange(editValue);
-            return oldMd5 != newMd5;
-        }
-        return false;
-    }
     function initUnEditTopButton() {
         var key = getKey();
         var scriptType = $("#scriptType").val();
@@ -2071,7 +2063,7 @@ $(function () {
     }
 
 
-    // window.isCodeChangeByQiankunTab = verifyModify
+    window.isCodeChangeByQiankunTab = verifyModify
 })
 
 function changeLastMender(data) {
@@ -2080,6 +2072,7 @@ function changeLastMender(data) {
     $("#currentVersionInfo").html(data.obj.currentVersion);
     $("#lastVersionInfo").html(data.obj.lastVersion);
     $("#version").val(data.obj.currentVersion);
+    $("#fileMd5").val(data.obj.fileMd5);
 }
 
 function clearRunDirectVersion(data) {
@@ -2100,3 +2093,44 @@ $(".changeVersion").click(function () {
     }
 
 })
+
+function showModifyIcon(key, isShow) {
+    // var path = path || "aaa/B.py"; // $("#gitProjectFilePath").val();
+    // var gitProjectId = gitProjectId || 900456912;
+    //
+    // key = getKey(gitProjectId, path);
+    var path = path || $("#gitProjectFilePath").val();
+    var gitProjectId = gitProjectId || $("#gitProjectId").val();
+    gitProjectId = gitProjectId.trim();
+    path = path.trim();
+
+    var title = $("#fileName").val();
+    title = isShow ? title + " " : title;
+    var diffWithGit = isDiffWithGit($("#gitStatus").val());
+    var params = {
+        url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath="+path+"&gitProjectId="+gitProjectId,
+        icon: '',
+        title: title,
+        key: key,
+        type: 'iframe',
+        closeConfirm: true,
+        needValid: true,
+        diffWithGit: diffWithGit
+    };
+    QIAN_KUN && QIAN_KUN.utils.updateTab(params);
+}
+
+function verifyModify() {
+    if (editor) {
+        var editValue = editor.getValue();
+        var oldMd5 = $("#fileMd5").val();
+        var newMd5 = $.md5(editValue);
+        notifyArgContentChange && notifyArgContentChange(editValue);
+        return oldMd5 !== newMd5;
+    }
+    return false;
+}
+
+function isDiffWithGit(gitStatus) {
+    return gitStatus === "MOD" || gitStatus === "ADD";
+}

@@ -219,6 +219,8 @@ var uploadRequest = undefined;
                     gitProjectDirPath: newDir,
                     name: name,
                     description: $(".file-text", $("#saveModal")).val() || "",
+                    scriptId: info.scriptFileId,
+                    scriptName: info.name
                 };
                 break;
             case DIR_MODE:
@@ -233,6 +235,8 @@ var uploadRequest = undefined;
                     gitProjectId: gitProjectId,
                     gitProjectFilePath: scriptPath,
                     name: name,
+                    scriptId: info.scriptFileId,
+                    scriptName: info.name
                 };
                 break;
             case DIR_RENAME_MODE:
@@ -701,6 +705,13 @@ var uploadRequest = undefined;
                                 }
                                 break;
                         }
+                        var tmp = {
+                            obj: {
+                                path: ajaxData.gitProjectFilePath,
+                                gitProjectId : ajaxData.gitProjectId,
+                                name: data.obj.name
+                            }
+                        };
                         callBack && callBack(data);
 
                         clearData();

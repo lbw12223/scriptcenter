@@ -133,6 +133,7 @@ public class BuffaloComponent {
 
     public JSONArray getDBEnvInfo(String marketCode, String clusterCode) throws Exception {
 
+        //TODO LIST
         clusterCode = "taran" ;
         marketCode = "jsm_market" ;
 

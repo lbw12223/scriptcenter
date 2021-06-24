@@ -12,6 +12,8 @@
         <input type="hidden" id = "shareGits" value="$!{dataDevScriptTemplate.shareGits}">
         <input type="hidden" id = "gitProjectId" value="$!{dataDevScriptTemplate.gitProjectId}">
         <input type="hidden" id = "gitProjectFilePath" value="$!{dataDevScriptTemplate.gitProjectFilePath}">
+        <input type="hidden" id = "scriptType" value="$!{dataDevScriptTemplate.scriptType}">
+        <input type="hidden" id = "pythonType" value="$!{dataDevScriptTemplate.pythonType}">
 
         <h4 class='datadev-control-title'>基本信息</h4>
         <div class='datadev-form-group'>

@@ -57,6 +57,10 @@ $(function () {
                 desc: desc,
                 shareErps: shareErps,
                 shareGits: shareGits,
+                scriptType: $("#scriptType").val(),
+                pythonType: $("#pythonType").val(),
+                gitProjectId: $("#gitProjectId").val(),
+                gitProjectFilePath : $("#gitProjectFilePath").val()
             }, $("#saveTemplateButton"), function (node, data) {
                 $.successMsg("保存成功");
                 var callBackData = {
@@ -68,6 +72,10 @@ $(function () {
                     gitProjectId: $("#gitProjectId").val(),
                     gitProjectFilePath : $("#gitProjectFilePath").val()
                 }
+                if (data && data.obj) {
+                    callBackData = data.obj;
+                }
+                callBackData.name = "模板-" + name;
                 $.dialog.data(callBackData);
                 // console.log($.dialog.opener,"$.dialog.opener")
                 // $.dialog.opener.location.reload();

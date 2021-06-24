@@ -10,6 +10,7 @@
             #end
             <a class="bdp-btn bdp-btn-primary" id="updateScriptArgs">保存</a>
             <a href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=222" target="_blank">参数说明</a>
+            <a style="padding-left: 10px" href="http://bdp.jd.com/helpCenter/front/showDocumentList.html?docId=553" target="_blank">库变量使用说明</a>
         </div>
         <div id="addOpt" class="argTools" style="display: none;">
             <span class="bdp-icon ide-close iconRemoveArg"></span>
