@@ -206,7 +206,7 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
         "           </div>" +
         "     </div>" +
         "</form>";
-    $.bdpMsg({
+    $.bdpSelfMsg({
         title: "Push 提交",
         mainContent: html,
         width: 600,
@@ -214,18 +214,19 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
             {
                 text: "提交",
                 event: function () {
+                    debugger
                     var valid = $('#pushForm').valid();
                     if (valid) {
                         submitCallBack && submitCallBack();
                     }
-                    // $.removeMsg();
+                    $.removeSelfMsg();
                 },
                 btnClass: 'bdp-btn-primary'
             },
             {
                 text: "取消",
                 event: function () {
-                    $.removeMsg();
+                    $.removeSelfMsg();
                 }
             }
         ]
@@ -679,6 +680,7 @@ var datadevInit = {
 
         if (scriptWindow.type == 4) {
             //zip
+            datadevInit.uplineDiffHtml(scriptWindow);
         } else {
             datadevInit.directSave(function (data) {
                 datadevInit.uplineDiffHtml(scriptWindow);

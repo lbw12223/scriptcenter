@@ -71,6 +71,21 @@ var TabCacheClass = /** @class */ (function () {
         TabCacheClass.setCache(tabs);
     }
 
+    TabCacheClass.updateCacheByKey = function (key, param) {
+        var cacheTabs = TabCacheClass.getCache();
+        var tabs = cacheTabs || [];
+        if (JmdUtil.ValidateUtil.isEmptyList(tabs)) {
+            return;
+        }
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].key === key) {
+                tabs[i] = param ;
+                break;
+            }
+        }
+        TabCacheClass.setCache(tabs);
+    }
+
     /**
      * 删除一个tab
      * @param key tab实例的唯一索引

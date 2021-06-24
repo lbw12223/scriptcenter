@@ -6,6 +6,7 @@ window["bdp-qiankun"] = {
         QIAN_KUN = msg;
     }
 }
+
 function openScript(nowGitProjectId, path, name) {
     if (!path) {
         top.$.errorMsg("脚本path为空，不能打开脚本");
@@ -28,16 +29,31 @@ function openScript(nowGitProjectId, path, name) {
     QIAN_KUN && QIAN_KUN.utils.addTab(params)
 }
 
-function updateQianKunTab(dataObj){
+function updateQianKunTabByThis(gitProjectId, oldPath, newPath ) {
 
-    var obj = dataObj.obj ;
+    var params = {
+        url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + newPath + "&gitProjectId=" + gitProjectId,
+        icon: '',
+        title: "sssssssss",
+        key: getKey(gitProjectId, newPath),
+        type: 'iframe',
+        closeConfirm: false
+    }
+    QIAN_KUN.utils.updateTab(params);
 
-    while(obj.children && obj.children.length > 0){
+
+}
+
+function updateQianKunTab(dataObj) {
+
+    var obj = dataObj.obj;
+
+    while (obj.children && obj.children.length > 0) {
         obj = obj.children[0];
     }
-    var path = obj.path ;
-    var gitProjectId = obj.gitProjectId ;
-    var name = obj.name ;
+    var path = obj.path;
+    var gitProjectId = obj.gitProjectId;
+    var name = obj.name;
 
     var params = {
         url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + path + "&gitProjectId=" + gitProjectId,

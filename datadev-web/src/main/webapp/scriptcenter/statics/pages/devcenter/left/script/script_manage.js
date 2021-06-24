@@ -406,6 +406,8 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
             name: node.oriName,
             type: node.type
         };
+
+        debugger
         var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
             title: "修改文件名",
             lock: true,
@@ -422,6 +424,8 @@ function renameScript(gitProjectId, gitProjectFilePath, loginErp) {
         $.dialog.data("currentArt", currentArt);
         $.dialog.data("zTree", zTree);
         $.dialog.data("loginErp", loginErp);
+        $.dialog.data("currentWindow", window);
+
         preSelectedId = node.tId;
     }
 }
@@ -1452,6 +1456,8 @@ $(function () {
 
             $.dialog.data("currentArt", currentArt);
             $.dialog.data("zTree", zTree);
+            $.dialog.data("currentWindow", window);
+
 
             // $("#saveModal").FileMode("dir", {
             //     gitProjectId: gitProjectId,
@@ -1567,6 +1573,7 @@ $(function () {
                         $.dialog.data("info", file);
                         $.dialog.data("currentArt", currentArt);
                         $.dialog.data("zTree", zTree);
+                        $.dialog.data("currentWindow", window);
 
 
                     }

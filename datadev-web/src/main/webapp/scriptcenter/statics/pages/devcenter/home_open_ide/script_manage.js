@@ -1256,7 +1256,7 @@ $(function () {
                                 var gitCommitMessageNode = $("#gitCommitMessage");
                                 var gitCommitMessage = gitCommitMessageNode.length > 0 && gitCommitMessageNode.val() || "";
                                 datadevInit.mergeAndPushScript(gitProjectId, gitProjectFilePath, gitCommitMessage, function (data) {
-                                    $.successMsg("Push成功");
+                                    $.successSelfMsg("Push成功");
                                 })
                             }, false);
                         }, data, key);
@@ -1266,7 +1266,7 @@ $(function () {
                         var gitCommitMessageNode = $("#gitCommitMessage");
                         var gitCommitMessage = gitCommitMessageNode.length > 0 && gitCommitMessageNode.val() || "";
                         datadevInit.mergeAndPushScript(gitProjectId, gitProjectFilePath, gitCommitMessage, function (data) {
-                            $.successMsg("Push成功");
+                            $.successSelfMsg("Push成功");
                         })
                     }, false);
                 }

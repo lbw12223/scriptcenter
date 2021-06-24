@@ -16,6 +16,7 @@ var uploadRequest = undefined;
     var gitProjectId = undefined;
     var scriptPath = undefined;
     var targetRange = 0;
+    var currentWindow = undefined ;
     // var uploadRequest=undefined;
     var setting = {
         view: {
@@ -398,12 +399,26 @@ var uploadRequest = undefined;
         return znodesDir;
     }
 
-    function refreshScriptInifo(loginErp, gitProjectId, newPath) {
-        var newKey = getKey(gitProjectId, newPath);
-        // var params = getParam(gitProjectId, newPath, name);
-        //scriptMap.put(newKey, scriptMap.get(key));
-        HOME_COOKIE.changeName(loginErp, newKey);
-        //$("#codeEditContainer").JdDataDevTab("changeTabInfos", key, newKey, params);
+    function refreshScriptInifo(loginErp, gitProjectId, oldPath, newPath , name) {
+
+        var oldKey = getKey(gitProjectId,oldPath) ;
+
+        var params = {
+            url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + newPath + "&gitProjectId=" + gitProjectId,
+            icon: '',
+            title: name,
+            key: getKey(gitProjectId,newPath),
+            type: 'iframe',
+            closeConfirm: false
+        }
+
+
+        //huliang
+        currentWindow.QIAN_KUN.utils.updateTabByKey(oldKey , params  )
+
+        debugger
+        TabCacheClass.updateCacheByKey(oldKey,params)
+
     }
 
     function initFileInfo(mode, type) {
@@ -605,6 +620,7 @@ var uploadRequest = undefined;
 
         modeCode = ($.dialog.data("modeCode"));
         info = ($.dialog.data("info"));
+        currentWindow = ($.dialog.data("currentWindow"));
         zTree = ($.dialog.data("zTree"));
         callBack = ($.dialog.data("callbackfun"));
         var loginErp = ($.dialog.data("loginErp"));
@@ -680,8 +696,8 @@ var uploadRequest = undefined;
                                     top.$.errorMsg(zNode.msg);
                                 } else {
                                     updateNode(zNode);
-                                    refreshScriptInifo(loginErp, zNode.gitProjectId, zNode.path);
-                                    var newKey = getKey(zNode.gitProjectId, zNode.path);
+
+                                    refreshScriptInifo(loginErp, zNode.gitProjectId, scriptPath, zNode.path , zNode.name);
                                 }
                                 break;
                         }

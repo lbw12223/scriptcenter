@@ -206,6 +206,19 @@ $.extend({
         }
         return HTML;
     },
+    successSelfMsg:function (_content, delay, callback){
+        this.removeMsg();
+        var params = {
+            content: _content,
+            type: "success"
+        }
+        var html = this.htmlTemplet(params);
+        window.setTimeout(function () {
+            $(".successMessageBack").fadeOut(500);
+            callback && callback();
+        }, delay || 2000);
+        $("body").append(html);
+    },
     successMsg: function (_content, delay, callback) {
         if(top.Msg){
             top.Msg.successMsg(_content,delay,callback);
@@ -355,6 +368,25 @@ $.extend({
             })
         })
     },
+    bdpSelfMsg: function (params, init) {
+        this.removeMsg();
+        params.type = "bdpMsg";
+        var html = this.htmlTemplet(params);
+        $("body").append(html);
+        init && init();
+        $(".datadev-focus").focus();
+        //绑定事件
+        $(".messageClose").click(function () {
+            params.afterCloseCallBack && params.afterCloseCallBack();
+            $(".messageBack").remove();
+        });
+        $(".messageButton").each(function (index) {
+            var node = $(this);
+            node.click(function () {
+                params.buttons[index] && params.buttons[index].event && params.buttons[index].event();
+            })
+        })
+    },
     /**
      * title
      * mainContent
@@ -384,6 +416,11 @@ $.extend({
                 params.buttons[index] && params.buttons[index].event && params.buttons[index].event();
             })
         })
+    },
+    removeSelfMsg: function () {
+        $(".messageBack").remove();
+        $(".successMessageBack").remove();
+        $(".noBackConfirm").remove();
     },
     removeMsg: function () {
         if(top.Msg){

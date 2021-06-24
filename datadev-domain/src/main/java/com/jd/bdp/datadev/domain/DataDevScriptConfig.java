@@ -11,7 +11,7 @@ public class DataDevScriptConfig {
 
     private Long id ;
     private String name ;   //配置项属性名
-    private Integer type ;  //脚本类型
+    private Integer type ;  // 1: dataDev , 2: scriptCenter
     private String clusterCode ; //集群code
     private String marketLinuxUser; //集市linux用户
     private String queueCode ;  //队列code
