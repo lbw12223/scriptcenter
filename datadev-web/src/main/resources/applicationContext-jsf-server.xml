@@ -9,7 +9,7 @@
     <!--scriptInterface-->
     <bean id="scriptServiceImpl" class="com.jd.bdp.datadev.service.impl.ScriptServiceImpl" />
 
-    <jsf:provider id="scriptInterface" interface="com.jd.bdp.datadev.api.ScriptInterface" alias="${bdp.jsf.alias}"  ref="scriptServiceImpl" server="jsf"  />
+    <jsf:provider id="scriptInterface" interface="com.jd.bdp.datadev.api.ScriptInterface" alias="${bdp.datadev.jsf.alias}"  ref="scriptServiceImpl" server="jsf"  />
 
     <bean id="scriptServiceFilterIml" class="com.jd.bdp.datadev.web.interceptor.WrapJsfApiFilter">
         <property name="smpUrl" value="${smp.domain.name}"/>
@@ -20,16 +20,16 @@
 
     <bean id="agentScriptCallBackImpl" class="com.jd.bdp.datadev.service.impl.AgentScriptCallBackImpl" />
 
-    <jsf:provider id="agentScriptCallBackInterface" interface="com.jd.bdp.datadev.agent.api.AgentScriptCallBackInterface" alias="${bdp.jsf.alias}-center"  ref="agentScriptCallBackImpl" server="jsf"  />
+    <jsf:provider id="agentScriptCallBackInterface" interface="com.jd.bdp.datadev.agent.api.AgentScriptCallBackInterface" alias="${bdp.datadev.jsf.alias}"  ref="agentScriptCallBackImpl" server="jsf"  />
 
     <bean id="scriptBuffaloServiceImpl" class="com.jd.bdp.datadev.service.impl.ScriptBuffaloServiceImpl" />
 
-    <jsf:provider id="scriptBuffaloInterface" interface="com.jd.bdp.datadev.api.ScriptBuffaloInterface" alias="${bdp.jsf.alias}"  ref="scriptBuffaloServiceImpl" server="jsf"  />
+    <jsf:provider id="scriptBuffaloInterface" interface="com.jd.bdp.datadev.api.ScriptBuffaloInterface" alias="${bdp.datadev.jsf.alias}"  ref="scriptBuffaloServiceImpl" server="jsf"  />
 
 
     <!--实现类 -->
     <bean id="dataPreviewJsfInterfaceImpl" class="com.jd.bdp.datadev.service.impl.DataPreviewJsfInterfaceImpl" />
-    <jsf:provider id="dataPreviewJsfInterface" interface="com.jd.bdp.datadev.datapreview.api.DataPreviewJsfInterface" alias="${bdp.jsf.alias}" ref="dataPreviewJsfInterfaceImpl" server="jsf"/>
+    <jsf:provider id="dataPreviewJsfInterface" interface="com.jd.bdp.datadev.datapreview.api.DataPreviewJsfInterface" alias="${bdp.datadev.jsf.alias}" ref="dataPreviewJsfInterfaceImpl" server="jsf"/>
 
 
 
