@@ -191,7 +191,7 @@ $(function () {
         var isEmpty = !configObj || configObj.length == 0;
         changeMarket(function () {
             if (isEmpty) {
-                $("#account-add").click()
+               // $("#account-add").click()
             } else {
                 activeLi(0);
             }

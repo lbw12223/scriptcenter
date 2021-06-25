@@ -77,8 +77,6 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
 
     @Override
     public List<DataDevScriptConfig> getConfigsByErp(String erp, Long projectSpaceId) throws Exception {
-
-
         List<DataDevScriptConfig> list = configDao.getConfigsByErp(erp, projectSpaceId);
         sortByOrder(list);
         return list;
@@ -249,6 +247,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
             config.setRunMarketLinuxUser(oriConfig.getRunMarketLinuxUser());
             config.setRunClusterCode(oriConfig.getRunClusterCode());
         }
+        config.setType(2);
         configDao.insertConfig(config);
     }
 

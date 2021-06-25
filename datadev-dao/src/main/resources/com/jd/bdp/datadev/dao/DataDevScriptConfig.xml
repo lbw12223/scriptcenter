@@ -78,7 +78,7 @@
     <select id="getConfigsByErp" resultType="DataDevScriptConfig">
         SELECT
         <include refid="script_config_columns"/>
-        from script_config where owner = #{owner} AND project_space_id = #{projectSpaceId} AND IFNULL(deleted,0) = 0
+        from script_config where owner = #{owner} AND project_space_id = #{projectSpaceId} AND IFNULL(deleted,0) = 0 and `type` = 2
     </select>
     <select id="findById" resultType="DataDevScriptConfig">
         SELECT
