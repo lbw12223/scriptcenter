@@ -28,7 +28,6 @@ import com.jd.bdp.domain.think.clusterBase.ClusterHadoopMarket;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopQueue;
 import com.jd.bdp.domain.think.meta.MetaTableInfo;
 import com.jd.bdp.domain.urm.right.ApiResultDTO;
-import com.jd.bdp.jcm.api.common.util.EntityResult;
 import com.jd.bdp.jcm.api.common.util.JDResponse;
 import com.jd.bdp.jcm.api.common.util.ListResult;
 import com.jd.bdp.jcm.api.market.model.dto.MarketExternalDTO;

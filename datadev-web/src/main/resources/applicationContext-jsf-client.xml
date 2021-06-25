@@ -76,7 +76,7 @@
                   protocol="jsf" alias="${jsf.alias.rc}" timeout="50000"/>
 
     <!--集群服务-->
-    <jsf:consumer id="clusterExternalInterface" interface="com.jd.bdp.jcm.api.cluster.service.external.ClusterExternalInterface"
+    <jsf:consumer id="marketExternalInterface" interface="com.jd.bdp.jcm.api.market.service.external.MarketExternalInterface"
                   protocol="jsf" alias="${jsm-alias}" timeout="50000"/>
 
 
