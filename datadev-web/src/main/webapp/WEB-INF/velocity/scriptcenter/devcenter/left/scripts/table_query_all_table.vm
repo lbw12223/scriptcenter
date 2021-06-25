@@ -15,8 +15,10 @@
     ##    </div>
 
     <div id="tableueryOuterContent">
-
         <div id="AllTablesContent" style="top: 10px;" class="table-query-content">
+            <div>
+                <p style="font-weight: bold; font-size;: small">表管理</p>
+            </div>
             <div class="table-manage-search-base">
                 <div class="all-table-search-content">
                     <input id="tableSearchInput" placeholder="请输入表名、描述" autocomplete="off">

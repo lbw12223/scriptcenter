@@ -7,6 +7,7 @@ import com.jd.bdp.datadev.domain.DataDevGitGroup;
 import com.jd.bdp.datadev.domain.DataDevGitProject;
 import com.jd.bdp.datadev.enums.DataDevGitInitFlag;
 import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
+import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.jdgit.JDGitCommits;
 import com.jd.bdp.datadev.jdgit.JDGitProjects;
 import com.jd.bdp.datadev.service.DataDevGitProjectService;
@@ -237,5 +238,19 @@ public class DataDevGitProjectServiceImpl implements DataDevGitProjectService {
     @Override
     public List<String> getAllUserHaveSameProject(List<DataDevGitProject> projects) throws Exception {
         return dataDevGitProjectDao.getAllUserHaveSameProject(projects);
+    }
+
+    /**
+     * 获取当前本地项目最大的ID
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Long getCurrentLocalGitProject() throws Exception {
+        Long maxLocalGitProjectId = dataDevGitProjectDao.getMaxLocalGitProjectId();
+        if(maxLocalGitProjectId == null){
+            maxLocalGitProjectId = GitHttpUtil._10YI ;
+        }
+        return maxLocalGitProjectId + 1 ;
     }
 }

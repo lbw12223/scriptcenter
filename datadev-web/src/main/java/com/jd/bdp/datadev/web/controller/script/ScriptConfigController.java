@@ -28,6 +28,10 @@ import com.jd.bdp.domain.think.clusterBase.ClusterHadoopMarket;
 import com.jd.bdp.domain.think.clusterBase.ClusterHadoopQueue;
 import com.jd.bdp.domain.think.meta.MetaTableInfo;
 import com.jd.bdp.domain.urm.right.ApiResultDTO;
+import com.jd.bdp.jcm.api.common.util.JDResponse;
+import com.jd.bdp.jcm.api.common.util.ListResult;
+import com.jd.bdp.jcm.api.market.model.dto.MarketExternalDTO;
+import com.jd.bdp.jcm.api.market.service.external.MarketExternalInterface;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import com.jd.oss.search.service.CommonSearchService;
 import com.jd.oss.search.service.TableFieldsDataJsfInterface;
@@ -36,6 +40,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -83,10 +88,19 @@ public class ScriptConfigController {
     @Autowired
     private TableFieldsDataJsfInterface tableFieldsDataJsfInterface;
 
+    @Autowired
+    private MarketExternalInterface marketExternalInterface;
+
     @Value("${xingtu.appId}")
     private String xingtuAppId;
     @Value("${xingtu.token}")
     private String xingtuToken;
+
+    @Value("${jsf.jsm.appId}")
+    private String jsmAppId;
+
+    @Value("${jsf.jsm.token}")
+    private String jsmToken;
 
     @Autowired
     private ProjectSpaceRightComponent projectSpaceRightComponent;
@@ -98,13 +112,36 @@ public class ScriptConfigController {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
         List<DataDevScriptConfig> defaultScriptConfig = configService.defaultScriptConfig(userHolder.getErp(), projectSpaceId);
-        return JSONObjectUtil.getSuccessResultTwoObj(list, null);
+        return JSONObjectUtil.getSuccessResultTwoObj(list, defaultScriptConfig);
     }
 
 
     private void getProjectSpaceDefaultResource() {
 
     }
+
+    @ExceptionMessageAnnotation(errorMessage = "获取全部集市列表")
+    @RequestMapping("/getAllMarket.ajax")
+    @ResponseBody
+    public JSONObject getAllMarket(UrmUserHolder userHolder) throws Exception {
+        List<MarketExternalDTO> listResult = new ArrayList<MarketExternalDTO>();
+        try {
+            long time = System.currentTimeMillis();
+            String sign = DigestUtils.md5DigestAsHex((jsmAppId + jsmToken + time).getBytes());
+
+            JDResponse<ListResult<MarketExternalDTO>> response = marketExternalInterface.listAllMarketInfo(jsmAppId, sign, time);
+            logger.info("JSM服务获取全部集市结果："+response);
+            if(response != null && response.getCode() == 0) {
+                listResult = response.getData().getList();
+            } else {
+                logger.error("JSM服务获取全部集市列表失败:"+JSONObject.toJSONString(response));
+            }
+        } catch (Exception e) {
+            logger.error("JSM服务获取全部集市列表失败", e);
+        }
+        return JSONObjectUtil.getSuccessResult(listResult);
+    }
+
 
     @ExceptionMessageAnnotation(errorMessage = "获取集市列表")
     @RequestMapping("/getMarketByErp.ajax")
@@ -303,9 +340,9 @@ public class ScriptConfigController {
         return AjaxUtil.gridJson(pageResultDTO);
     }
 
-    @RequestMapping("/getAllDbs.ajax")
+    @RequestMapping("/getAllDbsOld.ajax")
     @ResponseBody
-    public JSONObject getAllDbs(Long marketId) throws Exception {
+    public JSONObject getAllDbsOld(Long marketId) throws Exception {
         try {
             if (marketId != null && marketId > 0) {
                 JSONObject jsonObject = new JSONObject();
@@ -322,6 +359,33 @@ public class ScriptConfigController {
             logger.error("==================getTableByErp:" + e.getMessage());
         }
         return JSONObjectUtil.getSuccessResult(new ArrayList<DataBaseDto>());
+    }
+
+
+    @RequestMapping("/getAllDbs.ajax")
+    @ResponseBody
+    public JSONObject getAllDbs(String martCode) throws Exception {
+        JSONArray list = new JSONArray();
+        try {
+            JSONObject data = new JSONObject();
+            if (StringUtils.isNotBlank(martCode)) {
+                data.put("martCode", martCode);
+            } else {
+                throw new RuntimeException("martCode必填");
+            }
+            Long time = System.currentTimeMillis();
+            String sign = MD5Util.getMD5Str(xingtuAppId + xingtuToken + time);
+            JSONObject apiResult;
+            // 使用mock jsf接口
+            apiResult = commonSearchService.queryDBsByMartCode(xingtuAppId, sign, time, data.toJSONString());
+            logger.error("===============查询库列表结果：" + apiResult);
+            if (apiResult != null && apiResult.getInteger("code") == 0) {
+                list = apiResult.getJSONArray("list");
+            }
+        } catch (Exception e) {
+            logger.error("===========查询库列表报错：" + e.getMessage());
+        }
+        return JSONObjectUtil.getSuccessResult(list);
     }
 
     @RequestMapping("/getAllTablesOld.ajax")
@@ -415,9 +479,9 @@ public class ScriptConfigController {
                 list = data.getJSONArray("datas");
                 for (Object o : list) {
                     JSONObject tableInfo = (JSONObject) o;
-                    ClusterHadoopMarketDto marketDto = allMarketComponent.getMarketByCode(tableInfo.getString("cluster"), tableInfo.getString("martCode"));
+                    MarketExternalDTO marketDto = allMarketComponent.getMarketInfoByCode(tableInfo.getString("martCode"));
                     if (marketDto != null) {
-                        tableInfo.put("marketId", marketDto.getMarketId().toString());
+                        tableInfo.put("marketId", marketDto.getId());
                         tableInfo.put("marketName", marketDto.getMarketName());
                     } else {
                         tableInfo.put("marketName", "--");

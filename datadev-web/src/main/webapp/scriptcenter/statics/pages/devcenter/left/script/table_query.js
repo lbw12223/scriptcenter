@@ -14,8 +14,8 @@ $(function () {
     var E_RESIZE_STATUS = false;
     var S_RESIZE_STATUS = false;
 
-    initMarket();
-    initMyTableEvent();
+    // initMarket();
+    // initMyTableEvent();
     initAllTableEvent();
     initAllMarket();
 
@@ -228,9 +228,9 @@ $(function () {
         }
     }
 
-    function changeAllDb(marketId) {
-        if (marketId) {
-            commonAjaxEvents.commonPostAjax("/scriptcenter/config/getAllDbs.ajax", {marketId: marketId}, null, function (node, data) {
+    function changeAllDb(martCode) {
+        if (martCode) {
+            commonAjaxEvents.commonPostAjax("/scriptcenter/config/getAllDbs.ajax", {martCode: martCode}, null, function (node, data) {
                 var obj = data.obj;
                 var options = "<option value=''>请选择所在库</option>";
                 if (obj && obj.length > 0) {
@@ -263,13 +263,13 @@ $(function () {
         if (!allTableFlag) {
             allTableFlag = true;
             changeAllDb();
-            commonAjaxEvents.commonPostAjax("/scriptcenter/buffalo/getAllMarket.ajax", {}, null, function (node, data) {
+            commonAjaxEvents.commonPostAjax("/scriptcenter/config/getAllMarket.ajax", {}, null, function (node, data) {
                 var obj = data.obj;
                 // 2021.05.29修改集市为非必填项
                 var options = "<option value=''>请选择所在集市</option>";
                 if (obj && obj.length > 0) {
                     for (var index = 0; index < obj.length; index++) {
-                        options += "<option value='" + obj[index].marketId + "' data-cluster='" + obj[index].clusterCode + "' data-linuxuser='" + obj[index].linuxUser + "' data-ugdap='" + obj[index].isUgdap + "'>" + obj[index].marketName + "</option>";
+                        options += "<option value='" + obj[index].marketCode + "'>" + obj[index].marketName + "</option>";
                     }
                 }
                 $("#allTableMarketSelect").empty();
@@ -444,7 +444,7 @@ $(function () {
         jqGrid.reset(jQuery);
     }
 
-    function searchAllTable(marketId, dbName, searchWord) {
+    function searchAllTable(martCode, dbName, searchWord) {
         allTableColSpiner = showSpinner($("#searchAllTabOrColSpinner"));
         var tips = '共搜索到<span id="tableSearchNum">0</span>个结果';
         if ($("#tableSearchNum").length == 0) {
@@ -464,7 +464,7 @@ $(function () {
             ajax: {
                 type: "POST",
                 data: {
-                    marketId: marketId,
+                    martCode: martCode,
                     dbName: dbName,
                     searchWord: $.trim(searchWord || ""),
                 }
@@ -644,8 +644,8 @@ $(function () {
         $("#allTableMarketSelect").on("change", function () {
             var option = $("option:selected", $("#allTableMarketSelect"));
             if (option.length > 0 && option.attr("value") != "") {
-                var marketId = option.val();
-                changeAllDb(marketId);
+                var martCode = option.val();
+                changeAllDb(martCode);
             } else {
                 changeAllDb();
             }

@@ -261,5 +261,11 @@
         FROM git_project WHERE git_project_path = #{gitProjectPath} AND deleted = 0 AND git_project_id > 1000000000 limit 1
     </select>
 
+    <select id="getMaxLocalGitProjectId" resultType="java.lang.Long">
+        SELECT max(git_project_id)
+        FROM git_project WHERE git_project_id >= 1000000000
+    </select>
+
+
 
 </mapper>

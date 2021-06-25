@@ -12,7 +12,7 @@ public class DataDevScriptRunDetail {
 
     private Long id;
     private Long scriptFileId;
-    private Long scriptConfigId;
+    private String scriptConfigId;
     private String version;
     private String operator;
     private Date startTime;
@@ -511,11 +511,11 @@ public class DataDevScriptRunDetail {
         this.content = content;
     }
 
-    public Long getScriptConfigId() {
+    public String getScriptConfigId() {
         return scriptConfigId;
     }
 
-    public void setScriptConfigId(Long scriptConfigId) {
+    public void setScriptConfigId(String scriptConfigId) {
         this.scriptConfigId = scriptConfigId;
     }
 

@@ -466,7 +466,7 @@ public class ScriptOperateController {
     @ExceptionMessageAnnotation(errorMessage = "移动脚本")
     @RequestMapping("move.ajax")
     @ResponseBody
-    public JSONObject move(UrmUserHolder userHolder, DataDevScriptFile file) throws Exception {
+    public JSONObject move(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId, DataDevScriptFile file) throws Exception {
 //        fileService.checkUplineModifyName(file);
         projectService.verifyUserAuthority(userHolder.getErp(), file.getGitProjectId());
 
@@ -477,6 +477,10 @@ public class ScriptOperateController {
 //        if (!fileService.canMoveScriptFile(file.getGitProjectId(), file.getGitProjectFilePath())) {
 //            throw new RuntimeException("已经同步项目空间，不能进行移动");
 //        }
+        // 校验是否存在正在发布的任务
+        if (fileService.existDevOrProdTask(projectSpaceId, oldFile.getName(), userHolder.getErp(), oldFile.getId())) {
+            throw new RuntimeException("该脚本存在开发任务或生产任务，不允许重命名");
+        }
         ZtreeNode ztreeNode = fileService.moveScriptFile(file.getGitProjectId(), file.getGitProjectFilePath(), file.getGitProjectDirPath(), file.getName(), file.getDescription(), userHolder.getErp());
         return JSONObjectUtil.getSuccessResult("保存成功", ztreeNode);
     }
@@ -503,11 +507,12 @@ public class ScriptOperateController {
             jsonObject.put("status", "1");
             return JSONObjectUtil.getSuccessResult(jsonObject);
         }
+        // 校验是否存在正在发布的任务
+        if (fileService.existDevOrProdTask(projectSpaceId, scriptName, userHolder.getErp(), scriptId)) {
+            throw new RuntimeException("该脚本存在开发任务或生产任务，不允许重命名");
+        }
         DataDevScriptFilePublish publish = publishService.findLastNotFail(file.getGitProjectId(), file.getGitProjectFilePath(), null);
         if (publish != null) {
-            if (fileService.existDevOrProdTask(projectSpaceId, scriptName, userHolder.getErp(), scriptId)) {
-                throw new RuntimeException("该脚本存在开发任务或生产任务，不允许重命名");
-            }
             throw new RuntimeException("脚本已上线,不能修改脚本名称");
         }
         DataDevScriptFile res = fileService.renameScriptFile(file.getGitProjectId(), file.getGitProjectFilePath(), file.getName(), userHolder.getErp());

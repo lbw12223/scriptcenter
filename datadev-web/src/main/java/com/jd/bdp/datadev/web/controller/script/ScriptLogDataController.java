@@ -556,7 +556,7 @@ public class ScriptLogDataController {
         if (file == null) {
             throw new RuntimeException("脚本不存在");
         }
-        if (dataDevScriptRunDetail.getScriptConfigId() != null && dataDevScriptRunDetail.getScriptConfigId() > 0) {
+        if (dataDevScriptRunDetail.getScriptConfigId() != null) {
             DataDevScriptConfig config = configService.getConfigById(dataDevScriptRunDetail.getScriptConfigId());
             if (config != null) {
                 dataDevScriptRunDetail.setClusterCode(config.getClusterCode());

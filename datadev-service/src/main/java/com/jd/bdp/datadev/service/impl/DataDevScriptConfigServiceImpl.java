@@ -112,19 +112,34 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
                 insert.setRunMarketLinuxUser(temp.getMarketCode());
                 insert.setAccountCode(temp.getAccount());
                 insert.setQueueCode(temp.getQueueCode());
-
+                insert.setProjectSpaceId(spaceProjectId);
                 insert.setName(temp.getName());
                 insert.setMarketName(temp.getMarketName());
                 insert.setAccountName(temp.getAccountName());
                 insert.setQueueName(temp.getQueueName());
                 insert.setId(temp.getId());
                 insert.setConfigType(2);
-                insert.setHasRight(hasProjectDefaultRight(erp, insert, spaceProjectId));
+                if (erp != null) {
+                    insert.setHasRight(hasProjectDefaultRight(erp, insert, spaceProjectId));
+                }
                 result.add(insert);
             }
 
         }
         return result;
+    }
+
+    @Override
+    public DataDevScriptConfig getProjetDefaultConfigById(Long spaceProjectId, Long id) {
+        List<DataDevScriptConfig> dataDevScriptConfigs = defaultScriptConfig(null, spaceProjectId);
+        if (dataDevScriptConfigs != null) {
+            for (DataDevScriptConfig temp : dataDevScriptConfigs) {
+                if (temp.getId().equals(id)) {
+                    return temp;
+                }
+            }
+        }
+        return null;
     }
 
 
@@ -139,7 +154,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
                 return authority;
             }
 
-            boolean hasMarketAccountQueue = false ;
+            boolean hasMarketAccountQueue = false;
             ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp, spaceProjectId);
             if (apiResultDTO.isSuccess()) {
                 for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
@@ -153,7 +168,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
                 throw new RuntimeException("无正在使用的集市" + config.getMarketLinuxUser() + "权限");
             }
 
-            hasMarketAccountQueue = false ;
+            hasMarketAccountQueue = false;
             ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(config.getMarketLinuxUser(), erp, spaceProjectId);
             if (accountResultDTO.isSuccess()) {
                 for (ClusterHadoopAccount clusterHadoopAccount : (List<ClusterHadoopAccount>) accountResultDTO.getList()) {
@@ -166,7 +181,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
             if (!hasMarketAccountQueue) {
                 throw new RuntimeException("无正在使用的生产账号" + config.getAccountCode() + "权限");
             }
-            hasMarketAccountQueue = false ;
+            hasMarketAccountQueue = false;
             ClusterHadoopQueue queue = new ClusterHadoopQueue();
             queue.setOperator(erp);
             queue.setProductionAccountCode(config.getAccountCode());
@@ -190,9 +205,26 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
 
     }
 
+    /**
+     * 有可能是默认配置
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @Override
-    public DataDevScriptConfig getConfigById(Long id) throws Exception {
-        return configDao.findById(id);
+    public DataDevScriptConfig getConfigById(String id) throws Exception {
+
+        //projectSpace-2-id
+        if (id.indexOf("-") > 0) {
+            String[] split = id.split("-");
+            Long gitProjectId = Long.parseLong(split[0]);
+            Long configType = Long.parseLong(split[1]);
+            Long defaultConfigID = Long.parseLong(split[2]);
+            return getProjetDefaultConfigById(gitProjectId, defaultConfigID);
+        }
+        return configDao.findById(Long.parseLong(id));
+
     }
 
     @Override
