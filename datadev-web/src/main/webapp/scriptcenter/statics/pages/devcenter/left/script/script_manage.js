@@ -1981,6 +1981,7 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
 
 function updateQianKunTab(dataObj){
 
+
     var obj = dataObj.obj ;
     while(obj.children && obj.children.length > 0){
         obj = obj.children[0];

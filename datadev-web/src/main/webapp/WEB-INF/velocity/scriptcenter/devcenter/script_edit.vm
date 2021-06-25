@@ -429,11 +429,14 @@
 </div>
 
 <div id="runErrorDiv" style="position: absolute;
-display: none;
-    background-color: rgba(32, 131, 254, 0.08) !important;
+display: block;
+    background-color: white!important;
     width: 144px;
     height: 29px;
     color: red;
+    z-index: 1000;
+    border: 1px solid silver;
+    border-top:none ;
     line-height: 30px;">
     请选择或配置账号队列
 </div>

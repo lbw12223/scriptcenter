@@ -405,6 +405,7 @@ var uploadRequest = undefined;
 
     function refreshScriptInifo(loginErp, gitProjectId, oldPath, newPath , name) {
 
+        debugger
         var oldKey = getKey(gitProjectId,oldPath) ;
 
         var params = {

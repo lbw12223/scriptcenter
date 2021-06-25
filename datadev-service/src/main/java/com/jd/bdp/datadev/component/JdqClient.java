@@ -53,7 +53,7 @@ public class JdqClient implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
-            if (env.equals("dev")) {
+            if (true) {
                 return;
             }
             Properties props = getProperties(jdqUserName, jdqPassword, jdqBrokerList, clientId);
@@ -66,7 +66,7 @@ public class JdqClient implements InitializingBean {
 
     public boolean sendDataDevJdqMessage(ScriptJdqMessage scriptJdqMessage) {
         try {
-            if (env.equals("dev")) {
+            if (true) {
                 return true;
             }
             byte[] key = ("key").getBytes("UTF-8");
