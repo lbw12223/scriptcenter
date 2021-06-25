@@ -25,15 +25,15 @@ public interface DataDevScriptDiffService {
      */
     Integer check(Long projectSpaceId, String devContent, ReleaseCompareVo releaseCompareVo) throws Exception;
 
-    /**
-     * 提交到发布中心
-     * @param projectSpaceId
-     * @param desc
-     * @param operator
-     * @param submitObj
-     * @return
-     */
-    boolean submit2RC(Long projectSpaceId, String desc, String operator, SubmitObj submitObj) throws Exception;
+//    /**
+//     * 提交到发布中心
+//     * @param projectSpaceId
+//     * @param desc
+//     * @param operator
+//     * @param submitObj
+//     * @return
+//     */
+//    boolean submit2RC(Long projectSpaceId, String desc, String operator, SubmitObj submitObj) throws Exception;
 
     /**
      * 发布上线历史
