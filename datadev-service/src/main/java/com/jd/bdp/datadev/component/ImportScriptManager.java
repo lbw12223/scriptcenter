@@ -603,6 +603,7 @@ public class ImportScriptManager {
 
     /**
      * 删除脚本
+     * https://cf.jd.com/pages/viewpage.action?pageId=521864137
      *
      * @param dataDevScriptFile
      * @param jsdAppgroupId

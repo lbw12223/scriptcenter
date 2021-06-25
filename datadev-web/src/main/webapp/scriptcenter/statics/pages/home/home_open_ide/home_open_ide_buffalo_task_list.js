@@ -126,8 +126,10 @@ $(function () {
         });
         $("#buffalo_appgroup").empty();
         var options = "<option value=''></option>";
+        var retObj = undefined;
         commonAjaxEvents.commonPostAjax("/scriptcenter/buffalo/getAppByErp.ajax", {}, $("#buffalo_appgroup"), function (node, data) {
             if (data.code == 0 && data.obj) {
+                retObj = data.obj;
                 for (var index = 0; index < data.obj.length; index++) {
                     var node = data.obj[index];
                     options += "<option value='" + node.appgroupId + "' >" + node.appgroupName + "</option>"
@@ -135,7 +137,9 @@ $(function () {
             }
         }, function () {
             $("#buffalo_appgroup").append(options);
-            $("#buffalo_appgroup").select2({
+            var curProjectSpaceId = top.window.projectSpaceId;
+            var defaultVal = curProjectSpaceId ? curProjectSpaceId : (retObj ? retObj[0].appgroupId : 0);
+            $("#buffalo_appgroup").val(defaultVal).select2({
                 placeholder: '请选择应用',
                 allowClear: true,
             });

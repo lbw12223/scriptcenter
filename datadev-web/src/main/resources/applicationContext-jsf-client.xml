@@ -75,5 +75,9 @@
     <jsf:consumer id="releaseSubmitInterface" interface="com.jd.jbdp.release.api.ReleaseSubmitInterface"
                   protocol="jsf" alias="${jsf.alias.rc}" timeout="50000"/>
 
+    <!--集群服务-->
+    <jsf:consumer id="marketExternalInterface" interface="com.jd.bdp.jcm.api.market.service.external.MarketExternalInterface"
+                  protocol="jsf" alias="${jsm-alias}" timeout="50000"/>
+
 
 </beans>

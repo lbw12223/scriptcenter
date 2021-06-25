@@ -20,6 +20,10 @@ import com.jd.bdp.datadev.jdgit.JDGitRepositories;
 import com.jd.bdp.datadev.model.Script;
 import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.util.MD5Util;
+import com.jd.bdp.domain.dto.JsfAuthDTO;
+import com.jd.bdp.domain.dto.JsfResultDTO;
+import com.jd.jbdp.release.api.ReleaseSubmitInterface;
+import com.jd.jbdp.release.model.vo.SubmitObj;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -105,6 +109,9 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
 
     @Autowired
     private BuffaloComponent buffaloComponent;
+
+    @Autowired
+    private ReleaseSubmitInterface releaseSubmitInterface;
 
     @Override
     public Long getDefaultProjectId() throws Exception {
@@ -802,12 +809,18 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         DataDevScriptFile dataDevScriptFile = dataDevScriptFileDao.getSingleScriptFile(gitProjectId, gitProjectFilePath);
 
         if (dataDevScriptFile != null) {
+            // 校验是否存在线上任务和开发任务
+            if (existDevOrProdTask(projectSpaceId, dataDevScriptFile.getName(), erp, dataDevScriptFile.getId())) {
+                throw new RuntimeException("该脚本存在开发任务或生产任务，不允许删除");
+            }
+            // 校验是否存在正在发布的任务
+            if (isReleasing(dataDevScriptFile)) {
+                throw new RuntimeException("该脚本存在正在发布的任务，不允许删除");
+            }
             DataDevScriptFilePublish notFail = dataDevScriptPublishService.findLastNotFail(gitProjectId, gitProjectFilePath, null);
             if (notFail != null) {
-                if (existDevOrProdTask(projectSpaceId, dataDevScriptFile.getName(), erp, dataDevScriptFile.getId())) {
-                    throw new RuntimeException("该脚本存在开发任务或生产任务，不允许删除");
-                }
-                importScriptManager.deleteBuffaloScript(dataDevScriptFile, null, erp);
+                //TODO LIST https://cf.jd.com/pages/viewpage.action?pageId=521864137
+//                importScriptManager.deleteBuffaloScript(dataDevScriptFile, null, erp);
             }
             dataDevScriptPublishService.deletePublish(null, gitProjectId, gitProjectFilePath);
             if (StringUtils.isNotBlank(dataDevScriptFile.getGitVersion())) {
@@ -845,6 +858,30 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
         }
         if (taskList.getInteger("totalCount") > 0 || devTaskList.getInteger("totalCount") > 0) {
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * 检验是否存在正在发布的任务
+     * @param file
+     * @return
+     */
+    public boolean isReleasing(DataDevScriptFile file) {
+        String devObjKey = file.getId().toString();
+        SubmitObj submitObj = new SubmitObj();
+        submitObj.setDevObjKey(devObjKey);
+        submitObj.setObjType("script");
+        JsfResultDTO haveReleaseingByObjKey = releaseSubmitInterface.isHaveReleaseingByObjKey(JsfAuthDTO.newInstance(), submitObj);
+        if (haveReleaseingByObjKey != null) {
+            logger.warn("校验脚本是否正在发布：" + haveReleaseingByObjKey.toString());
+            if (haveReleaseingByObjKey.getCode() != 0) {
+                throw new RuntimeException("发布校验失败!");
+            }
+            // 存在正在发布的脚本
+            if (haveReleaseingByObjKey.getObj() != null) {
+                return true;
+            }
         }
         return false;
     }

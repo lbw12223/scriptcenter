@@ -291,6 +291,13 @@ public class ScriptManageController {
 //        return JSONObjectUtil.getSuccessResult(res);
 //    }
 
+    @ExceptionMessageAnnotation(errorMessage = "获取脚本信息")
+    @RequestMapping("getScriptInfo.ajax")
+    @ResponseBody
+    public JSONObject getScriptFileId(UrmUserHolder userHolder, Long gitProjectId, String gitProjectFilePath) throws Exception {
+        DataDevScriptFile scriptFile = fileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath);
+        return JSONObjectUtil.getSuccessResult(scriptFile);
+    }
     /**
      * 获取脚本内容
      *
