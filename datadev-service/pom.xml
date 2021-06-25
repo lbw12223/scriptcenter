@@ -30,6 +30,18 @@
             <version>1.2-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.jd.bdp.jcm</groupId>
+            <artifactId>jcm-api</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-websocket</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!--<dependency>-->
             <!--<groupId>com.jd.bdp.buffalo.devcenter</groupId>-->
             <!--<artifactId>sql-table-fetcher</artifactId>-->
