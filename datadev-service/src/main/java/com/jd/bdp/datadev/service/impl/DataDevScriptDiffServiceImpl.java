@@ -195,20 +195,20 @@ public class DataDevScriptDiffServiceImpl implements DataDevScriptDiffService {
     }
 
 
-    @Override
-    public boolean submit2RC(Long projectSpaceId, String desc, String operator, SubmitObj submitObj) throws Exception {
-        SubmitInfoVo submitInfoVo = new SubmitInfoVo();
-        submitInfoVo.setProjectId(projectSpaceId);
-        submitInfoVo.setDesc(desc);
-        submitInfoVo.setSubmitErp(operator);
-        submitInfoVo.setSubmitObj(Arrays.asList(submitObj));
-        // 检测脚本是否正在发布
-        checkIsInRelease(submitInfoVo);
-
-        JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
-        logger.info("submit result:" + JSONObject.toJSONString(submit));
-        return submit != null && submit.getCode() == 0;
-    }
+//    @Override
+//    public boolean submit2RC(Long projectSpaceId, String desc, String operator, SubmitObj submitObj) throws Exception {
+//        SubmitInfoVo submitInfoVo = new SubmitInfoVo();
+//        submitInfoVo.setProjectId(projectSpaceId);
+//        submitInfoVo.setDesc(desc);
+//        submitInfoVo.setSubmitErp(operator);
+//        submitInfoVo.setSubmitObj(Arrays.asList(submitObj));
+//        // 检测脚本是否正在发布
+//        checkIsInRelease(submitInfoVo);
+//
+//        JsfResultDTO submit = releaseSubmitInterface.submit(JsfAuthDTO.newInstance(), submitInfoVo);
+//        logger.info("submit result:" + JSONObject.toJSONString(submit));
+//        return submit != null && submit.getCode() == 0;
+//    }
 
     @Override
     public PageInfo<ReleaseObjRecordVo> releaseRecord(Long projectId, String scriptId, Integer page, Integer size) throws Exception {

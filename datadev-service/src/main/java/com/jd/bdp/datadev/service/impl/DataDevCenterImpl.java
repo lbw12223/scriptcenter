@@ -161,11 +161,11 @@ public class DataDevCenterImpl implements DataDevCenterService {
 
         String devObjKey = file.getId().toString();
         tempSubmitObj.setOperatorType(currentOnlineInfo != null ? "更新" : "新建");
-        tempSubmitObj.setDevInfo(devInfo);
+        tempSubmitObj.setDevInfo(devInfo.toJSONString());
         tempSubmitObj.setDevObjKey(devObjKey);
         // onlineObjKey非首次发布时必传
         tempSubmitObj.setOnlineObjKey(currentOnlineInfo != null ? currentOnlineInfo.getLong("fileId").toString() : null);
-        tempSubmitObj.setOnlineInfo(currentTempOnlineInfo);
+        tempSubmitObj.setOnlineInfo(currentTempOnlineInfo.toJSONString());
         tempSubmitObj.setObjType("script");
         tempSubmitObj.setProjectId(projectSpaceId);
         String commitMsg = file.getVerDescription();
