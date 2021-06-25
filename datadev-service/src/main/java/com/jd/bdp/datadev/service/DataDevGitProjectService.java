@@ -47,19 +47,21 @@ public interface DataDevGitProjectService {
 
     /**
      * 验证用户是否有项目权限 没有的话直接抛无权限异常
+     *
      * @param erp
      * @param gitProjectId
      * @throws Exception
      */
-    void verifyUserAuthority(String erp,Long gitProjectId)throws Exception;
+    void verifyUserAuthority(String erp, Long gitProjectId) throws Exception;
 
     /**
      * 获取某个人可以看见的Project
-     *  支持搜索
+     * 支持搜索
+     *
      * @param erp
      * @return
      */
-    List<DataDevGitProject> getErpProjectBySearch(String erp,String keyword , Integer projectType);
+    List<DataDevGitProject> getErpProjectBySearch(String erp, String keyword, Integer projectType);
 
     /**
      * gitProjectId
@@ -70,7 +72,6 @@ public interface DataDevGitProjectService {
     DataDevGitProject getGitProjectBy(Long gitProjectId);
 
     /**
-     *
      * @param jdGitProjects
      * @throws Exception
      */
@@ -89,17 +90,16 @@ public interface DataDevGitProjectService {
 
     /**
      * 根据关键词获取相关的项目或者项目组
+     *
      * @param keyWord
      * @return
      * @throws Exception
      */
-    List<DataDevGitDto> getGitAndGroupByKeyWord(String erp,String keyWord)throws Exception;
+    List<DataDevGitDto> getGitAndGroupByKeyWord(String erp, String keyWord) throws Exception;
 
 
+    List<String> getAllUserHaveSameProject(List<DataDevGitProject> projects) throws Exception;
 
-
-
-    List<String> getAllUserHaveSameProject(List<DataDevGitProject> projects)throws Exception;
-
+    Long getCurrentLocalGitProject() throws Exception ;
 
 }

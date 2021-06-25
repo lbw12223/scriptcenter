@@ -9,16 +9,19 @@
 <link rel="stylesheet" href="/datadev/statics/treeGrid/css/jquery.treegrid.css">
 <link rel="stylesheet" href="/datadev/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
 <link rel="stylesheet" href="/datadev/statics/art/skins/twitter.css?_dc=$!{staticVersion}">
+<link rel="stylesheet" href="/scriptcenter/statics/grid/css/gm.css"/>
 <style type="text/css">
-    .script-run-history-Time{
+    .script-run-history-Time {
         width: 180px !important;
     }
+
     .run-item {
         cursor: pointer;
         text-decoration: underline;
         margin-left: 10px;
     }
-    .tmp-version{
+
+    .tmp-version {
         text-decoration: none !important;
     }
 
@@ -29,6 +32,7 @@
     .run-item-one {
         margin-left: 20px !important;
     }
+
     .datetimepicker .datetimepicker-minutes,
     .datetimepicker .datetimepicker-hours,
     .datetimepicker .datetimepicker-days,
@@ -67,15 +71,17 @@
     </div>
 
 
-
-
     <div class="bdp-form-group" style=";margin-bottom: 10px;margin-top: -7px">
         <label class="bdp-control-label script-run-history-label">状态：</label>
         <div class="script-run-history-content">
-            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="0" ><span class="checkbox-span">成功</span>
-            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="3" ><span class="checkbox-span">失败</span>
-            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="4" ><span class="checkbox-span">强制终止</span>
-            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="2" ><span class="checkbox-span">执行中</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="0"><span
+                class="checkbox-span">成功</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="3"><span
+                class="checkbox-span">失败</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="4"><span
+                class="checkbox-span">强制终止</span>
+            <input class="script-run-history-checkbox run-history-checkbox" type="checkbox" value="2"><span
+                class="checkbox-span">执行中</span>
 
         </div>
     </div>
@@ -106,7 +112,8 @@
 
     <a class="bdp-btn bdp-btn-default" id="stop-mutil" style="margin-left: 25px;">强制停止</a>
 
-    <div class="jd-table-parent" id="run-jd-table-parent" style="margin-top:20px;  margin-left:20px;width: 100%;height:380px;overflow: hidden;background: #31353C;">
+    <div class="jd-table-parent" id="run-jd-table-parent"
+         style="margin-top:20px; width: 100%;height:400px;overflow: hidden;background: #31353C;">
         <table class="jd-table table table-hover " id="run-grid-table" style="background: #272A2F;">
         </table>
         <div id="run-grid-pager">
@@ -120,10 +127,10 @@
 
 <script src="/scriptcenter/statics/art/js/jquery.artDialog.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/art/plugins/iframeTools.js?_dc=$!{staticVersion}"></script>
-
+<script src="/scriptcenter/statics/grid/js/gma.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/treeGrid/js/jquery.treegrid.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
-<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
+##<script src="/scriptcenter/statics/bdp/plugins/jqGrid/jquery.jqGrid.min.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/bdp/plugins/jqGrid/grid.locale-cn.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/dataTime/bootstrap-datetimepickerClearBtn.js?_dc=$!{staticVersion}"></script>
 <script src="/scriptcenter/statics/dataTime/locales/bootstrap-datetimepicker.zh-CN.js?_dc=$!{staticVersion}"></script>

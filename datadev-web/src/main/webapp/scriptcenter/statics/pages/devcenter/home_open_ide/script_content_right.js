@@ -417,10 +417,11 @@ var uploadRequest = undefined;
         }
 
 
+
         //huliang
         currentWindow.QIAN_KUN.utils.updateTabByKey(oldKey , params  )
 
-        debugger
+
         TabCacheClass.updateCacheByKey(oldKey,params)
 
     }

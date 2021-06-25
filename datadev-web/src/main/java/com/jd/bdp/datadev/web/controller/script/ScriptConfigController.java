@@ -112,7 +112,7 @@ public class ScriptConfigController {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
         List<DataDevScriptConfig> defaultScriptConfig = configService.defaultScriptConfig(userHolder.getErp(), projectSpaceId);
-        return JSONObjectUtil.getSuccessResultTwoObj(list, null);
+        return JSONObjectUtil.getSuccessResultTwoObj(list, defaultScriptConfig);
     }
 
 

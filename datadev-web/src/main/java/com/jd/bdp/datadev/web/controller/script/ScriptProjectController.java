@@ -137,6 +137,7 @@ public class ScriptProjectController {
             throw new RuntimeException("项目【" + projectName + "】已经存在！");
         }
         DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
+        insertDataDevGitProject.setGitProjectId(dataDevGitProjectService.getCurrentLocalGitProject());
         insertDataDevGitProject.setGitProjectPath(projectName);
         insertDataDevGitProject.setGitProjectName(projectName);
         insertDataDevGitProject.setDescription(description);
@@ -146,8 +147,6 @@ public class ScriptProjectController {
 
         dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
 
-        insertDataDevGitProject.setGitProjectId(insertDataDevGitProject.getId() + GitHttpUtil._10YI);
-        dataDevGitProjectDao.updateDataDevGitProjectById(insertDataDevGitProject);
 
         List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
         DataDevGitProjectMember currentUser = new DataDevGitProjectMember();
@@ -720,7 +719,6 @@ public class ScriptProjectController {
 
     @RequestMapping("projectDetail.html")
     public String projectDetail(UrmUserHolder urmUserHolder, Long gitProjectId, String gitProjectFilePath, Model model) throws Exception {
-
         boolean isGitOrCoding = gitProjectId < GitHttpUtil._10YI;
         if (isGitOrCoding) {
             JDGitProjects jdGitProjects = new JDGitProjects();

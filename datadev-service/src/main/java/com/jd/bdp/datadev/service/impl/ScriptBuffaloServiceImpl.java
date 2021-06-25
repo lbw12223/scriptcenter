@@ -34,14 +34,14 @@ public class ScriptBuffaloServiceImpl implements ScriptBuffaloInterface {
 
         if (script.getGitProjectId() != null && StringUtils.isNotBlank(script.getGitProjectFilePath())) {
             DataDevScriptFile file = fileDao.getSingleScriptFile(script.getGitProjectId(), script.getGitProjectFilePath());
-            if(file ==null){
+            if (file == null) {
                 return buffaloJobInfo;
             }
-            DataDevScriptRunDetail runDetail = runDetailDao.findLastRunDetail(file.getId(),script.getOwner());
-            String fileName=file.getName();
-            Integer dotIndex=fileName.indexOf(".");
-            if(dotIndex!=-1){
-                fileName= fileName.substring(0,dotIndex);
+            DataDevScriptRunDetail runDetail = runDetailDao.findLastRunDetail(file.getId(), script.getOwner());
+            String fileName = file.getName();
+            Integer dotIndex = fileName.indexOf(".");
+            if (dotIndex != -1) {
+                fileName = fileName.substring(0, dotIndex);
             }
             buffaloJobInfo.setJobName(fileName);
             if (file != null) {
@@ -65,7 +65,7 @@ public class ScriptBuffaloServiceImpl implements ScriptBuffaloInterface {
                 }
             }
             if (runDetail != null && runDetail.getScriptConfigId() != null) {
-                DataDevScriptConfig config = configDao.findById(runDetail.getScriptConfigId());
+                DataDevScriptConfig config = configDao.findById(Long.parseLong(runDetail.getScriptConfigId()));
                 if (config != null) {
                     buffaloJobInfo.setMarketId(config.getMarketId());
                     buffaloJobInfo.setAccountId(config.getAccountId());
