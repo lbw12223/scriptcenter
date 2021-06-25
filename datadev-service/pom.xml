@@ -36,8 +36,10 @@
             <version>1.0.5-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.apache.tomcat.embed</groupId>
-                    <artifactId>tomcat-embed-websocket</artifactId>
+                    <!--<groupId>org.apache.tomcat.embed</groupId>-->
+                    <!--<artifactId>tomcat-embed-websocket</artifactId>-->
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

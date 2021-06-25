@@ -3,10 +3,15 @@ package com.jd.bdp.datadev.component;
 import com.jd.bdp.api.common.JsfResultDto;
 import com.jd.bdp.api.think.cluster.ClusterJSFInterface;
 import com.jd.bdp.api.think.dto.ClusterHadoopMarketDto;
+import com.jd.bdp.jcm.api.common.util.EntityResult;
+import com.jd.bdp.jcm.api.common.util.JDResponse;
+import com.jd.bdp.jcm.api.market.model.dto.MarketExternalDTO;
+import com.jd.bdp.jcm.api.market.service.external.MarketExternalInterface;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +31,15 @@ public class AllMarketComponent implements InitializingBean {
     private String appToken;
     @Autowired
     private ClusterJSFInterface jsfInterface;
+
+    @Autowired
+    private MarketExternalInterface marketExternalInterface;
+
+    @Value("${jsf.jsm.appId}")
+    private String jsmAppId;
+
+    @Value("${jsf.jsm.token}")
+    private String jsmToken;
 
     private Map<Long, ClusterHadoopMarketDto> MARKET_ID_HASHMAP = new HashMap<Long,ClusterHadoopMarketDto>();
     private Map<String,ClusterHadoopMarketDto>  MARKET_Code_HASHMAP = new HashMap<String,ClusterHadoopMarketDto>();
@@ -62,4 +76,17 @@ public class AllMarketComponent implements InitializingBean {
         getAllMarket();
     }
 
+    public MarketExternalDTO getMarketInfoByCode(String martCode) {
+        long time = System.currentTimeMillis();
+        String sign = DigestUtils.md5DigestAsHex((jsmAppId + jsmToken + time).getBytes());
+        try {
+            JDResponse<EntityResult<MarketExternalDTO>> response = marketExternalInterface.getMarketBasicInfoByMarketIdOrCode(jsmAppId, sign, time, null, martCode);
+            if (response != null && response.getCode() == 0) {
+                return response.getData().getEntity();
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
 }

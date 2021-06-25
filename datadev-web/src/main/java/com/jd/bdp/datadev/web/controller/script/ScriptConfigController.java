@@ -129,7 +129,7 @@ public class ScriptConfigController {
             long time = System.currentTimeMillis();
             String sign = DigestUtils.md5DigestAsHex((jsmAppId + jsmToken + time).getBytes());
 
-            JDResponse<ListResult<MarketExternalDTO>> response = marketExternalInterface.listAllMarketInfo(appId, sign, time);
+            JDResponse<ListResult<MarketExternalDTO>> response = marketExternalInterface.listAllMarketInfo(jsmAppId, sign, time);
             logger.info("JSM服务获取全部集市结果："+response);
             if(response != null && response.getCode() == 0) {
                 listResult = response.getData().getList();
@@ -479,9 +479,9 @@ public class ScriptConfigController {
                 list = data.getJSONArray("datas");
                 for (Object o : list) {
                     JSONObject tableInfo = (JSONObject) o;
-                    ClusterHadoopMarketDto marketDto = allMarketComponent.getMarketByCode(tableInfo.getString("cluster"), tableInfo.getString("martCode"));
+                    MarketExternalDTO marketDto = allMarketComponent.getMarketInfoByCode(tableInfo.getString("martCode"));
                     if (marketDto != null) {
-                        tableInfo.put("marketId", marketDto.getMarketId().toString());
+                        tableInfo.put("marketId", marketDto.getId());
                         tableInfo.put("marketName", marketDto.getMarketName());
                     } else {
                         tableInfo.put("marketName", "--");
