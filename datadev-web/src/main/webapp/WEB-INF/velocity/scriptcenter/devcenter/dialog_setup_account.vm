@@ -29,6 +29,7 @@
                     <div class="account-part">
                         <div class="account-part-name">个人</div>
                         <div class="account-history">
+##                            li.account-history-li
                             <ul class="account-history-ul">
                             </ul>
                         </div>
@@ -46,45 +47,66 @@
                         <div class="bdp-form-group dialog-group bdp-form-group-new">
                             <label class="bdp-control-label account-label">配置名称：</label>
                             <div class="account-input">
-                                <input class="bdp-form-control" value="" id="accountName" name="name" placeholder="只支持中文、字母、数字、下划线、中划线" autocomplete="off"
-                                       style="width: 100%">
+                                <span class="personConfig">
+                                    <input class="bdp-form-control" value="" id="accountName" name="name" placeholder="只支持中文、字母、数字、下划线、中划线" autocomplete="off" style="width: 100%">
+                                </span>
+                                <span class="defaultConfig" id="defaultConfig-name"></span>
                             </div>
                         </div>
                         <div class="bdp-form-group dialog-group bdp-form-group-new">
                             <label class="bdp-control-label account-label"> 集市：</label>
                             <div class="account-input">
-                                <select class="" value="" name="marketLinuxUser" id="marketSelect" placeholder="请选择集市"
-                                        autocomplete="off" style="width: 100%">
-                                    <option value=""></option>
-                                </select>
+                                <span class="personConfig">
+                                     <select class="" value="" name="marketLinuxUser" id="marketSelect" placeholder="请选择集市"
+                                             autocomplete="off" style="width: 100%">
+                                            <option value=""></option>
+                                     </select>
+                                </span>
+                                <span class="defaultConfig" id="defaultConfig-marketName"></span>
                             </div>
                         </div>
                         <div class="bdp-form-group dialog-group bdp-form-group-new" id="accountDiv">
                             <label class="bdp-control-label account-label">开发账号：</label>
                             <div class="account-input">
-                                <select class="" value="" name="accountCode" id="accountCodeSelect"
-                                        placeholder="请选择账号" autocomplete="off" style="width: 100%">
-                                    <option value=""></option>
-                                </select>
+                                <span class="personConfig">
+                                      <select class="" value="" name="accountCode" id="accountCodeSelect"
+                                              placeholder="请选择账号" autocomplete="off" style="width: 100%">
+                                        <option value=""></option>
+                                      </select>
+                                </span>
+                                <span class="defaultConfig" id="defaultConfig-accountName">
+                                </span>
+
                             </div>
                         </div>
                         <div class="bdp-form-group dialog-group bdp-form-group-new">
                             <label class="bdp-control-label account-label">开发队列：</label>
                             <div class="account-input">
-                                <select class="queue-select" value="" name="queueCode" id="queueCodeSelect" placeholder="请选择队列"
-                                        autocomplete="off" style="width: 100%">
-                                    <option value=""></option>
-                                </select>
+                                <span class="personConfig">
+                                    <select class="queue-select" value="" name="queueCode" id="queueCodeSelect" placeholder="请选择队列"
+                                            autocomplete="off" style="width: 100%">
+                                        <option value=""></option>
+                                    </select>
+                                </span>
+                                <span class="defaultConfig" id="defaultConfig-queueName">
+                                </span>
                             </div>
                         </div>
                         <div class="bdp-form-group dialog-group bdp-form-group-new">
-                            <label class="bdp-control-label account-label">使用引擎：</label>
-                            <div class="account-input">
-                                <select class="" value="" name="engineType" id="engineTypeSelect" placeholder="请选择引擎"
-                                        autocomplete="off" style="width: 100%">
-                                    <option value=""></option>
-                                </select>
-                            </div>
+                            <span class="personConfig">
+                                 <label class="bdp-control-label account-label">使用引擎：</label>
+                                 <div class="account-input">
+                                        <select class="" value="" name="engineType" id="engineTypeSelect" placeholder="请选择引擎"
+                                                autocomplete="off" style="width: 100%">
+                                            <option value=""></option>
+                                        </select>
+                                  </div>
+                            </span>
+
+                            <span class="defaultConfig">
+                                <label class="bdp-control-label account-label">使用权限：</label>
+                                <label class="bdp-control-label account-label" style="text-align: left;" id="defaultConfig-hasright"></label>
+                            </span>
                         </div>
                     </form>
                     <div class="bdp-form-group dialog-group bdp-form-group-new" style="margin-bottom: 0px;margin-top: 60px;">
@@ -92,7 +114,7 @@
                             <span style="line-height:27px;">提示：Presto引擎、Spark引擎仅支持SQL类型，如无所需账号和队列，请<a id="applyMarket">点击此处</a>申请。</span><br>
 ##                            <span style="line-height:27px;margin-left:40px;">如无所需账号和队列，请<a id="applyMarket">点击此处</a>申请。</span>
                         </div>
-                        <div class="apply-div" style="bottom:70px;">
+                        <div id="applyId" class="apply-div " style="bottom:70px;">
                             <a class="bdp-btn bdp-btn-primary bdp-btn-big" id="apply-account">应用</a>
                         </div>
                     </div>
@@ -102,7 +124,7 @@
             <div class="bdp-modal-footer bdp-modal-footer-new">
                 <a class="bdp-btn bdp-btn-default bdp-btn-big" data-dismiss="modal">取消</a>
                 <a class="bdp-btn bdp-btn-primary bdp-btn-big" id="account-ok">确定</a>
-                
+
             </div>
         </div>
     </div>

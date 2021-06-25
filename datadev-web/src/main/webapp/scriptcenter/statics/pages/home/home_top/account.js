@@ -28,32 +28,41 @@ $(function () {
     })
     //单击选中事件
     $("ul.account-history-ul,ul.account-history-ul2").on("click", "li", function (e) {
-        // if (e.delegateTarget.className == "account-history-ul2") {
-        //     $("#account-add").addClass("icon-disabled");
-        //     $("#account-remove").addClass("icon-disabled");
-        //     $("#account-copy").addClass("icon-disabled");
-        //     $("#account-up").addClass("icon-disabled");
-        //     $("#account-down").addClass("icon-disabled");
-        //
-        //     $("#accountName").attr("disabled", "disabled");
-        //     $("#marketSelect").attr("disabled", "disabled");
-        //     $("#accountCodeSelect").attr("disabled", "disabled");
-        //     $("#queueCodeSelect").attr("disabled", "disabled");
-        //     $("#engineTypeSelect").attr("disabled", "disabled");
-        //
-        // } else {
-        //     $("#account-add").removeClass("icon-disabled");
-        //     $("#account-remove").removeClass("icon-disabled");
-        //     $("#account-copy").removeClass("icon-disabled");
-        //     $("#account-up").removeClass("icon-disabled");
-        //     $("#account-down").removeClass("icon-disabled");
-        //
-        //     $("#accountName").removeAttr("disabled");
-        //     $("#marketSelect").removeAttr("disabled");
-        //     $("#accountCodeSelect").removeAttr("disabled");
-        //     $("#queueCodeSelect").removeAttr("disabled");
-        //     $("#engineTypeSelect").removeAttr("disabled");
-        // }
+
+
+        if (e.delegateTarget.className == "account-history-ul2") {
+            //快捷配置　
+            $(".defaultConfig").css("display", "block")
+            $(".personConfig").css("display", "none");
+
+
+            var target = undefined;
+            var dataId = $(this).attr("data-id") * 1;
+            for (var index = 0; index < configObj2.length; index++) {
+                if (configObj2[index].id * 1 == dataId) {
+                    target = configObj2[index];
+                    break;
+                }
+            }
+            if (target) {
+                $("#defaultConfig-name").html(target.name);
+                $("#defaultConfig-marketName").html(target.marketName);
+                $("#defaultConfig-accountName").html(target.accountName);
+                $("#defaultConfig-queueName").html(target.queueName);
+                $("#defaultConfig-hasright").html(target.hasRight === true ? "有" : "无");
+            }
+            $("#applyId").css("display", "none");
+
+            $(".account-history-li").removeClass("active")
+
+            $(this).addClass("active");
+            return;
+        } else {
+            //个人配置
+            $(".defaultConfig").css("display", "none")
+            $(".personConfig").css("display", "block");
+            $("#applyId").css("display", "block");
+        }
 
         formValid.resetForm();
         if ($(this).attr("data-name")) {
@@ -66,7 +75,7 @@ $(function () {
         $(this).addClass("active");
         var marketCode = $(this).attr("data-linux-user") ? $(this).attr("data-linux-user") : "";
         $("#marketSelect").val(marketCode).trigger("change", true);
-        // changeMarket();
+
         return false;
     })
     jQuery.validator.addMethod("validAccountName", function (value, element) {
@@ -170,7 +179,7 @@ $(function () {
                 // if (config.showOrder && config.showOrder > maxShowOrder) {
                 //     maxShowOrder = config.showOrder;
                 // }
-                lis2 += "<li class='account-history-li' data-id=" + config.id +">" + config.name + "</li>";
+                lis2 += "<li class='account-history-li' data-id=" + config.id + ">" + config.name + "</li>";
             }
             ul2.append(lis2);
         } else {
@@ -427,7 +436,7 @@ $(function () {
                     config.queueCode = null;
                     config.queueId = null;
                     config.engineType = null;
-                   // config.clusterCode = null;
+                    // config.clusterCode = null;
                     activeLi.attr("data-queue", "");
                     activeLi.attr("data-engine", "");
                 }
@@ -583,9 +592,8 @@ $(function () {
 
     function saveConfig(hideModal) {
 
-        debugger
         var result = true;
-        var lis = $("li.account-history-li");
+        var lis = $(".account-history-ul > li");
         var duObj = {};
         if (lis.length > 0) {
             result = $('#account-form').valid();
@@ -610,11 +618,13 @@ $(function () {
             }
             var configStr = JSON.stringify(tmpConfigArr);
             commonAjaxEvents.commonJSONPostAjax(datadev_common.saveUrl, configStr, $("#account-ok"), function (node, data) {
+                debugger
                 if (data && data.obj) {
                     configObj = data.obj;
                     tmpConfigArr = deepArray(configObj);
                     var activeLi = $("li.account-history-li.active");
                     var oriId = -1;
+                    var configType = activeLi.parent().hasClass("account-history-ul2") ? 2 : 1;
                     if (activeLi.length > 0) {
                         oriId = activeLi.attr("data-id");
                         for (var index = 0; index < data.obj.length; index++) {
@@ -624,7 +634,7 @@ $(function () {
                             }
                         }
                     }
-                    resetSelect(oriId);
+                    resetSelect(oriId , configType);
                 }
                 if (hideModal) {
                     $('#codeModal').modal("hide");

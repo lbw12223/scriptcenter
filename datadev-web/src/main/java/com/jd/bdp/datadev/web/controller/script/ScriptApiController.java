@@ -83,6 +83,16 @@ public class ScriptApiController {
         return envObjs;
     }
 
+
+    @RequestMapping("/openProjectSpace")
+    @ResponseBody
+    public JSONObject openProjectSpace(Long projectSpaceId) throws Exception {
+        return JSONObjectUtil.getSuccessResult("");
+    }
+
+
+
+
     /**
      * 根据ProjectType获取coding，本地，git项目
      * <p>

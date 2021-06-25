@@ -168,3 +168,6 @@ ul.account-history-ul li.active,ul.account-history-ul2 li.active {
     line-height: 32px;
     background-color: rgb(245,245,245);
 }
+.defaultConfig {
+    font-size: 13px;
+}

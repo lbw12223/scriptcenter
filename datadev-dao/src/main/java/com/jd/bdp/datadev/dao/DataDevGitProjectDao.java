@@ -91,6 +91,12 @@ public interface DataDevGitProjectDao {
 
 
     DataDevGitProject getctByPath(@Param("gitProjectPath") String gitProjectPath) ;
+
+
     void updateDataDevGitProjectById(DataDevGitProject dataDevScriptProject);
+
+
+
+    Long getMaxLocalGitProjectId() throws Exception ;
 
 }

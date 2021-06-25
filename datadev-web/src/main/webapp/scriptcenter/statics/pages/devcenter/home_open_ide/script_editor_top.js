@@ -131,6 +131,7 @@ function initKeyMap() {
         }
     })
 }
+
 function copySelected() {
     var seletedSpans = $(".datadevSelectedText");
     if (seletedSpans.length == 0) {
@@ -148,6 +149,7 @@ function copySelected() {
         copyContent(str)
     }
 }
+
 function copyContent(value) {
     var input = document.createElement('textarea');
     input.textContent = value;
@@ -159,6 +161,7 @@ function copyContent(value) {
     }
     document.body.removeChild(input);
 }
+
 /**
  *  判断目录方式运行，子文件是否有未保存情况，有则返回文件path，没有返回null
  *  有未保存是提示找到的第一个未保存的文件保存
@@ -692,12 +695,12 @@ var datadevInit = {
         }
     },
 
-    uplineDiffHtml:function (scriptWindow){
+    uplineDiffHtml: function (scriptWindow) {
 
 
-        var scriptFileId = scriptWindow.scriptFileId ;
+        var scriptFileId = scriptWindow.scriptFileId;
 
-        var url = "/scriptcenter/devcenter/uplineArtDiff.html?scriptFileId=" +scriptFileId  ;
+        var url = "/scriptcenter/devcenter/uplineArtDiff.html?scriptFileId=" + scriptFileId;
         var uplineDiff = $.dialog.open(url, {
             title: "脚本对比",
             lock: true,
@@ -1036,7 +1039,7 @@ var datadevInit = {
                 $("#queueName").text("配置账号队列");
             }
             $("#queueCodeDropDiv ul.queueCodeDropUl").prepend(lis);
-            if(data && data.data && data.data.obj && data.data.obj2 && data.data.obj2.length > 0){
+            if (data && data.data && data.data.obj && data.data.obj2 && data.data.obj2.length > 0) {
                 configObj2 = data.data.obj2;
             }
         })
@@ -1488,14 +1491,15 @@ function hiddenAllRightMeun(isFromBoradCast) {
     $(".clearLog").hide();
     $(".moreFunction").hide();
     //让左侧清除右键
-    if(isFromBoradCast == undefined && QIAN_KUN && QIAN_KUN.utils){
+    if (isFromBoradCast == undefined && QIAN_KUN && QIAN_KUN.utils) {
         QIAN_KUN.utils.broadcast("clear-left-right-meun", "clearLeft")
     }
 
 
 }
+
 var frameBus = new FrameBus();
-frameBus.on("clear-right-right-meun", function(data) {
+frameBus.on("clear-right-right-meun", function (data) {
     hiddenAllRightMeun(true);
 })
 
@@ -1542,7 +1546,6 @@ function resetAllTopButton(scriptWindow) {
     }
 
 }
-
 
 
 function format() {
@@ -1615,55 +1618,56 @@ function saveScript(isClose) {
     if (isTemplate) {
         saveTemplate(activeWindow)
     } else {
-            var isShow = activeWindow.jq("#isShow").val();
-            if (isShow == 1) {
-                var callbackfun = function (data) {
-                    updateQianKunTab(data);
-                }
-                // $("#saveModal").FileMode("save", {
-                //     key: activeWindow.key,
-                //     gitProjectId: activeWindow.gitProjectId,
-                //     gitProjectDirPath: activeWindow.gitProjectDirPath || "",
-                //     gitProjectFilePath: activeWindow.gitProjectFilePath || "",
-                //     type: activeWindow.type,
-                //     activeWindow: activeWindow
-                // }, callbackFun);
-
-                var info =  {
-                    key: activeWindow.key,
-                    gitProjectId: activeWindow.gitProjectId,
-                    gitProjectDirPath: activeWindow.gitProjectDirPath || "",
-                    gitProjectFilePath: activeWindow.gitProjectFilePath || "",
-                    type: activeWindow.type,
-                    activeWindow: activeWindow
-                }
-
-                var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
-                    title: "保存文件",
-                    lock: true,
-                    width: "538px",
-                    height: "450px",
-                    opacity: 0.5,
-                    esc: false,
-                    resize:false,
-                    close: function () {
-                    }
-                });
-                $.dialog.data("modeCode", "save");
-                $.dialog.data("info", info);
-                $.dialog.data("currentArt", currentArt);
-                $.dialog.data("callbackfun", callbackfun);
-
-            } else {
-                var callbackFun = function (){
-                    $.successMsg("保存文件成功!");
-                }
-                datadevInit.directSave(callbackFun, null, activeWindow.key);
+        var isShow = activeWindow.jq("#isShow").val();
+        if (isShow == 1) {
+            var callbackfun = function (data) {
+                updateQianKunTab(data);
             }
+            // $("#saveModal").FileMode("save", {
+            //     key: activeWindow.key,
+            //     gitProjectId: activeWindow.gitProjectId,
+            //     gitProjectDirPath: activeWindow.gitProjectDirPath || "",
+            //     gitProjectFilePath: activeWindow.gitProjectFilePath || "",
+            //     type: activeWindow.type,
+            //     activeWindow: activeWindow
+            // }, callbackFun);
+
+            var info = {
+                key: activeWindow.key,
+                gitProjectId: activeWindow.gitProjectId,
+                gitProjectDirPath: activeWindow.gitProjectDirPath || "",
+                gitProjectFilePath: activeWindow.gitProjectFilePath || "",
+                type: activeWindow.type,
+                activeWindow: activeWindow
+            }
+
+            var currentArt = $.dialog.open("/scriptcenter/devcenter/move_save_rename_file.html", {
+                title: "保存文件",
+                lock: true,
+                width: "538px",
+                height: "450px",
+                opacity: 0.5,
+                esc: false,
+                resize: false,
+                close: function () {
+                }
+            });
+            $.dialog.data("modeCode", "save");
+            $.dialog.data("info", info);
+            $.dialog.data("currentArt", currentArt);
+            $.dialog.data("callbackfun", callbackfun);
+
+        } else {
+            var callbackFun = function () {
+                $.successMsg("保存文件成功!");
+            }
+            datadevInit.directSave(callbackFun, null, activeWindow.key);
+        }
 
 
     }
 }
+
 function saveAsScript() {
 
     var node = $("#saveAs");
@@ -1676,14 +1680,14 @@ function saveAsScript() {
     var gitProjectDirPath = activeWindow.jq("#gitProjectDirPath").val();
 
     var isShow = activeWindow.jq("#isShow").val();
-    if (isShow==1 ) {
+    if (isShow == 1) {
         var callbackfun = function (data) {
             updateQianKunTab(data)
         }
         var info = {
             gitProjectId: gitProjectId,
             gitProjectDirPath: gitProjectDirPath || "",
-            gitProjectFilePath:gitProjectFilePath,
+            gitProjectFilePath: gitProjectFilePath,
             type: activeWindow.type,
             activeWindow: activeWindow
         };
@@ -1694,7 +1698,7 @@ function saveAsScript() {
             height: "450px",
             opacity: 0.5,
             esc: false,
-            resize:false,
+            resize: false,
             close: function () {
             }
         });
@@ -1730,7 +1734,7 @@ function saveAsScript() {
                     height: "450px",
                     opacity: 0.5,
                     esc: false,
-                    resize:false,
+                    resize: false,
                     close: function () {
                     }
                 });
@@ -1744,24 +1748,42 @@ function saveAsScript() {
         })
     }
 }
-function resetSelect(configId) {
+
+// configType = 1 个人 ， configType = 2 默认的
+function resetSelect(configId, configType) {
     configId = configId || -1;
     var lis = "<li class='defaultDropLi queueCodeDropLi' data-index='-1'><span class='name'>不使用集市资源</span></li>";
     var selectStatus = false;
-    for (var index = 0; index < configObj.length; index++) {
-        var config = configObj[index];
-        if (configId > 0 && config.id == configId) {
-            $("#queueName").attr("data-index", config.id)
-            $("#queueName").text(config.name);
-            selectStatus = true;
+    if (configType == 1) {
+        for (var index = 0; index < configObj.length; index++) {
+            var config = configObj[index];
+            if (configId > 0 && config.id == configId) {
+                $("#queueName").attr("data-index", config.id)
+                $("#queueName").text(config.name);
+                selectStatus = true;
+            }
+            lis += "<li class='queueCodeDropLi' data-index='" + config.id + "'><span class='name'>" + config.name + "</span></li>";
         }
-        lis += "<li class='queueCodeDropLi' data-index='" + config.id + "'><span class='name'>" + config.name + "</span></li>";
     }
+    //默认配置
+    if (configType == 2) {
+        for (var index = 0; index < configObj2.length; index++) {
+            var config = configObj2[index];
+            if (configId > 0 && config.id == configId) {
+                $("#queueName").attr("data-index", config.projectSpaceId + "-" + "2-" + config.id)
+                $("#queueName").text(config.name);
+                selectStatus = true;
+            }
+        }
+    }
+
     if (!selectStatus) {
         setDefaultConfig($(lis), true);
     } else {
         $("#queueCodeDropDiv li.queueCodeDropLi[data-index='" + configId + "']").addClass("active").siblings("li.queueCodeDropLi").removeClass("active");
     }
+
+
     $("li.queueCodeDropLi").remove();
     $("#queueCodeDropDiv ul.queueCodeDropUl").prepend(lis);
 }
@@ -1879,12 +1901,12 @@ function saveTemplate(activeWindow, templateId, callBack) {
 function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, name, desc, callBack) {
 
 
-    if(true){
+    if (true) {
         // var gitProjectId = $("#gitProjectId").val();
         var scriptFileId = $("#scriptFileId").val();
         var scriptType = scriptObj.typeName ? scriptObj.typeName : scriptObj.name;
         var pythonType = scriptObj.pythonType;
-        var url = "/scriptcenter/devcenter/shareTemplate.html?templateId=" + templateId + "&scriptFileId="+scriptFileId + "&scriptType=" + scriptType + "&pythonType=" + pythonType;
+        var url = "/scriptcenter/devcenter/shareTemplate.html?templateId=" + templateId + "&scriptFileId=" + scriptFileId + "&scriptType=" + scriptType + "&pythonType=" + pythonType;
         var shareTemplateArt = $.dialog.open(url, {
             title: "保存模板",
             lock: true,
@@ -1898,7 +1920,7 @@ function showSaveTemplate(activeWindow, templateId, scriptObj, erps, gitShares, 
         $.dialog.data("shareTemplateArt", shareTemplateArt);
         $.dialog.data("activeWindow", activeWindow);
         // $.dialog.data("scriptType", scriptObj.typeName ? scriptObj.typeName : scriptObj.name);
-        $.dialog.data("callBackFunction", function (callBackData){
+        $.dialog.data("callBackFunction", function (callBackData) {
             // var temp = {
             //     obj : {
             //         path:callBackData.gitProjectFilePath,
