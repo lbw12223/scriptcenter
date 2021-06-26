@@ -78,6 +78,10 @@ public class GitHttpUtil {
         return new GitRequestClientJdGit();
     }
 
+    public static boolean isGit(Long gitProjectId) {
+        return gitProjectId < _9YI;
+    }
+
     public static boolean isCoding(Long gitProjectId){
         return gitProjectId > _9YI ;
     }

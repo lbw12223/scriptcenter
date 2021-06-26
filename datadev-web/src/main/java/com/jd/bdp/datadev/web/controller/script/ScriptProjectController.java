@@ -761,6 +761,7 @@ public class ScriptProjectController {
             model.addAttribute("gitProjectFilePath", gitProjectFilePath);
             model.addAttribute("hasAuthority", hasAuthority);
             model.addAttribute("isCodingOrGit", 1);
+            model.addAttribute("isCoding", GitHttpUtil.isCoding(gitProjectId) ? 1 : 0);
 
             return "scriptcenter/art/projectDetail";
 
@@ -784,6 +785,7 @@ public class ScriptProjectController {
             model.addAttribute("gitProjectFilePath", gitProjectFilePath);
             model.addAttribute("hasAuthority", hasAuthority);
             model.addAttribute("isCodingOrGit", 0);
+            model.addAttribute("isCoding", 0);
             model.addAttribute("createDate", dataDevGitProject.getRefreshTime());
             model.addAttribute("description", dataDevGitProject.getDescription());
             model.addAttribute("projectName", dataDevGitProject.getGitProjectName());
@@ -810,6 +812,7 @@ public class ScriptProjectController {
 
         model.addAttribute("gitProjectId", gitProjectId);
         model.addAttribute("isCodingOrGit", GitHttpUtil.isCodingOrGit(gitProjectId) ? 1 : 0);
+        model.addAttribute("isGit", GitHttpUtil.isGit(gitProjectId) ? 1 : 0);
         model.addAttribute("hasSetProjectOwnerRight", hasSetProjectOwnerRight);
 
         return "scriptcenter/art/addGroup";
