@@ -1,4 +1,3 @@
-
 var editor;
 // var shellInitStr = "#!/bin/bash\n"
 // var python2InitStr = "#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n";
@@ -17,7 +16,7 @@ var skipInit = true;
 var needShowArgs = false;
 var languageTools;
 var tipCallBack = undefined;
-var isEditContent = true ;
+var isEditContent = true;
 //DataDevSqlTip
 var dataDevSqlTip = new DataDevSqlTip();
 
@@ -760,8 +759,7 @@ var debug = {
                     })
                     showEle.appendTo('body');
                 }
-            }
-            else if (type == "mouseleave" || type == 'mouseout') {
+            } else if (type == "mouseleave" || type == 'mouseout') {
                 $('.showTitleBox').remove();
             } else if (type == 'mousemove') {
                 $('.showTitleBox').css({
@@ -859,7 +857,6 @@ var debug = {
 }
 
 
-
 /**
  * 默认显示bufflo 版本
  */
@@ -924,6 +921,7 @@ function resetVersionChange() {
         $("#chooseVersionBtn").removeClass("bdp-disabled");
     }
 }
+
 function isTemplate() {
     return $("#templateId").val() && $("#templateId").val() > 0
 }
@@ -1243,10 +1241,6 @@ function updatePackDetail(gitProjectId, gitProjectFilePath) {
 }
 
 
-
-
-
-
 function refreshFileInfoStatus(fileMd5, version, gitStatus) {
     if (fileMd5) {
         $("#fileMd5").val(fileMd5);
@@ -1267,7 +1261,7 @@ function refreshFileInfoStatus(fileMd5, version, gitStatus) {
 }
 
 function hiddenMoreFunction() {
-     hiddenAllRightMeun && hiddenAllRightMeun();
+    hiddenAllRightMeun && hiddenAllRightMeun();
 }
 
 function showMorefunction(event) {
@@ -1337,6 +1331,7 @@ function parentInitTopButtons(key, scriptMapParams) {
         datadevInit.changeTopButtons(key);
     }
 }
+
 function initLocation() {
     if ($("#isShow").val() == 1) {
         $(".moreFunction li[envent-type='git']").addClass("event-disabled");
@@ -1486,6 +1481,7 @@ function initCallBack() {
     afterInitCallBackMap && afterInitCallBackMap.put(key, undefined)
     callBack && callBack();
 }
+
 // 设置顶部按钮
 function initTopButton() {
 
@@ -1507,7 +1503,7 @@ function initTopButton() {
         run: canRun,
         dependencyButton: hasDependencyButton,
         stop: false,
-        upLine: $("#isShow").val() != 1 && !isTemplate() && ( scriptType == 2 || scriptType == 3 || scriptType == 4),
+        upLine: $("#isShow").val() != 1 && !isTemplate() && (scriptType == 2 || scriptType == 3 || scriptType == 4),
         debug: canDebug,
         git: $("#isShow").val() != 1 && $("#filePosition").val() == "general" && !isTemplate()
     }
@@ -1524,10 +1520,10 @@ function initFunction() {
 }
 
 
-function sqlTipCaculateTable(){
-    if( $("#scriptType").val() * 1 == 1 && false){
+function sqlTipCaculateTable() {
+    if ($("#scriptType").val() * 1 == 1 && false) {
         dataDevSqlTip.setMarketId($("#configMarketId").val() * 1);
-        dataDevSqlTip.caculateTable(true,true);
+        dataDevSqlTip.caculateTable(true, true);
     }
 }
 
@@ -1619,20 +1615,19 @@ $(function () {
         //启用提示菜单
         languageTools = ace.require("ace/ext/language_tools");
 
-        if(scriptType * 1 === 1 && false){
+        if (scriptType * 1 === 1 && false) {
             //sql 类型
             dataDevSqlTip.setEditor(editor);
             languageTools.addCompleter({
                 getCompletions: function (editor, session, pos, prefix, callback) {
                     var tipResult = dataDevSqlTip.getTipResult();
-                    if(tipResult.tipList && tipResult.tipList.length > 0){
+                    if (tipResult.tipList && tipResult.tipList.length > 0) {
                         callback(null, tipResult.tipList);
                     }
                 }
             });
 
         }
-
 
 
         editor.getSession().on('change', function (e) {
@@ -1659,7 +1654,7 @@ $(function () {
 
             //当前光标在脚本中的位置
             var cursor = (editor.selection.getCursor());
-            isEditContent = true ;
+            isEditContent = true;
 
         });
         initScriptContent(true);
@@ -1689,19 +1684,18 @@ $(function () {
             $("#colnumber").html(cursor.column + 1);
 
 
-
-            if (scriptType * 1 == 1 && isEditContent  === true && false) { //sql 类型
+            if (scriptType * 1 == 1 && isEditContent === true && false) { //sql 类型
                 var cusorIndex = 0;
                 for (var index = 0; index < cursor.row; index++) {
                     cusorIndex += editor.getSession().getLine(index).length + 1;
                 }
-                cusorIndex += cursor.column ;
+                cusorIndex += cursor.column;
                 dataDevSqlTip.setSqlAndCusorPosition(editor.getValue(), cusorIndex)
                 dataDevSqlTip.sqlTip();
             }
 
-            isEditContent = false ;
-           // editor.execCommand("startAutocomplete");
+            isEditContent = false;
+            // editor.execCommand("startAutocomplete");
 
 
         });
@@ -1945,7 +1939,7 @@ $(function () {
         $("#update2NewVersion").click(function () {
             var checkBoxs = $("#packTreeUl input:checkbox:checked");
             if (checkBoxs.length == 0) {
-               $.errorMsg("请勾选至少一个脚本进行更新");
+                $.errorMsg("请勾选至少一个脚本进行更新");
                 return;
             }
             var array = [];
@@ -1985,12 +1979,12 @@ $(function () {
                         removeVersionChange();
                     }
                 }
-               $.successMsg("更新成功");
+                $.successMsg("更新成功");
             }, null, null, null, null, function () {
-               $.loadingMsg("更新打包中...")
+                $.loadingMsg("更新打包中...")
             })
         })
-        $("#updateRefresh").click(function (){
+        $("#updateRefresh").click(function () {
             packDetail($("#currentRelationDependencyId").val());
         })
         $("#packTreeUl").on("click", "li.file-li span.script-name", function () {
@@ -2036,7 +2030,7 @@ $(function () {
             }
         })
         $("#chooseVersionBtn").click(function () {
-            datadevInit && datadevInit.mergeChoose($("#version").val() != $("#lastVersion").val(),undefined);
+            datadevInit && datadevInit.mergeChoose($("#version").val() != $("#lastVersion").val(), undefined);
         })
     }
 
@@ -2079,6 +2073,7 @@ function clearRunDirectVersion(data) {
     $("#hasChangVersion").val("0");
     $("#cancelForceEditSpan").css("display", "none");
 }
+
 function parentButtonClick(buttonId) {
     $("#" + buttonId).click();
 }
@@ -2104,11 +2099,12 @@ function showModifyIcon(key, isShow) {
     gitProjectId = gitProjectId.trim();
     path = path.trim();
 
-    var title = $("#fileName").val();
+
+    var title = $("#isShow").val() * 1 == 1 ? "临时脚本" : $("#fileName").val();
     title = isShow ? title + " " : title;
     var diffWithGit = isDiffWithGit($("#gitStatus").val());
     var params = {
-        url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath="+path+"&gitProjectId="+gitProjectId,
+        url: "/scriptcenter/devcenter/script_edit.html?gitProjectFilePath=" + path + "&gitProjectId=" + gitProjectId,
         icon: '',
         title: title,
         key: key,

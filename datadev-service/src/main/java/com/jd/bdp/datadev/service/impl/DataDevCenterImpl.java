@@ -492,6 +492,7 @@ public class DataDevCenterImpl implements DataDevCenterService {
                 MarketInfoDto marketInfoDto = new MarketInfoDto();
                 marketInfoDto.setClusterCode(tempBo.getClusterCode());
                 marketInfoDto.setMarketCode(tempBo.getMarketUser());
+                marketInfoDto.setMarketId("0");
                 marketInfoDto.setMarketUser(tempBo.getMarketUser());
                 marketInfoDto.setMarketName(tempBo.getMarketName());
                 marketInfoDto.setMarketMagagers(tempBo.getMarketManagers());

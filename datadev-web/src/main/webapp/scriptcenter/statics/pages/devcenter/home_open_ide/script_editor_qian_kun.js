@@ -46,6 +46,7 @@ function updateQianKunTabByThis(gitProjectId, oldPath, newPath ) {
 
 function updateQianKunTab(dataObj) {
 
+
     var obj = dataObj.obj;
 
     while (obj.children && obj.children.length > 0) {
