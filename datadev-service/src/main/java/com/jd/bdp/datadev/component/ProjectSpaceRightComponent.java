@@ -65,7 +65,7 @@ public class ProjectSpaceRightComponent implements InitializingBean {
         ProjectBO projectBO = new ProjectBO();
         projectBO.setErp(erp);
         projectBO.setType(2);
-        projectBO.setCurrentErpIsManager(false);
+//        projectBO.setCurrentErpIsManager(false);
 
         com.jd.bdp.planing.api.model.ApiResult<com.jd.bdp.planing.domain.bo.ProjectBO> grantAuthorityProject = projectInterface.getGrantAuthorityProject(appId, appToken, System.currentTimeMillis(), projectBO);
 
