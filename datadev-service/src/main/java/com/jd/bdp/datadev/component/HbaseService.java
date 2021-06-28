@@ -45,7 +45,7 @@ public class HbaseService implements InitializingBean {
             if ("dev".equals(env) || "test".equals(env)) {
                 configuration.set("hbase.policyserver.domain", domain);
             }
-            connection = ConnectionFactory.createConnection(configuration);//保持单例
+           // connection = ConnectionFactory.createConnection(configuration);//保持单例
         } catch (Exception e) {
             logger.error("初始化失败", e);
         }

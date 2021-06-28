@@ -64,7 +64,8 @@ public class ProjectSpaceRightComponent implements InitializingBean {
 
         ProjectBO projectBO = new ProjectBO();
         projectBO.setErp(erp);
-        projectBO.setType(2);
+        projectBO.setType(2); //2 开启开发生产隔离
+        projectBO.setOpenPrjRes(true);
 
         com.jd.bdp.planing.api.model.ApiResult<com.jd.bdp.planing.domain.bo.ProjectBO> grantAuthorityProject = projectInterface.getGrantAuthorityProject(appId, appToken, System.currentTimeMillis(), projectBO);
 
