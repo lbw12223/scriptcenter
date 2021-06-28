@@ -105,6 +105,13 @@ public class ImportScriptManagerRedis {
     }
 
     private void increase(Long projectSpaceId, Boolean isSuccess) {
+        System.out.println("===============");
+        System.out.println("===============");
+        System.out.println("===============");
+        System.out.println("===============");
+        System.out.println("===============");
+        System.out.println("===============");
+
         JSONObject importBean = JSONObject.parseObject(jimClient.get(key(projectSpaceId)));
         if (isSuccess) {
             Integer success = importBean.getInteger("success");
@@ -117,6 +124,12 @@ public class ImportScriptManagerRedis {
         Integer processOn = importBean.getInteger("processOn");
         importBean.put("processOn",++processOn);
         jimClient.set(key(projectSpaceId), JSONObject.toJSONString(importBean));
+        System.out.println("===============end");
+        System.out.println("===============end");
+        System.out.println("===============end");
+        System.out.println("===============end");
+        System.out.println("===============end");
+        System.out.println("===============end");
     }
 
 

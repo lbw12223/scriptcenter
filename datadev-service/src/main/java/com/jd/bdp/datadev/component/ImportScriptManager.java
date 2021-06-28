@@ -301,7 +301,7 @@ public class ImportScriptManager {
                 logger.error("handSyncScriptLocal", e);
             }
         }
-        importScriptManagerRedis.endImport(appGroupId);
+      //  importScriptManagerRedis.endImport(appGroupId);
 
         return ztreeNodeList;
 
@@ -350,7 +350,7 @@ public class ImportScriptManager {
             Integer scriptType = DataDevScriptTypeEnum.getFileNameScriptType(fileName).toCode();
             byte[] bytes = loadFile(erp, script.getLong("fileId"), script.getString("version"));
             if (bytes == null || bytes.length < 1) {
-                throw new RuntimeException("empty file");
+                bytes = "".getBytes();
             }
             String gitProjectFilePath = StringUtils.isNotBlank(dirPath) ? (dirPath + "/" + fileName) : fileName;
             String description = script.get("description") != null ? script.get("description").toString() : "";

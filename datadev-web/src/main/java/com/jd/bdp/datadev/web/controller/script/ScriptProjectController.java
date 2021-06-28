@@ -559,9 +559,9 @@ public class ScriptProjectController {
                                                                Long gitProjectId,
                                                                @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
 
-        if(true){
-            jsdAppgroupId = 100144L;
-        }
+//        if(true){
+//            jsdAppgroupId = 100144L;
+//        }
         String erp = urmUserHolder.getErp();
         net.sf.json.JSONObject jsonObject = importScriptManager.syncScriptToDataDevNew(gitProjectId, jsdAppgroupId, erp);
 
@@ -603,9 +603,9 @@ public class ScriptProjectController {
     @RequestMapping("syncScriptToDataDevProcess.ajax")
     @ResponseBody
     public com.alibaba.fastjson.JSONObject syncScriptToDataDevProcess(UrmUserHolder urmUserHolder, Long appGroupId) throws Exception {
-        if(true){
-            appGroupId = 100144L ;
-        }
+//        if(true){
+//            appGroupId = 100144L ;
+//        }
         String value = importScriptManager.getSyncRedisValue(appGroupId);
         if (StringUtils.isNotBlank(value)) {
             return JSONObjectUtil.getSuccessResult("success", JSONObject.parseObject(value));

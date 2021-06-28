@@ -291,13 +291,16 @@ function sysScript(projectSpaceId) {
         gitProjectId: $("#gitProjectId").val()
     }, $("#delete-group"), function (node, data) {
         var total = data.obj && data.obj.total ? data.obj.total * 1 : 0;
-        var processOn = data.obj && data.obj.processOn ? data.obj.processOn * 1 : 1;
+        var successOn = data.obj && data.obj.success ? data.obj.success * 1 : 0;
+        var failedOn = data.obj && data.obj.failed ? data.obj.failed * 1 : 0;
 
         if (total > 0) {
             var content = "<p style='margin-top: 30px;margin-bottom: 30px;'>【" + total + "】个脚本，正在同步...<br />";
             content += "同步进度 ";
-            content += "<span id='processOn'>" + processOn + "</span>";
-            content += "<span id='processTotal'> / " + total + "</span>";
+            content += "成功：<span id='successOn' style='color: green;'>" + successOn + "</span> <br />";
+            content += "失败：<span id='failedOn' style='color: red;'>" + failedOn + "</span> <br />";
+            content += "总数：<span id='processTotal'>" + total + "</span>";
+
             content += "</p>";
             content += "<p style='color: #DC9116;'>注：关闭窗口不会停止脚本同步！</p>"
             $.bdpMsg(
@@ -331,18 +334,35 @@ function setProcessOn(projectSpaceId) {
     commonAjaxEvents.commonNoRemoveMsgPostAjax("/scriptcenter/project/syncScriptToDataDevProcess.ajax", {
         appGroupId: projectSpaceId
     }, $("#delete-group"), function (node, data) {
-        if (data.obj.processOn * 1 >= data.obj.total * 1) {
-            $.successMsg("同步完成! 其中成功【" + data.obj.success + "】，失败【" + data.obj.failed + "】" )
-        } else {
-            if (top.Msg) {
-                top.$("#processOn").html(data.obj.processOn);
-            } else {
-                $("#processOn").html(data.obj.processOn);
+        debugger
+        var isOver = true;
+        if (data.code * 1 == 1) {
+            isOver = false;
+        }else{
+            var success = data.obj.success * 1;
+            var failed = data.obj.failed * 1;
+            var total = data.obj.total * 1;
+
+            if (success + failed < total) {
+                isOver = false
             }
+            if (top.Msg) {
+                top.$("#successOn").html(data.obj.success);
+                top.$("#failedOn").html(data.obj.failed);
+
+            } else {
+                $("#successOn").html(data.obj.success);
+                $("#failedOn").html(data.obj.failed);
+            }
+        }
+
+
+        if(!isOver){
             window.setTimeout(function () {
                 setProcessOn(projectSpaceId)
             }, 1000);
         }
+
     });
 }
 
