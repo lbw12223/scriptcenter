@@ -220,6 +220,9 @@ public class BuffaloComponent {
     }
 
     public JSONObject getTaskList(Long projectSpaceId, String scriptName, String operator) throws Exception {
+        if (StringUtils.isBlank(operator)) {
+            operator = "datadev";
+        }
         JSONObject data = new JSONObject();
 
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.common.utils.PageResultDTO;
 import com.jd.bdp.datadev.component.AppGroupUtil;
+import com.jd.bdp.datadev.component.BuffaloComponent;
 import com.jd.bdp.datadev.component.UrmUtil;
 import com.jd.bdp.datadev.dao.DataDevScriptPublishDao;
 import com.jd.bdp.datadev.domain.*;
@@ -63,6 +64,9 @@ public class DataDevScriptPublishServiceImpl implements DataDevScriptPublishServ
 
     @Autowired
     private ReleaseInterface releaseInterface ;
+
+    @Autowired
+    private BuffaloComponent buffaloComponent;
 
     @Override
     public List<DataDevScriptFilePublish> getPushList(Long gitProjectId, String gitProjectFilePath) throws Exception {
@@ -235,42 +239,43 @@ public class DataDevScriptPublishServiceImpl implements DataDevScriptPublishServ
         Integer start = (page - 1) * rows;
         Integer end = page * rows;
         Integer count = 0;
-        String url = buffaloDomain + "/api/v2/buffalo4/script/getAllTaskList";
-        Date date = new Date();
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("appId", smpAppId);
-        map.put("userToken", userToken);
-        map.put("time", String.valueOf(date.getTime()));
-        map.put("sign", MD5Util.getMD5Str(smpAppToken + userToken + date.getTime()));
-        JSONObject dataParam = new JSONObject();
-        if (file.getGitProjectId() != null) {
-            dataParam.put("dataDevProjectId", file.getGitProjectId());
-        }
-        if (StringUtils.isNotBlank(file.getGitProjectFilePath())) {
-            dataParam.put("dataDevProjectFilePath", file.getGitProjectFilePath());
-            if(file.getGitProjectFilePath().endsWith(".sql")){
-                dataParam.put("model", "006");
-            }
-        }
-        if (queryJob.getAppGroupId() != null) {
-            dataParam.put("jsdAppgroupId", queryJob.getAppGroupId());
-        }
-        if (StringUtils.isNotBlank(file.getName())) {
-            dataParam.put("scriptName", file.getName());
-            if(file.getName().endsWith(".sql")){
-                dataParam.put("model", "006");
-            }
-        }
-        map.put("data", dataParam.toJSONString());
-        logger.info("==================================================" + url + ":==========================" + JSONObject.toJSONString(map));
-        String res = HttpUtil.doPost(url, map);
-        logger.info("==================================================job num :" + res);
+//        String url = buffaloDomain + "/api/v2/buffalo4/script/getAllTaskList";
+//        Date date = new Date();
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("appId", smpAppId);
+//        map.put("userToken", userToken);
+//        map.put("time", String.valueOf(date.getTime()));
+//        map.put("sign", MD5Util.getMD5Str(smpAppToken + userToken + date.getTime()));
+//        JSONObject dataParam = new JSONObject();
+//        if (file.getGitProjectId() != null) {
+//            dataParam.put("dataDevProjectId", file.getGitProjectId());
+//        }
+//        if (StringUtils.isNotBlank(file.getGitProjectFilePath())) {
+//            dataParam.put("dataDevProjectFilePath", file.getGitProjectFilePath());
+//            if(file.getGitProjectFilePath().endsWith(".sql")){
+//                dataParam.put("model", "006");
+//            }
+//        }
+//        if (queryJob.getAppGroupId() != null) {
+//            dataParam.put("jsdAppgroupId", queryJob.getAppGroupId());
+//        }
+//        if (StringUtils.isNotBlank(file.getName())) {
+//            dataParam.put("scriptName", file.getName());
+//            if(file.getName().endsWith(".sql")){
+//                dataParam.put("model", "006");
+//            }
+//        }
+//        map.put("data", dataParam.toJSONString());
+//        logger.info("==================================================" + url + ":==========================" + JSONObject.toJSONString(map));
+//        String res = HttpUtil.doPost(url, map);
+//        logger.info("==================================================job num :" + res);
+        JSONObject jsonObject = buffaloComponent.getTaskList(queryJob.getAppGroupId(), file.getName(), null);
+
         List<DataDevScriptFilePublish> maxVersionList = publishDao.getMaxVersion(file.getGitProjectId(), file.getGitProjectFilePath(), file.getApplicationId());
         Map<Long, String> versionMap = new HashMap<Long, String>();
         for (DataDevScriptFilePublish publish : maxVersionList) {
             versionMap.put(publish.getApplicationId(), publish.getVersion());
         }
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(res);
         if (jsonObject != null && jsonObject.get("list") != null) {
             JSONArray jsonArray = jsonObject.getJSONArray("list");
             for (int i = 0; i < jsonArray.size(); i++) {

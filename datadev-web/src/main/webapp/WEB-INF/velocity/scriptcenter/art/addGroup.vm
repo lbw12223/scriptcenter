@@ -43,8 +43,8 @@
     </form>
     <div class="buttons-div">
         <a class="bdp-btn bdp-btn-primary" id="addGroupBtn">
-            #if($!{isCodingOrGit} == 1)
-                添加添加组
+            #if($!{isGit} == 1)
+                添加组
             #else
                 添加项目空间
             #end

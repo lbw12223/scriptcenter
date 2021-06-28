@@ -92,7 +92,8 @@ $(function () {
                     buffaloKeyWord: $("#buffalo_task_key_word").val(),
                     appGroupId: $("#buffalo_appgroup").val(),
                     gitProjectId: $("#gitProjectId").val(),
-                    gitProjectFilePath: $("#gitProjectFilePath").val()
+                    gitProjectFilePath: $("#gitProjectFilePath").val(),
+                    name: $("#fileName").val()
                 },
                 colModel: _colModel,
                 viewrecords: true,

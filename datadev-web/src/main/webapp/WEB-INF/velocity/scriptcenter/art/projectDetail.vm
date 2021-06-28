@@ -76,7 +76,7 @@
                     可访问当前项目的组信息
                 #end
             </label>
-            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false") disabled #end" style="margin-left:216px;"
+            <a class="bdp-btn bdp-btn-primary #if($!{hasAuthority} == "false" || $!{isCoding} == "1") disabled #end" style="margin-left:216px;"
                id="add-group">添加</a>
             <a class="bdp-btn bdp-btn-primary disabled" style="margin-left:30px;" id="delete-group">删除</a>
         </div>
