@@ -71,5 +71,7 @@ public interface DataDevScriptConfigService {
      */
     DataDevScriptConfig getOriClusterAndMarketByMarketCode(String clusterCode, String martCode, String account) throws Exception;
 
+    boolean hasProjectDefaultRight(String erp, DataDevScriptConfig config, Long spaceProjectId) ;
+
 
 }

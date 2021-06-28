@@ -144,7 +144,7 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
     /**
      * @return
      */
-    private boolean hasProjectDefaultRight(String erp, DataDevScriptConfig config, Long spaceProjectId) {
+    public boolean hasProjectDefaultRight(String erp, DataDevScriptConfig config, Long spaceProjectId) {
         try {
 
             boolean authority = dataDevClusterAdminService.getClusterAdminByErp(erp);

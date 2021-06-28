@@ -217,7 +217,8 @@ function showPushInfo(pushNum, submitCallBack, isDir) {
             {
                 text: "提交",
                 event: function () {
-                    debugger
+
+
                     var valid = $('#pushForm').valid();
                     if (valid) {
                         submitCallBack && submitCallBack();
@@ -1024,9 +1025,10 @@ var datadevInit = {
     },
     initSelect: function () {
         commonAjaxEvents.commonPostAjax(getConfigUrl, {}, $("#queueCode"), function (node, data) {
+
             var lis = "<li class='defaultDropLi queueCodeDropLi active' data-index='-1'><span class='name'>不使用集市资源</span></li>";
-            if (data && data.data && data.data.obj && data.data.obj.length > 0) {
-                for (var index = 0; index < data.data.obj.length; index++) {
+            if (data && data.data) {
+                for (var index = 0;  data.data.obj && index < data.data.obj.length; index++) {
                     var cinfig = data.data.obj[index];
                     if (cinfig.engineType == null) {
                         cinfig.engineType = "";
@@ -1034,6 +1036,17 @@ var datadevInit = {
                     configObj.push(cinfig);
                     lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
                 }
+
+                for (var index = 0; data.data.obj2 && index < data.data.obj2.length; index++) {
+                    var cinfig = data.data.obj2[index];
+                    if (cinfig.engineType == null) {
+                        cinfig.engineType = "";
+                    }
+                    configObj2.push(cinfig);
+                    var tempId = cinfig.projectSpaceId + "-" + "2" + "-" + cinfig.id ;
+                    lis += "<li class='queueCodeDropLi' data-index='" + tempId + "'><span class='name'>" + cinfig.name + "</span></li>";
+                }
+
                 $("#queueName").text("不使用集市资源");
             } else {
                 $("#queueName").text("配置账号队列");
@@ -1042,6 +1055,8 @@ var datadevInit = {
             if (data && data.data && data.data.obj && data.data.obj2 && data.data.obj2.length > 0) {
                 configObj2 = data.data.obj2;
             }
+
+            changeConfig($("#configId").val(),undefined,false);
         })
         $("#queueCodeDropDiv").appendTo("body");
 
@@ -1789,6 +1804,7 @@ function resetSelect(configId, configType) {
 }
 
 function setDefaultConfig(lis, isInit) {
+    debugger
     $("#queueCodeDropDiv .defaultDropLi").addClass("active").siblings("li.queueCodeDropLi").removeClass("active")
     $("#queueName").attr("data-index", "-1")
     $("#queueName").text(isInit && lis && lis.length == 1 ? "配置账号队列" : "不使用集市资源");
@@ -1802,18 +1818,20 @@ function setDefaultConfig(lis, isInit) {
  */
 function changeConfig(configId, key, isInit) {
     configId = configId || -1;
-    var configDetail = getConfigById(configId);
-    datadevInit.getActiveWindow(key).jq && datadevInit.getActiveWindow(key).jq("#configId").val(configId);
-    if (configDetail) {
-        datadevInit.getActiveWindow(key).jq && datadevInit.getActiveWindow(key).jq("#configMarketId").val(configDetail.marketId);
-        datadevInit.getActiveWindow(key).win.sqlTipCaculateTable();
-    }
+
+    // var configDetail = getConfigById(configId);
+    // datadevInit.getActiveWindow(key).jq && datadevInit.getActiveWindow(key).jq("#configId").val(configId);
+    // if (configDetail) {
+    //     datadevInit.getActiveWindow(key).jq && datadevInit.getActiveWindow(key).jq("#configMarketId").val(configDetail.marketId);
+    //     datadevInit.getActiveWindow(key).win.sqlTipCaculateTable();
+    // }
 
 
     var lis = $("li.queueCodeDropLi", $("#queueCodeDropDiv"));
     var findStatus = false;
-    if (configId && configId > 0) {
+    if (configId) {
         $(lis).each(function (index, element) {
+
             if ($(this).attr("data-index") == configId) {
                 var dataIndex = $(this).attr("data-index");
                 var name = $(this).find("span.name").text();

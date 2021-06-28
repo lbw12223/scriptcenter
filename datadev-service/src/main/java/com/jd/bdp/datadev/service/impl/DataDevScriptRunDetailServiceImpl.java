@@ -200,10 +200,15 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                              DataDevScriptRunDetail runDetail,
                              String erp, Long spaceProjectId) throws Exception {
 
-        if ((file.getType() == DataDevScriptTypeEnum.SQL.toCode() || (runDetail.getScriptConfigId() != null && Long.parseLong(runDetail.getScriptConfigId()) > 0))) {
-            if (runDetail.getScriptConfigId() == null || Long.parseLong(runDetail.getScriptConfigId()) < 0) {
+        //sql 必须检查 ， 其他的选择了就检查
+
+        boolean isSql = file.getType() == DataDevScriptTypeEnum.SQL.toCode();
+        if(isSql){
+            if(runDetail.getScriptConfigId() == null ){
                 throw new RuntimeException("请选择配置");
             }
+        }
+        if(runDetail.getScriptConfigId() != null && !runDetail.getScriptConfigId() .equalsIgnoreCase("-1")){
             DataDevScriptConfig config = configService.getConfigById(runDetail.getScriptConfigId());
             if (config == null) {
                 throw new RuntimeException("配置不存在");
@@ -230,50 +235,13 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
             runDetail.setEngineType(org.apache.commons.lang.StringUtils.isEmpty(config.getEngineType()) ? DataDevScriptEngineTypeEnum.Hive.getValue() : config.getEngineType());
             runDetail.setRunMarketLinuxUser(config.getRunMarketLinuxUser());
             runDetail.setRunClusterCode(config.getRunClusterCode());
-            boolean authority = dataDevClusterAdminService.getClusterAdminByErp(erp);
-            if (!authority) {
-                ApiResultDTO apiResultDTO = dataDevCenterService.getGrantAuthorityMarketForBuffalo(erp, spaceProjectId);
-                if (apiResultDTO.isSuccess()) {
-                    for (MarketInfoDto marketInfoDto : (List<MarketInfoDto>) apiResultDTO.getList()) {
-                        if ( config.getMarketLinuxUser().equals(marketInfoDto.getMarketUser())) {
-                            authority = true;
-                            break;
-                        }
-                    }
-                }
-                if (!authority) {
-                    throw new RuntimeException("无正在使用的集市" + config.getMarketLinuxUser() + "权限");
-                }
 
-                ApiResultDTO accountResultDTO = dataDevCenterService.getGrantAuthorityProductionAccountInMarketForBuffalo(runDetail.getMarketLinuxUser(), erp, spaceProjectId);
-                if (accountResultDTO.isSuccess()) {
-                    for (ClusterHadoopAccount clusterHadoopAccount : (List<ClusterHadoopAccount>) accountResultDTO.getList()) {
-                        if (config.getAccountCode().equals(clusterHadoopAccount.getCode())) {
-                            authority = true;
-                            break;
-                        }
-                    }
-                }
-                if (!authority) {
-                    throw new RuntimeException("无正在使用的生产账号" + config.getAccountCode() + "权限");
-                }
-                ClusterHadoopQueue queue = new ClusterHadoopQueue();
-                queue.setOperator(erp);
-                queue.setProductionAccountCode(config.getAccountCode());
-                ApiResultDTO queueResultDTO = dataDevCenterService.getGrantAuthorityQueueOneAccountInMarketForBuffalo(runDetail.getMarketLinuxUser() , runDetail.getAccountCode(), erp, spaceProjectId);
-                if (queueResultDTO.isSuccess()) {
-                    for (ClusterHadoopQueue clusterHadoopQueue : (List<ClusterHadoopQueue>) queueResultDTO.getList()) {
-                        if (config.getQueueCode().equals(clusterHadoopQueue.getQueueCode())) {
-                            authority = true;
-                            break;
-                        }
-                    }
-                }
-                if (!authority) {
-                    throw new RuntimeException("无正在使用的队列" + config.getQueueCode() + "权限");
-                }
-            }
+            configService.hasProjectDefaultRight(erp,config,spaceProjectId);
+
+
+
         }
+
     }
 
     @Override

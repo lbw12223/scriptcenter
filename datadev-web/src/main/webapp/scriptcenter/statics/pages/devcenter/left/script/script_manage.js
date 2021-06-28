@@ -1933,6 +1933,7 @@ var QIAN_KUN = undefined;
 
 window["bdp-qiankun"] = {
     mount: function (msg) {
+        debugger
         QIAN_KUN = msg;
         TabCacheClass.bindFrameEvent();
         TabCacheClass.openCacheTabs(function (cacheTabs) {
@@ -1956,6 +1957,7 @@ window["bdp-qiankun"] = {
  * @param gitStatus git状态
  */
 function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version, gitStatus) {
+
     if (!path) {
         $.errorMsg("脚本path为空，不能打开脚本");
     }
