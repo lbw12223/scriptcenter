@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jd.bdp.datadev.domain.DataDevScriptFile;
+import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
 import com.jd.bdp.datadev.util.HttpUtil;
 import com.jd.jsf.gd.util.StringUtils;
-import io.swagger.models.auth.In;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -181,6 +181,36 @@ public class BuffaloComponent {
         }
 
         return jsonObject.getJSONArray("list");
+    }
+
+    public void deleteDevScript(DataDevScriptFile dataDevScriptFile, Long projectSpaceId, String erp) {
+        String url = buffalo4Prefix + "/api/v2/buffalo4/script/deleteDevScript";
+        JSONObject data = new JSONObject();
+        data.put("projectId", projectSpaceId);
+        data.put("dataDevScriptId", dataDevScriptFile.getId());
+        data.put("model", "001");
+        if (dataDevScriptFile.getType().equals(DataDevScriptTypeEnum.SQL.toCode())) {
+            data.put("model", "006");
+        }
+        data.put("erp", erp);
+        Map<String, String> params = new HashMap<>();
+        params.put("token", token);
+        params.put("appId", appId);
+        long timeMillis = System.currentTimeMillis();
+        params.put("time", Long.toString(timeMillis));
+        try {
+            logger.info("-------调度中心-deleteDevScript接口参数：" + params + "; body=" + data);
+            String entity = HttpUtil.doPostWithParamAndBody(url, params, data);
+            logger.info("-------调度中心-deleteDevScript结果：" + entity);
+            JSONObject jsonObject = JSON.parseObject(entity);
+
+            if (jsonObject.getInteger("code") != 0) {
+                throw new RuntimeException("删除开发脚本失败："+jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            logger.error("删除开发脚本失败：", e);
+            throw new RuntimeException("删除开发脚本失败" + e.getMessage());
+        }
     }
 
 

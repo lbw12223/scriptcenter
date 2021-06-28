@@ -819,8 +819,7 @@ public class DataDevScriptFileServiceImpl implements DataDevScriptFileService, I
             }
             DataDevScriptFilePublish notFail = dataDevScriptPublishService.findLastNotFail(gitProjectId, gitProjectFilePath, null);
             if (notFail != null) {
-                //TODO LIST https://cf.jd.com/pages/viewpage.action?pageId=521864137
-//                importScriptManager.deleteBuffaloScript(dataDevScriptFile, null, erp);
+                buffaloComponent.deleteDevScript(dataDevScriptFile, projectSpaceId, erp);
             }
             dataDevScriptPublishService.deletePublish(null, gitProjectId, gitProjectFilePath);
             if (StringUtils.isNotBlank(dataDevScriptFile.getGitVersion())) {
