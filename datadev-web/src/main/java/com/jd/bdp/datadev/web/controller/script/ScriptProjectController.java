@@ -137,34 +137,10 @@ public class ScriptProjectController {
             throw new RuntimeException("项目【" + projectName + "】已经存在！");
         }
 
-        DataDevGitProject insertDataDevGitProject = createLocalProject(userHolder.getErp(), projectName, description);
+        DataDevGitProject insertDataDevGitProject = dataDevGitProjectService.createLocalProject(userHolder.getErp(), projectName, description);
         return JSONObjectUtil.getSuccessResult("创建成功", insertDataDevGitProject);
     }
 
-    public DataDevGitProject createLocalProject(String erp, String projectName, String description) throws Exception {
-        DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
-        insertDataDevGitProject.setGitProjectId(dataDevGitProjectService.getCurrentLocalGitProject());
-        insertDataDevGitProject.setGitProjectPath(projectName);
-        insertDataDevGitProject.setGitProjectName(projectName);
-        insertDataDevGitProject.setDescription(description);
-        insertDataDevGitProject.setFinishProjectMemberFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
-        insertDataDevGitProject.setFinishProjectTreeFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
-        insertDataDevGitProject.setRefreshTime(new Date());
-
-        dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
-
-
-        List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
-        DataDevGitProjectMember currentUser = new DataDevGitProjectMember();
-        dataDevGitProjectMemberList.add(currentUser);
-        currentUser.setAccessLevel(DataDevGitAccessLevelEnum.Owner.toCode());
-        currentUser.setGitProjectId(insertDataDevGitProject.getGitProjectId());
-        currentUser.setGitMemberName(erp);
-        currentUser.setGitMemberUserName(erp);
-
-        dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
-        return insertDataDevGitProject;
-    }
 
 
     /**

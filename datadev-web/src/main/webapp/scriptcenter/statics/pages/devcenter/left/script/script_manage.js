@@ -1957,7 +1957,9 @@ window["bdp-qiankun"] = {
  * @param gitStatus git状态
  */
 function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPath, version, gitStatus) {
-
+    console.log("nowGitProjectId====== " + nowGitProjectId)
+    console.log("path====== " + path)
+    console.log("name====== " + name)
     if (!path) {
         $.errorMsg("脚本path为空，不能打开脚本");
     }
@@ -1977,6 +1979,8 @@ function openScript(nowGitProjectId, path, name, pythonType, isTemporary, dirPat
         needValid:true,
         diffWithGit: diffWithGit
     }
+    console.log("getKey====== " + getKey(nowGitProjectId, path))
+
     TabCacheClass.addCache(params)
     QIAN_KUN.utils.addTab(params)
 }

@@ -636,7 +636,11 @@ public class ScriptConfigController {
     @ResponseBody
     public JSONObject save(UrmUserHolder userHolder, @RequestBody List<DataDevScriptConfig> configs , @ProjectSpaceIdParam Long projectSpaceId ) throws Exception {
         List<DataDevScriptConfig> result = new ArrayList<DataDevScriptConfig>();
+
         for (DataDevScriptConfig config : configs) {
+            if (config.getConfigType().equals(2)) {
+                continue;
+            }
             if (config.getStatus() == null) {
                 result.add(config);
                 continue;
@@ -645,6 +649,9 @@ public class ScriptConfigController {
                 config.setCreator(userHolder.getErp());
                 config.setMender(userHolder.getErp());
                 config.setOwner(userHolder.getErp());
+                if (config.getProjectSpaceId() == null ||config.getProjectSpaceId() < 0 ) {
+                    config.setProjectSpaceId(100134L);
+                }
                 configService.addConfig(config);
                 config.setStatus(null);
                 result.add(config);

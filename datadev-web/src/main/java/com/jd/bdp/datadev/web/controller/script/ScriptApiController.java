@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -69,6 +70,8 @@ public class ScriptApiController {
     @Autowired
     private DataDevGitProjectSharedGroupService dataDevGitProjectSharedGroupService;
 
+    @Autowired
+    private ImportScriptManager importScriptManager;
     private String appId = "bdp.jd.com";
     private String encryptKey = "!@#$QWER";
 //    private String appIdToken = DesEncrypter.cryptString(appId, "!@#$QWER");
@@ -89,57 +92,24 @@ public class ScriptApiController {
     }
 
 
+
     @RequestMapping("/openProjectSpace")
     @ResponseBody
     public JSONObject openProjectSpace(final Long projectSpaceId) throws Exception {
         try {
             if (projectSpaceId != null && projectSpaceId > 0L) {
                 //c创建项目
-                ProjectBO projectSpaceById = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
-                String projectName = projectSpaceById.getName();
-                boolean exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
-                int index = 1;
-                while (exits) {
-                    projectName = projectName + "_" + index;
-                    index++;
-                    exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
-                }
-                final String erp = urmUtil.getBdpManager();
-                DataDevGitProject localProject = SpringContextUtil.getBean(ScriptProjectController.class).createLocalProject(erp , projectName, "开启项目空间导入，自动创建" + projectName);
-
-                final Long gitProjectId = localProject.getGitProjectId();
-
-                //创建组
-                addGroup(projectSpaceId,projectName,localProject.getGitProjectId());
-                //开启Load 脚本
-                ImportScriptManager importScriptManager = SpringContextUtil.getBean(ImportScriptManager.class);
-                importScriptManager.syncScriptToDataDevNew(gitProjectId, projectSpaceId, erp);
-
+                importScriptManager.openSpaceProject(projectSpaceId);
             }
-
-
         } catch (Exception e) {
             return JSONObjectUtil.getSuccessResult("同步项目空间脚本失败," + e.getMessage());
-
         }
 
 
         return JSONObjectUtil.getSuccessResult("正在同步...");
     }
 
-    public void addGroup(Long gitGroupId, String gitGroupName, Long gitProjectId) {
-        DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup = new DataDevGitProjectSharedGroup();//創建DataDevGitProjectSharedGroup
 
-        Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
-        boolean isExits = dataDevGitProjectSharedGroupService.isExits(gitProjectId, gitProjectGroupId);
-        dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
-        dataDevGitProjectSharedGroup.setGitGroupId(gitProjectGroupId);
-        dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
-        dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
-        dataDevGitProjectSharedGroup.setIsCanSysProjectScript(1);
-        dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
-
-    }
 
 
     /**

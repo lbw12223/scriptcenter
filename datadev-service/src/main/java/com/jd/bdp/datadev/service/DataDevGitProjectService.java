@@ -100,6 +100,8 @@ public interface DataDevGitProjectService {
 
     List<String> getAllUserHaveSameProject(List<DataDevGitProject> projects) throws Exception;
 
-    Long getCurrentLocalGitProject() throws Exception ;
+    Long getCurrentLocalGitProject() throws Exception;
+
+    DataDevGitProject createLocalProject(String erp, String projectName, String description) throws Exception;
 
 }

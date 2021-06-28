@@ -5,11 +5,14 @@ import com.jd.bdp.datadev.dao.DataDevGitProjectDao;
 import com.jd.bdp.datadev.domain.DataDevGitDto;
 import com.jd.bdp.datadev.domain.DataDevGitGroup;
 import com.jd.bdp.datadev.domain.DataDevGitProject;
+import com.jd.bdp.datadev.domain.DataDevGitProjectMember;
+import com.jd.bdp.datadev.enums.DataDevGitAccessLevelEnum;
 import com.jd.bdp.datadev.enums.DataDevGitInitFlag;
 import com.jd.bdp.datadev.enums.DataDevProjectTypeEnum;
 import com.jd.bdp.datadev.jdgit.GitHttpUtil;
 import com.jd.bdp.datadev.jdgit.JDGitCommits;
 import com.jd.bdp.datadev.jdgit.JDGitProjects;
+import com.jd.bdp.datadev.service.DataDevGitProjectMemberService;
 import com.jd.bdp.datadev.service.DataDevGitProjectService;
 import com.jd.bdp.datadev.service.DataDevScriptFileService;
 import com.jd.bdp.datadev.service.DataDevScriptTemplateService;
@@ -37,6 +40,9 @@ public class DataDevGitProjectServiceImpl implements DataDevGitProjectService {
     private String env;
     @Autowired
     private DataDevScriptTemplateService dataDevScriptTemplateService;
+
+    @Autowired
+    private DataDevGitProjectMemberService dataDevGitProjectMemberService ;
 
     @Override
     public List<DataDevGitProject> listAll() {
@@ -253,4 +259,30 @@ public class DataDevGitProjectServiceImpl implements DataDevGitProjectService {
         }
         return maxLocalGitProjectId + 1 ;
     }
+    @Override
+    public DataDevGitProject createLocalProject(String erp, String projectName, String description) throws Exception {
+        DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
+        insertDataDevGitProject.setGitProjectId(getCurrentLocalGitProject());
+        insertDataDevGitProject.setGitProjectPath(projectName);
+        insertDataDevGitProject.setGitProjectName(projectName);
+        insertDataDevGitProject.setDescription(description);
+        insertDataDevGitProject.setFinishProjectMemberFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
+        insertDataDevGitProject.setFinishProjectTreeFlag(DataDevGitInitFlag.INIT_FINISH.tocode());
+        insertDataDevGitProject.setRefreshTime(new Date());
+
+        dataDevGitProjectDao.insertDataDevGitProject(insertDataDevGitProject);
+
+
+        List<DataDevGitProjectMember> dataDevGitProjectMemberList = new ArrayList<DataDevGitProjectMember>();
+        DataDevGitProjectMember currentUser = new DataDevGitProjectMember();
+        dataDevGitProjectMemberList.add(currentUser);
+        currentUser.setAccessLevel(DataDevGitAccessLevelEnum.Owner.toCode());
+        currentUser.setGitProjectId(insertDataDevGitProject.getGitProjectId());
+        currentUser.setGitMemberName(erp);
+        currentUser.setGitMemberUserName(erp);
+
+        dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
+        return insertDataDevGitProject;
+    }
+
 }

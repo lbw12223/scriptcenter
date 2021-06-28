@@ -7,12 +7,10 @@ import com.jd.bdp.datadev.dao.DataDevScriptFileDao;
 import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevScriptPublishStatusEnum;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
-import com.jd.bdp.datadev.jdgit.JDGitFiles;
-import com.jd.bdp.datadev.jdgit.JDGitMembers;
-import com.jd.bdp.datadev.jdgit.JDGitProjects;
-import com.jd.bdp.datadev.jdgit.JDGitUser;
+import com.jd.bdp.datadev.jdgit.*;
 import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.util.HttpUtil;
+import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.jim.cli.Cluster;
 import com.jd.jsf.gd.util.StringUtils;
 import net.bytebuddy.asm.Advice;
@@ -95,11 +93,56 @@ public class ImportScriptManager {
     @Autowired
     private ImportScriptManagerRedis importScriptManagerRedis;
 
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent;
+
+    @Autowired
+    private DataDevGitProjectSharedGroupService dataDevGitProjectSharedGroupService;
+
     public static void main(String args[]) throws Exception {
         //   getAppGroupMemebers(10075L);
         // getScriptList(10075L);
     }
 
+
+    public void openSpaceProject(Long projectSpaceId) throws Exception {
+        //c创建项目
+        ProjectBO projectSpaceById = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
+        String projectName = projectSpaceById.getName();
+        boolean exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
+        int index = 1;
+        while (exits) {
+            projectName = projectName + "_" + index;
+            index++;
+            exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
+        }
+        final String erp = urmUtil.getBdpManager();
+        DataDevGitProject localProject = dataDevGitProjectService.createLocalProject(erp, projectName, "开启项目空间导入，自动创建" + projectName);
+
+        final Long gitProjectId = localProject.getGitProjectId();
+
+        //创建组
+        addGroup(projectSpaceId, projectName, localProject.getGitProjectId());
+        //开启Load 脚本
+        try{
+            syncScriptToDataDevNew(gitProjectId, projectSpaceId, erp);
+        }catch (Exception e){
+
+        }
+    }
+    public void addGroup(Long gitGroupId, String gitGroupName, Long gitProjectId) {
+        DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup = new DataDevGitProjectSharedGroup();//創建DataDevGitProjectSharedGroup
+
+        Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
+        boolean isExits = dataDevGitProjectSharedGroupService.isExits(gitProjectId, gitProjectGroupId);
+        dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
+        dataDevGitProjectSharedGroup.setGitGroupId(gitProjectGroupId);
+        dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
+        dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
+        dataDevGitProjectSharedGroup.setIsCanSysProjectScript(1);
+        dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
+
+    }
 
     /**
      * 清除同步
@@ -301,7 +344,7 @@ public class ImportScriptManager {
                 logger.error("handSyncScriptLocal", e);
             }
         }
-      //  importScriptManagerRedis.endImport(appGroupId);
+        //  importScriptManagerRedis.endImport(appGroupId);
 
         return ztreeNodeList;
 
@@ -395,7 +438,7 @@ public class ImportScriptManager {
             byte[] bytes = loadFile(erp, script.getLong("fileId"), script.getString("curVersion"));
             if (bytes == null || bytes.length < 1) {
                 bytes = "".getBytes();
-               // throw new RuntimeException("empty file");
+                // throw new RuntimeException("empty file");
             }
             String gitProjectFilePath = StringUtils.isNotBlank(erp) ? (erp + "/" + fileName) : fileName;
             String description = script.get("description") != null ? script.get("description").toString() : "";

@@ -1024,44 +1024,27 @@ var datadevInit = {
         })
     },
     initSelect: function () {
+
         commonAjaxEvents.commonPostAjax(getConfigUrl, {}, $("#queueCode"), function (node, data) {
-
-
             var lis = "<li class='defaultDropLi queueCodeDropLi active' data-index='-1'><span class='name'>不使用集市资源</span></li>";
-            if (data && data.obj) {
-                configObj = data.obj ;
-                for (var index = 0;  data.obj && index < data.obj.length; index++) {
+            if (data && data.obj && data.obj.length > 0) {
+                for (var index = 0; index < data.obj.length; index++) {
                     var cinfig = data.obj[index];
-                    if(cinfig.configType * 1 == 1){
-                        if (cinfig.engineType == null) {
-                            cinfig.engineType = "";
-                        }
-                        lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
+                    if (cinfig.engineType == null) {
+                        cinfig.engineType = "";
                     }
+                    configObj.push(cinfig);
+                    lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
                 }
-
-                for (var index = 0; data.obj && index < data.obj.length; index++) {
-                    var cinfig = data.obj[index];
-                    if(cinfig.configType * 1 == 2) {
-                        if (cinfig.engineType == null) {
-                            cinfig.engineType = "";
-                        }
-                        lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
-                    }
-
-                }
-
                 $("#queueName").text("不使用集市资源");
             } else {
                 $("#queueName").text("配置账号队列");
             }
             $("#queueCodeDropDiv ul.queueCodeDropUl").prepend(lis);
-            if (data && data.data && data.data.obj && data.data.obj2 && data.data.obj2.length > 0) {
-                configObj2 = data.data.obj2;
-            }
-
             changeConfig($("#configId").val(),undefined,false);
+
         })
+
         $("#queueCodeDropDiv").appendTo("body");
 
         $("#runErrorDiv").appendTo("body");

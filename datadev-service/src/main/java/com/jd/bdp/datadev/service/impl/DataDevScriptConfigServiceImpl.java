@@ -120,7 +120,8 @@ public class DataDevScriptConfigServiceImpl implements DataDevScriptConfigServic
                 insert.setId(temp.getId());
                 insert.setConfigType(2);
                 if (erp != null) {
-                    insert.setHasRight(hasProjectDefaultRight(erp, insert, spaceProjectId));
+                    boolean hasRight = hasProjectDefaultRight(erp, insert, spaceProjectId);
+                    insert.setHasRight(false);
                 }
                 result.add(insert);
             }
