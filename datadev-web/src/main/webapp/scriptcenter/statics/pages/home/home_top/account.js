@@ -36,11 +36,12 @@ $(function () {
             $(".personConfig").css("display", "none");
 
 
+
             var target = undefined;
-            var dataId = $(this).attr("data-id") * 1;
-            for (var index = 0; index < configObj2.length; index++) {
-                if (configObj2[index].id * 1 == dataId) {
-                    target = configObj2[index];
+            var dataId = $(this).attr("data-id");
+            for (var index = 0; index < configObj.length; index++) {
+                if (configObj[index].id  == dataId) {
+                    target = configObj[index];
                     break;
                 }
             }
@@ -148,16 +149,26 @@ $(function () {
         }
     });
 
+    function getConfigType(configType){
+        var result = [];
+        for(var index = 0 ; configObj && index < configObj.length ; index++){
+            if(configObj[index].configType * 1 === configType * 1){
+                result.push(configObj[index]);
+            }
+        }
+        return result ;
+    }
 
     $('#codeModal').on('show.bs.modal', function () {
         $(".bdp-help-block").remove();
+
 
 
         var ul = $("ul.account-history-ul");
         ul.empty();
         maxShowOrder = 0;
         if (configObj && configObj.length > 0) {
-            tmpConfigArr = deepArray(configObj);
+            tmpConfigArr = deepArray(getConfigType(1));
             var lis = "";
             for (var index = 0; index < tmpConfigArr.length; index++) {
                 var config = tmpConfigArr[index];
@@ -171,14 +182,11 @@ $(function () {
 
         var ul2 = $("ul.account-history-ul2");
         ul2.empty();
-        if (configObj2 && configObj2.length > 0) {
-            tmpConfigArr2 = deepArray(configObj2);
+        var config2Temp = getConfigType(2) ;
+        if (config2Temp && config2Temp.length > 0) {
             var lis2 = "";
-            for (var index = 0; index < tmpConfigArr2.length; index++) {
-                var config = tmpConfigArr2[index];
-                // if (config.showOrder && config.showOrder > maxShowOrder) {
-                //     maxShowOrder = config.showOrder;
-                // }
+            for (var index = 0; index < config2Temp.length; index++) {
+                var config = config2Temp[index];
                 lis2 += "<li class='account-history-li' data-id=" + config.id + ">" + config.name + "</li>";
             }
             ul2.append(lis2);
@@ -618,21 +626,26 @@ $(function () {
             }
             var configStr = JSON.stringify(tmpConfigArr);
             commonAjaxEvents.commonJSONPostAjax(datadev_common.saveUrl, configStr, $("#account-ok"), function (node, data) {
-                debugger
+
+                
                 if (data && data.obj) {
                     configObj = data.obj;
-                    tmpConfigArr = deepArray(configObj);
+                    //个人配置账号
+
+                    var tmpPP = [] ;
+                    for(var index = 0 ; index < configObj.length ; index ++){
+                        if(configObj[index].configType * 1 == 2){
+                            tmpPP = configObj[index];
+                        }
+                    }
+
+                    tmpConfigArr = deepArray(tmpPP);
                     var activeLi = $("li.account-history-li.active");
                     var oriId = -1;
                     var configType = activeLi.parent().hasClass("account-history-ul2") ? 2 : 1;
                     if (activeLi.length > 0) {
                         oriId = activeLi.attr("data-id");
-                        for (var index = 0; index < data.obj.length; index++) {
-                            if (oriId == data.obj[index].id || oriId == data.obj[index].oriId) {
-                                oriId = data.obj[index].id;
-                                break;
-                            }
-                        }
+
                     }
                     resetSelect(oriId , configType);
                 }

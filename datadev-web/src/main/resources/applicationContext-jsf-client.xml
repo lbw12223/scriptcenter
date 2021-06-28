@@ -30,34 +30,34 @@
     </jsf:consumer>
 
     <jsf:consumer id="agentCodeFormatInterface" interface="com.jd.bdp.datadev.agent.api.AgentCodeFormatInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="10000">
     </jsf:consumer>
 
     <jsf:consumer id="metaDataJSFInterface" interface="com.jd.bdp.api.bdptable.MetaDataJSFInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="10000">
     </jsf:consumer>
 
 
     <!-- 用户接口 -->
     <jsf:consumer id="userInterfaceImpl" interface="com.jd.bdp.api.urm.UserJsfInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="10000">
     </jsf:consumer>
 
 
     <!-- 资源接口 -->
     <jsf:consumer id="resourceInterfaceImpl" interface="com.jd.bdp.api.urm.ResourceJsfInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="10000">
     </jsf:consumer>
 
 
     <!-- ERP用户验证接口 -->
     <jsf:consumer id="erpSSOInterfaceImpl" interface="com.jd.bdp.api.urm.ErpSSOInterface"
-                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="100000">
+                  protocol="jsf" alias="${bdp.jsf.alias}"  timeout="10000">
     </jsf:consumer>
 
 
     <jsf:consumer id="projectInterface" interface="com.jd.bdp.planing.api.ProjectInterface"
-                  protocol="jsf" alias="${bdp.jsf.planning.alias}"  timeout="100000" lazy="true">
+                  protocol="jsf" alias="${bdp.jsf.planning.alias}"  timeout="10000" lazy="true">
     </jsf:consumer>
 
 

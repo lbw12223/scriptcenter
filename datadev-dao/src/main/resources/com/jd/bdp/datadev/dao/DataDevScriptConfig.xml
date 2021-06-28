@@ -89,7 +89,7 @@
         UPDATE script_config
         SET name = #{name},cluster_code =#{clusterCode},market_linux_user=#{marketLinuxUser},queue_code=#{queueCode},account_code =#{accountCode},
         mender = #{mender},modified=now(),show_order=#{showOrder},market_id = #{marketId},account_id=#{accountId},queue_id = #{queueId},engine_type = #{engineType},
-        run_cluster_code = #{runClusterCode},run_market_linux_user = #{runMarketLinuxUser},project_space_id = #{projectSpaceId}
+        run_cluster_code = #{runClusterCode},run_market_linux_user = #{runMarketLinuxUser}
         WHERE id = #{id} AND IFNULL(deleted,0) = 0
     </update>
     <update id="deleteConfig">

@@ -143,7 +143,7 @@ public class HbaseScript {
      */
     private List<byte[]> getScriptFile(String preKey, String version, Long id) throws Exception {
         if(env.equals("dev")){
-            return null;
+            return Arrays.asList("env".getBytes());
         }
         try {
 

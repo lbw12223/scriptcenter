@@ -1026,25 +1026,29 @@ var datadevInit = {
     initSelect: function () {
         commonAjaxEvents.commonPostAjax(getConfigUrl, {}, $("#queueCode"), function (node, data) {
 
+
             var lis = "<li class='defaultDropLi queueCodeDropLi active' data-index='-1'><span class='name'>不使用集市资源</span></li>";
-            if (data && data.data) {
-                for (var index = 0;  data.data.obj && index < data.data.obj.length; index++) {
-                    var cinfig = data.data.obj[index];
-                    if (cinfig.engineType == null) {
-                        cinfig.engineType = "";
+            if (data && data.obj) {
+                configObj = data.obj ;
+                for (var index = 0;  data.obj && index < data.obj.length; index++) {
+                    var cinfig = data.obj[index];
+                    if(cinfig.configType * 1 == 1){
+                        if (cinfig.engineType == null) {
+                            cinfig.engineType = "";
+                        }
+                        lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
                     }
-                    configObj.push(cinfig);
-                    lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
                 }
 
-                for (var index = 0; data.data.obj2 && index < data.data.obj2.length; index++) {
-                    var cinfig = data.data.obj2[index];
-                    if (cinfig.engineType == null) {
-                        cinfig.engineType = "";
+                for (var index = 0; data.obj && index < data.obj.length; index++) {
+                    var cinfig = data.obj[index];
+                    if(cinfig.configType * 1 == 2) {
+                        if (cinfig.engineType == null) {
+                            cinfig.engineType = "";
+                        }
+                        lis += "<li class='queueCodeDropLi' data-index='" + cinfig.id + "'><span class='name'>" + cinfig.name + "</span></li>";
                     }
-                    configObj2.push(cinfig);
-                    var tempId = cinfig.projectSpaceId + "-" + "2" + "-" + cinfig.id ;
-                    lis += "<li class='queueCodeDropLi' data-index='" + tempId + "'><span class='name'>" + cinfig.name + "</span></li>";
+
                 }
 
                 $("#queueName").text("不使用集市资源");
@@ -1769,29 +1773,15 @@ function resetSelect(configId, configType) {
     configId = configId || -1;
     var lis = "<li class='defaultDropLi queueCodeDropLi' data-index='-1'><span class='name'>不使用集市资源</span></li>";
     var selectStatus = false;
-    if (configType == 1) {
-        for (var index = 0; index < configObj.length; index++) {
-            var config = configObj[index];
-            if (configId > 0 && config.id == configId) {
-                $("#queueName").attr("data-index", config.id)
-                $("#queueName").text(config.name);
-                selectStatus = true;
-            }
-            lis += "<li class='queueCodeDropLi' data-index='" + config.id + "'><span class='name'>" + config.name + "</span></li>";
+    for(var index = 0 ; index < configObj.length ; index++ ){
+        var config = configObj[index];
+        if ((config.id + "") == configId) {
+            $("#queueName").attr("data-index", config.id)
+            $("#queueName").text(config.name);
+            selectStatus = true;
         }
+        lis += "<li class='queueCodeDropLi' data-index='" + config.id + "'><span class='name'>" + config.name + "</span></li>";
     }
-    //默认配置
-    if (configType == 2) {
-        for (var index = 0; index < configObj2.length; index++) {
-            var config = configObj2[index];
-            if (configId > 0 && config.id == configId) {
-                $("#queueName").attr("data-index", config.projectSpaceId + "-" + "2-" + config.id)
-                $("#queueName").text(config.name);
-                selectStatus = true;
-            }
-        }
-    }
-
     if (!selectStatus) {
         setDefaultConfig($(lis), true);
     } else {
@@ -1804,7 +1794,7 @@ function resetSelect(configId, configType) {
 }
 
 function setDefaultConfig(lis, isInit) {
-    debugger
+
     $("#queueCodeDropDiv .defaultDropLi").addClass("active").siblings("li.queueCodeDropLi").removeClass("active")
     $("#queueName").attr("data-index", "-1")
     $("#queueName").text(isInit && lis && lis.length == 1 ? "配置账号队列" : "不使用集市资源");

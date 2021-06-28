@@ -111,8 +111,19 @@ public class ScriptConfigController {
     public JSONObject getConfigByErp(UrmUserHolder userHolder, @ProjectSpaceIdParam Long projectSpaceId) throws Exception {
 //        userHolder.setErp("bjyuanz");
         List<DataDevScriptConfig> list = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
-        List<DataDevScriptConfig> defaultScriptConfig = configService.defaultScriptConfig(userHolder.getErp(), projectSpaceId);
-        return JSONObjectUtil.getSuccessResultTwoObj(list, defaultScriptConfig);
+        if (list != null) {
+            JSONArray jsonArray = JSONObject.parseArray(JSONObject.toJSONString(list));
+            for (int index = 0; index < jsonArray.size(); index++) {
+                JSONObject temp = jsonArray.getJSONObject(index);
+                if(temp.getInteger("configType").equals(2)){
+                    String id = temp.getLong("projectSpaceId") + "-2-" + temp.getLong("id");
+                    temp.put("id", id);
+                }
+
+            }
+            return JSONObjectUtil.getSuccessResult(jsonArray);
+        }
+        return JSONObjectUtil.getSuccessResult(list);
     }
 
 
@@ -130,11 +141,11 @@ public class ScriptConfigController {
             String sign = DigestUtils.md5DigestAsHex((jsmAppId + jsmToken + time).getBytes());
 
             JDResponse<ListResult<MarketExternalDTO>> response = marketExternalInterface.listAllMarketInfo(jsmAppId, sign, time);
-            logger.info("JSM服务获取全部集市结果："+response);
-            if(response != null && response.getCode() == 0) {
+            logger.info("JSM服务获取全部集市结果：" + response);
+            if (response != null && response.getCode() == 0) {
                 listResult = response.getData().getList();
             } else {
-                logger.error("JSM服务获取全部集市列表失败:"+JSONObject.toJSONString(response));
+                logger.error("JSM服务获取全部集市列表失败:" + JSONObject.toJSONString(response));
             }
         } catch (Exception e) {
             logger.error("JSM服务获取全部集市列表失败", e);
@@ -623,7 +634,7 @@ public class ScriptConfigController {
 
     @RequestMapping("/save.ajax")
     @ResponseBody
-    public JSONObject save(UrmUserHolder userHolder, @RequestBody List<DataDevScriptConfig> configs) throws Exception {
+    public JSONObject save(UrmUserHolder userHolder, @RequestBody List<DataDevScriptConfig> configs , @ProjectSpaceIdParam Long projectSpaceId ) throws Exception {
         List<DataDevScriptConfig> result = new ArrayList<DataDevScriptConfig>();
         for (DataDevScriptConfig config : configs) {
             if (config.getStatus() == null) {
@@ -646,9 +657,25 @@ public class ScriptConfigController {
                 result.add(config);
             }
         }
-        configService.sortByOrder(result);
+        //configService.sortByOrder(result);
 
-        return JSONObjectUtil.getSuccessResult("保存成功", result);
+
+        List<DataDevScriptConfig> configsByErp = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
+
+        if (configsByErp != null) {
+            JSONArray jsonArray = JSONObject.parseArray(JSONObject.toJSONString(configsByErp));
+            for (int index = 0; index < jsonArray.size(); index++) {
+                JSONObject temp = jsonArray.getJSONObject(index);
+                if(temp.getInteger("configType").equals(2)){
+                    String id = temp.getLong("projectSpaceId") + "-2-" + temp.getLong("id");
+                    temp.put("id", id);
+                }
+
+            }
+            return JSONObjectUtil.getSuccessResult("保存成功",jsonArray);
+        }
+
+        return JSONObjectUtil.getSuccessResult("保存成功", configsByErp);
     }
 
     @RequestMapping("initMergeConfig.ajax")
