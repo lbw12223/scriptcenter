@@ -200,8 +200,8 @@ public class DataDevScriptRunDetailServiceImpl implements DataDevScriptRunDetail
                              DataDevScriptRunDetail runDetail,
                              String erp, Long spaceProjectId) throws Exception {
 
-        if ((file.getType() == DataDevScriptTypeEnum.SQL.toCode() || (runDetail.getScriptConfigId() != null && StringUtils.isNotBlank(runDetail.getScriptConfigId())))) {
-            if (runDetail.getScriptConfigId() == null || StringUtils.isBlank(runDetail.getScriptConfigId()) ) {
+        if ((file.getType() == DataDevScriptTypeEnum.SQL.toCode() || (runDetail.getScriptConfigId() != null && Long.parseLong(runDetail.getScriptConfigId()) > 0))) {
+            if (runDetail.getScriptConfigId() == null || Long.parseLong(runDetail.getScriptConfigId()) < 0) {
                 throw new RuntimeException("请选择配置");
             }
             DataDevScriptConfig config = configService.getConfigById(runDetail.getScriptConfigId());

@@ -246,7 +246,7 @@ public class ScriptProjectController {
      * @param gitGroupId
      * @throws Exception
      */
-    @ExceptionMessageAnnotation(errorMessage = "添加Git项目成员")
+    @ExceptionMessageAnnotation(errorMessage = "添加Git项目共享组")
     @RequestMapping("/addSharedWithGroups.ajax")
     @ResponseBody
     public JSONObject addSharedWithGroups(UrmUserHolder urmUserHolder,
@@ -279,7 +279,7 @@ public class ScriptProjectController {
             Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
             boolean isExits  = dataDevGitProjectSharedGroupService.isExits(gitProjectId,gitProjectGroupId) ;
             if(isExits){
-                return JSONObjectUtil.getSuccessResult("项目空间已经存在！");
+                return JSONObjectUtil.getSuccessResult("该组已经存在！");
             }
             dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
             dataDevGitProjectSharedGroup.setGitGroupId(gitProjectGroupId);
@@ -289,7 +289,7 @@ public class ScriptProjectController {
         }
 
         dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
-        return JSONObjectUtil.getSuccessResult("添加项目空间成功");
+        return JSONObjectUtil.getSuccessResult("添加共享组成功");
 
     }
 
