@@ -831,7 +831,7 @@ function getKey(gitProjectId, path) {
     } else {
         path = gitProjectId + "/" + path.trim();
     }
-    return path;
+    return path.replaceAll("/","_");
 }
 
 function getKey(gitProjectId, path) {
@@ -842,7 +842,7 @@ function getKey(gitProjectId, path) {
     } else {
         path = gitProjectId + "/" + path.trim();
     }
-    return path;
+    return path.replaceAll("/","_");
 }
 
 function getParam(gitProjectId, path, name, pythonType, isTmp) {

@@ -493,7 +493,7 @@ function getKey(gitProjectId, path) {
     } else {
         path = gitProjectId + "/" + path.trim();
     }
-    return path;
+    return path.replaceAll("/","_");
 }
 
 

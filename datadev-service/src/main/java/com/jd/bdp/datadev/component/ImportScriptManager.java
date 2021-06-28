@@ -394,7 +394,8 @@ public class ImportScriptManager {
             Integer scriptType = DataDevScriptTypeEnum.getFileNameScriptType(fileName).toCode();
             byte[] bytes = loadFile(erp, script.getLong("fileId"), script.getString("curVersion"));
             if (bytes == null || bytes.length < 1) {
-                throw new RuntimeException("empty file");
+                bytes = "".getBytes();
+               // throw new RuntimeException("empty file");
             }
             String gitProjectFilePath = StringUtils.isNotBlank(erp) ? (erp + "/" + fileName) : fileName;
             String description = script.get("description") != null ? script.get("description").toString() : "";

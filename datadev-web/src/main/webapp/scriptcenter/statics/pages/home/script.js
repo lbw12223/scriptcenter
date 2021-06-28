@@ -1330,7 +1330,7 @@ function getKey(gitProjectId, path) {
     } else {
         path = gitProjectId + "/" + path.trim();
     }
-    return path;
+    return path.replaceAll("/","_");
 }
 
 function copyValue(value) {
@@ -2826,7 +2826,7 @@ function initTopButton() {
         } else {
             path = gitProjectId + "/" + path.trim();
         }
-        return path;
+        return path.replaceAll("/","_");
     }
 
     function copyValue(value) {
