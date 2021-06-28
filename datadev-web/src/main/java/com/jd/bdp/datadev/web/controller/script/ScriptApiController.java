@@ -10,12 +10,10 @@ import com.jd.bdp.datadev.domain.*;
 import com.jd.bdp.datadev.enums.DataDevScriptTypeEnum;
 import com.jd.bdp.datadev.jdgit.*;
 import com.jd.bdp.datadev.model.Script;
-import com.jd.bdp.datadev.service.DataDevGitProjectMemberService;
-import com.jd.bdp.datadev.service.DataDevGitProjectService;
-import com.jd.bdp.datadev.service.DataDevScriptDirService;
-import com.jd.bdp.datadev.service.DataDevScriptFileService;
+import com.jd.bdp.datadev.service.*;
 import com.jd.bdp.datadev.web.exception.ParamsException;
 import com.jd.bdp.datadev.web.exception.ScriptException;
+import com.jd.bdp.planing.domain.bo.ProjectBO;
 import com.jd.bdp.urm.sso.UrmUserHolder;
 import com.jd.common.security.DesEncrypter;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +29,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @Controller
@@ -64,6 +63,12 @@ public class ScriptApiController {
     @Autowired
     private BuffaloComponent buffaloComponent;
 
+    @Autowired
+    private ProjectSpaceRightComponent projectSpaceRightComponent;
+
+    @Autowired
+    private DataDevGitProjectSharedGroupService dataDevGitProjectSharedGroupService;
+
     private String appId = "bdp.jd.com";
     private String encryptKey = "!@#$QWER";
 //    private String appIdToken = DesEncrypter.cryptString(appId, "!@#$QWER");
@@ -86,11 +91,55 @@ public class ScriptApiController {
 
     @RequestMapping("/openProjectSpace")
     @ResponseBody
-    public JSONObject openProjectSpace(Long projectSpaceId) throws Exception {
-        return JSONObjectUtil.getSuccessResult("");
+    public JSONObject openProjectSpace(final Long projectSpaceId) throws Exception {
+        try {
+            if (projectSpaceId != null && projectSpaceId > 0L) {
+                //c创建项目
+                ProjectBO projectSpaceById = projectSpaceRightComponent.getProjectSpaceById(projectSpaceId);
+                String projectName = projectSpaceById.getName();
+                boolean exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
+                int index = 1;
+                while (exits) {
+                    projectName = projectName + "_" + index;
+                    index++;
+                    exits = dataDevGitProjectService.getGitProjectBy(projectName) != null;
+                }
+                final String erp = urmUtil.getBdpManager();
+                DataDevGitProject localProject = SpringContextUtil.getBean(ScriptProjectController.class).createLocalProject(erp , projectName, "开启项目空间导入，自动创建" + projectName);
+
+                final Long gitProjectId = localProject.getGitProjectId();
+
+                //创建组
+                addGroup(projectSpaceId,projectName,localProject.getGitProjectId());
+                //开启Load 脚本
+                ImportScriptManager importScriptManager = SpringContextUtil.getBean(ImportScriptManager.class);
+                importScriptManager.syncScriptToDataDevNew(gitProjectId, projectSpaceId, erp);
+
+            }
+
+
+        } catch (Exception e) {
+            return JSONObjectUtil.getSuccessResult("同步项目空间脚本失败," + e.getMessage());
+
+        }
+
+
+        return JSONObjectUtil.getSuccessResult("正在同步...");
     }
 
+    public void addGroup(Long gitGroupId, String gitGroupName, Long gitProjectId) {
+        DataDevGitProjectSharedGroup dataDevGitProjectSharedGroup = new DataDevGitProjectSharedGroup();//創建DataDevGitProjectSharedGroup
 
+        Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
+        boolean isExits = dataDevGitProjectSharedGroupService.isExits(gitProjectId, gitProjectGroupId);
+        dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
+        dataDevGitProjectSharedGroup.setGitGroupId(gitProjectGroupId);
+        dataDevGitProjectSharedGroup.setGitProjectId(gitProjectId);
+        dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
+        dataDevGitProjectSharedGroup.setIsCanSysProjectScript(1);
+        dataDevGitProjectSharedGroupService.insertGitSharedGroup(dataDevGitProjectSharedGroup);//插入數據庫中
+
+    }
 
 
     /**
@@ -108,7 +157,7 @@ public class ScriptApiController {
     @RequestMapping("/getProjectByErp")
     @ResponseBody
     public JSONObject getProjectByErp(String appId, String token, Long time,
-                                      @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
+                                      @RequestParam(value = "data", defaultValue = "{}") String data) throws Exception {
         JSONArray jsonArray = new JSONArray();
         try {
             if (!appTokenIsValidate(appId, token)) {
@@ -119,10 +168,10 @@ public class ScriptApiController {
             String erp = jsonObject.getString("erp");
             Integer projectType = jsonObject.getInteger("projectType");
             String keyword = jsonObject.getString("keyword");
-            if(StringUtils.isBlank(erp)){
+            if (StringUtils.isBlank(erp)) {
                 throw new ParamsException("Erp，不能为NULL");
             }
-            if(projectType == null || projectType < 0  || projectType > 3){
+            if (projectType == null || projectType < 0 || projectType > 3) {
                 throw new ParamsException("projectType取值范围[1,2,3]");
             }
 
@@ -146,16 +195,15 @@ public class ScriptApiController {
 
 
     /**
-     *
      * @param projectId
-     * @param dirId        不传为0时，查询根目录下的dir和file，不为0时，查询p_id为dirId的dir 和 dir_id为dirId的file
+     * @param dirId     不传为0时，查询根目录下的dir和file，不为0时，查询p_id为dirId的dir 和 dir_id为dirId的file
      * @return
      * @throws Exception
      */
     @RequestMapping("/getProjectTree")
     @ResponseBody
     public JSONObject getProjectTree(String appId, String token, Long time,
-                                     @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
+                                     @RequestParam(value = "data", defaultValue = "{}") String data) throws Exception {
         if (!appTokenIsValidate(appId, token)) {
             return JSONObjectUtil.getFailResult("appId/token错误");
         }
@@ -208,7 +256,7 @@ public class ScriptApiController {
     @RequestMapping("/loadScript")
     @ResponseBody
     public JSONObject loadScript(String appId, String token, Long time,
-                           @RequestParam(value = "data", defaultValue = "{}")String data, HttpServletResponse response) throws Exception {
+                                 @RequestParam(value = "data", defaultValue = "{}") String data, HttpServletResponse response) throws Exception {
         try {
             if (!appTokenIsValidate(appId, token)) {
                 return JSONObjectUtil.getFailResult("appId/token错误");
@@ -275,7 +323,7 @@ public class ScriptApiController {
     @RequestMapping("/getScriptContent")
     @ResponseBody
     public JSONObject getScriptContent(String appId, String token, Long time,
-                                       @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
+                                       @RequestParam(value = "data", defaultValue = "{}") String data) throws Exception {
         try {
             if (!appTokenIsValidate(appId, token)) {
                 return JSONObjectUtil.getFailResult("appId/token错误");
@@ -317,7 +365,7 @@ public class ScriptApiController {
     @RequestMapping("/getScriptDetail")
     @ResponseBody
     public JSONObject getScriptDetail(String appId, String token, Long time,
-                                      @RequestParam(value = "data", defaultValue = "{}")String data) throws Exception {
+                                      @RequestParam(value = "data", defaultValue = "{}") String data) throws Exception {
         try {
             if (!appTokenIsValidate(appId, token)) {
                 return JSONObjectUtil.getFailResult("appId/token错误");

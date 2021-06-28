@@ -136,6 +136,12 @@ public class ScriptProjectController {
         if (dataDevGitProject != null) {
             throw new RuntimeException("项目【" + projectName + "】已经存在！");
         }
+
+        DataDevGitProject insertDataDevGitProject = createLocalProject(userHolder.getErp(), projectName, description);
+        return JSONObjectUtil.getSuccessResult("创建成功", insertDataDevGitProject);
+    }
+
+    public DataDevGitProject createLocalProject(String erp, String projectName, String description) throws Exception {
         DataDevGitProject insertDataDevGitProject = new DataDevGitProject();
         insertDataDevGitProject.setGitProjectId(dataDevGitProjectService.getCurrentLocalGitProject());
         insertDataDevGitProject.setGitProjectPath(projectName);
@@ -153,11 +159,11 @@ public class ScriptProjectController {
         dataDevGitProjectMemberList.add(currentUser);
         currentUser.setAccessLevel(DataDevGitAccessLevelEnum.Owner.toCode());
         currentUser.setGitProjectId(insertDataDevGitProject.getGitProjectId());
-        currentUser.setGitMemberName(userHolder.getErp());
-        currentUser.setGitMemberUserName(userHolder.getErp());
+        currentUser.setGitMemberName(erp);
+        currentUser.setGitMemberUserName(erp);
 
         dataDevGitProjectMemberService.insert(dataDevGitProjectMemberList);
-        return JSONObjectUtil.getSuccessResult("创建成功", insertDataDevGitProject);
+        return insertDataDevGitProject;
     }
 
 
@@ -277,8 +283,8 @@ public class ScriptProjectController {
             dataDevGitProjectSharedGroup.setGroupName(gitGroupName);
         } else {
             Long gitProjectGroupId = gitGroupId + GitHttpUtil._10YI;
-            boolean isExits  = dataDevGitProjectSharedGroupService.isExits(gitProjectId,gitProjectGroupId) ;
-            if(isExits){
+            boolean isExits = dataDevGitProjectSharedGroupService.isExits(gitProjectId, gitProjectGroupId);
+            if (isExits) {
                 return JSONObjectUtil.getSuccessResult("该组已经存在！");
             }
             dataDevGitProjectSharedGroup.setGroupAccessLevel(ImportScriptManager.DEVELOPER);
@@ -292,6 +298,7 @@ public class ScriptProjectController {
         return JSONObjectUtil.getSuccessResult("添加共享组成功");
 
     }
+
 
     /**
      * 删除项目成员
@@ -556,8 +563,8 @@ public class ScriptProjectController {
     @RequestMapping("syncScriptToDataDevNew.ajax")
     @ResponseBody
     public JSONObject syncScriptToDataDevNew(UrmUserHolder urmUserHolder,
-                                                               Long gitProjectId,
-                                                               @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
+                                             Long gitProjectId,
+                                             @RequestParam(value = "jsdAppgroupId", defaultValue = "0") Long jsdAppgroupId) throws Exception {
 
 //        if(true){
 //            jsdAppgroupId = 100144L;
@@ -567,7 +574,6 @@ public class ScriptProjectController {
 
         return JSONObjectUtil.getSuccessResult("success", jsonObject);
     }
-
 
 
     /**

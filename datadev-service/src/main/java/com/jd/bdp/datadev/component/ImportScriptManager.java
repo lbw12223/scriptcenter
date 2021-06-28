@@ -187,7 +187,7 @@ public class ImportScriptManager {
             throw new RuntimeException("当前项目空间无待同步脚本.");
         }
         if (!importScriptManagerRedis.isCanSyncProjectId(appGroupId)) {
-            throw new RuntimeException("当前项目空间正在同步!.");
+            //throw new RuntimeException("当前项目空间正在同步!.");
         }
 
         //创建目录
