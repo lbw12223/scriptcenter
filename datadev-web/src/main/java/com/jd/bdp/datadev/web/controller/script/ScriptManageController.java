@@ -311,13 +311,13 @@ public class ScriptManageController {
     @RequestMapping("/getScript.ajax")
     @ResponseBody
     public JSONObject getScript(UrmUserHolder userHolder, Long gitProjectId, String gitProjectFilePath, String version) throws Exception {
-        if (env.equals("dev")) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("res", "res");
-            jsonObject.put("md5", "oldFile != null ? oldFile.getFileMd5() : MD5Util.getMD5Str(res)");
-            jsonObject.put("gitStatus", 1);
-            return JSONObjectUtil.getSuccessResult(jsonObject);
-        }
+//        if (env.equals("dev")) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("res", "res");
+//            jsonObject.put("md5", "oldFile != null ? oldFile.getFileMd5() : MD5Util.getMD5Str(res)");
+//            jsonObject.put("gitStatus", 1);
+//            return JSONObjectUtil.getSuccessResult(jsonObject);
+//        }
         dataDevGitProjectService.verifyUserAuthority(userHolder.getErp(), gitProjectId);
         DataDevScriptFile oldFile = null;
         if (StringUtils.isNotBlank(version)) {
