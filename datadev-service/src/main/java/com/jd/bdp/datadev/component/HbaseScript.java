@@ -59,9 +59,6 @@ public class HbaseScript {
      * @param scriptFile
      */
     private void upScriptToHbase(DataDevScriptFile scriptFile, String tableName) {
-        if(env.equals("dev")){
-            return;
-        }
         try {
             if (scriptFile.getId() == null) {
                 throw new RuntimeException("脚本id不能为空");
@@ -142,9 +139,7 @@ public class HbaseScript {
      * @param
      */
     private List<byte[]> getScriptFile(String preKey, String version, Long id) throws Exception {
-        if(env.equals("dev")){
-            return Arrays.asList("env".getBytes());
-        }
+
         try {
 
 

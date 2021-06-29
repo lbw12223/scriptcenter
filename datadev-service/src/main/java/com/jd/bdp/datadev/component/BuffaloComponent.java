@@ -111,6 +111,9 @@ public class BuffaloComponent {
 
         data.put("dataDevScriptId", String.valueOf(dataDevScriptFile.getId()));
         data.put("dataDevScriptVersion",  StringUtils.isBlank(version) ? String.valueOf(1000) : version);
+        data.put("dataDevProjectId", dataDevScriptFile.getGitProjectId());
+        data.put("dataDevProjectFilePath", dataDevScriptFile.getGitProjectFilePath());
+
 
         Map<String, String> params = new HashMap<>();
         params.put("token", token);

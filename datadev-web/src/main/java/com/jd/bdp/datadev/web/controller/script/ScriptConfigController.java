@@ -664,25 +664,25 @@ public class ScriptConfigController {
                 result.add(config);
             }
         }
-        //configService.sortByOrder(result);
+        configService.sortByOrder(result);
+
+        result.addAll(configService.defaultScriptConfig(userHolder.getErp(),projectSpaceId));
 
 
-        List<DataDevScriptConfig> configsByErp = configService.getConfigsByErp(userHolder.getErp(), projectSpaceId);
-
-        if (configsByErp != null) {
-            JSONArray jsonArray = JSONObject.parseArray(JSONObject.toJSONString(configsByErp));
+        if (result != null) {
+            JSONArray jsonArray = JSONObject.parseArray(JSONObject.toJSONString(result));
             for (int index = 0; index < jsonArray.size(); index++) {
                 JSONObject temp = jsonArray.getJSONObject(index);
                 if(temp.getInteger("configType").equals(2)){
                     String id = temp.getLong("projectSpaceId") + "-2-" + temp.getLong("id");
                     temp.put("id", id);
                 }
-
             }
-            return JSONObjectUtil.getSuccessResult("保存成功",jsonArray);
+            return JSONObjectUtil.getSuccessResult("保存成功", jsonArray);
+
         }
 
-        return JSONObjectUtil.getSuccessResult("保存成功", configsByErp);
+        return JSONObjectUtil.getSuccessResult("保存成功", result);
     }
 
     @RequestMapping("initMergeConfig.ajax")
