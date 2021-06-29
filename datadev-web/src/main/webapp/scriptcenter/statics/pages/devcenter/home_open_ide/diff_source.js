@@ -48,8 +48,8 @@ export default class JmdCodeDiff {
         }
 
         if (isShowNoChange) {
-            oldString = `File Without Change\tOldString: ======================== \n${oldString}`;
-            newString = `File Without Change\tNewString: ======================== \n${newString}`;
+            oldString = `${oldString}\no`;
+            newString = `${newString}\nn`;
         }
         const args = [fileName, oldString, newString, '', '', {context}];
         const dd = createPatch(...args);
@@ -91,18 +91,19 @@ export default class JmdCodeDiff {
 
     // 处理顶部dom元素
     delTopEl() {
-        const trs = this.findFirstTd(1);
-        console.log(trs)
+        const trs = this.findFirstTd(0);
+
         if (trs && trs.length) {
             if (!this.config.oldString || this.config.oldString === 'null') {
-                this._setEmptyWord(trs[2]);
+                this._setEmptyWord(trs[1]);
             }
             this.delExtraLine(trs);
         }
-        const trsNew = this.findFirstTd(0);
+        const trsNew = this.findFirstTd(1);
+        console.log(trsNew,trs)
         if (trsNew && trsNew.length) {
             if (!this.config.newString || this.config.newString === 'null') {
-                this._setEmptyWord(trsNew[2]);
+                this._setEmptyWord(trsNew[1]);
             }
             this.delExtraLine(trsNew);
         }
@@ -134,8 +135,9 @@ export default class JmdCodeDiff {
 
     // 删除第一行和第二行
     delExtraLine(trs) {
-        if (trs[1].parentNode) {
-            trs[1].parentNode.removeChild(trs[1]);
+        const index = trs.length - 1;
+        if (trs[index].parentNode) {
+            trs[index].parentNode.removeChild(trs[index]);
         }
     }
 
@@ -178,3 +180,13 @@ export default class JmdCodeDiff {
     }
 }
 
+const test = new JmdCodeDiff({
+    el: document.querySelector('#codeDiff'),
+    elId: '#codeDiff',
+    oldString: "#!/bin/bash\necho \"xxxyyy\"",
+    newString: "",
+    context: 10000,
+    outputFormat: "side-by-side",
+    isShowNoChange: true,
+    showTitle: false
+})
