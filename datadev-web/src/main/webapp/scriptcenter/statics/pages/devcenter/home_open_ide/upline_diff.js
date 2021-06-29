@@ -65,6 +65,7 @@ $(function () {
             outputFormat: "side-by-side",
             isShowNoChange: true,
             showTitle: false
+            // placeholder: ""
         });
 
     });
