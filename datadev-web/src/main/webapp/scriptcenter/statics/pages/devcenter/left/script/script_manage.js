@@ -1933,7 +1933,6 @@ var QIAN_KUN = undefined;
 
 window["bdp-qiankun"] = {
     mount: function (msg) {
-        debugger
         QIAN_KUN = msg;
         TabCacheClass.bindFrameEvent();
         TabCacheClass.openCacheTabs(function (cacheTabs) {

@@ -18,7 +18,8 @@
         modified,
         deleted,
         cpu,
-        disk
+        disk,
+        sys
         )
         VALUES(
         #{ip},
@@ -34,7 +35,8 @@
         now(),
         0,
         #{cpu},
-        #{disk}
+        #{disk},
+        'scriptcenter'
         )
     </insert>
 
@@ -50,6 +52,7 @@
         where last_active_time >= #{preTime}
         AND IFNULL(status,1) !=0
         AND (job_limit>active_script_run_detail OR job_limit <![CDATA[<]]> 0)
+        and sys = 'scriptcenter'
         order by active_script_run_detail asc
     </select>
 
@@ -61,11 +64,12 @@
 
     <select id="findClientBase" resultType="DataDevClientBase">
         select id, ip, job_limit as jobLimit, status, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk
-        from client_base
+        from client_base where sys = 'scriptcenter'
     </select>
 
     <select id="findClientInfo" resultType="DataDevClientBase">
-        select id, ip, job_limit as jobLimit, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk from client_info where ip = #{ip}
+        select id, ip, job_limit as jobLimit, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk
+        from client_info where ip = #{ip}
     </select>
     <update id="modifyStatus">
         UPDATE client_base
@@ -75,11 +79,11 @@
     </update>
     <select id="count" resultType="Long">
         SELECT count(*) from
-        client_base
+        client_base where sys = 'scriptcenter'
     </select>
     <select id="list" resultType="DataDevClientBase">
         SELECT id, ip, job_limit as jobLimit, status, deleted, active_script_run_detail as activeScriptRunDetail, last_active_time as lastActiveTime, cpu, disk
-        from client_base
+        from client_base where sys = 'scriptcenter'
         limit #{start},#{limit}
     </select>
 

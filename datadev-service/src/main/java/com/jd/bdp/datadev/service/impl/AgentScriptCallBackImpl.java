@@ -49,6 +49,7 @@ public class AgentScriptCallBackImpl implements AgentScriptCallBackInterface {
             dataDevClientBase.setLastActiveTime(new Date());
             dataDevClientBase.setCreator("bdp_sys");
             dataDevClientBase.setMender("bdp_sys");
+            dataDevClientBase.setSystem("scriptcenter");
             DataDevClientBase clientBase = clientBaseDao.findByIp(dataDevClientBase.getIp());
             logger.error("心跳"+com.alibaba.fastjson.JSONObject.toJSONString(dataDevClientBase));
             if (clientBase == null) {

@@ -21,6 +21,7 @@ public class DataDevClientBase {
     private Integer activeScriptRunDetail ;   // Client端运行数量
     private Integer cpu;
     private Integer disk;
+    private String system ;
 
     public Integer getCpu() {
         return cpu;
@@ -126,6 +127,14 @@ public class DataDevClientBase {
 
     public void setActiveScriptRunDetail(Integer activeScriptRunDetail) {
         this.activeScriptRunDetail = activeScriptRunDetail;
+    }
+
+    public String getSystem() {
+        return system;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
     }
 
     @Override
