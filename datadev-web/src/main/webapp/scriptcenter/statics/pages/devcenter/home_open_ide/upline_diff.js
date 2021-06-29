@@ -58,6 +58,7 @@ $(function () {
         // differ.getEditors().right.clearSelection();
         new JmdCodeDiff({
             el: document.querySelector("#codeDiff"),
+            elId: '#codeDiff',
             oldString: compareInfo.remoteInfo.content || "",
             newString: compareInfo.currentInfo.content || "",
             context: 10000,
