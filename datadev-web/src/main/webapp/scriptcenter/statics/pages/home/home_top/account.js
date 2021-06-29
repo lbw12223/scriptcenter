@@ -52,9 +52,10 @@ $(function () {
                 $("#defaultConfig-hasright").html(target.hasRight === true ? "有" : "无");
 
                 if(target.hasRight === true){
-                    $("#account-ok").attr("disabled",false)
+                    $("#account-ok").removeClass("disabled")
                 }else{
-                    $("#account-ok").attr("disabled",true)
+                    $("#account-ok").addClass("disabled")
+
                 }
             }
             $("#applyId").css("display", "none");
@@ -65,7 +66,7 @@ $(function () {
             return;
         } else {
             //个人配置
-            $("#account-ok").attr("disabled",false)
+            $("#account-ok").removeClass("disabled")
             $(".defaultConfig").css("display", "none")
             $(".personConfig").css("display", "block");
             $("#applyId").css("display", "block");
@@ -81,7 +82,7 @@ $(function () {
         $("#account-form").validate().element($("#accountName"));
         $("li.account-history-li.active").removeClass("active");
         $(this).addClass("active");
-        debugger
+
         var marketId = $(this).data("linuxUser");
         $("#marketSelect").val(marketId).trigger("change", true);
         // changeMarket();
@@ -226,7 +227,7 @@ $(function () {
     })
     $("#account-remove").click(function () {
         var acLi = $("li.account-history-li.active",$(".account-history-ul"));
-        if(acli.length < 1){
+        if(acLi.length < 1){
             return ;
         }
         var id = $(acLi).attr('data-id');

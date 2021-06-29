@@ -92,7 +92,6 @@ public class ScriptApiController {
     }
 
 
-
     @RequestMapping("/openProjectSpace")
     @ResponseBody
     public JSONObject openProjectSpace(final Long projectSpaceId) throws Exception {
@@ -104,12 +103,19 @@ public class ScriptApiController {
         } catch (Exception e) {
             return JSONObjectUtil.getSuccessResult("同步项目空间脚本失败," + e.getMessage());
         }
-
-
         return JSONObjectUtil.getSuccessResult("正在同步...");
     }
 
+    @RequestMapping("/getDataDevScriptId")
+    @ResponseBody
+    public JSONObject getDataDevScriptId(Long gitProjectId, String gitProjectFilePath) throws Exception {
+        logger.info("===getDataDevScriptId====" + gitProjectId + " ===== " + gitProjectFilePath);
+        if (gitProjectId != null && gitProjectId > 0L && StringUtils.isNotBlank(gitProjectFilePath)) {
+            return JSONObjectUtil.getSuccessResult(scriptFileService.getScriptByGitProjectIdAndFilePath(gitProjectId, gitProjectFilePath));
+        }
 
+        return JSONObjectUtil.getFailResult("参数错误!", null);
+    }
 
 
     /**
