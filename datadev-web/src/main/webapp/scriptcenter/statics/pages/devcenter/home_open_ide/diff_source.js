@@ -179,14 +179,3 @@ export default class JmdCodeDiff {
         return this.config.oldString === this.config.newString;
     }
 }
-
-const test = new JmdCodeDiff({
-    el: document.querySelector('#codeDiff'),
-    elId: '#codeDiff',
-    oldString: "#!/bin/bash\necho \"xxxyyy\"",
-    newString: "",
-    context: 10000,
-    outputFormat: "side-by-side",
-    isShowNoChange: true,
-    showTitle: false
-})

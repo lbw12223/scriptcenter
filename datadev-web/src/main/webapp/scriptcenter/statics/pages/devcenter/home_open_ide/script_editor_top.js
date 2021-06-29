@@ -405,7 +405,7 @@ var datadevInit = {
                 // 检测editor内容变化
                 var changed = verifyModify();
                 // 展示Tab变动标志
-                showModifyIcon(getKey(), changed);
+                showModifyIcon(key, changed);
                 return;
             } else {
                 //暂存内容
@@ -2213,8 +2213,10 @@ function getParam(gitProjectId, path, name, pythonType, isTmp) {
 
 
 function getKey(gitProjectId, path) {
-    gitProjectId = (gitProjectId + "").trim();
-    path = path && path.trim() || "";
+    gitProjectId = gitProjectId || $("#gitProjectId").val();
+    gitProjectId = gitProjectId.trim();
+    path = path || $("#gitProjectFilePath").val();
+    path = path.trim();
     if (path.startsWith("/")) {
         path = gitProjectId + path;
     } else {
